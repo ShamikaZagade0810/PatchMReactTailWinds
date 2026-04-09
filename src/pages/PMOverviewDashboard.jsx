@@ -2,9 +2,8 @@ import React from 'react'
 import { useState } from 'react';
 
 import { Calendar, Activity, Settings } from "lucide-react";
-
-
 import OverviewDashboard from './OverviewDashboard';
+import DeviceDashboard from './DeviceDashboard';
 
 export const PMOverviewDashboard = () => {
     const [activeTab, setActiveTab] = useState(0);
@@ -100,11 +99,7 @@ export const PMOverviewDashboard = () => {
             label: "Device",
             icon: <Activity size={18} />,
             content: (
-                <div className="space-y-3">
-                    <div className="p-3 bg-white rounded-lg shadow">User logged in</div>
-                    <div className="p-3 bg-white rounded-lg shadow">Order placed</div>
-                    <div className="p-3 bg-white rounded-lg shadow">Server restarted</div>
-                </div>
+                <DeviceDashboard />
             ),
         },
         {
@@ -140,7 +135,7 @@ export const PMOverviewDashboard = () => {
                             key={index}
                             onClick={() => setActiveTab(index)}
                             className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all
-                ${activeTab === index
+                             ${activeTab === index
                                     ? "border-b-2 border-blue-500 text-blue-600"
                                     : "text-gray-500 hover:text-blue-500"
                                 }`}

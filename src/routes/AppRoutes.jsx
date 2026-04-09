@@ -5,6 +5,7 @@ import MainLayout from "../layouts/MainLayout";
 
 import DbMonitoringDashboard from "../pages/DbMonitoringDashboard.jsx";
 import { PMOverviewDashboard } from "../pages/PMOverviewDashboard.jsx";
+import Devices from "../pages/Devices.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -29,6 +30,17 @@ export default function AppRoutes() {
           
               {/* <DbMonitoringDashboard /> */}
               <PMOverviewDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/devices/:username"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+          
+              {/* <DbMonitoringDashboard /> */}
+              <Devices/>
             </ProtectedRoute>
           }
         />
