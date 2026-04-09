@@ -131,7 +131,7 @@ export const PMOverviewDashboard = () => {
             ),
         },
         {
-            label: "Activity",
+            label: "Devices",
             icon: <Activity size={18} />,
             content: (
                 <div className="space-y-3">
