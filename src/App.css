@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.input {
+  @apply w-full px-3 py-2  border border-gray-300 dark:border-gray-600
+  bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+  focus:ring-2 focus:ring-cyan-500 outline-none;
+}
+
+.label {
+  @apply block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
