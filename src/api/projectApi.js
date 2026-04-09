@@ -228,10 +228,18 @@ export const getRollbackScript = async (data) => {
       `${BASE_URL}/api/change-packages/fromPacakgePreview`,
       data,
     );
-console.log("response at api call in project js ", response);
+    console.log("response at api call in project js ", response);
+
 
     return response;
   } catch (error) {
     throw error;
   }
+
+
+
+
 };
+
+export const getPatches = () =>
+  axios.get(`${BASE_URL}/dashboard/dashboardCount`,);
