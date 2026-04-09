@@ -1,7 +1,9 @@
 // components/Layout/Sidebar.jsx
 import React, { useMemo } from "react";
 import {
-  LayoutDashboard,
+  LayoutDashboard,  
+  ListTree,
+  Share2,
   FolderGit2,
   Server,
   Package,
@@ -43,16 +45,249 @@ const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+      {
+        name: "Patch Dashboard",
+        path: "/dashboard/patch",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
 
     ],
   },
 
   {
-    name: "gitlab",
-    path: "/gitlabUi",
-    icon: FolderGit2,
+    name: "Dashboards1",
+    icon: LayoutDashboard,
     roles: ["admin"],
+
+    children: [
+      {
+        name: "Status",
+        path: "/dashboard/status",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Patch Tree",
+        path: "/dashboard/panel",
+        icon: ListTree,
+        roles: ["admin"],
+      },
+      {
+        name: "Third Party",
+        path: "/dashboard/thirdparty",
+        icon: AppWindowMac,
+        roles: ["admin"],
+        
+      },
+
+    ],
   },
+
+  {
+    name: "Content Distribution",
+    icon: Share2,
+    roles: ["admin"],
+
+    children: [
+      {
+        name: "Manage Patches",
+        path: "/content/manage",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Send Multiple Patches",
+        path: "/content/send-multiple",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "View Sending Patches",
+        path: "/content/view-sending",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "View Failed Transfer",
+        path: "/content/view failed",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Patch Report",
+        path: "/content/report",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Patch ID Report",
+        path: "/content/id-report",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+
+    ],
+  },
+
+  {
+    name: "Patch Setting",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+
+    children: [
+      {
+        name: "Approve Or Decline",
+        path: "/setting/approve-decline",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Automatic Approvals",
+        path: "/setting/auto-approval",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "View Approval Rule",
+        path: "/setting/view-rule",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Product And Classifications",
+        path: "/setting/product-class",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Update Sync Schedule",
+        path: "/setting/sync-schedule",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "View Sync Policy",
+        path: "/setting/sync-policy",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Client Wise Sync Policy",
+        path: "/setting/client-policy",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "View Client Wise Sync Policy",
+        path: "/setting/view-client-policy",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+
+    ],
+  },
+
+  {
+    name: "Master",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+
+    children: [
+      {
+        name: "Create Application User",
+        path: "/master/create-user",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "	View Application User",
+        path: "/master/view-user",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Customer Master",
+        path: "/master/customer",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Branch Master",
+        path: "/master/branch",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Group Master",
+        path: "/master/group",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Server Master",
+        path: "/master/server",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "OEM Master",
+        path: "/master/oem",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Mail Configure",
+        path: "/master/mail-config",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Periodic Report",
+        path: "/master/periodic-report",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+
+    ],
+  },
+  {
+    name: "Run CMD Execution",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+
+    children: [
+      {
+        name: "Add Activity Command",
+        path: "/cmd/add",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+       {
+        name: "View Activity Command",
+        path: "/cmd/view",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+       {
+        name: "Multiple Run Command",
+        path: "/cmd/multi-run",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
+  },
+
+
+
+  // {
+  //   name: "gitlab",
+  //   path: "/gitlabUi",
+  //   icon: FolderGit2,
+  //   roles: ["admin"],
+  // },
+
+
 ];
 
 export const Sidebar = ({
