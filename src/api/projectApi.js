@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.0.120:8181";
+const token ='eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzU3MjY0MTUsImV4cCI6MTc3NTgxMjgxNX0.671gc0X2RDPTC_SAtYEHeIVew4rl3v6axtcje9forO0';
+const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -242,4 +243,72 @@ export const getRollbackScript = async (data) => {
 };
 
 export const getPatches = () =>
-  axios.get(`${BASE_URL}/dashboard/dashboardCount`,);
+  axios.get(`${BASE_URL}/dashboard/dashboardCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getOSCount = () =>
+  axios.get(`${BASE_URL}/dashboard/getOScount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getSecurityPostureData = () =>
+  axios.get(`${BASE_URL}/dashboard/securityPosture`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getThirdPartySeverity = () =>
+  axios.get(`${BASE_URL}/dashboard/thirdpartyseverity`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+export const getThirdPartyApplisting = () =>
+  axios.get(`${BASE_URL}/dashboard/thirdpartyseveritylist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+export const getHistBarChart = () =>
+  axios.get(`${BASE_URL}/dashboard/PatchHistoryBar`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getIpWiseStatusData = () =>
+  axios.get(`${BASE_URL}/dashboard/IPPatchStatusBar`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getOsUpdatesPie = () =>
+  axios.get(`${BASE_URL}/dashboard/OsPatchStatus`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getOsUpdatesList = () =>
+  axios.get(`${BASE_URL}/dashboard/OsPatchStatusList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  
+export const getTopRiskyDevices = () =>
+  axios.get(`${BASE_URL}/dashboard/TopRiskDevices`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+

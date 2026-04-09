@@ -15,33 +15,14 @@ import {
 } from "recharts";
 
 
-const SingleBarcharts = () => {
+const SingleBarcharts = ({data}) => {
 
-const patchHistory = [
-  { month: "Jan 8-14", count: 38 },
-  { month: "Jan 15-21", count: 45 },
-  { month: "Jan 22-28", count: 32 },
-  { month: "Feb 1-7", count: 50 },
-  { month: "Feb 8-14", count: 42 },
-  { month: "Feb 15-21", count: 25 },
-  { month: "Feb 22-28", count: 37 },
-  { month: "Mar 1-7", count: 33 },
-  { month: "Mar 8-14", count: 60 },
-  { month: "Mar 15-21", count: 38 },
-  { month: "Mar 22-28", count: 31 },
-  { month: "Apr 1-7", count: 55 },
-  { month: "Apr 8-14", count: 35 },
-  { month: "Apr 15-21", count: 42 },
-  { month: "Apr 22-28", count: 22 },
-  { month: "Apr 30-May 6", count: 33 },
-  { month: "May 7-13", count: 26 },
-  { month: "May 14-18", count: 43 },
-];
+
 
     return (
         <div className="w-full h-56 bg-[#141D2E] rounded-lg p-3">
             <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={patchHistory}>
+                <BarChart data={data}>
 
                     {/* Grid */}
                     <CartesianGrid stroke="#1E293B" strokeDasharray="3 3" />
