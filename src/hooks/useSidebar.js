@@ -1,4 +1,3 @@
-// hooks/useSidebar.js (updated)
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -28,9 +27,16 @@ export const useSidebar = () => {
   };
 
   const handleAccordionClick = (path) => {
+    console.log(
+"path : ",path
+    );
+    
     if (expandedItems.includes(path)) {
+      console.log("inside if ");
+      
       setExpandedItems(expandedItems.filter(item => item !== path));
     } else {
+      console.log("inside else ");
       setExpandedItems([...expandedItems, path]);
     }
   };
