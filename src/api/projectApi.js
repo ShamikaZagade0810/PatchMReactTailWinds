@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token ='eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzU3MjY0MTUsImV4cCI6MTc3NTgxMjgxNX0.671gc0X2RDPTC_SAtYEHeIVew4rl3v6axtcje9forO0';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzYxNDI3MTQsImV4cCI6MTc3NjIyOTExNH0.HrjQyw1N0py1pdk7TrDFu_iyJ0nfm0e02kFB9oSuaNk';
 const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
@@ -304,7 +304,7 @@ export const getOsUpdatesList = () =>
     }
   });
 
-  
+
 export const getTopRiskyDevices = () =>
   axios.get(`${BASE_URL}/dashboard/TopRiskDevices`, {
     headers: {
@@ -312,3 +312,108 @@ export const getTopRiskyDevices = () =>
     }
   });
 
+
+export const getCriticalPatchesList = () =>
+  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getApprovedPatchesList = () =>
+  axios.get(`${BASE_URL}/dashboard/ApprovedPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getFailedIpList = () =>
+  axios.get(`${BASE_URL}/dashboard/FailedList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getTotalPatchList = () =>
+  axios.get(`${BASE_URL}/dashboard/TotalPatchList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getMissingPatchList = () =>
+  axios.get(`${BASE_URL}/dashboard/MissingPatchList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+
+export const getWindowList = () =>
+  axios.get(`${BASE_URL}/dashboard/WindowsList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getServerList = () =>
+  axios.get(`${BASE_URL}/dashboard/ServerList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getLinuxList = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getMacList = () =>
+  axios.get(`${BASE_URL}/dashboard/MacList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+export const getIpWisePatchList = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/IPPatchStatusBarList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getOSWisePatchList = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/OsPatchStatusAllList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+export const getthirdPartySeverityPatchList = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/thirdpartyseverityAllList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+  export const getPatchHistoryList = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/PatchHistoryList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });

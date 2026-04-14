@@ -86,21 +86,21 @@ const renderActiveShape = (props,) => {
 };
 
 // Main Component
-const PieCharts = ({ data,onSliceClick }) => {
+const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
     const [centerValue, setCenterValue] = useState(
         data.reduce((sum, item) => sum + item.value, 0)
     );
     const [centerLabel, setCenterLabel] = useState("Total Tasks");
     const [centerColor, setCenterColor] = useState("#ffffff"); // default white
-    const [isAnimationActive,setisAnimationActive] = useState(true);
+    const [isAnimationActive, setisAnimationActive] = useState(true);
     return (
         <div className="flex flex-col items-center w-full">
             <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                     <Pie
                         data={data}
-                        dataKey={data.dataKey}
-                        chartId="patch_chart"
+                        dataKey={"value"}
+
                         cx="50%"
                         cy="50%"
                         innerRadius={60}
@@ -110,7 +110,7 @@ const PieCharts = ({ data,onSliceClick }) => {
                         onMouseEnter={(entry, index) => {
                             setCenterValue(entry.value);
                             setCenterLabel(entry.name);
-                            setCenterColor(COLORS[index % COLORS.length]); 
+                            setCenterColor(COLORS[index % COLORS.length]);
                         }}
                         onMouseLeave={() => {
                             setCenterValue(data.reduce((sum, item) => sum + item.value, 0));
@@ -119,12 +119,24 @@ const PieCharts = ({ data,onSliceClick }) => {
 
                         onClick={(data, index) => {
                             console.log("Clicked:", data);
-                            const reqdata = {
-                                classification : data.name
+                            console.log("Datakey :", datakey);
+                            let reqdata = {}
+                            if (datakey == "thirdpartypie") {
+                                reqdata = {
+                                    severity: data.name
+                                }
+                                 onSliceClick('patch_wise', 'thirdPiechart', reqdata);
+                            } else {
+                                reqdata = {
+                                    classification: data.name
+                                }
+                                 onSliceClick('patch_wise', 'patch', reqdata);
                             }
-                         onSliceClick('patch_wise', 'patch',reqdata);
+
+
+                           
                         }}
-                        cornerRadius={3} 
+                        cornerRadius={3}
                         paddingAngle={4}
                     >
                         {data.map((entry, index) => (
@@ -164,4 +176,4 @@ const PieCharts = ({ data,onSliceClick }) => {
     );
 };
 
-export default PieCharts;
+export default SinglePieCharts;

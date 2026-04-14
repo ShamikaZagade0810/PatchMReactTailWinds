@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Calendar, Activity, Settings } from "lucide-react";
 import OverviewDashboard from './OverviewDashboard';
 import DeviceDashboard from './DeviceDashboard';
+import { Modal } from '../components/Layout/Modal';
 
 export const PMOverviewDashboard = () => {
     const [activeTab, setActiveTab] = useState(0);
@@ -128,6 +129,9 @@ export const PMOverviewDashboard = () => {
 
 
         <div className="min-h-screen bg-gray-200 dark:bg-[#000000] text-white  ">
+
+            
+
             <div className="mb-1 bg-white dark:bg-[#0B1220] p-4 ">
                 <div className="flex border-b">
                     {tabs.map((tab, index) => (

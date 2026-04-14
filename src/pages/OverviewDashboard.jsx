@@ -11,7 +11,7 @@ import {
     MoveUp,
     Check
 } from "lucide-react";
-import PieCharts from '../components/Charts/Piecharts';
+import SinglePieCharts from '../components/Charts/SinglePiecharts';
 import SingleBarcharts from '../components/Charts/SingleBarcharts';
 import {
     BarChart,
@@ -33,9 +33,23 @@ import {
     getIpWiseStatusData,
     getOsUpdatesPie,
     getOsUpdatesList,
-    getTopRiskyDevices
+    getTopRiskyDevices,
+    getCriticalPatchesList,
+    getApprovedPatchesList,
+    getFailedIpList,
+    getTotalPatchList,
+    getMissingPatchList,
+    getWindowList,
+    getServerList,
+    getLinuxList,
+    getMacList,
+    getIpWisePatchList,
+    getOSWisePatchList,
+    getthirdPartySeverityPatchList,
+    getPatchHistoryList
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
+import { Modal } from '../components/Layout/Modal';
 
 
 const OverviewDashboard = () => {
@@ -49,6 +63,49 @@ const OverviewDashboard = () => {
     const [osPie, setOsPie] = useState([]);
     const [osList, setOsList] = useState([]);
     const [topDevices, setTopDevices] = useState([]);
+    const [show, setShow] = useState(false);
+    const [modalData, setModalData] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    // const columns = [
+    //     { label: "Name", key: "name" },
+    //     { label: "Version", key: "version" },
+    //     { label: "Status", key: "status" },
+    //     { label: "Severity", key: "severity" },
+    // ];
+
+    // const Modaldata = [
+    //     { name: "Chrome", version: "120", status: "Updated", severity: "Low" },
+    //     { name: "OpenSSL", version: "1.1.1", status: "Outdated", severity: "High" },
+    //     { name: "Node.js", version: "18", status: "Updated", severity: "Medium" },
+    // ];
+
+    const apiMapping = {
+        patches: {
+            critical: getCriticalPatchesList,
+            approved: getApprovedPatchesList,
+            failed: getFailedIpList,
+            total: getTotalPatchList,
+            missing: getMissingPatchList,
+
+        },
+        os_status: {
+            windows: getWindowList,
+            server: getServerList,
+            linux: getLinuxList,
+            mac: getMacList
+
+        },
+        ip_wise: {
+            patch: getIpWisePatchList,
+        },
+         patch_wise: {
+            patch: getOSWisePatchList,
+            thirdPiechart : getthirdPartySeverityPatchList,
+            histbarchart :getPatchHistoryList
+        }
+    };
+
 
 
     useEffect(() => {
@@ -57,6 +114,54 @@ const OverviewDashboard = () => {
 
 
     }, [])
+
+
+
+    const handleClickModal = async (section, label) => {
+
+        console.log(section, label);
+        setLoading(true);
+        const data = await apiMapping[section.toLowerCase().trim()][label]();
+        console.log("data --> ", data);
+        let MainData = data.data.data[0].data;
+        let ColumnData = data.data.data[0].column;
+        console.log("Maindata --> ", MainData);
+        console.log("ColumnData --> ", ColumnData);
+        let obj = {};
+        obj.maindata = MainData;
+        obj.columndata = ColumnData;
+        obj.modelHeading = label.toUpperCase();
+
+        setModalData(obj);
+
+
+
+        setShow(true);
+        setLoading(false);
+    }
+
+    const handleClickModalParameter = async (section, label, inputData) => {
+
+        console.log(section, label);
+        setLoading(true);
+        const data = await apiMapping[section.toLowerCase().trim()][label](inputData);
+        console.log("data --> ", data);
+        let MainData = data.data.data[0].data;
+        let ColumnData = data.data.data[0].column;
+        console.log("Maindata --> ", MainData);
+        console.log("ColumnData --> ", ColumnData);
+        let obj = {};
+        obj.maindata = MainData;
+        obj.columndata = ColumnData;
+        obj.modelHeading = label.toUpperCase();
+
+        setModalData(obj);
+
+
+
+        setShow(true);
+        setLoading(false);
+    }
 
     const apiCalls = async () => {
         try {
@@ -84,13 +189,17 @@ const OverviewDashboard = () => {
                 getTopRiskyDevices()
             ]);
 
-            // ✅ Set Data
+         
             setPatches(patchesRes.data.data[0]);
             setOsCount(osCountRes.data.data[0]);
             setSecurityPosture(securityRes.data.data[0]);
+
+            
             setThirdPartySeverity(severityRes.data.data);
             setThirdPartyList(severityListRes.data.data);
             setHistData(histRes.data.data);
+
+            
             setIpStatus(ipRes.data.data);
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
@@ -166,6 +275,26 @@ const OverviewDashboard = () => {
 
     return (
         <div className="mb-1 bg-white dark:bg-[#0B1220] ">
+
+            <Modal
+                show={show}
+                setShow={setShow}
+                data={modalData}
+
+            />
+            {loading && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
+                    <div className="flex flex-col items-center gap-3">
+
+                        {/* Spinner */}
+                        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                        {/* Text */}
+                        <p className="text-white text-sm">Loading data...</p>
+
+                    </div>
+                </div>
+            )}
             <div className="grid grid-cols-12 gap-3">
                 <div className="col-span-5">
 
@@ -296,7 +425,7 @@ const OverviewDashboard = () => {
                     <div className="absolute inset-x-0 bottom-0 grid grid-cols-6 p-2 gap-3  pb-5   ">
                         {[
                             { label: "Critical", color: "#6B3EFF33", icon: TriangleAlert, iconcolor: "#3E6FFF" },
-                            { label: "Security", color: "#6B3EFF33", icon: Computer, iconcolor: "#3E6FFF" },
+                            { label: "Missing", color: "#6B3EFF33", icon: Computer, iconcolor: "#3E6FFF" },
                             { label: "Failed", color: "#FF3E5433", icon: X, iconcolor: "#FF3E41" },
                             { label: "Reboot", color: "#FFCB3E33", icon: RotateCw, iconcolor: "#FFBF3E" },
                             { label: "Total", color: "#75FF3E33", icon: MoveUp, iconcolor: "#58FF3E" },
@@ -307,6 +436,7 @@ const OverviewDashboard = () => {
                             return (
                                 <div
                                     key={i}
+                                    onClick={() => { handleClickModal('Patches', item.label.toLowerCase()) }}
                                     className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center"
                                 >
                                     <p className="text-md text-gray-400">{item.label}</p>
@@ -352,6 +482,7 @@ const OverviewDashboard = () => {
                             <div
                                 key={i}
                                 className="border-1 border-[#234779]/70 p-2 rounded-lg"
+                                onClick={() => { handleClickModal('os_status', item.os.toLowerCase()) }}
                             >
                                 {/* Circle */}
                                 {/* <div
@@ -462,6 +593,15 @@ const OverviewDashboard = () => {
                                         onMouseLeave={(data, index, e) => {
                                             e.target.setAttribute("fill", "#22c55e"); // back to normal
                                         }}
+                                        onClick={(data, index) => {
+                                            console.log("Clicked:", data);
+                                            const reqdata = {
+                                                ipaddress: data.IPAddress,
+                                                statusId: 4
+                                            }
+                                            handleClickModalParameter('ip_wise', 'patch', reqdata);
+
+                                        }}
                                     />
 
                                     <Bar
@@ -472,9 +612,18 @@ const OverviewDashboard = () => {
                                         radius={[0, 4, 4, 0]}
                                         onMouseEnter={(data, index, e) => {
                                             e.target.setAttribute("fill", "#b91c1c"); // darker red on hover
+
                                         }}
                                         onMouseLeave={(data, index, e) => {
                                             e.target.setAttribute("fill", "#ef4444"); // back to normal
+                                        }}
+                                        onClick={(data, index) => {
+                                            console.log("Clicked:", data);
+                                            const reqdata = {
+                                                ipaddress: data.IPAddress,
+                                                statusId: 2
+                                            }
+                                            handleClickModalParameter('ip_wise', 'patch',reqdata);
                                         }}
                                     />
                                 </BarChart>
@@ -498,10 +647,10 @@ const OverviewDashboard = () => {
 
                         {/* Donut */}
                         <div className="w-50 h-50 relative">
-                            <PieCharts
-                                data={thirdPartySeverity}
-                                centerValue={thirdPartySeverity.reduce((sum, item) => sum + item.value, 0)} // sum of all values
-                                centerLabel="Total" // you can customize this
+                            <SinglePieCharts
+                                data={thirdPartySeverity}                  
+                                onSliceClick={handleClickModalParameter}
+                                datakey = {"thirdpartypie"}
                             />
 
                         </div>
@@ -558,10 +707,10 @@ const OverviewDashboard = () => {
 
                         {/* Donut */}
                         <div className="w-50 h-50 relative">
-                            <PieCharts
+                            <SinglePieCharts
                                 data={osPie}
-                                centerValue={osPie.reduce((sum, item) => sum + item.value, 0)} // sum of all values
-                                centerLabel="Total" // you can customize this
+                                 onSliceClick={handleClickModalParameter}
+                                   datakey = {"ospie"}
                             />
 
                         </div>
@@ -613,7 +762,7 @@ const OverviewDashboard = () => {
                     <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Patch History</h2>
 
 
-                    <SingleBarcharts  data={histData}/>
+                    <SingleBarcharts data={histData}    onSliceClick={handleClickModalParameter}/>
 
                 </div>
 

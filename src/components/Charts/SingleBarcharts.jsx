@@ -15,9 +15,22 @@ import {
 } from "recharts";
 
 
-const SingleBarcharts = ({data}) => {
+const SingleBarcharts = ({ data ,onSliceClick}) => {
 
+const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
+    const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
 
+    const startDate = new Date(year, monthIndex, 1);
+    const endDate = new Date(year, monthIndex + 1, 0); // last day of month
+
+    const format = (date) =>
+        date.toISOString().split("T")[0]; // YYYY-MM-DD
+
+    return {
+        startDate: format(startDate),
+        endDate: format(endDate)
+    };
+};
 
     return (
         <div className="w-full h-56 bg-[#141D2E] rounded-lg p-3">
@@ -32,12 +45,14 @@ const SingleBarcharts = ({data}) => {
                         dataKey="month"
                         stroke="#9CA3AF"
                         tick={{ fill: "#9CA3AF", fontSize: 10 }}
+
                     />
 
                     {/* Y Axis */}
                     <YAxis
                         stroke="#9CA3AF"
                         tick={{ fill: "#9CA3AF", fontSize: 10 }}
+
                     />
 
                     {/* Tooltip */}
@@ -59,6 +74,18 @@ const SingleBarcharts = ({data}) => {
                         dataKey="count"
                         fill="#22C55E"
                         radius={[4, 4, 0, 0]}
+                        onClick={(data, index) => {
+                            console.log("Clicked Bar:", data);
+                            const { startDate, endDate } = getMonthDateRange(data.month);
+                            const reqdata = {
+                                fromDate: startDate,
+                                toDate: endDate
+                            };
+                            
+
+                          onSliceClick('patch_wise', 'histbarchart',reqdata);
+                       
+                        }}
                     />
 
                 </BarChart>
