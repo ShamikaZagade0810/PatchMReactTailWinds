@@ -74,13 +74,13 @@ export default function MainLayout() {
     const ws = new WebSocket("ws://192.168.0.219:4000");
 
     ws.onopen = () => {
-      console.log(" WebSocket connected");
+      // console.log(" WebSocket connected");
     };
 
     ws.onmessage = (event) => {
-      console.log("WebSocket message:", event.data);
+      // console.log("WebSocket message:", event.data);
       const alert = JSON.parse(event.data);
-      console.log("check error grrr: ", alert);
+      // console.log("check error grrr: ", alert);
 
       if (alert.status == 200) {
         toast.success(alert?.message, {
@@ -100,11 +100,11 @@ export default function MainLayout() {
     };
 
     ws.onerror = (err) => {
-      console.error("❌ WebSocket error", err);
+      // console.error("❌ WebSocket error", err);
     };
 
     ws.onclose = () => {
-      console.log("🔴 WebSocket closed");
+      // console.log("🔴 WebSocket closed");
     };
 
     return () => ws.close();
@@ -115,7 +115,7 @@ export default function MainLayout() {
       return () => clearTimeout(timer);
     }, []);
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 ">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#000000] ">
       <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
 
       <Sidebar

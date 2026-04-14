@@ -1,5 +1,5 @@
 // components/Layout/Sidebar.jsx
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   LayoutDashboard,  
   ListTree,
@@ -31,23 +31,23 @@ const sidebarData = [
     name: "Dashboards",
     icon: LayoutDashboard,
     roles: ["admin"],
-
+    path: "/dashboard2",
     children: [
       {
         name: "Project Reports",
-        path: "/dashboard/mainDashboard",
+        path: "/dashboard2/mainDashboard",
         icon: AppWindowMac,
         roles: ["admin"],
       },
       {
         name: "Incidence Dashboard",
-        path: "/dashboard/incidence",
+        path: "/dashboard2/incidence",
         icon: AppWindowMac,
         roles: ["admin"],
       },
       {
         name: "Patch Dashboard",
-        path: "/dashboard/patch",
+        path: "/dashboard2/patch",
         icon: AppWindowMac,
         roles: ["admin"],
       },
@@ -59,27 +59,28 @@ const sidebarData = [
     name: "Dashboards1",
     icon: LayoutDashboard,
     roles: ["admin"],
-
+    path: "/dashboard",
     children: [
       {
         name: "Status",
-        path: "/dashboard/status",
+        path: "/dashboard/mainDashboard",
+     
         icon: AppWindowMac,
         roles: ["admin"],
       },
       {
         name: "Patch Tree",
-        path: "/dashboard/panel",
-        icon: ListTree,
+        path: "/dashboard/status",
+        icon: AppWindowMac,
         roles: ["admin"],
       },
       {
         name: "Third Party",
-        path: "/dashboard/thirdparty",
+        path: "/dashboard/status",
         icon: AppWindowMac,
         roles: ["admin"],
-        
       },
+     
 
     ],
   },
@@ -88,7 +89,7 @@ const sidebarData = [
     name: "Content Distribution",
     icon: Share2,
     roles: ["admin"],
-
+  path:"content",
     children: [
       {
         name: "Manage Patches",
@@ -134,6 +135,7 @@ const sidebarData = [
     name: "Patch Setting",
     icon: LayoutDashboard,
     roles: ["admin"],
+    path:"setting",
 
     children: [
       {
@@ -192,6 +194,7 @@ const sidebarData = [
     name: "Master",
     icon: LayoutDashboard,
     roles: ["admin"],
+    path:"master",
 
     children: [
       {
@@ -255,6 +258,7 @@ const sidebarData = [
     name: "Run CMD Execution",
     icon: LayoutDashboard,
     roles: ["admin"],
+    path:"cmd",
 
     children: [
       {
@@ -298,6 +302,7 @@ export const Sidebar = ({
   onAccordionClick,
   isItemExpanded,
 }) => {
+  const [openAccordion, setOpenAccordion] = useState(null);
   const activeItemData = useMemo(() => {
     return sidebarData.find((item) => item?.path === activeItem);
   }, [activeItem]);
@@ -355,10 +360,12 @@ export const Sidebar = ({
               item={item}
               level={0}
               isSidebarOpen={isOpen}
-              isExpanded={isItemExpanded(item.path)}
-              isActive={activeItem}
-              onAccordionClick={onAccordionClick}
-              onItemClick={onItemClick}
+            
+                isExpanded={isItemExpanded(item.path)}   
+  isActive={activeItem}
+  onAccordionClick={onAccordionClick}
+  onItemClick={onItemClick}
+  isItemExpanded={isItemExpanded} 
             />
           ))}
         </nav>

@@ -8,16 +8,22 @@ export const AccordionItem = ({
   isExpanded,
   isActive,
   onAccordionClick,
-  onItemClick
+  onItemClick,
+  isItemExpanded   
 }) => {
   const hasChildren = item.children && item.children.length > 0;
+console.log("has children : ",item.children);
+console.log("has item : ",item);
 
   const navigate = useNavigate();
 
   const handleClick = () => {
     if (hasChildren) {
-      onAccordionClick(item.path);
-      navigate(item.path)
+      console.log("path in accordian item : ", item);
+      console.log("check path : ",item?.children?.path);
+      
+      onAccordionClick(item?.path);
+      // navigate(item.path)
     } else {
       onItemClick(item.path);
       navigate(item.path)
@@ -68,18 +74,18 @@ const isSelected =
 
       {hasChildren && isExpanded && isSidebarOpen && (
         <div className="ml-4 border-l border-gray-200 dark:border-gray-700">
-          {item.children.map((child) => (
-            <AccordionItem
-              key={child.path}
-              item={child}
-              level={level + 1}
-              isSidebarOpen={isSidebarOpen}
-              isExpanded={isExpanded}
-              isActive={isActive}
-              onAccordionClick={onAccordionClick}
-              onItemClick={onItemClick}
-            />
-          ))}
+         {item.children.map((child) => (
+  <AccordionItem
+    key={child.path}
+    item={child}
+    level={level + 1}
+    isSidebarOpen={isSidebarOpen}
+    isExpanded={isItemExpanded(child.path)} 
+    isActive={isActive}
+    onAccordionClick={onAccordionClick}
+    onItemClick={onItemClick}
+  />
+))}
           
         </div>
       )}
