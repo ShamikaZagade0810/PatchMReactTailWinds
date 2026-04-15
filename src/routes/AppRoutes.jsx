@@ -35,7 +35,7 @@ export default function AppRoutes() {
         />
 
         <Route
-          path="/devices/:username"
+          path="/devices/:username/:ipaddress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
           

@@ -87,6 +87,7 @@ const renderActiveShape = (props,) => {
 
 // Main Component
 const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
+    console.log("Data in pie ",data);
     const [centerValue, setCenterValue] = useState(
         data.reduce((sum, item) => sum + item.value, 0)
     );
@@ -94,7 +95,7 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
     const [centerColor, setCenterColor] = useState("#ffffff"); // default white
     const [isAnimationActive, setisAnimationActive] = useState(true);
     return (
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full ">
             <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                     <Pie

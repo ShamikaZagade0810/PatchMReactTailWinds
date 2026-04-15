@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzYxNDI3MTQsImV4cCI6MTc3NjIyOTExNH0.HrjQyw1N0py1pdk7TrDFu_iyJ0nfm0e02kFB9oSuaNk';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzYyMjk1MzYsImV4cCI6MTc3NjMxNTkzNn0.AeieByVu7mT7QvTig5-KMh5AtOoMETRtVY2lWm9b7UA';
 const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
@@ -384,6 +384,8 @@ export const getMacList = () =>
       Authorization: `Bearer ${token}`
     }
   });
+
+
 export const getIpWisePatchList = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/IPPatchStatusBarList`, {
     headers: {
@@ -410,8 +412,66 @@ export const getthirdPartySeverityPatchList = (inputData) =>
   });
 
 
-  export const getPatchHistoryList = (inputData) =>
+export const getPatchHistoryList = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/PatchHistoryList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getDeviceList = () =>
+  axios.get(`${BASE_URL}/devices/DevicesList
+`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getPatchSeverityCount = (inputData) =>
+  axios.get(`${BASE_URL}/devices/PatchSeverityCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getPatchInstalledCount = (inputData) =>
+  axios.get(`${BASE_URL}/devices/PatchInstalledCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getBasicInfo = (inputData) =>
+  axios.get(`${BASE_URL}/devices/BasicInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getHardwareInfo = (inputData) =>
+  axios.get(`${BASE_URL}/devices/HardwareInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getComputerInfo = (inputData) =>
+  axios.get(`${BASE_URL}/devices/ComputerInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+  export const getRamGraph = (inputData) =>
+  axios.get(`${BASE_URL}/devices/RAMGraphInfo`, {
     headers: {
       Authorization: `Bearer ${token}`
     },

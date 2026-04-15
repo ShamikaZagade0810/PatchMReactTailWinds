@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-export const Modal = ({ show, setShow, data = {}}) => {
+export const Modal = ({ show, setShow, data = {} }) => {
   if (!show) return null;
- 
+
   return (
     <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -56,9 +56,9 @@ export const Modal = ({ show, setShow, data = {}}) => {
                   }}
                 >
                   {data.columndata.map((col, colIndex) => {
-                  const value = row[col.name.toLowerCase()];
-                     console.log("col.label ", col.name);
-                    
+                    const value = row[col.name.toLowerCase()];
+                    console.log("col.label ", col.name);
+
 
                     // Custom styling logic
                     let className = "text-gray-300";
@@ -75,8 +75,8 @@ export const Modal = ({ show, setShow, data = {}}) => {
                         value === "High"
                           ? "text-red-500"
                           : value === "Medium"
-                          ? "text-yellow-400"
-                          : "text-green-400";
+                            ? "text-yellow-400"
+                            : "text-green-400";
                     }
 
                     return (

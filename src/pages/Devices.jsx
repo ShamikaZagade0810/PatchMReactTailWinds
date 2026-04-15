@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,18 +13,107 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+
+import {
+  getBasicInfo,
+  getPatchSeverityCount,
+  getPatchInstalledCount,
+  getHardwareInfo,
+  getComputerInfo,
+  getRamGraph
+} from "../api/projectApi";
+import SinglePieCharts from '../components/Charts/SinglePiecharts';
+
 const Devices = () => {
   const navigate = useNavigate();
-  const { username } = useParams();
+  const { username, ipaddress } = useParams();
+  const [PatchSeverity, setPatchSeverity] = useState([]);
+  const [PatchInstalled, setPatchInstalled] = useState([]);
+  const [basicInfo, setBasicInfo] = useState([]);
+  const [hardwareInfo, setHardwareInfo] = useState([]);
+  const [computerInfo, setComputerInfo] = useState({ columndata: [], maindata: [] });
+  const [ramGraph, setRamGraph] = useState([]);
+
+
+
+
+  useEffect(() => {
+    console.log("Hello World111");
+    apiCalls();
+
+
+  }, []);
+
+
+
+  const apiCalls = async () => {
+    try {
+      const [
+        resPatchSeverity,
+        resPatchInstalled,
+        resGetBasicInfo,
+        resGetHardwareInfo,
+        resComputerInfo,
+        resRamGraph,
+
+
+
+      ] = await Promise.all([
+        getPatchSeverityCount({ ipaddress: ipaddress }),
+        getPatchInstalledCount({ ipaddress: ipaddress }),
+        getBasicInfo({ pcname: username }),
+        getHardwareInfo({ pcname: username }),
+        getComputerInfo({ pcname: username }),
+        getRamGraph({ pcname: username }),
+      ]);
+      console.log("Get Info ", resRamGraph.data.data);
+      const defaultSeverity = [
+        { name: "Security Updates", value: 0 },
+        { name: "Definition Updates", value: 0 },
+        { name: "Crictical Updates", value: 0 }
+      ];
+
+      const mergedSeverity = defaultSeverity.map(obj => {
+        let found = resPatchSeverity.data.data.find(
+          item => item.name.toLowerCase() === obj.name.toLowerCase()
+        );
+        return found ? found : obj;
+      })
+
+      setPatchSeverity(mergedSeverity);
+      setPatchInstalled(resPatchInstalled.data.data);
+      setBasicInfo(resGetBasicInfo.data.data);
+      setHardwareInfo(resGetHardwareInfo.data.data);
+
+
+      let MainData = resComputerInfo.data.data[0].data;
+      let ColumnData = resComputerInfo.data.data[0].column;
+      console.log("Maindata --> ", MainData);
+      console.log("ColumnData --> ", ColumnData);
+      let obj = {};
+      obj.maindata = MainData;
+      obj.columndata = ColumnData;
+      setComputerInfo(obj);
+      setRamGraph(resRamGraph.data.data);
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  };
+
+
+  const handleClickModalParameter =() =>{
+     
+  }
+
   const overvdata = [
-    { name: "Machine name", value: "Michael's laptop" },
-    { name: "Agent version", value: "1.8.7.3" },
-    { name: "Domain", value: "WORKGROUP" },
-    { name: "Public IP", value: "203.0.113.45" },
-    { name: "Private IP", value: "192.168.1.10" },
-    { name: "Last login", value: "MichaelScott (Dec 27, 2023 10:03:53 am)" },
-    { name: "Last seen", value: "Now" },
-    { name: "Last reboot", value: "Jun 25, 2023 11:50:17 AM" },
+    { name: "Computer Name", value: "N/A" },
+    { name: "Name of OS", value: "N/A" },
+    { name: "Version", value: "N/A" },
+    { name: "Architecture", value: "N/A" },
+    { name: "Total RAM(MB)", value: "N/A" },
+    { name: "Available RAM(MB)", value: "N/A" },
+    { name: "CPU Utilization(%)", value: "N/A" },
+
   ];
 
   const relationData = [
@@ -36,18 +125,17 @@ const Devices = () => {
     { name: "Phone", value: "+1 212 456 7890" },
   ];
   const hardwaredata = [
-    { name: "Vendor", value: "Dell Inc." },
-    { name: "Model", value: "Precision Tower 3620" },
-    { name: "Serial number", value: "DT3620X1234ABCD" },
-    { name: "Motherboard", value: "Dell Inc. 0MWYPT" },
-    { name: "BIOS manufacturer", value: "Dell Inc." },
-    { name: "BIOS version", value: "1.13.0" },
-    { name: "BIOS version date", value: "5/13/2024" },
-    { name: "Processor", value: "Intel(R) Core(TM) i7-8565U CPU @1.80GHz - 4 - 4" },
-    { name: "Memory", value: "31 MB" },
-    { name: "Video card", value: "Microsoft Hyper-V Video" },
-    { name: "Sound", value: "Intel(R) Display Audio" },
-    { name: "MAC addresses", value: "00:09:0F:FE:00:01, (Primary), 00:FF:9A:AA:9A:05" }
+    { name: "Computer Name", value: "N/A" },
+    { name: "IP Address", value: "N/A" },
+    { name: "MAC Address", value: "N/A" },
+    { name: "Processor Info", value: "N/A" },
+    { name: "BIOS Info", value: "N/A" },
+    { name: "Motherboard Info", value: "N/A" },
+    { name: "All Drive", value: "N/A" },
+    { name: "Hard Disk Model", value: "N/A" },
+    { name: "RAM Size", value: "N/A" },
+    { name: "Graphic Card", value: "N/A" },
+
   ];
   const osstatusdata = [
     { name: "OS edition", value: "Microsoft Windows 11 Enterprise 64" },
@@ -78,7 +166,9 @@ const Devices = () => {
             </h3>
 
             <div className="space-y-2 text-sm">
-              {overvdata.map((item, i) => (
+
+
+              {(basicInfo && basicInfo.length > 0 ? basicInfo : overvdata).map((item, i) => (
                 <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
                   <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
                   <span className="text-gray-800 dark:text-gray-100 font-medium text-right">
@@ -90,13 +180,13 @@ const Devices = () => {
           </div>
 
           {/* Device Relations */}
-          <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
+          <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
             <h3 className="text-md font-semibold mb-3 text-black dark:text-white">
-              Device Relations
+              Hardware Details
             </h3>
 
             <div className="space-y-2 text-sm">
-              {relationData.map((item, i) => (
+              {(hardwareInfo.length > 0 ? hardwareInfo : hardwaredata).map((item, i) => (
                 <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
                   <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
                   <span className="text-gray-800 dark:text-gray-100 font-medium text-right">
@@ -205,25 +295,25 @@ const Devices = () => {
   ];
 
   const performanceData = [
-  { time: "10:15", cpu: 35, memory: 45 },
-  { time: "11:05", cpu: 48, memory: 52 },
-  { time: "11:35", cpu: 42, memory: 50 },
-  { time: "12:22", cpu: 60, memory: 65 },
-  { time: "12:20", cpu: 45, memory: 70 },
-  { time: "10:25", cpu: 68, memory: 75 },
-  { time: "1:30", cpu: 78, memory: 38 },
-  { time: "11:55", cpu: 66, memory: 74 },
-  { time: "10:40", cpu: 28, memory: 65 },
-  { time: "2:28", cpu: 62, memory: 72 },
-];
-const formatTime = (time) => {
-  const [h, m] = time.split(":");
-  return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
-};
+    { time: "10:15", cpu: 35, memory: 45 },
+    { time: "11:05", cpu: 48, memory: 52 },
+    { time: "11:35", cpu: 42, memory: 50 },
+    { time: "12:22", cpu: 60, memory: 65 },
+    { time: "12:20", cpu: 45, memory: 70 },
+    { time: "10:25", cpu: 68, memory: 75 },
+    { time: "1:30", cpu: 78, memory: 38 },
+    { time: "11:55", cpu: 66, memory: 74 },
+    { time: "10:40", cpu: 28, memory: 65 },
+    { time: "2:28", cpu: 62, memory: 72 },
+  ];
+  const formatTime = (time) => {
+    const [h, m] = time.split(":");
+    return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
+  };
 
-const sortedData = [...performanceData]
-  .map((d) => ({ ...d, time: formatTime(d.time) }))
-  .sort((a, b) => a.time.localeCompare(b.time));
+  const sortedData = [...performanceData]
+    .map((d) => ({ ...d, time: formatTime(d.time) }))
+    .sort((a, b) => a.time.localeCompare(b.time));
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-black p-3 space-y-3">
       {/* 🔷 Header */}
@@ -248,16 +338,16 @@ const sortedData = [...performanceData]
           <h3 className="text-sm font-semibold text-gray-600 dark:text-white mb-2"> Alert Status </h3>
 
           <div className="flex gap-4 text-sm">
-            {alertstatus.map((item, i) => {
+            {PatchSeverity.map((item, i) => {
               const colorMap = {
-                critical: "text-red-500 bg-red-500/10 rounded px-2 ",
-                warning: "text-yellow-500 bg-yellow-500/10 rounded px-2",
-                information: "text-cyan-500 bg-cyan-500/10 rounded px-2",
+                Critical: "text-red-500 bg-red-500/10 rounded px-2 ",
+                Security: "text-yellow-500 bg-yellow-500/10 rounded px-2",
+                Definition: "text-cyan-500 bg-cyan-500/10 rounded px-2",
               };
               return (
                 <div key={i} className="flex gap-1">
                   <span className="capitalize text-gray-500">{item.name}</span>
-                  <span className={`font-semibold ${colorMap[item.name]} `}>
+                  <span className={`font-semibold ${colorMap[item.name.split(" ")[0]]} `}>
                     {item.value}
                   </span>
                 </div>
@@ -271,7 +361,7 @@ const sortedData = [...performanceData]
           <h3 className="text-sm font-semibold text-gray-600 dark:text-white mb-2"> Patching Status </h3>
 
           <div className="flex gap-4 text-sm">
-            {patchingData.map((item, i) => (
+            {PatchInstalled.map((item, i) => (
               <div key={i} className="flex gap-2">
                 <span className="capitalize text-gray-500">{item.name}:</span>
                 <span className="bg-blue-500/10 text-blue-500 px-2 rounded text-xs font-semibold">
@@ -316,42 +406,74 @@ const sortedData = [...performanceData]
 
             {/* Header */}
             <h3 className="text-sm font-semibold text-gray-600 dark:text-white mb-3">
-              Alerts
+              Computer Info
             </h3>
 
             {/* Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
 
-                {/* Table Head */}
-                <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white">
-                  <tr>
-                    <th className="p-2 text-left">Alert Title</th>
-                    <th className="p-2 text-left">Created</th>
-                    <th className="p-2 text-left">Severity</th>
-                    <th className="p-2 text-left">Category</th>
-                  </tr>
-                </thead>
 
-                {/* Table Body */}
-                <tbody>
-                  {alertsData.map((item, i) => (
-                    <tr
-                      key={i}
-                      className="border-b border-gray-300 dark:border-gray-700"
-                    >
-                      <td className="p-2 text-gray-700 dark:text-white">{item.title}</td>
-                      <td className="p-2  text-gray-700 dark:text-white">{item.created}</td>
-                      <td className={`p-2 font-medium ${item.severity === "Critical" ? "text-red-500" : "text-yellow-500" }`} >
-                        {item.severity}
-                      </td>
-                      <td className="p-2  text-gray-700 dark:text-white">{item.category}</td>
-                    </tr>
-                  ))}
-                </tbody>
+            <div className="min-w-[600px]">
 
-              </table>
+              {/* Header */}
+              <div
+                className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                style={{
+                  gridTemplateColumns: `repeat(${computerInfo?.columndata.length || 1}, minmax(120px, 1fr))`,
+                }}
+              >
+                {(computerInfo?.columndata || []).map((col, i) => (
+                  <span key={i}>{col.label}</span>
+                ))}
+              </div>
+
+              {/* Rows */}
+              <div className="space-y-2 mt-2">
+                {(computerInfo?.maindata || []).map((row, rowIndex) => (
+                  <div
+                    key={rowIndex}
+                    className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
+                    style={{
+                      gridTemplateColumns: `repeat(${computerInfo?.columndata.length}, minmax(120px, 1fr))`,
+                    }}
+                  >
+                    {(computerInfo?.columndata || []).map((col, colIndex) => {
+                      const value = row[col.name.toLowerCase()];
+                      console.log("col.label ", col.name);
+
+
+                      // Custom styling logic
+                      let className = "text-gray-300";
+
+                      if (col.key === "status") {
+                        className =
+                          value === "Outdated"
+                            ? "text-red-400"
+                            : "text-green-400";
+                      }
+
+                      if (col.key === "severity") {
+                        className =
+                          value === "High"
+                            ? "text-red-500"
+                            : value === "Medium"
+                              ? "text-yellow-400"
+                              : "text-green-400";
+                      }
+
+                      return (
+                        <span key={colIndex} className={className}>
+                          {value}
+                        </span>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+
             </div>
+
+
+
           </div>
         </div>
 
@@ -367,66 +489,76 @@ const sortedData = [...performanceData]
             {/* Replace with chart */}
             <div className="h-40 ">
               <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={sortedData}>
-        
-        {/* Gradients */}
-        <defs>
-          <linearGradient id="cpuColor" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#FCD34D" stopOpacity={0.4} />
-          <stop offset="95%" stopColor="#FCD34D" stopOpacity={0} />
-        </linearGradient>
+                <AreaChart data={sortedData}>
 
-          <linearGradient id="memoryColor" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#22C55E" stopOpacity={0.4}/>
-            <stop offset="95%" stopColor="#22C55E" stopOpacity={0}/>
-          </linearGradient>
-        </defs>
+                  {/* Gradients */}
+                  <defs>
+                    <linearGradient id="cpuColor" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#FCD34D" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#FCD34D" stopOpacity={0} />
+                    </linearGradient>
 
-        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <linearGradient id="memoryColor" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#22C55E" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
 
-        <XAxis
-          dataKey="time"
-          tick={{ fill: "#9CA3AF", fontSize: 10 }}
-        />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
 
-        <YAxis tick={{ fill: "#9CA3AF", fontSize: 10 }} />
+                  <XAxis
+                    dataKey="time"
+                    tick={{ fill: "#9CA3AF", fontSize: 10 }}
+                  />
 
-        <Tooltip
-          contentStyle={{
-            backgroundColor: "#0B1220",
-            border: "1px solid #374151",
-            color: "#fff",
-          }}
-        />
+                  <YAxis tick={{ fill: "#9CA3AF", fontSize: 10 }} />
 
-        {/* CPU Area */}
-        <Area
-          type="monotone"
-          dataKey="cpu"
-         stroke="#FCD34D"
-          fill="url(#cpuColor)"
-          strokeWidth={2}
-        />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#0B1220",
+                      border: "1px solid #374151",
+                      color: "#fff",
+                    }}
+                  />
 
-        {/* Memory Area */}
-        <Area
-          type="monotone"
-          dataKey="memory"
-          stroke="#22C55E"
-          fill="url(#memoryColor)"
-          strokeWidth={2}
-        />
+                  {/* CPU Area */}
+                  <Area
+                    type="monotone"
+                    dataKey="cpu"
+                    stroke="#FCD34D"
+                    fill="url(#cpuColor)"
+                    strokeWidth={2}
+                  />
 
-      </AreaChart>
-    </ResponsiveContainer>
+                  {/* Memory Area */}
+                  <Area
+                    type="monotone"
+                    dataKey="memory"
+                    stroke="#22C55E"
+                    fill="url(#memoryColor)"
+                    strokeWidth={2}
+                  />
+
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
           {/* Activity Logs */}
-          <div className="bg-white dark:bg-[#0B1220] rounded-md shadow p-3">
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-white">
+          <div className="bg-white dark:bg-[#0B1220] rounded-md shadow p-3 ">
+            <h3 className="text-sm font-semibold text-gray-600 dark:text-white ">
               Activity Logs
             </h3>
+
+            <div className="relative ">
+              <SinglePieCharts
+                data={ramGraph}
+                onSliceClick={handleClickModalParameter}
+                datakey={"ramGrphpie"}
+              />
+
+            </div>
+
           </div>
         </div>
       </div>
