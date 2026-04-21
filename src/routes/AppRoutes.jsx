@@ -8,6 +8,7 @@ import { PMOverviewDashboard } from "../pages/PMOverviewDashboard.jsx";
 import Devices from "../pages/Devices.jsx";
 import ReportsPage from "../pages/ReportsPage.jsx";
 
+import LinuxDashboard from "../pages/LinuxDashboard.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -51,6 +52,16 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <ReportsPage/>
+              </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/dashboard/linuxDashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+          
+              {/* <DbMonitoringDashboard /> */}
+              <LinuxDashboard />
             </ProtectedRoute>
           }
         />

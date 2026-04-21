@@ -470,8 +470,121 @@ export const getComputerInfo = (inputData) =>
   });
 
 
-  export const getRamGraph = (inputData) =>
+export const getRamGraph = (inputData) =>
   axios.get(`${BASE_URL}/devices/RAMGraphInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getInstalledProgram = (inputData) =>
+  axios.get(`${BASE_URL}/devices/InstallProgram`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+export const getInstalledPatches = (inputData) =>
+  axios.get(`${BASE_URL}/devices/InstallPatch`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getLinuxDashboardCount = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxDashboardCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getLinuxPatchStatus = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxPatchStatus`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getLinuxBranchWiseDevices = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxBranchWiseDevices`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getLinuxDeviceWiseInstallOrNeededCount = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxDeviceWiseInstallOrNeededCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getPatchActivityOvertime = () =>
+  axios.get(`${BASE_URL}/dashboard/PatchActivityOvertime`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getLinuxInstalledPatchList = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxInstalledPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getLinuxRiskyEndpoint = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxRiskyDevicesList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+  
+export const getLinuxModalEndpointData = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxModalEndpointData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+    
+export const getLinuxModalPatchData = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxModalPatchData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+      
+export const getLinuxBranchwiseModal = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxBranchwiseModal`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+  export const getLinuxIpwiseModal = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxIpwisewiseModal`, {
     headers: {
       Authorization: `Bearer ${token}`
     },

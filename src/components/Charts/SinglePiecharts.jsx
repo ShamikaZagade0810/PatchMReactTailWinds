@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { PieChart, Pie, Sector, Tooltip, ResponsiveContainer, } from "recharts";
 import { Cell } from "recharts";
-
+import { Legend } from "recharts";
 // Custom active shape
 const COLORS = ["#ff4d4f", "#fa8c16", "#fadb14", "#52c41a"];
 const renderActiveShape = (props,) => {
@@ -87,7 +87,7 @@ const renderActiveShape = (props,) => {
 
 // Main Component
 const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
-    console.log("Data in pie ",data);
+    console.log("Data in pie ", data);
     const [centerValue, setCenterValue] = useState(
         data.reduce((sum, item) => sum + item.value, 0)
     );
@@ -96,6 +96,7 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
     const [isAnimationActive, setisAnimationActive] = useState(true);
     return (
         <div className="flex flex-col items-center w-full ">
+
             <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                     <Pie
@@ -104,8 +105,8 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
 
                         cx="50%"
                         cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
+                        innerRadius={70}
+                        outerRadius={90}
                         activeShape={renderActiveShape}
                         isAnimationActive={isAnimationActive}
                         onMouseEnter={(entry, index) => {
@@ -126,16 +127,30 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                                 reqdata = {
                                     severity: data.name
                                 }
-                                 onSliceClick('patch_wise', 'thirdPiechart', reqdata);
-                            } else {
+                                onSliceClick('patch_wise', 'thirdPiechart', reqdata);
+                            } else if (datakey == "linuxPatchstatus") {
+                                reqdata = {
+                                    value: data.name === "MISSING" ? "Declined" : data.name
+                                }
+                                onSliceClick('patches', 'patchesstatus', reqdata);
+                            } 
+                            
+                            else if (datakey == "linuxBranchDistribution") {
+                                reqdata = {
+                                    value: data.name
+                                }
+                                onSliceClick('patches', 'branchwise', reqdata);
+                            }
+                            else {
                                 reqdata = {
                                     classification: data.name
                                 }
-                                 onSliceClick('patch_wise', 'patch', reqdata);
+                                onSliceClick('patch_wise', 'patch', reqdata);
                             }
 
 
-                           
+
+
                         }}
                         cornerRadius={3}
                         paddingAngle={4}
@@ -147,15 +162,18 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                             />
                         ))}
                     </Pie>
+
+
                     {/* <Tooltip /> */}
-                    <circle cx="50%" cy="50%" r={45} fill="#1E283D" />
+                    <circle cx="50%" cy="50%" r={53} fill="#1E283D" />
                     {/* Center circle with value and label */}
+
                     <text
                         x="50%"
                         y="47%"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        fontSize={25}
+                        fontSize={28}
                         fill="#ffffff"
                     >
                         {centerValue}
@@ -165,11 +183,12 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                         y="58%"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        fontSize={12}
+                        fontSize={15}
                         fill={centerColor}
                     >
                         {centerLabel}
                     </text>
+
                 </PieChart>
             </ResponsiveContainer>
 
