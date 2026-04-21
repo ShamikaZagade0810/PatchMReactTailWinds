@@ -44,7 +44,7 @@ const isSelected =
     <div className="relative">
       <button
         onClick={handleClick}
-        className={`w-full flex items-center  p-1 rounded-lg transition-all duration-200 py-2
+        className={`w-full flex items-center p-1 rounded-lg transition-all duration-200 py-2
           ${isSelected 
             ? "bg-cyan-500 text-white dark:bg-cyan-900/90 border-l-4 border-cyan-400 p-1 " 
             : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
@@ -54,9 +54,9 @@ const isSelected =
         `}
       >
         <div className="flex items-center gap-3">
-          {item.icon && <item.icon size={20} />}
+          {item.icon && <item.icon size={22} />}
           {isSidebarOpen && (
-            <span className="text-sm truncate">{item.name} </span>
+            <span className="text-lg truncate">{item.name} </span>
           )}
         </div>
         

@@ -99,10 +99,10 @@ const OverviewDashboard = () => {
         ip_wise: {
             patch: getIpWisePatchList,
         },
-         patch_wise: {
+        patch_wise: {
             patch: getOSWisePatchList,
-            thirdPiechart : getthirdPartySeverityPatchList,
-            histbarchart :getPatchHistoryList
+            thirdPiechart: getthirdPartySeverityPatchList,
+            histbarchart: getPatchHistoryList
         }
     };
 
@@ -189,17 +189,17 @@ const OverviewDashboard = () => {
                 getTopRiskyDevices()
             ]);
 
-         
+
             setPatches(patchesRes.data.data[0]);
             setOsCount(osCountRes.data.data[0]);
             setSecurityPosture(securityRes.data.data[0]);
 
-            
+
             setThirdPartySeverity(severityRes.data.data);
             setThirdPartyList(severityListRes.data.data);
             setHistData(histRes.data.data);
 
-            
+
             setIpStatus(ipRes.data.data);
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
@@ -212,7 +212,7 @@ const OverviewDashboard = () => {
 
 
 
-    const CircularProgress = ({ percentage, label, size = 100, color }) => {
+    const CircularProgress = ({ percentage, label, size = 130, color }) => {
         const radius = size / 2 - 10;
         const circumference = 2 * Math.PI * radius;
         const offset = circumference - (percentage / 100) * circumference;
@@ -221,14 +221,14 @@ const OverviewDashboard = () => {
         return (
             <div className="flex flex-col items-center">
                 <svg width={size} height={size} className="transform -rotate-90">
-                    <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="currentColor" className="text-gray-300 dark:text-gray-700" strokeWidth="8" />
-                    <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth="8"
+                    <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="currentColor" className="text-gray-300 dark:text-gray-600" strokeWidth="10" />
+                    <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth="10"
                         strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" />
                 </svg>
                 <div className="absolute flex pt-1 pl-1 items-center justify-center " style={{ marginTop: size / 2 - 20 }}>
-                    <span className="text-xl font-bold dark:text-white">{percentage}%</span>
+                    <span className="text-xl font-semibold dark:text-white">{percentage}%</span>
                 </div>
-                <span className="text-sm text-gray-600 dark:text-gray-400 mt-2">{label}</span>
+                <span className="text-lg text-gray-800 dark:text-gray-200 mt-2">{label}</span>
             </div>
         );
     };
@@ -274,7 +274,7 @@ const OverviewDashboard = () => {
 
 
     return (
-        <div className="mb-1 bg-white dark:bg-[#0B1220] ">
+        <div className="mb-1 bg-gray-100 dark:bg-[#0B1220] ">
 
             <Modal
                 show={show}
@@ -316,37 +316,39 @@ const OverviewDashboard = () => {
 
                 {/* Compliance Circle */}
                 <div className="col-span-5 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
-                    <h2 className="text-lg text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2"> Compliance</h2>
+                    <h2 className="text-2xl text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2"> Compliance</h2>
 
                     <div className="flex items-center gap-6">
                         {/* Circle */}
-                        <div className="relative w-50 h-30">
-                            <svg viewBox="0 10 100 60" className="w-full h-full overflow-visible">
+                        <div className="relative w-64 h-40"> {/* bigger container */}
+                            <svg viewBox="0 0 120 80" className="w-full h-full overflow-visible">
 
                                 {/* Background arc */}
-                                <path d="M10 50 A40 40 0 0 1 90 50"
+                                <path
+                                    d="M10 60 A50 50 0 0 1 110 60"
                                     fill="none"
                                     stroke="#1e293b"
-                                    strokeWidth="10"
+                                    strokeWidth="12"
                                 />
 
                                 {/* Progress arc */}
                                 <path
-                                    d="M10 50 A40 40 0 0 1 90 50"
+                                    d="M10 60 A50 50 0 0 1 110 60"
                                     fill="none"
                                     stroke="#3b82f6"
-                                    strokeWidth="10"
-                                    strokeDasharray={`${45 * 1.25} 100`}
-                                // strokeLinecap="round"
+                                    strokeWidth="12"
+                                    strokeDasharray={`${45 * 1.57} 157`} // adjusted for bigger arc
                                 />
-                                {/* Thin line arc below meter */}
+
+                                {/* Thin line arc */}
                                 <path
-                                    d="M18 52 A30 30 0 1 1 82 52"
+                                    d="M20 62 A40 40 0 1 1 100 62"
                                     fill="none"
-                                    stroke="#3b82f6"                 // subtle gray
-                                    strokeWidth="0.5"                  // thin line
+                                    stroke="#3b82f6"
+                                    strokeWidth="1"
                                 />
-                                {/* Meter Labels using angles */}
+
+                                {/* Labels */}
                                 {[
                                     { val: 0, angle: 180 },
                                     { val: 25, angle: 135 },
@@ -354,9 +356,9 @@ const OverviewDashboard = () => {
                                     { val: 75, angle: 45 },
                                     { val: 100, angle: 0 },
                                 ].map((item, i) => {
-                                    const r = 48; // radius slightly outside arc
-                                    const cx = 50;
-                                    const cy = 50;
+                                    const r = 60; // increased radius
+                                    const cx = 60;
+                                    const cy = 60;
 
                                     const rad = (item.angle * Math.PI) / 180;
                                     const x = cx + r * Math.cos(rad);
@@ -367,7 +369,7 @@ const OverviewDashboard = () => {
                                             key={i}
                                             x={x}
                                             y={y}
-                                            fontSize="5"
+                                            fontSize="8"  // bigger font
                                             fill="#9ca3af"
                                             textAnchor="middle"
                                             dominantBaseline="middle"
@@ -376,22 +378,19 @@ const OverviewDashboard = () => {
                                         </text>
                                     );
                                 })}
-
-
                             </svg>
 
-
                             {/* Center text */}
-                            <div className="absolute inset-0 flex flex-col items-center justify-center ">
-                                <span className="text-2xl font-normal">{45}%</span>
-                                <span className="text-xs text-yellow-400">Medium</span>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center translate-y-4">
+                                <span className="text-3xl font-normal">{45}%</span>
+                                <span className="text-sm text-yellow-400">Medium</span>
                             </div>
                         </div>
 
 
 
                         {/* Bars */}
-                        <div className="flex-1 space-y-2 text-xs">
+                        <div className="flex-1 space-y-4 text-xs">
                             {[
                                 { label: "Enrollment", value: 23 },
                                 { label: "Scan Failed", value: 43 },
@@ -402,8 +401,8 @@ const OverviewDashboard = () => {
                             ].map((item, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between">
-                                        <span className="text-gray-700 dark:text-white text-sm">{item.label}</span>
-                                        <span className='text-gray-700 dark:text-white'>{item.value}%</span>
+                                        <span className="text-gray-700 dark:text-white text-base">{item.label}</span>
+                                        <span className='text-gray-700 dark:text-white text-sm'>{item.value}%</span>
                                     </div>
                                     <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded">
                                         <div
@@ -419,10 +418,10 @@ const OverviewDashboard = () => {
 
                 {/* Compliance Stats */}
                 <div className=" relative  col-span-7 bg-[#121A2B] rounded-xl p-4 shadow-lg">
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2"> Patches</h2>
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2"> Patches</h2>
                     <div className='text-gray-600'> Nike's "Just Do It", Apple's "Think Different", and De Beers' "A Diamond is Forever</div>
                     <div className='text-gray-600'>A strong slogan is usually short, memorable, and differentiates the brand</div>
-                    <div className="absolute inset-x-0 bottom-0 grid grid-cols-6 p-2 gap-3  pb-5   ">
+                    <div className="absolute inset-x-0 bottom-0 grid grid-cols-6 p-2 gap-3  pb-5   "> 
                         {[
                             { label: "Critical", color: "#6B3EFF33", icon: TriangleAlert, iconcolor: "#3E6FFF" },
                             { label: "Missing", color: "#6B3EFF33", icon: Computer, iconcolor: "#3E6FFF" },
@@ -437,16 +436,15 @@ const OverviewDashboard = () => {
                                 <div
                                     key={i}
                                     onClick={() => { handleClickModal('Patches', item.label.toLowerCase()) }}
-                                    className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center"
-                                >
-                                    <p className="text-md text-gray-400">{item.label}</p>
+                                    className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center">
+                                    <p className="text-xl font-semibold text-gray-400 mb-3">{item.label}</p>
                                     {/* Icon Circle */}
-                                    <div className={`w-14 h-14 rounded-full  flex items-center justify-center mb-2`} style={{ backgroundColor: `${item.color}` }}>
-                                        <Icon size={20} style={{ color: `${item.iconcolor}` }} />
+                                    <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-3`} style={{ backgroundColor: `${item.color}` }}>
+                                        <Icon size={33} style={{ color: `${item.iconcolor}` }} />
                                     </div>
 
 
-                                    <p className="text-md font-semibold">{patches?.[item.label.toLowerCase()] ?? 0}</p>
+                                    <p className="text-xl font-medium">{patches?.[item.label.toLowerCase()] ?? 0}</p>
                                 </div>
                             );
                         })}
@@ -458,21 +456,21 @@ const OverviewDashboard = () => {
             <div className="grid grid-cols-12 gap-3 mt-3">
 
                 {/* OS Status */}
-                <div className="col-span-4 bg-[#121A2B] rounded-xl p-4">
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">OS Status</h2>
-                    <div className='w-70'>
+                <div className="col-span-4 bg-[#121A2B] rounded-xl p-4 " >
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2 ">OS Status</h2>
+                    <div className='w-90 mt-4'>
                         <div className="flex justify-between">
-                            <span className="text-white">Overall Distribution</span>
+                            <span className="text-white text-lg">Overall Distribution</span>
                             <span>{28}%</span>
                         </div>
-                        <div className="h-2 bg-gray-700 rounded">
+                        <div className="h-3 bg-gray-700 rounded">
                             <div
-                                className="h-2 bg-blue-500 rounded"
+                                className="h-3 bg-blue-500 rounded"
                                 style={{ width: `${28}%`, backgroundColor: `#01A357` }}
                             ></div>
                         </div>
                     </div>
-                    <div className="flex justify-between text-center text-xs mt-3">
+                    <div className="flex justify-between text-center text-xs mt-5">
                         {[
                             { os: "Windows", color: "#3E6FFF" },
                             { os: "Linux", color: "#01A355" },
@@ -481,18 +479,10 @@ const OverviewDashboard = () => {
                         ].map((item, i) => (
                             <div
                                 key={i}
-                                className="border-1 border-[#234779]/70 p-2 rounded-lg"
-                                onClick={() => { handleClickModal('os_status', item.os.toLowerCase()) }}
-                            >
-                                {/* Circle */}
-                                {/* <div
-                                        className={`w-20 h-20 rounded-full border-4 ${item.color} flex items-center justify-center`}
-                                    >
-                                        <span className="font-semibold">5%</span>
-                                    </div> */}
+                                className=" bg-[#1E273A] border-1 border-[#234779]/70 p-2 rounded-lg"
+                                onClick={() => { handleClickModal('os_status', item.os.toLowerCase()) }} >
+                            
                                 <CircularProgress percentage={osCount?.[item.os.toLowerCase()] ?? 0} label={item.os} color={item.color} />
-
-
 
                             </div>
                         ))}
@@ -500,40 +490,40 @@ const OverviewDashboard = () => {
                 </div>
 
                 {/* Security Posture */}
-                <div className="col-span-4 bg-[#121A2B] rounded-xl p-4">
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Security Posture</h2>
+                <div className="col-span-4 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
+                    <h2 className="text-2xl text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2">Security Posture</h2>
                     <div className="grid grid-cols-12 gap-3">
 
                         {/* Left Card */}
-                        <div className="col-span-4  bg-[#141D2E] rounded-xl p-4 flex flex-col items-center justify-center border border-[#191F48]">
+                        <div className="col-span-4  bg-white dark:bg-[#141D2E] rounded-xl p-4 flex flex-col items-center justify-center border dark:border-[#191F48] shadow-lg">
                             <div className="text-3xl font-bold text-white">{securityPosture?.compliance ?? 0}%</div>
-                            <p className="text-sm text-gray-300 mt-1">Compliance</p>
-                            <p className="text-xs text-green-400 mt-1">+3% this week</p>
+                            <p className="text-xl text-gray-300 mt-1">Compliance</p>
+                            <p className="text-sm text-green-400 mt-1">+3% this week</p>
                         </div>
 
                         {/* Right Card */}
                         <div className="col-span-8 rounded-xl flex flex-col gap-1">
 
                             {/* Chart / Content Placeholder */}
-                            <div className="w-full h-13 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300  border border-[#191F48]">
-                                <div>
-                                    <div>Compliance</div>
+                            <div className="w-full h-15 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300  border border-[#191F48] ">
+                                <div className="text-xl">
+                                    <div  >Compliance</div>
                                     <div>{securityPosture?.needed ?? 0}</div>
                                 </div>
                                 <div>
                                     <div className={`w-10 h-10 rounded-md  flex items-center justify-center`} style={{ backgroundColor: `#FF3E5433` }}>
-                                        <TriangleAlert size={20} style={{ color: "#FF3E41" }} />
+                                        <TriangleAlert size={22} style={{ color: "#FF3E41" }} />
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-full h-13 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300  border border-[#191F48]">
-                                <div>
+                            <div className="w-full h-15 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300  border border-[#191F48]">
+                                <div className="text-xl">
                                     <div>Risk Level</div>
-                                    <div>15</div>
+                                    <div >15</div>
                                 </div>
                                 <div>
                                     <div className={`w-10 h-10 rounded-md  flex items-center justify-center`} style={{ backgroundColor: `#FFCB3E33` }}>
-                                        <RotateCw size={20} style={{ color: "#FFBF3E" }} />
+                                        <RotateCw size={22} style={{ color: "#FFBF3E" }} />
                                     </div>
                                 </div>
                             </div>
@@ -542,13 +532,13 @@ const OverviewDashboard = () => {
 
                     </div>
 
-                    <div className="space-y-2 text-sm mt-1">
+                    <div className="space-y-3 text-sm mt-2">
                         {[
                             { label: "MFA Not Enforced", status: "Failed" },
                             { label: "Endpoint Encryption", status: "Critical" },
                             { label: "Patch Management", status: "Warning" },
                         ].map((item, i) => (
-                            <div key={i} className="flex items-center  justify-between h-10 bg-[#141D2E] p-1  border border-[#191F48]">
+                            <div key={i} className="flex items-center  justify-between h-10 bg-[#141D2E] p-1  border border-[#191F48] text-base ">
                                 <span className="text-gray-400">{item.label}</span>
                                 <span className="text-red-400">{item.status}</span>
                             </div>
@@ -558,19 +548,19 @@ const OverviewDashboard = () => {
 
                 {/* Device Info (Chart Placeholder) */}
                 <div className="col-span-4 bg-[#121A2B] rounded-xl p-4">
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2>
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2>
 
                     {/* Fake Chart Line */}
                     <div className="h-32  rounded-lg">
-                        <div className="w-full h-[250px]">
+                        <div className="w-full h-[280px]">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart
                                     data={ipStatus}
                                     layout="vertical"
                                 // margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
                                 >
-                                    <XAxis type="number" stroke="#ccc" fontSize={12} />
-                                    <YAxis type="category" dataKey="IPAddress" stroke="#ccc" width={100} fontSize={12} />
+                                    <XAxis type="number" stroke="#ccc" fontSize={16} />
+                                    <YAxis type="category" dataKey="IPAddress" stroke="#ccc" width={100} fontSize={16} />
                                     <Tooltip
                                         cursor={false}
                                         contentStyle={{
@@ -623,7 +613,7 @@ const OverviewDashboard = () => {
                                                 ipaddress: data.IPAddress,
                                                 statusId: 2
                                             }
-                                            handleClickModalParameter('ip_wise', 'patch',reqdata);
+                                            handleClickModalParameter('ip_wise', 'patch', reqdata);
                                         }}
                                     />
                                 </BarChart>
@@ -642,22 +632,22 @@ const OverviewDashboard = () => {
                 {/* LEFT TOP */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">3rd Party PatchManagement</h2>
-                    <div className="flex gap-4">
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2">3rd Party PatchManagement</h2>
+                    <div className="flex gap-3 ">
 
                         {/* Donut */}
                         <div className="w-50 h-50 relative">
                             <SinglePieCharts
-                                data={thirdPartySeverity}                  
+                                data={thirdPartySeverity}
                                 onSliceClick={handleClickModalParameter}
-                                datakey = {"thirdpartypie"}
+                                datakey={"thirdpartypie"}
                             />
 
                         </div>
 
                         {/* Table */}
-                        <div className="flex-1 h-45 overflow-x-auto">
-                            <div className="text-xs text-gray-400 grid grid-cols-4 mb-2">
+                        <div className="flex-1 h-50 overflow-x-auto">
+                            <div className="text-md text-gray-400 grid grid-cols-4 mb-2">
                                 <span>Software</span>
                                 <span>Version</span>
                                 <span>CVSS</span>
@@ -667,7 +657,7 @@ const OverviewDashboard = () => {
                             {thirdPartyList.map((item, i) => (
                                 <div
                                     key={i}
-                                    className="grid grid-cols-4 text-xs bg-[#141D2E] p-2 rounded mb-1 items-center"
+                                    className="grid grid-cols-4 text-sm bg-[#141D2E] p-2 rounded mb-1 items-center"
                                 >
                                     <span>{item.software}</span>
                                     <span>{item.version}</span>
@@ -679,7 +669,7 @@ const OverviewDashboard = () => {
                                         </span>
 
                                         {/* Tooltip */}
-                                        <div className="absolute z-50 hidden group-hover:block bg-[#0B1220] text-white text-xs p-2 rounded shadow-lg w-64 top-6 left-0 border border-[#1C2541]">
+                                        <div className="absolute z-50 hidden group-hover:block bg-[#0B1220] text-white text-sm p-2 rounded shadow-lg w-64 top-6 left-0 border border-[#1C2541]">
                                             {item.cves}
                                         </div>
                                     </div>
@@ -702,22 +692,22 @@ const OverviewDashboard = () => {
                 {/* RIGHT TOP */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2>
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2>
                     <div className="flex gap-4">
 
                         {/* Donut */}
                         <div className="w-50 h-50 relative">
                             <SinglePieCharts
                                 data={osPie}
-                                 onSliceClick={handleClickModalParameter}
-                                   datakey = {"ospie"}
+                                onSliceClick={handleClickModalParameter}
+                                datakey={"ospie"}
                             />
 
                         </div>
 
                         {/* Table */}
                         <div className="flex-1 h-50 overflow-x-auto">
-                            <div className="text-xs text-gray-400 grid grid-cols-4 mb-2">
+                            <div className="text-md text-gray-400 grid grid-cols-4 mb-2">
                                 <span>Update</span>
                                 <span>Installed</span>
                                 <span>Needed</span>
@@ -725,8 +715,8 @@ const OverviewDashboard = () => {
                             </div>
 
                             {osList.map((item, i) => (
-                                <div key={i} className="grid grid-cols-4 text-xs bg-[#141D2E] p-2 rounded mb-1 items-center">
-                                    <span>{item.PatchTitle}</span>
+                                <div key={i} className="grid grid-cols-4 text-sm bg-[#141D2E] p-2 rounded mb-1 items-center">
+                                    <span className="break-words pr-5">{item.PatchTitle}</span>
                                     <span>{item.InstalledCount}</span>
                                     <span>{item.NeededCount}</span>
                                     <span className="text-yellow-400">{item.classification}</span>
@@ -739,8 +729,8 @@ const OverviewDashboard = () => {
                 {/* BOTTOM LEFT */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2>
-                    <div className="text-xs text-gray-400 grid grid-cols-4 mb-2">
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2>
+                    <div className="text-lg text-gray-400 grid grid-cols-4 mb-2">
                         <span>Device</span>
                         <span>Patches</span>
                         <span>Last Scan</span>
@@ -748,7 +738,7 @@ const OverviewDashboard = () => {
                     </div>
 
                     {topDevices.map((item, i) => (
-                        <div key={i} className="grid grid-cols-4 text-xs bg-[#141D2E] p-2 rounded mb-1">
+                        <div key={i} className="grid grid-cols-4 text-md bg-[#141D2E] p-2 rounded mb-1">
                             <span>{item.IPAddress}</span>
                             <span>{item.MissingCount}</span>
                             <span>{item.LastScan}</span>
@@ -759,10 +749,10 @@ const OverviewDashboard = () => {
 
                 {/* BOTTOM RIGHT (Bar Chart Placeholder) */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
-                    <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Patch History</h2>
+                    <h2 className="text-2xl text-white mb-3 border-l-4 border-indigo-500 px-2">Patch History</h2>
 
 
-                    <SingleBarcharts data={histData}    onSliceClick={handleClickModalParameter}/>
+                    <SingleBarcharts data={histData} onSliceClick={handleClickModalParameter} />
 
                 </div>
 

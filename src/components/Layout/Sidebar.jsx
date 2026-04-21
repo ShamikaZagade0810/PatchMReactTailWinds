@@ -1,7 +1,7 @@
 // components/Layout/Sidebar.jsx
 import React, { useMemo, useState } from "react";
 import {
-  LayoutDashboard,  
+  LayoutDashboard,
   ListTree,
   Share2,
   FolderGit2,
@@ -21,6 +21,7 @@ import {
   AlertTriangle,
   AppWindowMac,
   AppWindow,
+  ClipboardMinus
 } from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
 import logo from "../../assets/planet-gurard.png";
@@ -64,7 +65,7 @@ const sidebarData = [
       {
         name: "Status",
         path: "/dashboard/mainDashboard",
-     
+
         icon: AppWindowMac,
         roles: ["admin"],
       },
@@ -80,7 +81,7 @@ const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-     
+
 
     ],
   },
@@ -89,7 +90,7 @@ const sidebarData = [
     name: "Content Distribution",
     icon: Share2,
     roles: ["admin"],
-  path:"content",
+    path: "content",
     children: [
       {
         name: "Manage Patches",
@@ -135,7 +136,7 @@ const sidebarData = [
     name: "Patch Setting",
     icon: LayoutDashboard,
     roles: ["admin"],
-    path:"setting",
+    path: "setting",
 
     children: [
       {
@@ -194,7 +195,7 @@ const sidebarData = [
     name: "Master",
     icon: LayoutDashboard,
     roles: ["admin"],
-    path:"master",
+    path: "master",
 
     children: [
       {
@@ -258,7 +259,7 @@ const sidebarData = [
     name: "Run CMD Execution",
     icon: LayoutDashboard,
     roles: ["admin"],
-    path:"cmd",
+    path: "cmd",
 
     children: [
       {
@@ -267,13 +268,13 @@ const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-       {
+      {
         name: "View Activity Command",
         path: "/cmd/view",
         icon: AppWindowMac,
         roles: ["admin"],
       },
-       {
+      {
         name: "Multiple Run Command",
         path: "/cmd/multi-run",
         icon: AppWindowMac,
@@ -284,12 +285,12 @@ const sidebarData = [
 
 
 
-  // {
-  //   name: "gitlab",
-  //   path: "/gitlabUi",
-  //   icon: FolderGit2,
-  //   roles: ["admin"],
-  // },
+  {
+    name: "Reports",
+    path: "/reports",
+    icon: ClipboardMinus,
+    roles: ["admin"],
+  },
 
 
 ];
@@ -319,11 +320,11 @@ export const Sidebar = ({
         fixed left-0 top-0 h-screen bg-white dark:bg-gray-900 
         border-r border-gray-200 dark:border-gray-800
         transition-all duration-300 ease-in-out z-40
-        ${isOpen ? "w-64" : "w-20"}
+        ${isOpen ? "w-70" : "w-20"}
         flex flex-col shadow-lg
       `}
     >
-      <div className="p-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2">
+      <div className="p-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2 ">
         <div className="flex items-center gap-3 shrink-0">
           <img
             src={logo}
@@ -340,8 +341,7 @@ export const Sidebar = ({
         <button
           onClick={toggleSidebar}
           aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0"
-        >
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0">
           {isOpen ? (
             <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
           ) : (
@@ -360,12 +360,11 @@ export const Sidebar = ({
               item={item}
               level={0}
               isSidebarOpen={isOpen}
-            
-                isExpanded={isItemExpanded(item.path)}   
-  isActive={activeItem}
-  onAccordionClick={onAccordionClick}
-  onItemClick={onItemClick}
-  isItemExpanded={isItemExpanded} 
+              isExpanded={isItemExpanded(item.path)}
+              isActive={activeItem}
+              onAccordionClick={onAccordionClick}
+              onItemClick={onItemClick}
+              isItemExpanded={isItemExpanded}
             />
           ))}
         </nav>
@@ -373,11 +372,11 @@ export const Sidebar = ({
 
       <div className="p-3 border-t border-gray-200 dark:border-gray-800">
         {isOpen ? (
-          <div className="text-sm">
+          <div className="text-lg">
             <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">
               {activeItemData?.name || "Dashboard"}
             </p>
-            <div className="flex items-center gap-2 text-xs text-gray-500">
+            <div className="flex items-center gap-2 text-md text-gray-500">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
               <span>Connected</span>
             </div>

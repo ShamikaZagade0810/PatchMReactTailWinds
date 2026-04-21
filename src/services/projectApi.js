@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.0.120:8181";
+const BASE_URL = "http://192.168.0.15:8081";
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -344,7 +344,7 @@ export const projectApi = {
 };
 export const authApi = {
   // Use publicClient for login (no token interception)
-  login: (credentials) => publicClient.post("/api/login", credentials),
+  login: (credentials) => publicClient.post("/login", credentials),
   // These might still need the interceptor for refresh logic?
   refresh: (refreshToken) => publicClient.post("/refresh", { refreshToken }),
   logout: (refreshToken) => apiClient.post("/logout", { refreshToken }),

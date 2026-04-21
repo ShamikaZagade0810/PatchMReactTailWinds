@@ -115,7 +115,7 @@ export default function MainLayout() {
       return () => clearTimeout(timer);
     }, []);
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#000000] ">
+    <div className="min-h-screen bg-gray-200 dark:bg-[#000000] ">
       <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
 
       <Sidebar
@@ -129,8 +129,8 @@ export default function MainLayout() {
 
       <main
         className={`
-          pt-16 pb-12 transition-all
-          ${isSidebarOpen ? "ml-64" : "ml-20"}
+          pt-16 pb-12 transition-all 
+          ${isSidebarOpen ? "ml-70" : "ml-20"}
         `}
       >
    {   !loading ? ( <div className="p-2 max-w-10xl mx-auto ">

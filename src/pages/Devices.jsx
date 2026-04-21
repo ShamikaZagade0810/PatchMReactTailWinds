@@ -161,17 +161,13 @@ const Devices = () => {
 
           {/* Device Info */}
           <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
-            <h3 className="text-md font-semibold mb-3  text-black dark:text-white">
-              Device Info
-            </h3>
+            <h3 className="text-xl font-semibold mb-3 text-black dark:text-white"> Device Info </h3>
 
             <div className="space-y-2 text-sm">
-
-
               {(basicInfo && basicInfo.length > 0 ? basicInfo : overvdata).map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
+                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg">
                   <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
-                  <span className="text-gray-800 dark:text-gray-100 font-medium text-right">
+                  <span className="text-gray-800 dark:text-gray-100 font-normal text-right">
                     {item.value}
                   </span>
                 </div>
@@ -181,15 +177,13 @@ const Devices = () => {
 
           {/* Device Relations */}
           <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
-            <h3 className="text-md font-semibold mb-3 text-black dark:text-white">
-              Hardware Details
-            </h3>
+            <h3 className="text-xl font-semibold mb-3 text-black dark:text-white"> Hardware Details </h3>
 
             <div className="space-y-2 text-sm">
               {(hardwareInfo.length > 0 ? hardwareInfo : hardwaredata).map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
-                  <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
-                  <span className="text-gray-800 dark:text-gray-100 font-medium text-right">
+                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg">
+                  <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
+                  <span className="text-gray-800 dark:text-gray-100 font-normal text-right">
                     {item.value}
                   </span>
                 </div>
@@ -205,9 +199,7 @@ const Devices = () => {
       icon: <Activity size={18} />,
       content: (
         <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
-          <h3 className="text-md font-semibold mb-3 text-gray-700 dark:text-white">
-            Hardware Info
-          </h3>
+          <h3 className="text-xl font-semibold mb-3 text-gray-700 dark:text-white"> Hardware Info </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-sm">
 
@@ -216,9 +208,8 @@ const Devices = () => {
               {leftData.map((item, i) => (
                 <div
                   key={i}
-                  className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1"
-                >
-                  <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
+                  className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg"  >
+                  <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
                   <span className="text-black dark:text-gray-200 font-medium text-right">
                     {item.value}
                   </span>
@@ -231,10 +222,10 @@ const Devices = () => {
               {rightData.map((item, i) => (
                 <div
                   key={i}
-                  className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1"
+                  className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg"
                 >
-                  <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
-                  <span className="text-black dark:text-gray-200 font-medium text-right break-all">
+                  <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
+                  <span className="text-black dark:text-gray-200 font-normal text-right break-all">
                     {item.value}
                   </span>
                 </div>
@@ -252,12 +243,12 @@ const Devices = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Device Info */}
           <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
-            <h3 className="text-md font-semibold mb-3 text-gray-700 dark:text-white"> Os Info </h3>
+            <h3 className="text-xl font-semibold mb-3 text-gray-700 dark:text-white"> OS Info </h3>
             <div className="space-y-2 text-sm">
               {osstatusdata.map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
-                  <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
-                  <span className="text-black dark:text-gray-200 font-medium text-right">
+                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg">
+                  <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
+                  <span className="text-black dark:text-gray-200 font-normal text-right">
                     {item.value}
                   </span>
                 </div>
@@ -319,15 +310,15 @@ const Devices = () => {
       {/* 🔷 Header */}
       <div className="flex items-center gap-3 bg-white dark:bg-[#0B1220] p-3 rounded-md shadow">
         <button onClick={() => navigate(-1)} className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800" >
-          <ArrowLeft size={20} className="text-gray-600 dark:text-gray-300" />
+          <ArrowLeft size={25} className="text-gray-600 dark:text-gray-300" />
         </button>
 
-        <i className="pi pi-microsoft text-lg text-gray-600 dark:text-white"></i>
-        <h2 className="text-lg font-semibold text-gray-700 dark:text-white"> {username || "User"} </h2>
+        <i className="pi pi-microsoft text-xl text-gray-600 dark:text-white"></i>
+        <h2 className="text-2xl font-semibold text-gray-700 dark:text-white"> {username || "User"} </h2>
 
         <div className="flex items-center gap-1 ml-2">
-          <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-          <span className="text-sm text-gray-500 dark:text-gray-300">Online</span>
+          <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+          <span className="text-md text-bold text-gray-500 dark:text-gray-100">Online</span>
         </div>
       </div>
 
@@ -335,9 +326,9 @@ const Devices = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Alert Status */}
         <div className="bg-white dark:bg-[#0B1220] p-4 rounded-md shadow">
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-white mb-2"> Alert Status </h3>
+          <h3 className="text-xl font-semibold text-gray-600 dark:text-white mb-2"> Alert Status </h3>
 
-          <div className="flex gap-4 text-sm">
+          <div className="flex gap-4  items-center text-lg">
             {PatchSeverity.map((item, i) => {
               const colorMap = {
                 Critical: "text-red-500 bg-red-500/10 rounded px-2 ",
@@ -346,7 +337,7 @@ const Devices = () => {
               };
               return (
                 <div key={i} className="flex gap-1">
-                  <span className="capitalize text-gray-500">{item.name}</span>
+                  <span className="capitalize text-gray-400 ">{item.name}</span>
                   <span className={`font-semibold ${colorMap[item.name.split(" ")[0]]} `}>
                     {item.value}
                   </span>
@@ -358,13 +349,13 @@ const Devices = () => {
 
         {/* Patching Status */}
         <div className="bg-white dark:bg-[#0B1220] p-4 rounded-md shadow">
-          <h3 className="text-sm font-semibold text-gray-600 dark:text-white mb-2"> Patching Status </h3>
+          <h3 className="text-xl font-semibold text-gray-600 dark:text-white mb-2"> Patching Status </h3>
 
-          <div className="flex gap-4 text-sm">
+          <div className="flex gap-4 text-lg">
             {PatchInstalled.map((item, i) => (
-              <div key={i} className="flex gap-2">
-                <span className="capitalize text-gray-500">{item.name}:</span>
-                <span className="bg-blue-500/10 text-blue-500 px-2 rounded text-xs font-semibold">
+              <div key={i} className="flex items-center gap-2">
+                <span className="capitalize text-gray-400">{item.name}:</span>
+                <span className="bg-blue-500/10 text-blue-500 px-2 rounded font-semibold">
                   {item.value}
                 </span>
               </div>
@@ -381,7 +372,7 @@ const Devices = () => {
 
           {/* Tabs */}
           <div className="bg-white dark:bg-[#0B1220] rounded-md shadow p-3">
-            <div className="flex gap-6 border-b pb-2 text-sm">
+            <div className="flex gap-6 pb-2 text-md">
               {tabs.map((tab, index) => (
                 <button
                   key={index}
@@ -405,7 +396,7 @@ const Devices = () => {
           <div className="bg-white dark:bg-[#121A2B] rounded-xl shadow p-4">
 
             {/* Header */}
-            <h3 className="text-sm font-semibold text-gray-600 dark:text-white mb-3">
+            <h3 className="text-xl font-semibold text-gray-600 dark:text-white mb-3">
               Computer Info
             </h3>
 
@@ -416,7 +407,7 @@ const Devices = () => {
 
               {/* Header */}
               <div
-                className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                className="grid text-lg font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
                 style={{
                   gridTemplateColumns: `repeat(${computerInfo?.columndata.length || 1}, minmax(120px, 1fr))`,
                 }}
@@ -431,7 +422,7 @@ const Devices = () => {
                 {(computerInfo?.maindata || []).map((row, rowIndex) => (
                   <div
                     key={rowIndex}
-                    className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
+                    className="grid items-center text-md bg-[#141D2E] p-3 rounded"
                     style={{
                       gridTemplateColumns: `repeat(${computerInfo?.columndata.length}, minmax(120px, 1fr))`,
                     }}

@@ -33,7 +33,7 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
 };
 
     return (
-        <div className="w-full h-56 bg-[#141D2E] rounded-lg p-3">
+        <div className="w-full h-60 bg-[#141D2E] rounded-lg p-3">
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data}>
 
@@ -44,24 +44,23 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
                     <XAxis
                         dataKey="month"
                         stroke="#9CA3AF"
-                        tick={{ fill: "#9CA3AF", fontSize: 10 }}
-
+                        tick={{ fill: "#9CA3AF", fontSize: 20 }}
                     />
 
                     {/* Y Axis */}
                     <YAxis
                         stroke="#9CA3AF"
-                        tick={{ fill: "#9CA3AF", fontSize: 10 }}
-
+                        tick={{ fill: "#9CA3AF", fontSize: 17 }}
                     />
 
                     {/* Tooltip */}
-                    <Tooltip
+                    <Tooltip    
                         contentStyle={{
                             backgroundColor: "#0F172A",
                             border: "1px solid #1E293B",
                             borderRadius: "6px",
-                            color: "#fff"
+                            color: "#fff",
+                            
                         }}
                         labelStyle={{ color: "#9CA3AF" }}
                     />

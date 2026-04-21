@@ -23,9 +23,11 @@
     "primereact": "^10.9.7",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
+    "react-datepicker": "^9.1.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.11.0",
+    "react-select": "^5.10.2",
     "react-toastify": "^11.0.5",
     "recharts": "^3.8.1",
     "tailwindcss": "^4.1.18"
