@@ -191,12 +191,12 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
       read: false,
     },
   ]);
-
-
+  const [active, setActive] = useState("Windows");
+  const tabs = ["Windows", "Linux", "3rd Party Application"];
 
   const dropdownRef = useRef(null);
 
-const handleLogout = () => {
+  const handleLogout = () => {
     logout();
     navigate("/login", { replace: true });
   };
@@ -221,7 +221,29 @@ const handleLogout = () => {
   // const { user } = useAuth();
   const user = localStorage.getItem("user");
 
-  
+  const handleClickTab = (tab) => {
+    setActive(tab);
+    //  navigate('/dashboard/linuxDashboard');
+    switch (tab) {
+      case 'Windows':
+        navigate('/dashboard/mainDashboard');
+        break;
+
+      case 'Linux':
+        navigate('/dashboard/linuxDashboard');
+        break;
+
+      case 'Mac':
+        navigate('/dashboard/macDashboard');
+        break;
+
+      default:
+        navigate('/dashboard');
+    }
+    console.log("tab ", tab);
+  }
+
+
 
   return (
     <header className="fixed top-0 right-0 left-0 h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 z-30">
@@ -239,11 +261,29 @@ const handleLogout = () => {
         </button>
 
         {/* Center - Logo and Brand Name */}
+
+        <div className={`absolute transition-all duration-200 ease-in-out ${isSidebarOpen ? "left-[13%]" : "left-[4.2%]"
+          } bg-[#0f172a] p-2 inline-flex rounded-lg  gap-2`}>
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => handleClickTab(tab)}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
+            ${active === tab
+                  ? "bg-blue-600 text-white shadow"
+                  : "text-gray-300 bg-[#1e293b]"
+                }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3">
           <img src={logo} alt="Velox Logo" className="h-8 w-8 rounded-lg" />
           <div className="flex flex-col items-center">
             <span className="font-bold text-gray-800 dark:text-white text-lg">
-               PlanetGuard Pro-DMS
+              PlanetGuard Pro-DMS
             </span>
           </div>
         </div>

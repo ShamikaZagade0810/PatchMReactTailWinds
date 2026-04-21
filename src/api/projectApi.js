@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzYyMjk1MzYsImV4cCI6MTc3NjMxNTkzNn0.AeieByVu7mT7QvTig5-KMh5AtOoMETRtVY2lWm9b7UA';
-const BASE_URL = "http://192.168.0.15:8081";
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzY2ODUwODYsImV4cCI6MTc3Njc3MTQ4Nn0.7b_VaK0Q1384a5WmHLUew-1HafcLfKTBm52CZ_VUNg8';
+const BASE_URL = "http://192.168.0.54:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -470,8 +470,121 @@ export const getComputerInfo = (inputData) =>
   });
 
 
-  export const getRamGraph = (inputData) =>
+export const getRamGraph = (inputData) =>
   axios.get(`${BASE_URL}/devices/RAMGraphInfo`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getInstalledProgram = (inputData) =>
+  axios.get(`${BASE_URL}/devices/InstallProgram`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+export const getInstalledPatches = (inputData) =>
+  axios.get(`${BASE_URL}/devices/InstallPatch`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getLinuxDashboardCount = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxDashboardCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getLinuxPatchStatus = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxPatchStatus`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getLinuxBranchWiseDevices = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxBranchWiseDevices`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getLinuxDeviceWiseInstallOrNeededCount = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxDeviceWiseInstallOrNeededCount`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getPatchActivityOvertime = () =>
+  axios.get(`${BASE_URL}/dashboard/PatchActivityOvertime`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getLinuxInstalledPatchList = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxInstalledPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getLinuxRiskyEndpoint = () =>
+  axios.get(`${BASE_URL}/dashboard/LinuxRiskyDevicesList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+  
+export const getLinuxModalEndpointData = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxModalEndpointData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+    
+export const getLinuxModalPatchData = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxModalPatchData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+      
+export const getLinuxBranchwiseModal = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxBranchwiseModal`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+  export const getLinuxIpwiseModal = (inputData) =>
+  axios.get(`${BASE_URL}/dashboard/LinuxIpwisewiseModal`, {
     headers: {
       Authorization: `Bearer ${token}`
     },

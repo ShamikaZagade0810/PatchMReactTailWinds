@@ -20,7 +20,9 @@ import {
   getPatchInstalledCount,
   getHardwareInfo,
   getComputerInfo,
-  getRamGraph
+  getRamGraph,
+  getInstalledProgram,
+  getInstalledPatches
 } from "../api/projectApi";
 import SinglePieCharts from '../components/Charts/SinglePiecharts';
 
@@ -33,6 +35,8 @@ const Devices = () => {
   const [hardwareInfo, setHardwareInfo] = useState([]);
   const [computerInfo, setComputerInfo] = useState({ columndata: [], maindata: [] });
   const [ramGraph, setRamGraph] = useState([]);
+  const [installedProgram, setInstalledProgram] = useState({ columndata: [], maindata: [] });
+  const [installedPatches, setinstalledPatches] = useState({ columndata: [], maindata: [] });
 
 
 
@@ -55,6 +59,8 @@ const Devices = () => {
         resGetHardwareInfo,
         resComputerInfo,
         resRamGraph,
+        resInstalledProgram,
+        resInstalledPatches
 
 
 
@@ -65,8 +71,10 @@ const Devices = () => {
         getHardwareInfo({ pcname: username }),
         getComputerInfo({ pcname: username }),
         getRamGraph({ pcname: username }),
+        getInstalledProgram({ ipaddress: ipaddress }),
+        getInstalledPatches({ ipaddress: ipaddress }),
       ]);
-      console.log("Get Info ", resRamGraph.data.data);
+      console.log("Get Info ", resInstalledProgram.data.data);
       const defaultSeverity = [
         { name: "Security Updates", value: 0 },
         { name: "Definition Updates", value: 0 },
@@ -95,14 +103,30 @@ const Devices = () => {
       obj.columndata = ColumnData;
       setComputerInfo(obj);
       setRamGraph(resRamGraph.data.data);
+
+      let obj1 = {};
+      MainData = resInstalledProgram.data.data[0].data;
+      ColumnData = resInstalledProgram.data.data[0].column;
+
+      obj1.maindata = MainData;
+      obj1.columndata = ColumnData;
+      setInstalledProgram(obj1);
+
+      let obj2 = {};
+      MainData = resInstalledPatches.data.data[0].data;
+      ColumnData = resInstalledPatches.data.data[0].column;
+      obj2.maindata = MainData;
+      obj2.columndata = ColumnData;
+      setinstalledPatches(obj2);
+
     } catch (error) {
       console.error("API Error:", error);
     }
   };
 
 
-  const handleClickModalParameter =() =>{
-     
+  const handleClickModalParameter = () => {
+
   }
 
   const overvdata = [
@@ -201,45 +225,162 @@ const Devices = () => {
       ),
     },
     {
-      label: "Hardware",
+      label: "Program",
       icon: <Activity size={18} />,
       content: (
-        <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
+        <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
           <h3 className="text-md font-semibold mb-3 text-gray-700 dark:text-white">
-            Hardware Info
+            Installed Program
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-sm ">
 
-            {/* Left Column */}
-            <div className="space-y-2">
-              {leftData.map((item, i) => (
+
+            <div className="col-span-full">
+
+              <div className='h-100  overflow-x-auto no-scrollbar' style={{ width: '100%' }}>
+
+
                 <div
-                  key={i}
-                  className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1"
+                  className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                  style={{
+                    gridTemplateColumns: `repeat(${installedProgram?.columndata.length || 1}, minmax(120px, 1fr))`,
+                  }}
                 >
-                  <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
-                  <span className="text-black dark:text-gray-200 font-medium text-right">
-                    {item.value}
-                  </span>
+                  {(installedProgram?.columndata || []).map((col, i) => (
+                    <span key={i}>{col.label}</span>
+                  ))}
                 </div>
-              ))}
+
+                {/* Rows */}
+                <div className="space-y-2 mt-2">
+                  {(installedProgram?.maindata || []).map((row, rowIndex) => (
+                    <div
+                      key={rowIndex}
+                      className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
+                      style={{
+                        gridTemplateColumns: `repeat(${installedProgram?.columndata.length}, minmax(120px, 1fr))`,
+                      }}
+                    >
+                      {(installedProgram?.columndata || []).map((col, colIndex) => {
+                        const value = row[col.name.toLowerCase()];
+                        console.log("col.label ", col.name);
+
+
+                        // Custom styling logic
+                        let className = "text-gray-300";
+
+                        if (col.key === "status") {
+                          className =
+                            value === "Outdated"
+                              ? "text-red-400"
+                              : "text-green-400";
+                        }
+
+                        if (col.key === "severity") {
+                          className =
+                            value === "High"
+                              ? "text-red-500"
+                              : value === "Medium"
+                                ? "text-yellow-400"
+                                : "text-green-400";
+                        }
+
+                        return (
+                          <span key={colIndex} className={className}>
+                            {value}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+
             </div>
 
-            {/* Right Column */}
-            <div className="space-y-2">
-              {rightData.map((item, i) => (
+
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "Patches",
+      icon: <Activity size={18} />,
+      content: (
+        <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
+          <h3 className="text-md font-semibold mb-3 text-gray-700 dark:text-white">
+            Installed Patches
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-sm ">
+
+
+            <div className="col-span-full">
+
+              <div className='h-100  overflow-x-auto no-scrollbar' style={{ width: '100%' }}>
+
+
                 <div
-                  key={i}
-                  className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1"
+                  className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                  style={{
+                    gridTemplateColumns: `repeat(${installedPatches?.columndata.length || 1}, minmax(120px, 1fr))`,
+                  }}
                 >
-                  <span className="text-gray-800 dark:text-gray-500">{item.name}</span>
-                  <span className="text-black dark:text-gray-200 font-medium text-right break-all">
-                    {item.value}
-                  </span>
+                  {(installedPatches?.columndata || []).map((col, i) => (
+                    <span key={i}>{col.label}</span>
+                  ))}
                 </div>
-              ))}
+
+                {/* Rows */}
+                <div className="space-y-2 mt-2">
+                  {(installedPatches?.maindata || []).map((row, rowIndex) => (
+                    <div
+                      key={rowIndex}
+                      className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
+                      style={{
+                        gridTemplateColumns: `repeat(${installedPatches?.columndata.length}, minmax(120px, 1fr))`,
+                      }}
+                    >
+                      {(installedPatches?.columndata || []).map((col, colIndex) => {
+                        const value = row[col.name.toLowerCase()];
+                        console.log("col.label ", col.name);
+
+
+                        // Custom styling logic
+                        let className = "text-gray-300";
+
+                        if (col.key === "status") {
+                          className =
+                            value === "Outdated"
+                              ? "text-red-400"
+                              : "text-green-400";
+                        }
+
+                        if (col.key === "severity") {
+                          className =
+                            value === "High"
+                              ? "text-red-500"
+                              : value === "Medium"
+                                ? "text-yellow-400"
+                                : "text-green-400";
+                        }
+
+                        return (
+                          <span key={colIndex} className={className}>
+                            {value}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+
             </div>
+
 
           </div>
         </div>

@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }) => {
           console.log("user before passing to login in function: ", username,password);
       const response = await authApi.login({ username, password });
 
-      if (response.data.status !== "success") return null;
+      if (response.data.status !== 200) return null;
 
       const { accessToken, refreshToken, user } = response.data.data;
 
@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }) => {
         // user.role = "developer";
         user.permissions = ["create_sbom"];
       }
-
+      
       // Store tokens4
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
@@ -151,13 +151,15 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("role", user.role);
       // Store user
       localStorage.setItem("user", JSON.stringify(user));        
-
+       console.log("Login ---> ",user);
       setUser(user);            
       setIsAuthenticated(true);                     
 
       return user;
     } catch (error) {
+       console.log("Error Login ",error);
       return null;
+     
     }
   };
 
