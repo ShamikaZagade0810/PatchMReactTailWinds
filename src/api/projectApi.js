@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzY0ODY3NjEsImV4cCI6MTc3NjU3MzE2MX0.pRNPo7PGEP4fv2QlU-h7gX4nnzjuOdjdVgTpsrEWg30';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzY5MTg0OTUsImV4cCI6MTc3NzAwNDg5NX0.iSzHE9fIwuJ-52MmOer5S6gEuPdc4pYpAPWDSwTL3KQ';
 const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
@@ -554,7 +554,7 @@ export const getLinuxRiskyEndpoint = () =>
   });
 
 
-  
+
 export const getLinuxModalEndpointData = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/LinuxModalEndpointData`, {
     headers: {
@@ -564,7 +564,7 @@ export const getLinuxModalEndpointData = (inputData) =>
   });
 
 
-    
+
 export const getLinuxModalPatchData = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/LinuxModalPatchData`, {
     headers: {
@@ -573,7 +573,7 @@ export const getLinuxModalPatchData = (inputData) =>
     params: inputData
   });
 
-      
+
 export const getLinuxBranchwiseModal = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/LinuxBranchwiseModal`, {
     headers: {
@@ -583,10 +583,34 @@ export const getLinuxBranchwiseModal = (inputData) =>
   });
 
 
-  export const getLinuxIpwiseModal = (inputData) =>
+export const getLinuxIpwiseModal = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/LinuxIpwisewiseModal`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
     params: inputData
   });
+
+
+
+  export const getPatchReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GeneratePatchReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getmissingPatchReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateMissingReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );

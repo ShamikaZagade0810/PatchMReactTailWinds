@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const MultiSelect = ( {options = [], value = [], onChange, placeholder = "Select",}) => {
+const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select", setValue, id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef();
@@ -31,12 +31,15 @@ const MultiSelect = ( {options = [], value = [], onChange, placeholder = "Select
       newValue = [...value, option];
     }
 
+    let onlyvalue = newValue.map(obj => obj.value);
+    
+    setValue(id, onlyvalue);
     onChange(newValue);
   };
 
   return (
-     <div className="relative" ref={dropdownRef}>
-      
+    <div className="relative" ref={dropdownRef}>
+
       {/* Input Box */}
       <div
         onClick={() => setIsOpen(!isOpen)}
@@ -68,6 +71,7 @@ const MultiSelect = ( {options = [], value = [], onChange, placeholder = "Select
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-2 py-2 bg-[#1E293B] text-white rounded outline-none"
+
             />
           </div>
 
