@@ -1,6 +1,6 @@
 import React from 'react'
 import '../layouts/Css/Style.css';
-import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
 import MultiSelect from '../layouts/MultiSelect.jsx';
 import Select, { components } from "react-select";
 import {
@@ -18,14 +18,25 @@ import {
 
 } from "lucide-react";
 import { useState } from "react";
-
+import {
+    getPatchReport,
+    getmissingPatchReport
+} from "../api/projectApi";
+import { AsyncMotionValueAnimation } from 'framer-motion';
 
 
 const ReportsPage = () => {
-
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        watch,
+        setValue
+    } = useForm();
     const [activeIndex, setActiveIndex] = useState(null);
     const [selectedRange, setSelectedRange] = useState(null);
     const [showCustomDates, setShowCustomDates] = useState(false);
+    const [dynamicReport, setdynamicReport] = useState({ columndata: [], maindata: [] });
     const [customDate, setCustomDate] = useState({
         from: "",
         to: ""
@@ -49,10 +60,10 @@ const ReportsPage = () => {
         { value: "KB5071142", label: "KB5071142" },
     ];
     const groupnameOptions = [
-        {value:"allcomputers", label:"All Computers"},
-         {value:"unassigned", label:"Unassigned Computers"},
-          {value:"windows 10", label:"Windows 10"},
-          
+        { value: "allcomputers", label: "All Computers" },
+        { value: "unassigned", label: "Unassigned Computers" },
+        { value: "windows 10", label: "Windows 10" },
+
     ]
 
     const [selectedBranches, setSelectedBranches] = useState([]);
@@ -62,6 +73,19 @@ const ReportsPage = () => {
     const [selectedGroup, setSelectedGroup] = useState("");
 
     const DEFAULT_COLOR = "#3B82F6";
+
+
+
+    const apiMapping = {
+        Report: {
+            missing: getmissingPatchReport,
+            patch :getPatchReport
+
+        }
+
+    };
+
+
 
     const modules = [
         { id: "patch", name: "Patch Report", icons: FileText, iconcolor: "#3B82F6" },
@@ -77,12 +101,12 @@ const ReportsPage = () => {
 
     const filterConfig = {
         patch: ["update", "type"],
-        missing: ["branch", "ip"],
+        missing: ["branchNames", "ipAddresses"],
         category: ["year", "month", "category"],
-        device: ["branch", "ip"],
+        device: ["branchNames", "ipAddresses"],
         yearMonth: ["year", "month"],
-        status: ["branch", "ip"],
-        timeline :["groupname"]
+        status: ["branchNames", "ipAddresses"],
+        timeline: ["groupname"]
 
     };
     const selectedModule = modules[activeIndex];
@@ -96,7 +120,7 @@ const ReportsPage = () => {
         update: (
             <div>
                 <label className="text-base text-gray-300 mb-1 block">Update</label>
-                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("update")}>
                     <option value="" disabled> -- Please select value -- </option>
                     <option value="all">All Updates</option>
                     <option value="critical">Critical Updates</option>
@@ -108,7 +132,7 @@ const ReportsPage = () => {
         type: (
             <div>
                 <label className="text-base text-gray-300 mb-1 block">Type</label>
-                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("type")}>
                     <option value="approve">Approved</option>
                     <option value="decline">Declined</option>
                     <option value="unapprove">Un Approved</option>
@@ -116,7 +140,7 @@ const ReportsPage = () => {
             </div>
         ),
 
-        branch: (
+        branchNames: (
             <div>
                 <label className={labelClass}>Branch Name</label>
 
@@ -125,10 +149,13 @@ const ReportsPage = () => {
                     value={selectedBranches}
                     onChange={setSelectedBranches}
                     placeholder="Select Branch Names"
+                    id={"branchNames"}
+                    setValue={setValue}
+
                 />
             </div>
         ),
-        ip: (
+        ipAddresses: (
             <div>
                 <label className={labelClass}>IP Address</label>
                 <MultiSelect
@@ -136,6 +163,8 @@ const ReportsPage = () => {
                     value={selectedIPs}
                     onChange={setSelectedIPs}
                     placeholder="Select IP Addresses"
+                    id={"ipAddresses"}
+                    setValue={setValue}
                 />
             </div>
         ),
@@ -147,6 +176,7 @@ const ReportsPage = () => {
                     type="text"
                     placeholder="Enter Year"
                     className={inputClass}
+                    {...register("year")}
                 />
             </div>
         ),
@@ -154,7 +184,7 @@ const ReportsPage = () => {
         month: (
             <div>
                 <label className={labelClass}>Month</label>
-                <select className={inputClass}>
+                <select className={inputClass}  {...register("month")}>
                     <option>Select Month</option>
                     {[
                         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -174,11 +204,12 @@ const ReportsPage = () => {
                     onChange={(e) => {
                         const value = e.target.value;
                         setSelectedCategory(value);
-
+                        setValue('category', value);
                         // reset dependent selections
                         setSelectedIPs([]);
                         setSelectedPatches([]);
                     }}
+
                     className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500" >
                     <option value="">-- Please select value --</option>
                     <option value="deployment">Deployment Basis</option>
@@ -196,28 +227,74 @@ const ReportsPage = () => {
                     value={selectedPatches}
                     onChange={setSelectedPatches}
                     placeholder="Select Patches"
+                    id={"patchList"}
+                    setValue={setValue}
                 />
             </div>
         ),
 
         groupname: (
-  <div>
-    <label className="text-base text-gray-300 mb-1 block"> Group Name </label>
-    <select value={selectedGroup} onChange={(e) => setSelectedGroup(e.target.value)}
-      className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option value=""  >-- Please select value --</option>
-      <option value="All Computers" >All Computers</option>
-      {groupnameOptions.map((g, i) => (
-        <option key={i} value={g.value}>
-          {g.label}
-        </option>
-      ))}
-    </select>
-  </div>
-),
+            <div>
+                <label className="text-base text-gray-300 mb-1 block"> Group Name </label>
+                <select
+                    className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("groupname")}
+                >
+                    <option value=""  >-- Please select value --</option>
+                    <option value="All Computers" >All Computers</option>
+                    {groupnameOptions.map((g, i) => (
+                        <option key={i} value={g.value}>
+                            {g.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        ),
     };
 
+
+
+    const handleGenerateReportClick = async () => {
+
+        console.log("selectedModule ", selectedModule);
+
+        const inputData = filterConfig[selectedModule?.id];
+        console.log("input data", inputData);
+        if (selectedModule?.id === 'category') {
+            if (selectedCategory === "deployment") {
+                inputData.push('ipAddresses');
+                inputData.push('patchList');
+            }
+        }
+        // console.log("customDate",customDate.to);
+        const result = inputData.reduce((acc, element) => {
+            acc[element] = watch(element);
+            return acc;
+        }, {});
+
+        if (selectedModule?.id === "patch" || selectedModule?.id === "timeline") {
+              result["fromDate"] = customDate.from;
+              result["toDate"] = customDate.to;
+        }
+
+
+
+        console.log("Final Payload:", result);
+
+        try {
+            const data = await apiMapping['Report'][selectedModule?.id](result);
+            console.log("API Response:", data);
+            let MainData = data.data.data[0].data;
+            let ColumnData = data.data.data[0].column;
+            let obj = {};
+            obj.maindata = MainData;
+            obj.columndata = ColumnData;
+            console.log("obj ---> ", obj);
+            setdynamicReport(obj)
+
+        } catch (error) {
+            console.error("API Error:", error);
+        }
+    };
 
     {/* MAIN CONTENT */ }
     return (
@@ -243,7 +320,7 @@ const ReportsPage = () => {
                                 return (
                                     <div
                                         key={i}
-                                        onClick={() => setActiveIndex(i)}
+                                        onClick={() => {setActiveIndex(i); setSelectedBranches([])}}
                                         className={`flex justify-between items-center p-3 rounded-lg cursor-pointer transition-colors 
                                                 ${isActive ? "border border-[#7094ff]/40 bg-[#7094ff]/30 text-[#4f73e6] shadow-lg"
                                                 : "bg-[#1E293B] hover:bg-[#273449]"}
@@ -294,13 +371,13 @@ const ReportsPage = () => {
                                     {/* 🔥 Dependent filters based on category */}
                                     {key === "category" && selectedCategory === "deployment" && (
                                         <>
-                                            <div>{filterFields["ip"]}</div>
+                                            <div>{filterFields["ipAddresses"]}</div>
                                             <div>{filterFields["patchList"]}</div>
                                         </>
                                     )}
 
                                     {key === "category" && selectedCategory === "endpoint" && (
-                                        <div>{filterFields["ip"]}</div>
+                                        <div>{filterFields["ipAddresses"]}</div>
                                     )}
 
                                     {key === "category" && selectedCategory === "patch" && (
@@ -313,16 +390,17 @@ const ReportsPage = () => {
                     </div>
 
                     {/* 4. DATE RANGE */}
-                    {selectedModule?.id !== "yearMonth" && selectedModule?.id !== "category" && (
-                        <div className="bg-[#0F172A] rounded-xl p-4">
+                    {selectedModule?.id !== "yearMonth" && selectedModule?.id !== "category" && selectedModule?.id !== "missing"
+                        && selectedModule?.id !== "device" && selectedModule?.id !== "status" && (
+                            <div className="bg-[#0F172A] rounded-xl p-4">
 
-                            <h3 className="mb-3 font-semibold text-2xl text-white">
-                                Select Date Range
-                            </h3>
+                                <h3 className="mb-3 font-semibold text-2xl text-white">
+                                    Select Date Range
+                                </h3>
 
-                            <div className="grid grid-cols-2 gap-3">
-                                {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => { */}
-                                {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => {
+                                <div className="grid grid-cols-2 gap-3">
+                                    {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => { */}
+                                    {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => {
                                     const isActive = selectedRange === item;
 
                                     return (
@@ -346,8 +424,8 @@ const ReportsPage = () => {
                                     );
                                 })}
                             </div> */}
-                            {/* fromdate --> todate */}
-                            {/* {showCustomDates && (
+                                    {/* fromdate --> todate */}
+                                    {/* {showCustomDates && (
                                 <div className="grid grid-cols-2 gap-3 mt-4"> */}
 
                                     {/* From Date */}
@@ -359,6 +437,7 @@ const ReportsPage = () => {
                                             onChange={(e) =>
                                                 setCustomDate({ ...customDate, from: e.target.value })
                                             }
+
                                             className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
@@ -371,21 +450,22 @@ const ReportsPage = () => {
                                             onChange={(e) =>
                                                 setCustomDate({ ...customDate, to: e.target.value })
                                             }
+
                                             className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
 
                                 </div>
-                            {/* )} */}
-                            {/* fromdate--> todateend */}
-                        </div>
-                    )}
+                                {/* )} */}
+                                {/* fromdate--> todateend */}
+                            </div>
+                        )}
                 </div>
 
 
                 {/* Generate Button */}
                 <div className="flex justify-end mt-6">
-                    <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-lg">
+                    <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-lg" onClick={() => { handleGenerateReportClick() }}>
                         Generate Report
                     </button>
                 </div>
@@ -394,12 +474,72 @@ const ReportsPage = () => {
             {/* Bottom Section */}
             <div className="bg-[#111C2E] rounded-2xl mt-6 p-10 text-center">
                 <h3 className="text-sm text-gray-400 mb-2">REPORT</h3>
-                <h2 className="text-xl font-semibold mb-2">
+                {/* <h2 className="text-xl font-semibold mb-2">
                     No Report Generated Yet
                 </h2>
                 <p className="text-gray-400">
                     Configure the filters above and click Generate Report.
-                </p>
+                </p> */}
+
+                <div className="rounded-lg">
+                    <div className="w-full h-[400px] overflow-auto">
+                        <div
+                            className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                            style={{
+                                gridTemplateColumns: `repeat(${dynamicReport.columndata.length}, minmax(120px, 1fr))`,
+                            }}
+                        >
+                            {dynamicReport.columndata.map((col, i) => (
+                                <span key={i}>{col.label}</span>
+                            ))}
+                        </div>
+
+                        {/* Rows */}
+                        <div className="space-y-2 mt-2">
+                            {dynamicReport.maindata.map((row, rowIndex) => (
+                                <div
+                                    key={rowIndex}
+                                    className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
+                                    style={{
+                                        gridTemplateColumns: `repeat(${dynamicReport.columndata.length}, minmax(120px, 1fr))`,
+                                    }}
+                                >
+                                    {dynamicReport.columndata.map((col, colIndex) => {
+                                        const value = row[col.name];
+
+
+
+                                        // Custom styling logic
+                                        let className = "text-gray-300";
+
+                                        if (col.key === "status") {
+                                            className =
+                                                value === "Outdated"
+                                                    ? "text-red-400"
+                                                    : "text-green-400";
+                                        }
+
+                                        if (col.key === "severity") {
+                                            className =
+                                                value === "High"
+                                                    ? "text-red-500"
+                                                    : value === "Medium"
+                                                        ? "text-yellow-400"
+                                                        : "text-green-400";
+                                        }
+
+                                        return (
+                                            <span key={colIndex} className={className}>
+                                                {value}
+                                            </span>
+                                        );
+                                    })}
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     )
