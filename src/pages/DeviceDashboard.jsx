@@ -91,7 +91,7 @@ const DeviceDashboard = () => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border border-gray-200" >
-        <thead className="bg-gray-400 dark:bg-[#101726] border-3 border-white dark:border-[#0F172A] text-xl text-gray-700 dark:text-white">
+        <thead className="bg-gray-400 dark:bg-[#101726] border-3 border-white dark:border-[#0F172A] text-lg text-gray-700 dark:text-white">
           <tr>
             {columns.map((col) => (
               <th key={col.name} className="px-4 py-2 text-left">
@@ -104,7 +104,7 @@ const DeviceDashboard = () => {
           {treeData.map((branch) => (
             <React.Fragment key={branch.branchname}>
               {/* Branch row */}
-              <tr className="bg-gray-100 dark:bg-[#1A2438] dark:border-4 dark:border-[#0F172A] cursor-pointer hover:bg-gray-100 dark:hover:bg-[#101726] text-xl"
+              <tr className="bg-gray-100 dark:bg-[#1A2438] dark:border-4 dark:border-[#0F172A] cursor-pointer hover:bg-gray-100 dark:hover:bg-[#101726] text-lg"
                 onClick={() => toggleBranch(branch.branchname)}
               >
                 <td className="px-4 py-2 font-medium flex items-center text-gray-900 dark:text-white ">
@@ -131,7 +131,7 @@ const DeviceDashboard = () => {
                 branch.children.map((device) => (
                   <tr
                     key={device.id}
-                    className="bg-white dark:bg-[#1A2438] dark:border-4 dark:border-[#0F172A] hover:bg-gray-50 dark:hover:bg-[#101726] text-lg" >
+                    className="bg-white dark:bg-[#1A2438] dark:border-4 dark:border-[#0F172A] hover:bg-gray-50 dark:hover:bg-[#101726] text-md" >
                     {columns.map((col, index) => {
                       // First column (special UI: checkbox + username link)
                       if (index === 0) {

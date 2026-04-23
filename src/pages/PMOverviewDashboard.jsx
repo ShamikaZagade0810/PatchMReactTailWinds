@@ -138,9 +138,9 @@ export const PMOverviewDashboard = () => {
                         <button
                             key={index}
                             onClick={() => setActiveTab(index)}
-                            className={`flex items-center gap-2 px-5 py-3 text-lg font-medium transition-all
+                            className={`flex items-center gap-2 px-5 py-3 text-md font-medium transition-all
                              ${activeTab === index
-                                    ? "text-xl border-b-2 border-blue-500 text-blue-600"
+                                    ? "text-md border-b-2 border-blue-500 text-blue-600"
                                     : "text-gray-500 hover:text-blue-500"
                                 }`}
                         >

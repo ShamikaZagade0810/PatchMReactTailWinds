@@ -262,7 +262,7 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
 
         {/* Center - Logo and Brand Name */}
 
-        <div className={`absolute transition-all duration-200 ease-in-out ${isSidebarOpen ? "left-[13%]" : "left-[4.2%]"
+        <div className={`absolute transition-all duration-200 ease-in-out ${isSidebarOpen ? "left-[14%]" : "left-[4.8%]"
           } bg-[#0f172a] p-2 inline-flex rounded-lg  gap-2`}>
           {tabs.map((tab) => (
             <button

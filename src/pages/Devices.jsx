@@ -185,11 +185,11 @@ const Devices = () => {
 
           {/* Device Info */}
           <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
-            <h3 className="text-xl font-semibold mb-3 text-black dark:text-white"> Device Info </h3>
+            <h3 className="text-lg font-semibold mb-3 text-black dark:text-white"> Device Info </h3>
 
             <div className="space-y-2 text-sm">
               {(basicInfo && basicInfo.length > 0 ? basicInfo : overvdata).map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg">
+                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-md">
                   <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
                   <span className="text-gray-800 dark:text-gray-100 font-normal text-right">
                     {item.value}
@@ -201,11 +201,11 @@ const Devices = () => {
 
           {/* Device Relations */}
           <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
-            <h3 className="text-xl font-semibold mb-3 text-black dark:text-white"> Hardware Details </h3>
+            <h3 className="text-lg font-semibold mb-3 text-black dark:text-white"> Hardware Details </h3>
 
             <div className="space-y-2 text-sm">
               {(hardwareInfo.length > 0 ? hardwareInfo : hardwaredata).map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg">
+                <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-md">
                   <span className="text-gray-800 dark:text-gray-400">{item.name}</span>
                   <span className="text-gray-800 dark:text-gray-100 font-normal text-right">
                     {item.value}
@@ -223,9 +223,7 @@ const Devices = () => {
       icon: <Activity size={18} />,
       content: (
         <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
-          <h3 className="text-md font-semibold mb-3 text-gray-700 dark:text-white">
-            Installed Program
-          </h3>
+          <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-white"> Installed Program </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-sm ">
 
@@ -235,8 +233,7 @@ const Devices = () => {
               <div className='h-100  overflow-x-auto no-scrollbar' style={{ width: '100%' }}>
 
 
-                <div
-                  className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                <div className="grid text-md font-semibold text-gray-300 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
                   style={{
                     gridTemplateColumns: `repeat(${installedProgram?.columndata.length || 1}, minmax(120px, 1fr))`,
                   }}
@@ -251,7 +248,7 @@ const Devices = () => {
                   {(installedProgram?.maindata || []).map((row, rowIndex) => (
                     <div
                       key={rowIndex}
-                      className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
+                      className="grid items-center text-md bg-[#141D2E] p-3 rounded"
                       style={{
                         gridTemplateColumns: `repeat(${installedProgram?.columndata.length}, minmax(120px, 1fr))`,
                       }}
@@ -265,19 +262,11 @@ const Devices = () => {
                         let className = "text-gray-300";
 
                         if (col.key === "status") {
-                          className =
-                            value === "Outdated"
-                              ? "text-red-400"
-                              : "text-green-400";
+                          className = value === "Outdated" ? "text-red-400" : "text-green-400";
                         }
 
                         if (col.key === "severity") {
-                          className =
-                            value === "High"
-                              ? "text-red-500"
-                              : value === "Medium"
-                                ? "text-yellow-400"
-                                : "text-green-400";
+                          className = value === "High" ? "text-red-500" : value === "Medium" ? "text-yellow-400" : "text-green-400";
                         }
 
                         return (
@@ -304,11 +293,11 @@ const Devices = () => {
       icon: <Activity size={18} />,
       content: (
         <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow ">
-          <h3 className="text-md font-semibold mb-3 text-gray-700 dark:text-white">
+          <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-white">
             Installed Patches
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-sm ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-md ">
 
 
             <div className="col-span-full">
@@ -317,7 +306,7 @@ const Devices = () => {
 
 
                 <div
-                  className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
+                  className="grid text-sm font-semibold text-gray-300 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
                   style={{
                     gridTemplateColumns: `repeat(${installedPatches?.columndata.length || 1}, minmax(120px, 1fr))`,
                   }}
@@ -387,7 +376,7 @@ const Devices = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Device Info */}
           <div className="p-4 bg-gray-100 dark:bg-[#121A2B] rounded-xl shadow">
-            <h3 className="text-xl font-semibold mb-3 text-gray-700 dark:text-white"> OS Info </h3>
+            <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-white"> OS Info </h3>
             <div className="space-y-2 text-sm">
               {osstatusdata.map((item, i) => (
                 <div key={i} className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1 text-lg">
@@ -472,7 +461,7 @@ const Devices = () => {
         <div className="bg-white dark:bg-[#0B1220] p-4 rounded-md shadow">
           <h3 className="text-xl font-semibold text-gray-600 dark:text-white mb-2"> Alert Status </h3>
 
-          <div className="flex gap-4  items-center text-lg">
+          <div className="flex gap-4  items-center text-md">
             {PatchSeverity.map((item, i) => {
               const colorMap = {
                 Critical: "text-red-500 bg-red-500/10 rounded px-2 ",
@@ -495,7 +484,7 @@ const Devices = () => {
         <div className="bg-white dark:bg-[#0B1220] p-4 rounded-md shadow">
           <h3 className="text-xl font-semibold text-gray-600 dark:text-white mb-2"> Patching Status </h3>
 
-          <div className="flex gap-4 text-lg">
+          <div className="flex gap-4 text-md">
             {PatchInstalled.map((item, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className="capitalize text-gray-400">{item.name}:</span>

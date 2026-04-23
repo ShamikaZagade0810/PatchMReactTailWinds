@@ -44,13 +44,14 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
                     <XAxis
                         dataKey="month"
                         stroke="#9CA3AF"
-                        tick={{ fill: "#9CA3AF", fontSize: 20 }}
+                        tick={{ fill: "#9CA3AF", fontSize: 17 }}
+                        
                     />
 
                     {/* Y Axis */}
                     <YAxis
                         stroke="#9CA3AF"
-                        tick={{ fill: "#9CA3AF", fontSize: 17 }}
+                        tick={{ fill: "#9CA3AF", fontSize: 15 }}
                     />
 
                     {/* Tooltip */}

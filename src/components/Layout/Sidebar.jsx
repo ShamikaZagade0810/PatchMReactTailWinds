@@ -320,7 +320,7 @@ export const Sidebar = ({
         fixed left-0 top-0 h-screen bg-white dark:bg-gray-900 
         border-r border-gray-200 dark:border-gray-800
         transition-all duration-300 ease-in-out z-40
-        ${isOpen ? "w-70" : "w-20"}
+        ${isOpen ? "w-66" : "w-20"}
         flex flex-col shadow-lg
       `}
     >
