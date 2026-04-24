@@ -130,7 +130,7 @@ export default function MainLayout() {
       <main
         className={`
           pt-16 pb-12 transition-all 
-          ${isSidebarOpen ? "ml-66" : "ml-20"}
+          ${isSidebarOpen ? "ml-50" : "ml-20"}
         `}
       >
    {   !loading ? ( <div className="p-2 max-w-10xl mx-auto ">

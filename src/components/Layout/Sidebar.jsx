@@ -316,11 +316,10 @@ export const Sidebar = ({
 
   return (
     <aside
-      className={`
-        fixed left-0 top-0 h-screen bg-white dark:bg-gray-900 
+      className={` fixed left-0 top-0 h-screen bg-white dark:bg-gray-900 
         border-r border-gray-200 dark:border-gray-800
         transition-all duration-300 ease-in-out z-40
-        ${isOpen ? "w-66" : "w-20"}
+        ${isOpen ? "w-50" : "w-20"}
         flex flex-col shadow-lg
       `}
     >
@@ -332,8 +331,8 @@ export const Sidebar = ({
             className="h-8 w-8 shrink-0 rounded-lg transition-all"
           />
           {isOpen && (
-            <span className="font-bold text-gray-800 dark:text-white text-lg truncate">
-              DMS
+            <span className="font-bold text-gray-800 dark:text-white text-md truncate">
+              PM
             </span>
           )}
         </div>
@@ -373,14 +372,15 @@ export const Sidebar = ({
       <div className="p-3 border-t border-gray-200 dark:border-gray-800">
         {isOpen ? (
           <div className="text-lg">
-            <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
               {activeItemData?.name || "Dashboard"}
             </p>
-            <div className="flex items-center gap-2 text-md text-gray-500">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
               <span>Connected</span>
             </div>
           </div>
+          
         ) : (
           <div className="flex justify-center">
             <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-500 to-blue-600"></div>

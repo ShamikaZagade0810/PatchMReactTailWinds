@@ -56,7 +56,7 @@ const isSelected =
         <div className="flex items-center gap-3">
           {item.icon && <item.icon size={22} />}
           {isSidebarOpen && (
-            <span className="text-md truncate">{item.name} </span>
+            <span className="text-xs truncate">{item.name} </span>
           )}
         </div>
         

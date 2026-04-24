@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom reusable class */
+.card-header {
+  font-size: 14px; /* direct CSS, no Tailwind */
+  @apply text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2;
+}
