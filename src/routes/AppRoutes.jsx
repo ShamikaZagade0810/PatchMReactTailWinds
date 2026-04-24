@@ -9,6 +9,7 @@ import Devices from "../pages/Devices.jsx";
 import ReportsPage from "../pages/ReportsPage.jsx";
 
 import LinuxDashboard from "../pages/LinuxDashboard.jsx";
+import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -25,12 +26,12 @@ export default function AppRoutes() {
           index
           element={<Navigate to="/dashboard/mainDashboard" replace />}
         />
-      
+
         <Route
           path="/dashboard/mainDashboard"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-          
+
               {/* <DbMonitoringDashboard /> */}
               <PMOverviewDashboard />
             </ProtectedRoute>
@@ -41,34 +42,49 @@ export default function AppRoutes() {
           path="/devices/:username/:ipaddress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-          
+
               {/* <DbMonitoringDashboard /> */}
-              <Devices/>
+              <Devices />
             </ProtectedRoute>
           }
         />
 
-         <Route path="/reports"
+        <Route path="/reports"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-              <ReportsPage/>
-              </ProtectedRoute>
+              <ReportsPage />
+            </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/dashboard/linuxDashboard"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-          
+
               {/* <DbMonitoringDashboard /> */}
               <LinuxDashboard />
             </ProtectedRoute>
           }
         />
-        
-       
+
+
+
+
+        <Route
+          path="/dashboard/thirdPartyApp"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+
+              {/* <DbMonitoringDashboard /> */}
+              <ThirdPartyDashboard />
+            </ProtectedRoute>
+          }
+        />
+
 
       </Route>
-    </Routes>
+
+
+    </Routes >
   );
 }

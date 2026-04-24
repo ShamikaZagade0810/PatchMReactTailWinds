@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useMemo } from 'react';
 import { Search, Filter, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 const ReusableTable = ({ 
@@ -14,25 +14,57 @@ const ReusableTable = ({
   const [activeFilters, setActiveFilters] = useState({});
 
   // Filter data based on search and filters
-  const filteredData = data.filter(item => {
-    // Search filter
-    if (searchTerm) {
-      const searchable = columns
-        .filter(col => col.searchable !== false)
-        .some(col => {
-          const value = item[col.key];
-          return value && value.toString().toLowerCase().includes(searchTerm.toLowerCase());
-        });
+  // const filteredData = data.filter(item => {
+  //   // Search filter
+  //   if (searchTerm) {
+     
+  //     const searchable = columns
+  //       // .filter(col => col.searchable !== false)
+  //       .some(col => {
+  //         const value = item[col.name];
+  //         console.log("Value " , value);
+  //         return value && value.toString().toLowerCase().includes(searchTerm.toLowerCase());
+  //       });
+  //     if (!searchable) return false;
+  //   }
+
+  //   // Column filters
+  //   for (const [key, value] of Object.entries(activeFilters)) {
+  //     if (value && item[key] !== value) return false;
+  //   }
+
+  //   return true;
+  // });
+
+  const filteredData = useMemo(() => {
+  const search = searchTerm?.toLowerCase();
+
+  return data.filter(item => {
+
+    // 🔍 Search filter
+    if (search) {
+      const searchable = columns.some(col => {
+        const value = item[col.name];
+        
+        return (
+          value &&
+          value.toString().toLowerCase().includes(search)
+        );
+      });
+
       if (!searchable) return false;
     }
 
-    // Column filters
+    // 🎯 Column filters
     for (const [key, value] of Object.entries(activeFilters)) {
       if (value && item[key] !== value) return false;
     }
 
     return true;
+
   });
+
+}, [data, columns, searchTerm, activeFilters]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / pageSize);
@@ -93,8 +125,8 @@ const ReusableTable = ({
             <tr>
               {columns.map((column) => (
                 <th
-                  key={column.key}
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                  key={column.label}
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider "
                 >
                   {column.label}
                 </th>
@@ -105,8 +137,8 @@ const ReusableTable = ({
             {paginatedData.map((row, index) => (
               <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 {columns.map((column) => (
-                  <td key={column.key} className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                    {column.render ? column.render(row[column.key], row) : row[column.key]}
+                  <td key={column.name} className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                    {column.render ? column.render(row[column.name], row) : row[column.name]}
                   </td>
                 ))}
               </tr>

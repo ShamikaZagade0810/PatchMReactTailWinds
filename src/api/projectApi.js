@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzY5MTg0OTUsImV4cCI6MTc3NzAwNDg5NX0.iSzHE9fIwuJ-52MmOer5S6gEuPdc4pYpAPWDSwTL3KQ';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzcwMDY4NDUsImV4cCI6MTc3NzA5MzI0NX0.RFSlGBh15d2LI15lLeSTVjFteX1rgpgGtz5G9i8jkGU';
 const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
@@ -593,7 +593,7 @@ export const getLinuxIpwiseModal = (inputData) =>
 
 
 
-  export const getPatchReport = (inputData) =>
+export const getPatchReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GeneratePatchReport`,
     inputData,
@@ -607,6 +607,40 @@ export const getLinuxIpwiseModal = (inputData) =>
 export const getmissingPatchReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GenerateMissingReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getDeviceWiseReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateDevicewiseReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getYearMonthReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateYearMonthReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const getAllStatusReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateAllStatusReport`,
     inputData,
     {
       headers: {

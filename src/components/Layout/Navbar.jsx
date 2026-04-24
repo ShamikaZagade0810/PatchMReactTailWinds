@@ -192,7 +192,7 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     },
   ]);
   const [active, setActive] = useState("Windows");
-  const tabs = ["Windows", "Linux", "3rd Party Application"];
+  const tabs = ["Windows", "Linux", "ThirdParty"];
 
   const dropdownRef = useRef(null);
 
@@ -233,8 +233,8 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
         navigate('/dashboard/linuxDashboard');
         break;
 
-      case 'Mac':
-        navigate('/dashboard/macDashboard');
+      case 'ThirdParty':
+        navigate('/dashboard/thirdpartyApp');
         break;
 
       default:
