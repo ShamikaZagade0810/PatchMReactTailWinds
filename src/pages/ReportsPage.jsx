@@ -20,9 +20,13 @@ import {
 import { useState } from "react";
 import {
     getPatchReport,
-    getmissingPatchReport
+    getmissingPatchReport,
+    getDeviceWiseReport,
+    getYearMonthReport,
+    getAllStatusReport
 } from "../api/projectApi";
 import { AsyncMotionValueAnimation } from 'framer-motion';
+import ReusableTable from '../components/Table/ReusableTable.jsx';
 
 
 const ReportsPage = () => {
@@ -79,8 +83,10 @@ const ReportsPage = () => {
     const apiMapping = {
         Report: {
             missing: getmissingPatchReport,
-            patch :getPatchReport
-
+            patch: getPatchReport,
+            device: getDeviceWiseReport,
+            yearMonth: getYearMonthReport,
+            status: getAllStatusReport
         }
 
     };
@@ -272,8 +278,8 @@ const ReportsPage = () => {
         }, {});
 
         if (selectedModule?.id === "patch" || selectedModule?.id === "timeline") {
-              result["fromDate"] = customDate.from;
-              result["toDate"] = customDate.to;
+            result["fromDate"] = customDate.from;
+            result["toDate"] = customDate.to;
         }
 
 
@@ -320,7 +326,7 @@ const ReportsPage = () => {
                                 return (
                                     <div
                                         key={i}
-                                        onClick={() => {setActiveIndex(i); setSelectedBranches([])}}
+                                        onClick={() => { setActiveIndex(i); setSelectedBranches([]); setSelectedIPs([]); }}
                                         className={`flex justify-between items-center p-3 rounded-lg cursor-pointer transition-colors 
                                                 ${isActive ? "border border-[#7094ff]/40 bg-[#7094ff]/30 text-[#4f73e6] shadow-lg"
                                                 : "bg-[#1E293B] hover:bg-[#273449]"}
@@ -480,66 +486,9 @@ const ReportsPage = () => {
                 <p className="text-gray-400">
                     Configure the filters above and click Generate Report.
                 </p> */}
-
-                <div className="rounded-lg">
-                    <div className="w-full h-[400px] overflow-auto">
-                        <div
-                            className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
-                            style={{
-                                gridTemplateColumns: `repeat(${dynamicReport.columndata.length}, minmax(120px, 1fr))`,
-                            }}
-                        >
-                            {dynamicReport.columndata.map((col, i) => (
-                                <span key={i}>{col.label}</span>
-                            ))}
-                        </div>
-
-                        {/* Rows */}
-                        <div className="space-y-2 mt-2">
-                            {dynamicReport.maindata.map((row, rowIndex) => (
-                                <div
-                                    key={rowIndex}
-                                    className="grid items-center text-sm bg-[#141D2E] p-3 rounded"
-                                    style={{
-                                        gridTemplateColumns: `repeat(${dynamicReport.columndata.length}, minmax(120px, 1fr))`,
-                                    }}
-                                >
-                                    {dynamicReport.columndata.map((col, colIndex) => {
-                                        const value = row[col.name];
+                <ReusableTable data={dynamicReport.maindata} columns={dynamicReport.columndata} pageSize={10} />
 
 
-
-                                        // Custom styling logic
-                                        let className = "text-gray-300";
-
-                                        if (col.key === "status") {
-                                            className =
-                                                value === "Outdated"
-                                                    ? "text-red-400"
-                                                    : "text-green-400";
-                                        }
-
-                                        if (col.key === "severity") {
-                                            className =
-                                                value === "High"
-                                                    ? "text-red-500"
-                                                    : value === "Medium"
-                                                        ? "text-yellow-400"
-                                                        : "text-green-400";
-                                        }
-
-                                        return (
-                                            <span key={colIndex} className={className}>
-                                                {value}
-                                            </span>
-                                        );
-                                    })}
-                                </div>
-                            ))}
-                        </div>
-
-                    </div>
-                </div>
             </div>
         </div>
     )
