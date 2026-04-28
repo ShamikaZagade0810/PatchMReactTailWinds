@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     BarChart,
     Bar,
@@ -16,7 +16,23 @@ import {
     RadialBarChart,
     RadialBar
 } from "recharts";
+import {
+    getThirdPartyPatchCount,
+    getThirdPartyMonthlyPatchLine,
+    getThirdPartyAppPatchStatusBar,
+    getThirdPartyIPPatchStatusChart
+
+} from "../api/projectApi";
+
+
+
+
 const ThirdPartyDashboard = () => {
+
+    const [patchesCount, setPatchesCount] = useState([]);
+    const [monthlyPatchLine, setMonthlyPatchLine] = useState([]);
+    const [thirdPartyAppPatchStatus, setThirdPartyAppPatchStatus] = useState([]);
+    const [thirdPartyIPPatchStatusChart, setThirdPartyIPPatchStatusChart] = useState([]);
 
 
     const colorMap = {
@@ -24,6 +40,38 @@ const ThirdPartyDashboard = () => {
         red: "bg-red-500",
         yellow: "bg-yellow-500",
         blue: "bg-blue-500",
+    };
+
+    useEffect(() => {
+        console.log("Hello World");
+        apiCalls();
+
+
+    }, [])
+    const apiCalls = async () => {
+        try {
+            const [
+                patchesRes,
+                MonthlyPatchLineRes,
+                ThirdPartyAppPatchStatusRes,
+                ThirdPartyIPPatchStatusChartRes,
+
+            ] = await Promise.all([
+                getThirdPartyPatchCount(),
+                getThirdPartyMonthlyPatchLine(),
+                getThirdPartyAppPatchStatusBar(),
+                getThirdPartyIPPatchStatusChart(),
+
+            ]);
+
+            console.log("Patch response ", patchesRes.data.data);
+            setPatchesCount(patchesRes.data.data);
+            setMonthlyPatchLine(MonthlyPatchLineRes.data.data);
+            setThirdPartyAppPatchStatus(ThirdPartyAppPatchStatusRes.data.data);
+            setThirdPartyIPPatchStatusChart(ThirdPartyIPPatchStatusChartRes.data.data);
+        } catch (error) {
+            console.error("API Error:", error);
+        }
     };
 
     const data = [
@@ -97,6 +145,42 @@ const ThirdPartyDashboard = () => {
         { name: "C", value: 60, fill: "#f97316" },
         { name: "D", value: 50, fill: "#ef4444" },
     ];
+
+    const IpwiseData = [
+        {
+            IPAddress: "10.30.13.60",
+            success: 50,
+            failed: 10,
+            pending: 20
+
+        },
+        {
+            IPAddress: "10.30.13.60",
+            success: 50,
+            failed: 10,
+            pending: 20
+        },
+        {
+            IPAddress: "10.30.13.60",
+            success: 50,
+            failed: 11,
+            pending: 20
+        },
+        {
+            IPAddress: "10.30.13.60",
+            success: 50,
+            failed: 10,
+            pending: 20
+        },
+        {
+            IPAddress: "10.30.13.60",
+            success: 50,
+            failed: 10,
+            pending: 20
+        }
+    ]
+
+    
 
 
     return (
@@ -325,54 +409,82 @@ const ThirdPartyDashboard = () => {
                     </div>
 
                     {/* Divider */}
-                    <div className="border-t border-gray-800 mb-3"></div>
+                    <div className="border-t border-gray-800"></div>
 
                     {/* Bars */}
-                    <div className="space-y-2">
-                        {dataAppGettingPatched.map((item, i) => (
-                            <div key={i} className="flex items-center gap-2">
+                    <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={IpwiseData} layout="vertical">
 
-                                {/* Month */}
-                                <span className="text-xs text-gray-400 w-6">{item.month}</span>
+                                {/* X Axis */}
+                                <XAxis type="number" stroke="#94a3b8" fontSize={12} />
 
-                                {/* Bar */}
-                                <div className="flex-1 h-[6px] bg-gray-800 rounded flex overflow-hidden">
+                                {/* Y Axis */}
+                                <YAxis
+                                    type="category"
+                                    dataKey="IPAddress"
+                                    stroke="#94a3b8"
+                                    width={120}
+                                    fontSize={12}
+                                />
 
-                                    {/* Green */}
-                                    <div
-                                        className="bg-green-400"
-                                        style={{ width: `${item.green}%` }}
-                                    ></div>
+                                {/* Tooltip */}
+                                <Tooltip
+                                    cursor={{ fill: "rgba(255,255,255,0.05)" }}
+                                    contentStyle={{
+                                        backgroundColor: "#020617",
+                                        border: "1px solid #1e293b",
+                                    }}
+                                />
 
-                                    {/* White */}
-                                    <div
-                                        className="bg-gray-200"
-                                        style={{ width: `${item.white}%` }}
-                                    ></div>
+                                <Legend />
 
-                                    {/* Gray */}
-                                    <div
-                                        className="bg-gray-600"
-                                        style={{ width: `${item.gray}%` }}
-                                    ></div>
+                                {/* ✅ Success */}
+                                <Bar
+                                    dataKey="success"
+                                    stackId="a"
+                                    fill="#22c55e"
+                                    name="Success"
+                                    radius={[0, 4, 4, 0]}
+                                    onClick={(data) => {
+                                        handleClickModalParameter("ip_wise", "patch", {
+                                            ipaddress: data.IPAddress,
+                                            statusId: 4
+                                        });
+                                    }}
+                                />
 
-                                </div>
+                                {/* ❌ Failed */}
+                                <Bar
+                                    dataKey="failed"
+                                    stackId="a"
+                                    fill="#ef4444"
+                                    name="Failed"
+                                    onClick={(data) => {
+                                        handleClickModalParameter("ip_wise", "patch", {
+                                            ipaddress: data.IPAddress,
+                                            statusId: 3
+                                        });
+                                    }}
+                                />
 
-                            </div>
-                        ))}
+                                {/* ⚠️ Pending */}
+                                <Bar
+                                    dataKey="pending"
+                                    stackId="a"
+                                    fill="#facc15"
+                                    name="Pending"
+                                    onClick={(data) => {
+                                        handleClickModalParameter("ip_wise", "patch", {
+                                            ipaddress: data.IPAddress,
+                                            statusId: 2
+                                        });
+                                    }}
+                                />
+
+                            </BarChart>
+                        </ResponsiveContainer>
                     </div>
-
-                    {/* Footer Scale */}
-                    <div className="flex justify-between text-[10px] text-gray-500 mt-3">
-                        <span>0</span>
-                        <span>10K</span>
-                        <span>20K</span>
-                        <span>30K</span>
-                        <span>40K</span>
-                        <span>50K</span>
-                    </div>
-
-
 
                 </div>
 

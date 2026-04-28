@@ -638,10 +638,55 @@ export const getYearMonthReport = (inputData) =>
     }
   );
 
-  export const getAllStatusReport = (inputData) =>
+export const getAllStatusReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GenerateAllStatusReport`,
     inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getThirdPartyPatchCount = (inputData) =>
+  axios.get(
+    `${BASE_URL}/thirdpartyDash/PatchCount`,
+ 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getThirdPartyMonthlyPatchLine = (inputData) =>
+  axios.get(
+    `${BASE_URL}/thirdpartyDash/MonthlyPatchLine`,
+   
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getThirdPartyAppPatchStatusBar = (inputData) =>
+  axios.get(
+    `${BASE_URL}/thirdpartyDash/AppPatchStatusBar`,
+
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getThirdPartyIPPatchStatusChart = (inputData) =>
+  axios.get(
+    `${BASE_URL}/thirdpartyDash/IPPatchStatusChart`,
+
     {
       headers: {
         Authorization: `Bearer ${token}`
