@@ -649,6 +649,50 @@ export const getAllStatusReport = (inputData) =>
     }
   );
 
+  export const getUpdateTimelineReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GeneratePatchTimelineReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+   export const getdeviceAgentReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateDeviceAgentReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+    export const getFailedUpdateReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateFailedUpdateReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+     export const getCategoryWiseReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/reports/GenerateCategorywiseReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
 export const getThirdPartyPatchCount = (inputData) =>
   axios.get(
     `${BASE_URL}/thirdpartyDash/PatchCount`,

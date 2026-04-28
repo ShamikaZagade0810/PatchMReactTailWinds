@@ -284,7 +284,6 @@ const ReportsPage = () => {
                 inputData.push('ipAddresses');
                 inputData.push('patchList');
             }
-
             if (selectedCategory === "endpoint") {
                 inputData.push('ipAddresses');
             }
