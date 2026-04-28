@@ -23,7 +23,11 @@ import {
     getmissingPatchReport,
     getDeviceWiseReport,
     getYearMonthReport,
-    getAllStatusReport
+    getAllStatusReport,
+    getUpdateTimelineReport,
+    getdeviceAgentReport,
+    getFailedUpdateReport,
+    getCategoryWiseReport
 } from "../api/projectApi";
 import { AsyncMotionValueAnimation } from 'framer-motion';
 import ReusableTable from '../components/Table/ReusableTable.jsx';
@@ -56,12 +60,14 @@ const ReportsPage = () => {
         { value: "192.168.0.15", label: "192.168.0.15" },
         { value: "192.168.0.54", label: "192.168.0.54" },
         { value: "192.168.0.104", label: "192.168.0.104" },
+         { value: "192.168.0.53", label: "192.168.0.53" },
     ];
 
     const patchOptions = [
         { value: "KB5072033", label: "KB5072033" },
         { value: "KB5071547", label: "KB5071547" },
         { value: "KB5071142", label: "KB5071142" },
+         { value: "KB5010475", label: "KB5010475" },
     ];
     const groupnameOptions = [
         { value: "allcomputers", label: "All Computers" },
@@ -86,7 +92,11 @@ const ReportsPage = () => {
             patch: getPatchReport,
             device: getDeviceWiseReport,
             yearMonth: getYearMonthReport,
-            status: getAllStatusReport
+            status: getAllStatusReport,
+            timeline: getUpdateTimelineReport,
+            agent: getdeviceAgentReport,
+            failed : getFailedUpdateReport,
+            category : getCategoryWiseReport
         }
 
     };
@@ -112,7 +122,9 @@ const ReportsPage = () => {
         device: ["branchNames", "ipAddresses"],
         yearMonth: ["year", "month"],
         status: ["branchNames", "ipAddresses"],
-        timeline: ["groupname"]
+        timeline: ["groupname"],
+        agent : [],
+        failed : [],
 
     };
     const selectedModule = modules[activeIndex];
@@ -125,8 +137,8 @@ const ReportsPage = () => {
     const filterFields = {
         update: (
             <div>
-                <label className="text-base text-gray-300 mb-1 block">Update</label>
-                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("update")}>
+                <label className="filter-label">Update</label>
+                <select className="filter-input  focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("update")}>
                     <option value="" disabled> -- Please select value -- </option>
                     <option value="all">All Updates</option>
                     <option value="critical">Critical Updates</option>
@@ -137,8 +149,9 @@ const ReportsPage = () => {
 
         type: (
             <div>
-                <label className="text-base text-gray-300 mb-1 block">Type</label>
-                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("type")}>
+                <label className="filter-label">Type</label>
+                <select className="filter-input focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("type")}>
+                      <option value="" disabled> -- Please select value -- </option>
                     <option value="approve">Approved</option>
                     <option value="decline">Declined</option>
                     <option value="unapprove">Un Approved</option>
@@ -177,11 +190,11 @@ const ReportsPage = () => {
 
         year: (
             <div>
-                <label className={labelClass}>Year</label>
+                <label className="filter-label">Year</label>
                 <input
                     type="text"
                     placeholder="Enter Year"
-                    className={inputClass}
+                    className="filter-input focus:outline-none focus:ring-2 focus:ring-blue-500"
                     {...register("year")}
                 />
             </div>
@@ -189,9 +202,10 @@ const ReportsPage = () => {
 
         month: (
             <div>
-                <label className={labelClass}>Month</label>
-                <select className={inputClass}  {...register("month")}>
-                    <option>Select Month</option>
+                <label className=" filter-label">Month</label>
+                <select className="filter-input focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("month")}>
+                      <option value="" disabled> -- Select Month -- </option>
+                    {/* <option>Select Month</option> */}
                     {[
                         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -204,7 +218,7 @@ const ReportsPage = () => {
 
         category: (
             <div>
-                <label className="text-base text-gray-300 mb-1 block">Category</label>
+                <label className="filter-label">Category</label>
                 <select
                     value={selectedCategory}
                     onChange={(e) => {
@@ -216,8 +230,8 @@ const ReportsPage = () => {
                         setSelectedPatches([]);
                     }}
 
-                    className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                    <option value="">-- Please select value --</option>
+                    className="filter-input focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                    <option value="" disabled>-- Please select value --</option>
                     <option value="deployment">Deployment Basis</option>
                     <option value="endpoint">End Point Basis</option>
                     <option value="patch">Patch Basis</option>
@@ -227,7 +241,7 @@ const ReportsPage = () => {
 
         patchList: (
             <div>
-                <label className={labelClass}>Patch List</label>
+                <label className="filter-label">Patch List</label>
                 <MultiSelect
                     options={patchOptions}
                     value={selectedPatches}
@@ -241,11 +255,11 @@ const ReportsPage = () => {
 
         groupname: (
             <div>
-                <label className="text-base text-gray-300 mb-1 block"> Group Name </label>
+                <label className="filter-label"> Group Name </label>
                 <select
-                    className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("groupname")}
+                    className="filter-input  focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("groupname")}
                 >
-                    <option value=""  >-- Please select value --</option>
+                    <option value="">-- Please select value --</option>
                     <option value="All Computers" >All Computers</option>
                     {groupnameOptions.map((g, i) => (
                         <option key={i} value={g.value}>
@@ -270,6 +284,13 @@ const ReportsPage = () => {
                 inputData.push('ipAddresses');
                 inputData.push('patchList');
             }
+
+            if (selectedCategory === "endpoint") {
+                inputData.push('ipAddresses');
+            }
+             if (selectedCategory === "patch") {
+                inputData.push('patchList');
+            }
         }
         // console.log("customDate",customDate.to);
         const result = inputData.reduce((acc, element) => {
@@ -277,7 +298,7 @@ const ReportsPage = () => {
             return acc;
         }, {});
 
-        if (selectedModule?.id === "patch" || selectedModule?.id === "timeline") {
+        if (selectedModule?.id === "patch" || selectedModule?.id === "timeline" || selectedModule?.id === "agent" || selectedModule?.id === "failed") {
             result["fromDate"] = customDate.from;
             result["toDate"] = customDate.to;
         }
@@ -310,13 +331,13 @@ const ReportsPage = () => {
             <div className="bg-[#0B1220] rounded-2xl p-6 ">
                 {/* Header */}
                 {/* <h2 className="text-sm text-gray-400 mb-1">REPORTS</h2> */}
-                <h1 className="text-3xl font-semibold mb-6">Report Center</h1>
+                <h1 className="text-2xl font-semibold mb-6">Report Center</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                     {/* 1. MODULE */}
                     {/* <div className="bg-[#141D2E] rounded-xl p-4"> */}
                     <div className="bg-[#0F172A] rounded-xl p-4">
-                        <h2 className="mb-3 font-semibold text-2xl">1. Report Name</h2>
+                        <h2 className="mb-3 font-semibold text-lg">1. Report Name</h2>
 
                         <div className="h-[320px] overflow-y-auto pr-2 space-y-2 hide-scrollbar">
                             {modules.map((item, i) => {
@@ -337,7 +358,7 @@ const ReportsPage = () => {
                                                 <Icon size={20} style={{ color: isActive ? "#ffffff" : item.iconcolor }} />
                                             </div>
 
-                                            <span className={`text-lg ${isActive ? "font-semibold  text-[#7094ff] " : ""}`}>
+                                            <span className={`text-sm ${isActive ? "font-semibold  text-[#7094ff] " : ""}`}>
                                                 {item.name}
                                             </span>
                                         </div>
@@ -360,7 +381,7 @@ const ReportsPage = () => {
 
                     {/* 3. Filter*/}
                     <div className="bg-[#0F172A] rounded-xl p-4">
-                        <h3 className="mb-3 font-semibold text-2xl">Apply Filter</h3>
+                        <h3 className="mb-3 font-semibold text-lg">Apply Filter</h3>
 
                         <div className="grid grid-cols-2 gap-3">
                             {/* {activeFilters.map((key, i) => (
@@ -400,7 +421,7 @@ const ReportsPage = () => {
                         && selectedModule?.id !== "device" && selectedModule?.id !== "status" && (
                             <div className="bg-[#0F172A] rounded-xl p-4">
 
-                                <h3 className="mb-3 font-semibold text-2xl text-white">
+                                <h3 className="mb-3 font-semibold text-lg text-white">
                                     Select Date Range
                                 </h3>
 
@@ -436,7 +457,7 @@ const ReportsPage = () => {
 
                                     {/* From Date */}
                                     <div>
-                                        <label className="text-medium text-gray-300 mb-1 block"> From Date </label>
+                                        <label className="text-sm text-gray-300 mb-1 block"> From Date </label>
                                         <input
                                             type="date"
                                             value={customDate.from}
@@ -444,20 +465,20 @@ const ReportsPage = () => {
                                                 setCustomDate({ ...customDate, from: e.target.value })
                                             }
 
-                                            className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full h-10 px-3 bg-[#1E293B] text-white text-sm rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
 
                                     {/* To Date */}
                                     <div>
-                                        <label className="text-medium text-gray-300 mb-1 block"> To Date </label>
+                                        <label className="text-sm text-gray-300 mb-1 block"> To Date </label>
                                         <input type="date"
                                             value={customDate.to}
                                             onChange={(e) =>
                                                 setCustomDate({ ...customDate, to: e.target.value })
                                             }
 
-                                            className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full h-10 px-3 bg-[#1E293B] text-white text-sm rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
 
@@ -479,7 +500,7 @@ const ReportsPage = () => {
 
             {/* Bottom Section */}
             <div className="bg-[#111C2E] rounded-2xl mt-6 p-10 text-center">
-                <h3 className="text-sm text-gray-400 mb-2">REPORT</h3>
+                <h3 className="text-md text-gray-200 mb-2">REPORT</h3>
                 {/* <h2 className="text-xl font-semibold mb-2">
                     No Report Generated Yet
                 </h2>

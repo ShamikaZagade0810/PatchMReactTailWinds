@@ -105,8 +105,8 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
 
                         cx="50%"
                         cy="50%"
-                        innerRadius={70}
-                        outerRadius={90}
+                        innerRadius={60}
+                        outerRadius={75}
                         activeShape={renderActiveShape}
                         isAnimationActive={isAnimationActive}
                         onMouseEnter={(entry, index) => {
@@ -165,7 +165,7 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
 
 
                     {/* <Tooltip /> */}
-                    <circle cx="50%" cy="50%" r={53} fill="#1E283D" />
+                    <circle cx="50%" cy="50%" r={45} fill="#1E283D" />
                     {/* Center circle with value and label */}
 
                     <text
@@ -173,7 +173,7 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                         y="47%"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        fontSize={28}
+                        fontSize={23}
                         fill="#ffffff"
                     >
                         {centerValue}
@@ -183,7 +183,7 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                         y="58%"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        fontSize={15}
+                        fontSize={12}
                         fill={centerColor}
                     >
                         {centerLabel}

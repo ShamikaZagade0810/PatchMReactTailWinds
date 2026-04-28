@@ -200,7 +200,7 @@ const sidebarData = [
     children: [
       {
         name: "Create Application User",
-        path: "/master/create-user",
+        path: "/master/Createuser",
         icon: AppWindowMac,
         roles: ["admin"],
       },

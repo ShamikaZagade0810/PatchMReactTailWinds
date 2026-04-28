@@ -268,7 +268,7 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
             <button
               key={tab}
               onClick={() => handleClickTab(tab)}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
+              className={`px-4 py-2 text-xs font-medium rounded-md transition-all duration-200
             ${active === tab
                   ? "bg-blue-600 text-white shadow"
                   : "text-gray-300 bg-[#1e293b]"
@@ -282,8 +282,8 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3">
           <img src={logo} alt="Velox Logo" className="h-8 w-8 rounded-lg" />
           <div className="flex flex-col items-center">
-            <span className="font-bold text-gray-800 dark:text-white text-lg">
-              PlanetGuard Pro-DMS
+            <span className="font-bold text-gray-800 dark:text-white text-md">
+              Patch Management System
             </span>
           </div>
         </div>

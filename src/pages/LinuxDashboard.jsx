@@ -347,8 +347,9 @@ const LinuxDashboard = () => {
 
         <div className=" bg-[#0F172A] border border-[#1C2541] rounded-xl p-4 ">
 
-          <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Patch Status</h2>
+          {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Patch Status</h2> */}
 
+  <h2 className="card-header"> Patch Status </h2>
 
           {/* Donut */}
           <div className="w-full flex justify-center items-center">
@@ -367,7 +368,8 @@ const LinuxDashboard = () => {
         </div>
         <div className=" bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-          <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Branch Distribution</h2>
+          {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Branch Distribution</h2> */}
+            <h2 className="card-header"> Branch Distribution </h2>
           <div className="flex gap-4">
 
             {/* Donut */}
@@ -394,8 +396,8 @@ const LinuxDashboard = () => {
 
 
         <div className="bg-[#121A2B] rounded-xl p-4">
-          <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2>
-
+          {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2> */}
+  <h2 className="card-header"> IPWise Patch Status </h2>
           {/* Fake Chart Line */}
           <div className="  rounded-lg">
             <div className="w-full h-[250px]">
@@ -477,10 +479,9 @@ const LinuxDashboard = () => {
 
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-1 h-6 bg-blue-500 rounded"></div>
-            <h2 className="text-white text-lg font-semibold">
-              Patch Activity Over Time
-            </h2>
+            {/* <div className="w-1 h-6 bg-blue-500 rounded"></div> */}
+            {/* <h2 className="text-white text-lg font-semibold">Patch Activity Over Time </h2> */}
+            <h2 className="card-header"> Patch Activity Over Time  </h2>
           </div>
 
           {/* Chart */}
@@ -559,8 +560,8 @@ const LinuxDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 px-4 mt-3">
 
         <div className="bg-[#121A2B] rounded-xl p-4">
-          <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Endpoint Installed Package</h2>
-
+          {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Endpoint Installed Package</h2> */}
+                  <h2 className="card-header"> Endpoint Installed Package </h2>
           {/* Fake Chart Line */}
           <div className="  rounded-lg">
             <div className="w-full h-[400px] overflow-auto">
@@ -627,8 +628,8 @@ const LinuxDashboard = () => {
         </div>
 
         <div className="bg-[#121A2B] rounded-xl p-4">
-          <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Risky Devices</h2>
-
+          {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Risky Devices</h2> */}
+ <h2 className="card-header"> Risky Devices</h2>
           {/* Fake Chart Line */}
           <div className="rounded-lg">
             <div className="w-full h-[400px] overflow-auto">

@@ -91,7 +91,7 @@ const DeviceDashboard = () => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border border-gray-200" >
-        <thead className="bg-gray-400 dark:bg-[#101726] border-3 border-white dark:border-[#0F172A] text-lg text-gray-700 dark:text-white">
+        <thead className="bg-gray-400 dark:bg-[#101726] border-3 border-white dark:border-[#0F172A] text-md text-gray-700 dark:text-white">
           <tr>
             {columns.map((col) => (
               <th key={col.name} className="px-4 py-2 text-left">
@@ -104,7 +104,7 @@ const DeviceDashboard = () => {
           {treeData.map((branch) => (
             <React.Fragment key={branch.branchname}>
               {/* Branch row */}
-              <tr className="bg-gray-100 dark:bg-[#1A2438] dark:border-4 dark:border-[#0F172A] cursor-pointer hover:bg-gray-100 dark:hover:bg-[#101726] text-lg"
+              <tr className="bg-gray-100 dark:bg-[#1A2438] dark:border-4 dark:border-[#0F172A] cursor-pointer hover:bg-gray-100 dark:hover:bg-[#101726] text-sm"
                 onClick={() => toggleBranch(branch.branchname)}
               >
                 <td className="px-4 py-2 font-medium flex items-center text-gray-900 dark:text-white ">
@@ -146,7 +146,7 @@ const DeviceDashboard = () => {
                             />
 
                             <span
-                              className="text-blue-600 dark:text-cyan-400 cursor-pointer font-medium"
+                              className="text-blue-600 dark:text-cyan-400 cursor-pointer text-sm font-medium"
                               onClick={() => navigate(`/devices/${device.username}/${device.ipaddress}`)}
                             >
                               {device.username}
@@ -157,7 +157,7 @@ const DeviceDashboard = () => {
 
                       // Other columns (dynamic)
                       return (
-                        <td key={col.name} className="px-4 py-2 text-gray-700 dark:text-white">
+                        <td key={col.name} className="px-4 py-2 text-gray-700 text-sm dark:text-white">
                           {device[col.name]}
                         </td>
                       );

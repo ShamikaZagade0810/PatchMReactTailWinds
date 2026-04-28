@@ -7,6 +7,7 @@ import DbMonitoringDashboard from "../pages/DbMonitoringDashboard.jsx";
 import { PMOverviewDashboard } from "../pages/PMOverviewDashboard.jsx";
 import Devices from "../pages/Devices.jsx";
 import ReportsPage from "../pages/ReportsPage.jsx";
+import Adduser from "../pages/AddUser.jsx";
 
 import LinuxDashboard from "../pages/LinuxDashboard.jsx";
 import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
@@ -77,6 +78,17 @@ export default function AppRoutes() {
 
               {/* <DbMonitoringDashboard /> */}
               <ThirdPartyDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/master/Createuser"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+
+              {/* <DbMonitoringDashboard /> */}
+              <Adduser />
             </ProtectedRoute>
           }
         />

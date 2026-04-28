@@ -43,16 +43,16 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
       {/* Input Box */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full min-h-[48px] bg-[#1E293B] border border-[#2A3A55] rounded-lg px-3 flex flex-wrap items-center gap-2 cursor-pointer"
+        className="w-full min-h-[38px] bg-[#1E293B] border border-[#2A3A55] rounded-lg px-3 flex flex-wrap items-center gap-2 cursor-pointer"
       >
         {value.length === 0 && (
-          <span className="text-gray-400">{placeholder}</span>
+          <span className="text-gray-400 text-sm">{placeholder}</span>
         )}
 
         {value.map((item) => (
           <span
             key={item.value}
-            className="bg-blue-600/40 text-white px-2 py-1 rounded text-md font-medium"
+            className="bg-blue-600/40 text-white px-2 py-1 rounded text-sm font-medium"
           >
             {item.label}
           </span>
@@ -70,7 +70,7 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-2 py-2 bg-[#1E293B] text-white rounded outline-none"
+              className="w-full px-2 py-1 bg-[#1E293B] text-white text-sm rounded outline-none"
 
             />
           </div>
@@ -92,7 +92,7 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
                     checked={isSelected}
                     readOnly
                   />
-                  <span className="text-white text-md">{option.label}</span>
+                  <span className="text-white text-sm">{option.label}</span>
                 </div>
               );
             })}

@@ -50,7 +50,7 @@ import {
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
-
+import '../layouts/Css/Mainstyle.css';
 
 const OverviewDashboard = () => {
     const [patches, setPatches] = useState(null);
@@ -344,78 +344,81 @@ const OverviewDashboard = () => {
 
                 {/* Compliance Circle */}
                 <div className="col-span-12 lg:col-span-5 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
-    <h2 className="text-lg md:text-xl text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2">
-        Compliance
-    </h2>
+   <h2 className="card-header"> Compliance </h2>
 
     <div className="flex flex-col lg:flex-row items-center gap-6">
 
         {/* Circle */}
-        <div className="relative w-full max-w-[260px] aspect-[4/3]">
-            <svg viewBox="0 0 120 80" className="w-full h-full">
+        <div className="relative w-full max-w-[210px] aspect-[4/3]">
+    <svg viewBox="0 0 120 80" className="w-full h-full">
 
-                {/* Background arc */}
-                <path
-                    d="M20 55 A40 40 0 0 1 100 55"
-                    fill="none"
-                    stroke="#1e293b"
-                    strokeWidth="8"
-                />
+        {/* Main Arc Background */}
+        <path
+            d="M20 55 A40 40 0 0 1 100 55"
+            fill="none"
+            stroke="#1e293b"
+            strokeWidth="8"
+        />
 
-                {/* Progress arc */}
-                <path
-                    d="M20 55 A40 40 0 0 1 100 55"
-                    fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="8"
-                    strokeDasharray={`${45 * 1.25} 125`}
-                />
+        {/* Progress Arc */}
+        <path
+            d="M20 55 A40 40 0 0 1 100 55"
+            fill="none"
+            stroke="#3b82f6"
+            strokeWidth="8"
+            strokeDasharray={`${45 * 2.51} 251`}
+            // strokeLinecap="round"
+        />
 
-                {/* Thin line arc */}
-                <path
-                    d="M28 57 A32 32 0 1 1 92 57"
-                    fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="1"
-                />
+        {/* Inner Thin Arc (properly aligned) */}
+       <path
+            d="M28 55 A32 32 0 0 1 92 55"
+            fill="none"
+            stroke="#60a5fa"
+            strokeWidth="1"
+            opacity="0.9"
+        />
 
-                {/* Labels */}
-                {[0, 25, 50, 75, 100].map((val, i) => {
-                    const angles = [180, 135, 90, 45, 0];
-                    const r = 48;
-                    const cx = 60;
-                    const cy = 55;
 
-                    const rad = (angles[i] * Math.PI) / 180;
-                    const x = cx + r * Math.cos(rad);
-                    const y = cy - r * Math.sin(rad);
+        {/* Labels aligned properly on arc */}
+        {[0, 25, 50, 75, 100].map((val, i) => {
+            const angles = [180, 135, 90, 45, 0];
 
-                    return (
-                        <text
-                            key={i}
-                            x={x}
-                            y={y}
-                            fontSize="6"
-                            fill="#9ca3af"
-                            textAnchor="middle"
-                            dominantBaseline="middle"
-                        >
-                            {val}
-                        </text>
-                    );
-                })}
-            </svg>
+            const outerR = 50; // slightly outside main arc
+            const cx = 60;
+            const cy = 55;
 
-            {/* Center text */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-lg md:text-xl text-black dark:text-white">
-                    45%
-                </span>
-                <span className="text-xs text-yellow-400">
-                    Medium
-                </span>
-            </div>
-        </div>
+            const rad = (angles[i] * Math.PI) / 180;
+
+            const x = cx + outerR * Math.cos(rad);
+            const y = cy - outerR * Math.sin(rad);
+
+            return (
+                <text
+                    key={i}
+                    x={x}
+                    y={y}
+                    fontSize="6"
+                    fill="#9ca3af"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                >
+                    {val}
+                </text>
+            );
+        })}
+    </svg>
+
+    {/* Center Text */}
+    <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-md md:text-xl text-black dark:text-white">
+            45%
+        </span>
+        <span className="text-xs text-yellow-400">
+            Medium
+        </span>
+    </div>
+</div>
 
         {/* Bars */}
         <div className="flex-1 w-full space-y-3">
@@ -428,7 +431,7 @@ const OverviewDashboard = () => {
                 { label: "Device with failed patches", value: 23 },
             ].map((item, i) => (
                 <div key={i}>
-                    <div className="flex justify-between text-sm md:text-base">
+                    <div className="flex justify-between text-xs">
                         <span className="text-gray-700 dark:text-white">
                             {item.label}
                         </span>
@@ -451,15 +454,16 @@ const OverviewDashboard = () => {
 
                 {/* Compliance Stats */}
                 <div className="col-span-12 lg:col-span-7 bg-[#121A2B] rounded-xl p-4 shadow-lg flex flex-col">
-
-    <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
+    {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
         Patches
-    </h2>
+    </h2> */}
+     <h2 className="card-header"> Patches </h2>
 
-    <div className="text-gray-400 text-sm md:text-base">
+
+    <div className="text-gray-400 text-sm md:text-ms">
         Nike's "Just Do It", Apple's "Think Different", and De Beers' "A Diamond is Forever
     </div>
-    <div className="text-gray-400 text-sm md:text-base mb-4">
+    <div className="text-gray-400 text-sm md:text-ms mb-4">
         A strong slogan is usually short, memorable, and differentiates the brand
     </div>
 
@@ -481,19 +485,19 @@ const OverviewDashboard = () => {
                     onClick={() => handleClickModal('Patches', item.label.toLowerCase())}
                     className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-[#26324A] transition"
                 >
-                    <p className="text-sm md:text-base font-semibold text-gray-400 mb-2 text-center">
+                    <p className="text-sm md:text-md font-semibold text-gray-400 mb-2 text-center">
                         {item.label}
                     </p>
 
                     {/* Icon Circle */}
                     <div
-                        className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-2"
+                        className="w-12 h-12 md:w-13 md:h-13 rounded-full flex items-center justify-center mb-2"
                         style={{ backgroundColor: item.color }}
                     >
-                        <Icon size={20} className="md:w-6 md:h-6" style={{ color: item.iconcolor }} />
+                        <Icon size={18} className="md:w-6 md:h-6" style={{ color: item.iconcolor }} />
                     </div>
 
-                    <p className="text-sm md:text-lg font-medium text-white">
+                    <p className="text-sm md:text-md font-medium text-white">
                         {patches?.[item.label.toLowerCase()] ?? 0}
                     </p>
                 </div>
@@ -509,13 +513,15 @@ const OverviewDashboard = () => {
                 {/* OS Status */}
                <div className="col-span-12 md:col-span-6 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
 
-    <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
+    {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
         OS Status
-    </h2>
+    </h2> */}
+
+    <h2 className="card-header">OS Status</h2>
 
     {/* Progress */}
     <div className="w-full mt-4">
-        <div className="flex justify-between text-sm md:text-base">
+        <div className="flex justify-between text-sm md:text-md">
             <span className="text-white">Overall Distribution</span>
             <span className="text-white">{28}%</span>
         </div>
@@ -567,20 +573,22 @@ const OverviewDashboard = () => {
                 {/* Security Posture */}
                 <div className="col-span-12 lg:col-span-4 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
 
-    <h2 className="text-lg md:text-xl text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2">
+    {/* <h2 className="text-lg md:text-xl text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2">
         Security Posture
-    </h2>
+    </h2> */}
+
+    <h2 className="card-header">Security Posture</h2>
 
     {/* Top Section */}
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
         {/* Left Card */}
         <div className="bg-white dark:bg-[#141D2E] rounded-xl p-4 flex flex-col items-center justify-center border dark:border-[#191F48] shadow-lg">
-            <div className="text-xl md:text-2xl font-bold text-white">
+            <div className="text-lg md:text-2xl font-bold text-white">
                 {securityPosture?.compliance ?? 0}%
             </div>
-            <p className="text-sm md:text-lg text-gray-300 mt-1">Compliance</p>
-            <p className="text-xs md:text-sm text-green-400 mt-1">+3% this week</p>
+            <p className="text-sm md:text-md text-gray-300 mt-1">Compliance</p>
+            <p className="text-xs md:text-xs text-green-400 mt-1">+3% this week</p>
         </div>
 
         {/* Right Cards */}
@@ -588,27 +596,27 @@ const OverviewDashboard = () => {
 
             {/* Compliance */}
             <div className="h-14 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300 border border-[#191F48]">
-                <div className="text-sm md:text-base">
+                <div className="text-sm md:text-md">
                     <div>Compliance</div>
                     <div>{securityPosture?.needed ?? 0}</div>
                 </div>
 
-                <div className="w-9 h-9 md:w-10 md:h-10 rounded-md flex items-center justify-center"
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-md flex items-center justify-center"
                     style={{ backgroundColor: "#FF3E5433" }}>
-                    <TriangleAlert size={18} className="md:w-[22px] md:h-[22px]" style={{ color: "#FF3E41" }} />
+                    <TriangleAlert size={16}  style={{ color: "#FF3E41" }} />
                 </div>
             </div>
 
             {/* Risk */}
             <div className="h-14 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300 border border-[#191F48]">
-                <div className="text-sm md:text-base">
+                <div className="text-sm md:text-md">
                     <div>Risk Level</div>
                     <div>15</div>
                 </div>
 
-                <div className="w-9 h-9 md:w-10 md:h-10 rounded-md flex items-center justify-center"
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-md flex items-center justify-center"
                     style={{ backgroundColor: "#FFCB3E33" }}>
-                    <RotateCw size={18} className="md:w-[22px] md:h-[22px]" style={{ color: "#FFBF3E" }} />
+                    <RotateCw size={18}  style={{ color: "#FFBF3E" }} />
                 </div>
             </div>
 
@@ -627,12 +635,12 @@ const OverviewDashboard = () => {
                 key={i}
                 className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0 bg-[#141D2E] p-2 border border-[#191F48] rounded-md"
             >
-                <span className="text-gray-400 text-sm md:text-base">
+                <span className="text-gray-400 text-sm md:text-md">
                     {item.label}
                 </span>
 
                 <span
-                    className={`text-sm md:text-base ${
+                    className={`text-sm md:text-md ${
                         item.status === "Failed"
                             ? "text-red-400"
                             : item.status === "Critical"
@@ -650,8 +658,9 @@ const OverviewDashboard = () => {
 
                 {/* Device Info (Chart Placeholder) */}
                 <div className="col-span-4 bg-[#121A2B] rounded-xl p-4">
-                    <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2>
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2> */}
 
+                    <h2 className="card-header">IPWise Patch Status</h2>
                     {/* Fake Chart Line */}
                     <div className="h-32  rounded-lg">
                         <div className="w-full h-[280px]">
@@ -661,8 +670,8 @@ const OverviewDashboard = () => {
                                     layout="vertical"
                                 // margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
                                 >
-                                    <XAxis type="number" stroke="#ccc" fontSize={16} />
-                                    <YAxis type="category" dataKey="IPAddress" stroke="#ccc" width={100} fontSize={16} />
+                                    <XAxis type="number" stroke="#ccc" fontSize={12} />
+                                    <YAxis type="category" dataKey="IPAddress" stroke="#ccc" width={100} fontSize={14} />
                                     <Tooltip
                                         cursor={false}
                                         contentStyle={{
@@ -734,7 +743,8 @@ const OverviewDashboard = () => {
                 {/* LEFT TOP */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">3rd Party PatchManagement</h2>
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">3rd Party PatchManagement</h2> */}
+                    <h2 className="card-header">3rd Party PatchManagement</h2>
                     <div className="flex gap-3 ">
 
                         {/* Donut */}
@@ -745,7 +755,8 @@ const OverviewDashboard = () => {
 
                         {/* Table */}
                         <div className="flex-1 h-50 overflow-x-auto">
-                            <div className="text-md text-gray-400 grid grid-cols-4 mb-2">
+                            {/* <div className="text-md text-gray-400 grid grid-cols-4 mb-2"> */}
+                             <div className="table-header">
                                 <span>Software</span>
                                 <span>Version</span>
                                 <span>CVSS</span>
@@ -753,21 +764,23 @@ const OverviewDashboard = () => {
                             </div>
 
                             {thirdPartyList.map((item, i) => (
-                                <div
-                                    key={i}
-                                    className="grid grid-cols-4  text-sm bg-[#141D2E] p-2 rounded mb-1 items-center"
-                                >
+                                // <div
+                                //     key={i}
+                                //     className="grid grid-cols-4  text-sm bg-[#141D2E] p-2 rounded mb-1 items-center"
+                                // >
+                                  <div key={i} className="table-row">
                                     <span>{item.software}</span>
                                     <span>{item.version}</span>
 
                                     {/* CVES with Tooltip */}
-                                    <div className="relative group">
+                                    <div className="relative group tooltip-parent">
                                         <span className="truncate block max-w-[100px] cursor-pointer">
                                             {item.cves}
                                         </span>
 
                                         {/* Tooltip */}
-                                        <div className="absolute z-50 hidden group-hover:block bg-[#0B1220] text-white text-sm p-2 rounded shadow-lg w-64 top-6 left-0 border border-[#1C2541]">
+                                        {/* <div className="absolute z-50 hidden group-hover:block bg-[#0B1220] text-white text-sm p-2 rounded shadow-lg w-64 top-6 left-0 border border-[#1C2541]"> */}
+                                        <div className="tooltip-box">
                                             {item.cves}
                                         </div>
                                     </div>
@@ -790,7 +803,8 @@ const OverviewDashboard = () => {
                 {/* RIGHT TOP */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2>
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2> */}
+                    <h2 className="card-header">Operating Systems Update</h2>                    
                     <div className="flex gap-4">
 
                         {/* Donut */}
@@ -805,7 +819,8 @@ const OverviewDashboard = () => {
 
                         {/* Table */}
                         <div className="flex-1 h-50 overflow-x-auto">
-                            <div className="text-md text-gray-400 grid grid-cols-4 mb-2">
+                            {/* <div className="text-md text-gray-400 grid grid-cols-4 mb-2"> */}
+                                  <div className="table-header">
                                 <span>Update</span>
                                 <span>Installed</span>
                                 <span>Needed</span>
@@ -813,8 +828,9 @@ const OverviewDashboard = () => {
                             </div>
 
                             {osList.map((item, i) => (
-                                <div key={i} className="grid grid-cols-4 text-sm bg-[#141D2E] p-2 rounded mb-1 items-center">
-                                    <span className="break-words pr-5">{item.PatchTitle}</span>
+                                // <div key={i} className="grid grid-cols-4 text-sm bg-[#141D2E] p-2 rounded mb-1 items-center">
+                                 <div key={i} className="table-row">   
+                                <span className="break-words pr-5">{item.PatchTitle}</span>
                                     <span>{item.InstalledCount}</span>
                                     <span>{item.NeededCount}</span>
                                     <span className="text-yellow-400">{item.classification}</span>
@@ -827,8 +843,10 @@ const OverviewDashboard = () => {
                 {/* BOTTOM LEFT */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2>
-                    <div className="text-lg text-gray-400 grid grid-cols-4 mb-2">
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2> */}
+                    <h2 className="card-header">Top Risk Devices</h2>
+                    {/* <div className="text-lg text-gray-400 grid grid-cols-4 mb-2"> */}
+                         <div className="table-header">
                         <span>Device</span>
                         <span>Patches</span>
                         <span>Last Scan</span>
@@ -836,8 +854,9 @@ const OverviewDashboard = () => {
                     </div>
 
                     {topDevices.map((item, i) => (
-                        <div key={i} className="grid grid-cols-4 text-md bg-[#141D2E] p-2 rounded mb-1">
-                            <span>{item.IPAddress}</span>
+                        // <div key={i} className="grid grid-cols-4 text-md bg-[#141D2E] p-2 rounded mb-1">
+                         <div key={i} className="table-row">   
+                        <span>{item.IPAddress}</span>
                             <span>{item.MissingCount}</span>
                             <span>{item.LastScan}</span>
                             <span className="text-red-400">{item.Severity}</span>
@@ -847,8 +866,9 @@ const OverviewDashboard = () => {
 
                 {/* BOTTOM RIGHT (Bar Chart Placeholder) */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
-                    <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Patch History</h2>
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Patch History</h2> */}
 
+                    <h2 className="card-header">Patch History</h2>
 
                     <SingleBarcharts data={histData} onSliceClick={handleClickModalParameter} />
 

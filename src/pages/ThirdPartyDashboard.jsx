@@ -132,7 +132,8 @@ const ThirdPartyDashboard = () => {
 
                     <div className="flex justify-between items-center mb-4">
                         <div>
-                            <div className="text-sm text-gray-400">Required Patch</div>
+                            {/* <div className="text-sm text-gray-400">Required Patch</div> */}
+                             <h2 className="card-header"> Required Patch</h2>
                             <div className="text-2xl font-semibold">270 <span className="text-green-400 text-sm">↑</span></div>
                         </div>
                         <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
@@ -175,12 +176,13 @@ const ThirdPartyDashboard = () => {
                 <div className="col-span-5 bg-[#0b1220] rounded-lg p-4">
 
                     <div className="flex items-center gap-2 mb-4">
-                        <div className="w-[3px] h-4 bg-blue-500"></div>
-                        <span className="text-sm text-gray-300">Date Wise Patching Status</span>
+                        {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
+                        {/* <span className="text-sm text-gray-300">Date Wise Patching Status</span> */}
+                         <h2 className="card-header"> Date Wise Patching Status </h2>
                     </div>
 
                     {/* Chart */}
-                    <div className="h-[220px]">
+                    <div className="h-[220px]" >
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={data}>
 
@@ -206,8 +208,8 @@ const ThirdPartyDashboard = () => {
                                 <CartesianGrid stroke="#1e293b" strokeDasharray="3 6" vertical={false} />
 
                                 {/* Axis */}
-                                <XAxis dataKey="name" stroke="#64748b" tickLine={false} axisLine={false} />
-                                <YAxis domain={['auto', 'auto']} stroke="#64748b" tickLine={false} axisLine={false} />
+                                <XAxis dataKey="name" stroke="#64748b" tickLine={false} tick={{ fontSize: 12 }} axisLine={false} />
+                                <YAxis domain={['auto', 'auto']} stroke="#64748b" tickLine={false} tick={{ fontSize: 12 }} axisLine={false} />
 
                                 {/* Tooltip */}
                                 <Tooltip
@@ -259,9 +261,8 @@ const ThirdPartyDashboard = () => {
 
                     <div className="flex justify-between items-center mb-2">
                         <div>
-                            <div className="text-xs text-gray-400">
-                                 Application Patch Wise Status
-                            </div>
+                            {/* <div className="text-xs text-gray-400"> Application Patch Wise Status</div> */}
+                             <h2 className="card-header"> Application Patch Wise Status </h2>
                             <div className="text-2xl font-semibold">
                                 670 <span className="text-green-400 text-sm">↑</span>
                             </div>
@@ -311,7 +312,8 @@ const ThirdPartyDashboard = () => {
 
                     <div className="flex justify-between items-center mb-3">
                         <div>
-                            <div className="text-xs text-gray-400">Machine Wise Status</div>
+                            {/* <div className="text-xs text-gray-400">Machine Wise Status</div> */}
+                             <h2 className="card-header"> Machine Wise Status </h2>
                             <div className="text-2xl font-semibold">
                                 270 <span className="text-green-400 text-sm">↑</span>
                             </div>
@@ -379,9 +381,10 @@ const ThirdPartyDashboard = () => {
 
 
                     <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center gap-2">
-                            <div className="w-[3px] h-4 bg-blue-500"></div>
-                            <span className="text-sm text-gray-300">Top Risky Devices</span>
+                        <div className="flex items-center gap-1">
+                            {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
+                            {/* <span className="text-sm text-gray-300">Top Risky Devices</span> */}
+                             <h2 className="card-header"> Top Risky Devices </h2>
                         </div>
 
                         <span className="text-gray-500 cursor-pointer">•••</span>
@@ -436,8 +439,9 @@ const ThirdPartyDashboard = () => {
 
                     <div className="flex justify-between items-center mb-4">
                         <div className="flex items-center gap-2">
-                            <div className="w-[3px] h-4 bg-blue-500"></div>
-                            <span className="text-sm text-gray-300">Machine-wise Patching Status</span>
+                            {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
+                            {/* <span className="text-sm text-gray-300">Machine-wise Patching Status</span> */}
+                             <h2 className="card-header"> Machine-wise Patching Status </h2>
                         </div>
 
                         <span className="text-gray-500 cursor-pointer">•••</span>
@@ -489,7 +493,8 @@ const ThirdPartyDashboard = () => {
 
                     <div className="flex justify-between mb-2">
                         <div>
-                            <div className="text-xs text-gray-400">Patch / Packet Progress</div>
+                            {/* <div className="text-xs text-gray-400">Patch / Packet Progress</div> */}
+                             <h2 className="card-header"> Patch / Packet Progress </h2>
                             <div className="text-2xl font-semibold">
                                 670 <span className="text-green-400 text-sm">↑</span>
                             </div>
@@ -548,8 +553,9 @@ const ThirdPartyDashboard = () => {
 
 
                     {/* Header */}
-                    <div className="text-xs text-gray-400 mb-2">Job Per Host</div>
+                    {/* <div className="text-xs text-gray-400 mb-2">Job Per Host</div> */}
 
+ <h2 className="card-header">Job Per Host </h2>
                     <div className="h-[250px] relative">
                         <ResponsiveContainer width="100%" height="100%">
                             <RadialBarChart
