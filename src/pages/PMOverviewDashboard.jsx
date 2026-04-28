@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Calendar, Activity, Settings } from "lucide-react";
 import OverviewDashboard from './OverviewDashboard';
 import DeviceDashboard from './DeviceDashboard';
+import RemoteAction from './RemoteAction';
 import { Modal } from '../components/Layout/Modal';
 
 export const PMOverviewDashboard = () => {
@@ -113,6 +114,13 @@ export const PMOverviewDashboard = () => {
                         Manage your settings here.
                     </p>
                 </div>
+            ),
+        },
+         {
+            label: "Remote Action",
+            icon: <Activity size={18} />,
+            content: (
+                <RemoteAction />
             ),
         },
     ];
