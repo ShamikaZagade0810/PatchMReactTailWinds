@@ -16,13 +16,32 @@ import {
     RadialBarChart,
     RadialBar
 } from "recharts";
+import { Modal } from '../components/Layout/Modal'
 import {
     getThirdPartyPatchCount,
     getThirdPartyMonthlyPatchLine,
     getThirdPartyAppPatchStatusBar,
-    getThirdPartyIPPatchStatusChart
+    getThirdPartyIPPatchStatusChart,
+    getThirdPartyTopRiskyDevices,
+    getRequiredSeverityBar,
+    getThirdPatchCountListing,
+    getThirdTotAppsListing,
+    getThirdUpToDateAppsListing,
+    getThirdOutDatedAppsListing,
+    getThirdMonthltPatchList,
+    getThirdAppWisePatchList
 
 } from "../api/projectApi";
+import {
+    AlertTriangle,
+    CheckCircle,
+    XCircle,
+    TrendingUp,
+    Loader,
+    Package,
+    ShieldCheck,
+    AlertCircle
+} from "lucide-react";
 
 
 
@@ -33,6 +52,11 @@ const ThirdPartyDashboard = () => {
     const [monthlyPatchLine, setMonthlyPatchLine] = useState([]);
     const [thirdPartyAppPatchStatus, setThirdPartyAppPatchStatus] = useState([]);
     const [thirdPartyIPPatchStatusChart, setThirdPartyIPPatchStatusChart] = useState([]);
+    const [thirdPartyTopRiskyDevices, setThirdPartyTopRiskyDevices] = useState([]);
+    const [requiredSeverityBar, setRequiredSeverityBar] = useState([]);
+    const [show, setShow] = useState(false);
+    const [modalData, setModalData] = useState({});
+    const [loading, setLoading] = useState(false);
 
 
     const colorMap = {
@@ -47,7 +71,9 @@ const ThirdPartyDashboard = () => {
         apiCalls();
 
 
-    }, [])
+    }, []);
+
+
     const apiCalls = async () => {
         try {
             const [
@@ -55,12 +81,15 @@ const ThirdPartyDashboard = () => {
                 MonthlyPatchLineRes,
                 ThirdPartyAppPatchStatusRes,
                 ThirdPartyIPPatchStatusChartRes,
-
+                ThirdPartyTopRiskyDevicesRes,
+                RequiredSeverityBarRes,
             ] = await Promise.all([
                 getThirdPartyPatchCount(),
                 getThirdPartyMonthlyPatchLine(),
                 getThirdPartyAppPatchStatusBar(),
                 getThirdPartyIPPatchStatusChart(),
+                getThirdPartyTopRiskyDevices(),
+                getRequiredSeverityBar()
 
             ]);
 
@@ -69,8 +98,113 @@ const ThirdPartyDashboard = () => {
             setMonthlyPatchLine(MonthlyPatchLineRes.data.data);
             setThirdPartyAppPatchStatus(ThirdPartyAppPatchStatusRes.data.data);
             setThirdPartyIPPatchStatusChart(ThirdPartyIPPatchStatusChartRes.data.data);
+            setThirdPartyTopRiskyDevices(ThirdPartyTopRiskyDevicesRes.data.data);
+            setRequiredSeverityBar(RequiredSeverityBarRes.data.data);
         } catch (error) {
             console.error("API Error:", error);
+        }
+    };
+
+
+
+    const apiMapping = {
+        dashboardCount: {
+            missing: getThirdPatchCountListing,
+            Completed: getThirdPatchCountListing,
+            Failed: getThirdPatchCountListing,
+            Pending: getThirdPatchCountListing,
+            totalapps: getThirdTotAppsListing,
+            uptodate: getThirdUpToDateAppsListing,
+            outdated: getThirdOutDatedAppsListing
+
+            // getThirdTotAppsListing,
+            // getThirdUpToDateAppsListing,
+            // getThirdOutDatedAppsListing
+
+        },
+        linechart: {
+            pending: getThirdMonthltPatchList ,
+            completed:getThirdMonthltPatchList ,
+            failed:getThirdMonthltPatchList ,
+        },
+        barchart :{
+            appwise :getThirdAppWisePatchList
+        }
+
+    };
+
+
+
+    const handleClickModal = async (section, label) => {
+
+        console.log(section, label);
+        setLoading(true);
+        const data = await apiMapping[section][label]();
+        console.log("data --> ", data);
+        let MainData = data.data.data[0].data;
+        let ColumnData = data.data.data[0].column;
+        console.log("Maindata --> ", MainData);
+        console.log("ColumnData --> ", ColumnData);
+        let obj = {};
+        obj.maindata = MainData;
+        obj.columndata = ColumnData;
+        obj.modelHeading = label.toUpperCase();
+
+        setModalData(obj);
+
+
+
+        setShow(true);
+        setLoading(false);
+    }
+
+    const handleClickModalParameter = async (section, label, inputData) => {
+
+        console.log(section, label);
+        setLoading(true);
+        const data = await apiMapping[section][label](inputData);
+        console.log("data --> ", data);
+        let MainData = data.data.data[0].data;
+        let ColumnData = data.data.data[0].column;
+        console.log("Maindata --> ", MainData);
+        console.log("ColumnData --> ", ColumnData);
+        let obj = {};
+        obj.maindata = MainData;
+        obj.columndata = ColumnData;
+        obj.modelHeading = label.toUpperCase();
+
+        setModalData(obj);
+
+
+
+        setShow(true);
+        setLoading(false);
+    }
+
+
+    const handleClick = (parent, child) => {
+        console.log('Parent ', parent, 'child ', child);
+
+        if (child == 'totalapps' || child == 'uptodate' || child == 'outdated') {
+            handleClickModal(parent, child);
+        } else {
+            let req = {
+                "status": child
+            }
+
+            handleClickModalParameter(parent, child, req);
+        }
+    }
+
+
+    const handleChartClick = (state) => {
+        if (state && state.activePayload) {
+            const data = state.activePayload[0].payload;
+            console.log("Clicked Data:", data);
+
+            // Example:
+            // data.name → month
+            // data.pending / completed / failed
         }
     };
 
@@ -180,35 +314,75 @@ const ThirdPartyDashboard = () => {
         }
     ]
 
-    
+    const DashboardsCount = {
+        "Missing Patch": { color: "yellow", icon: AlertTriangle },
+        "Completed": { color: "purple", icon: CheckCircle },
+        "Failed": { color: "blue", icon: XCircle },
+        "Success Rate": { color: "orange", icon: TrendingUp },
+        "In Progress": { color: "purple", icon: Loader },
+        "Total Apps": { color: "blue", icon: Package },
+        "Up to date Apps": { color: "blue", icon: ShieldCheck },
+        "Outdated Apps": { color: "purple", icon: AlertCircle },
+    };
+
+
+    const SeverityCount = {
+        CRITICAL: { label: "Critical", value: 20, color: "green" },
+        HIGH: { label: "High", value: 40, color: "red" },
+        MEDIUM: { label: "Medium", value: 12, color: "yellow" },
+        LOW: { label: "Low", value: 8, color: "blue" },
+        UNKNOWN: { label: "Low", value: 8, color: "blue" }
+    };
+
+
 
 
     return (
         <div className="mb-1 bg-white dark:bg-[#0B1220] ">
             <div className="grid grid-cols-12 gap-2 p-1 bg-[#020617]  text-white">
+                <Modal
+                    show={show}
+                    setShow={setShow}
+                    data={modalData}
 
+                />
+                {loading && (
+                    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
+                        <div className="flex flex-col items-center gap-3">
+
+                            {/* Spinner */}
+                            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                            {/* Text */}
+                            <p className="text-white text-sm">Loading data...</p>
+
+                        </div>
+                    </div>
+                )}
                 {/* LEFT SMALL CARDS */}
                 <div className="col-span-3 grid grid-cols-2 gap-3">
-                    {[
-                        { title: "Missing Patch", value: "220", color: "yellow" },
-                        { title: "Completed", value: "160", color: "purple" },
-                        { title: "Failed", value: "49.65%", color: "blue" },
-                        { title: "Success Rate", value: "220", color: "orange" },
-                        { title: "In Progress", value: "160", color: "purple" },
-                        { title: "Total Apps", value: "49.65%", color: "blue" },
-                        { title: "Up to date Apps", value: "49.65%", color: "blue" },
-                        { title: "Outdated Apps", value: "160", color: "purple" },
-                    ].map((item, i) => (
-                        <div key={i} className="bg-[#0b1220] rounded-lg p-3 border border-gray-800 flex justify-between items-center">
-                            <div>
-                                <div className="text-lg font-semibold">{item.value}</div>
-                                <div className="text-xs text-gray-400">{item.title}</div>
+                    {patchesCount.map((item, i) => {
+                        const Icon = DashboardsCount[item.title]['icon'];
+
+                        return (
+                            <div
+                                key={i}
+                                onClick={() => handleClick('dashboardCount', item.key)}
+                                className="bg-[#0b1220] rounded-lg p-3 border border-gray-800 flex justify-between items-center"
+                            >
+                                <div>
+                                    <div className="text-lg font-semibold">{item.value}</div>
+                                    <div className="text-xs text-gray-400">{item.title}</div>
+                                </div>
+
+                                <div
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center bg-${DashboardsCount[item.title]['color']}-500/20 text-${DashboardsCount[item.title]['color']}-400`}
+                                >
+                                    <Icon size={18} />
+                                </div>
                             </div>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-${item.color}-500/20 text-${item.color}-400`}>
-                                %
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* MIDDLE CARD */}
@@ -217,7 +391,7 @@ const ThirdPartyDashboard = () => {
                     <div className="flex justify-between items-center mb-4">
                         <div>
                             {/* <div className="text-sm text-gray-400">Required Patch</div> */}
-                             <h2 className="card-header"> Required Patch</h2>
+                            <h2 className="card-header"> Required Patch</h2>
                             <div className="text-2xl font-semibold">270 <span className="text-green-400 text-sm">↑</span></div>
                         </div>
                         <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
@@ -225,24 +399,19 @@ const ThirdPartyDashboard = () => {
                         </div>
                     </div>
 
-                    {[
-                        { label: "Critical", value: 20, color: "green" },
-                        { label: "High", value: 40, color: "red" },
-                        { label: "Medium", value: 12, color: "yellow" },
-                        { label: "Low", value: 8, color: "blue" },
-                    ].map((item, i) => (
+                    {requiredSeverityBar.map((item, i) => (
                         <div key={i} className="mb-5">
 
-                            <div className="flex items-center gap-2 text-xs">
+                            <div className="flex items-center gap-2 text-xs" >
 
                                 {/* Label */}
                                 <span className="text-gray-300 w-20">{item.label}</span>
 
-                                {/* Progress Bar */}
+
                                 <div className="flex-1 h-[10px] bg-gray-700 rounded">
                                     <div
-                                        className={`h-full ${colorMap[item.color]} rounded transition-all duration-500`}
-                                        style={{ width: `${item.value}%` }}
+                                        className={`h-full ${colorMap[SeverityCount[item.label]['color']]} rounded transition-all duration-500`}
+                                        style={{ width: `${item.count}%` }}
                                     ></div>
                                 </div>
 
@@ -262,13 +431,13 @@ const ThirdPartyDashboard = () => {
                     <div className="flex items-center gap-2 mb-4">
                         {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
                         {/* <span className="text-sm text-gray-300">Date Wise Patching Status</span> */}
-                         <h2 className="card-header"> Date Wise Patching Status </h2>
+                        <h2 className="card-header"> Date Wise Patching Status </h2>
                     </div>
 
                     {/* Chart */}
                     <div className="h-[220px]" >
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={data}>
+                            <AreaChart data={monthlyPatchLine}>
 
                                 {/* Gradients */}
                                 <defs>
@@ -307,29 +476,59 @@ const ThirdPartyDashboard = () => {
                                 {/* Areas */}
                                 <Area
                                     type="monotone"
-                                    dataKey="a"
+                                    dataKey="pending"
                                     stroke="#7c3aed"
                                     fill="url(#purple)"
                                     strokeWidth={2.5}
-                                    dot={true}
+                                    dot={{
+                                        r: 4,
+                                        onClick: (data) => {
+                                            const req = {
+                                                "yearmonth": data.payload.name
+                                            }
+
+                                            handleClickModalParameter('linechart', 'pending', req);
+                                        },
+                                        style: { cursor: "pointer" }
+                                    }}
                                 />
 
                                 <Area
                                     type="monotone"
-                                    dataKey="b"
+                                    dataKey="completed"
                                     stroke="#38bdf8"
                                     fill="url(#blue)"
                                     strokeWidth={2.5}
-                                    dot={true}
+                                    dot={{
+                                        r: 4,
+                                        onClick: (data) => {
+                                            const req = {
+                                                "yearmonth": data.payload.name
+                                            }
+
+                                            handleClickModalParameter('linechart', 'completed', req);
+                                        },
+                                        style: { cursor: "pointer" }
+                                    }}
                                 />
 
                                 <Area
                                     type="monotone"
-                                    dataKey="c"
+                                    dataKey="failed"
                                     stroke="#e879f9"
                                     fill="url(#pink)"
                                     strokeWidth={2.5}
-                                    dot={true}
+                                    dot={{
+                                        r: 4,
+                                        onClick: (data) => {
+                                            const req = {
+                                                "yearmonth": data.payload.name
+                                            }
+
+                                            handleClickModalParameter('linechart', 'failed', req);
+                                        },
+                                        style: { cursor: "pointer" }
+                                    }}
                                 />
 
                             </AreaChart>
@@ -346,7 +545,7 @@ const ThirdPartyDashboard = () => {
                     <div className="flex justify-between items-center mb-2">
                         <div>
                             {/* <div className="text-xs text-gray-400"> Application Patch Wise Status</div> */}
-                             <h2 className="card-header"> Application Patch Wise Status </h2>
+                            <h2 className="card-header"> Application Patch Wise Status </h2>
                             <div className="text-2xl font-semibold">
                                 670 <span className="text-green-400 text-sm">↑</span>
                             </div>
@@ -360,9 +559,9 @@ const ThirdPartyDashboard = () => {
                     {/* Chart */}
                     <div className="h-[220px] mt-2">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={dataPatchStatusDayWise} barGap={2}>
+                            <BarChart data={thirdPartyAppPatchStatus} barGap={2}>
 
-                                <XAxis hide dataKey="day" />
+                                <XAxis hide dataKey="name" />
 
                                 <Tooltip
                                     contentStyle={{
@@ -373,18 +572,56 @@ const ThirdPartyDashboard = () => {
 
                                 {/* Bottom (dark purple) */}
                                 <Bar
-                                    dataKey="b"
+                                    dataKey="completed"
                                     stackId="a"
                                     fill="#6d28d9"
                                     radius={[2, 2, 0, 0]}
+                                    cursor="pointer"
+                                    onClick={(data, index) => {
+                                        console.log("Clicked:", data);
+
+                                        const req = {
+                                            appName: data.name,
+                                            status : 'completed'
+                                        };
+
+                                        handleClickModalParameter('barchart', 'appwise', req);
+                                    }}
                                 />
 
                                 {/* Top (light gray) */}
                                 <Bar
-                                    dataKey="a"
+                                    dataKey="pending"
                                     stackId="a"
                                     fill="#475569"
                                     radius={[2, 2, 0, 0]}
+                                    onClick={(data, index) => {
+                                        console.log("Clicked:", data);
+
+                                       const req = {
+                                            appName: data.name,
+                                            status : 'pending'
+                                        };
+
+                                        handleClickModalParameter('barchart', 'appwise', req);
+                                    }}
+                                />
+                                <Bar
+                                    dataKey="failed"
+                                    stackId="a"
+                                    fill="#c72014"
+                                    radius={[2, 2, 0, 0]}
+                                    onClick={(data, index) => {
+                                        console.log("Clicked:", data);
+
+                                        const req = {
+                                            appName: data.name,
+                                            status : 'failed'
+                                        };
+
+
+                                        handleClickModalParameter('barchart', 'appwise', req);
+                                    }}
                                 />
 
                             </BarChart>
@@ -397,7 +634,7 @@ const ThirdPartyDashboard = () => {
                     <div className="flex justify-between items-center mb-3">
                         <div>
                             {/* <div className="text-xs text-gray-400">Machine Wise Status</div> */}
-                             <h2 className="card-header"> Machine Wise Status </h2>
+                            <h2 className="card-header"> Machine Wise Status </h2>
                             <div className="text-2xl font-semibold">
                                 270 <span className="text-green-400 text-sm">↑</span>
                             </div>
@@ -412,9 +649,9 @@ const ThirdPartyDashboard = () => {
                     <div className="border-t border-gray-800"></div>
 
                     {/* Bars */}
-                    <div className="h-[200px]">
+                    <div className="h-[250px] w-[100%]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={IpwiseData} layout="vertical">
+                            <BarChart data={thirdPartyIPPatchStatusChart} layout="vertical">
 
                                 {/* X Axis */}
                                 <XAxis type="number" stroke="#94a3b8" fontSize={12} />
@@ -422,7 +659,7 @@ const ThirdPartyDashboard = () => {
                                 {/* Y Axis */}
                                 <YAxis
                                     type="category"
-                                    dataKey="IPAddress"
+                                    dataKey="name"
                                     stroke="#94a3b8"
                                     width={120}
                                     fontSize={12}
@@ -441,29 +678,27 @@ const ThirdPartyDashboard = () => {
 
                                 {/* ✅ Success */}
                                 <Bar
-                                    dataKey="success"
+                                    dataKey="completed"
                                     stackId="a"
                                     fill="#22c55e"
                                     name="Success"
                                     radius={[0, 4, 4, 0]}
                                     onClick={(data) => {
-                                        handleClickModalParameter("ip_wise", "patch", {
-                                            ipaddress: data.IPAddress,
-                                            statusId: 4
+                                        handleClickModalParameter("hbarchart", "completed", {
+                                            status: 'Success'
                                         });
                                     }}
                                 />
 
-                                {/* ❌ Failed */}
+                             
                                 <Bar
-                                    dataKey="failed"
+                                    dataKey="pending"
                                     stackId="a"
                                     fill="#ef4444"
                                     name="Failed"
                                     onClick={(data) => {
-                                        handleClickModalParameter("ip_wise", "patch", {
-                                            ipaddress: data.IPAddress,
-                                            statusId: 3
+                                        handleClickModalParameter("hbarchart", "Failed", {
+                                            status: 'Failed'
                                         });
                                     }}
                                 />
@@ -475,9 +710,8 @@ const ThirdPartyDashboard = () => {
                                     fill="#facc15"
                                     name="Pending"
                                     onClick={(data) => {
-                                        handleClickModalParameter("ip_wise", "patch", {
-                                            ipaddress: data.IPAddress,
-                                            statusId: 2
+                                        handleClickModalParameter("hbarchart", "Pending", {
+                                            status: 'Pending'
                                         });
                                     }}
                                 />
@@ -496,7 +730,7 @@ const ThirdPartyDashboard = () => {
                         <div className="flex items-center gap-1">
                             {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
                             {/* <span className="text-sm text-gray-300">Top Risky Devices</span> */}
-                             <h2 className="card-header"> Top Risky Devices </h2>
+                            <h2 className="card-header"> Top Risky Devices </h2>
                         </div>
 
                         <span className="text-gray-500 cursor-pointer">•••</span>
@@ -509,21 +743,23 @@ const ThirdPartyDashboard = () => {
                         <div className="grid grid-cols-4 text-xs text-gray-400 bg-[#0f172a] px-3 py-2">
                             <span>Device</span>
                             <span>Missing Patches</span>
-                            <span>Last Updated</span>
+                            <span>Success Rate</span>
                             <span>Severity</span>
                         </div>
 
                         {/* Rows */}
-                        {topRiskyDevice.map((item, i) => (
+                        {thirdPartyTopRiskyDevices.map((item, i) => (
                             <div
                                 key={i}
                                 className="grid grid-cols-4 items-center px-3 py-2 text-xs border-t border-gray-800 hover:bg-[#0f172a]/50 transition"
                             >
                                 <span className="text-gray-300">{item.ip}</span>
 
-                                <span className="text-gray-300">{item.patches}</span>
+                                <span className="text-gray-300">{item.pending}</span>
 
-                                <span className="text-gray-400">{item.updated}</span>
+                                <span className="text-gray-400">{item.successRate}</span>
+
+
 
                                 <span>
                                     <span
@@ -553,7 +789,7 @@ const ThirdPartyDashboard = () => {
                         <div className="flex items-center gap-2">
                             {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
                             {/* <span className="text-sm text-gray-300">Machine-wise Patching Status</span> */}
-                             <h2 className="card-header"> Machine-wise Patching Status </h2>
+                            <h2 className="card-header"> Machine-wise Patching Status </h2>
                         </div>
 
                         <span className="text-gray-500 cursor-pointer">•••</span>
@@ -606,7 +842,7 @@ const ThirdPartyDashboard = () => {
                     <div className="flex justify-between mb-2">
                         <div>
                             {/* <div className="text-xs text-gray-400">Patch / Packet Progress</div> */}
-                             <h2 className="card-header"> Patch / Packet Progress </h2>
+                            <h2 className="card-header"> Patch / Packet Progress </h2>
                             <div className="text-2xl font-semibold">
                                 670 <span className="text-green-400 text-sm">↑</span>
                             </div>
@@ -667,7 +903,7 @@ const ThirdPartyDashboard = () => {
                     {/* Header */}
                     {/* <div className="text-xs text-gray-400 mb-2">Job Per Host</div> */}
 
- <h2 className="card-header">Job Per Host </h2>
+                    <h2 className="card-header">Job Per Host </h2>
                     <div className="h-[250px] relative">
                         <ResponsiveContainer width="100%" height="100%">
                             <RadialBarChart

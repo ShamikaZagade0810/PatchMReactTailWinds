@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzcwMDY4NDUsImV4cCI6MTc3NzA5MzI0NX0.RFSlGBh15d2LI15lLeSTVjFteX1rgpgGtz5G9i8jkGU';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzc2OTU4NjcsImV4cCI6MTc3Nzc4MjI2N30.YPs-jBU2AsX53gGDV5tYxszz1bXpFzjNJYKxbGO5hO8';
 const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
@@ -649,7 +649,7 @@ export const getAllStatusReport = (inputData) =>
     }
   );
 
-  export const getUpdateTimelineReport = (inputData) =>
+export const getUpdateTimelineReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GeneratePatchTimelineReport`,
     inputData,
@@ -660,7 +660,7 @@ export const getAllStatusReport = (inputData) =>
     }
   );
 
-   export const getdeviceAgentReport = (inputData) =>
+export const getdeviceAgentReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GenerateDeviceAgentReport`,
     inputData,
@@ -671,7 +671,7 @@ export const getAllStatusReport = (inputData) =>
     }
   );
 
-    export const getFailedUpdateReport = (inputData) =>
+export const getFailedUpdateReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GenerateFailedUpdateReport`,
     inputData,
@@ -682,7 +682,7 @@ export const getAllStatusReport = (inputData) =>
     }
   );
 
-     export const getCategoryWiseReport = (inputData) =>
+export const getCategoryWiseReport = (inputData) =>
   axios.post(
     `${BASE_URL}/reports/GenerateCategorywiseReport`,
     inputData,
@@ -696,7 +696,7 @@ export const getAllStatusReport = (inputData) =>
 export const getThirdPartyPatchCount = (inputData) =>
   axios.get(
     `${BASE_URL}/thirdpartyDash/PatchCount`,
- 
+
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -708,7 +708,7 @@ export const getThirdPartyPatchCount = (inputData) =>
 export const getThirdPartyMonthlyPatchLine = (inputData) =>
   axios.get(
     `${BASE_URL}/thirdpartyDash/MonthlyPatchLine`,
-   
+
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -731,6 +731,129 @@ export const getThirdPartyIPPatchStatusChart = (inputData) =>
   axios.get(
     `${BASE_URL}/thirdpartyDash/IPPatchStatusChart`,
 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getThirdPartyTopRiskyDevices = () =>
+  axios.get(`${BASE_URL}/thirdpartyDash/TopRiskyDevices`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getRequiredSeverityBar = () =>
+  axios.get(`${BASE_URL}/thirdpartyDash/RequiredSeverityBar`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+
+export const getThirdPatchCountListing = (inputData) =>
+  axios.post(
+    `${BASE_URL}/thirdpartyDash/PatchCountListing`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getThirdTotAppsListing = () =>
+  axios.get(`${BASE_URL}/thirdpartyDash/TotalAppsListing`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const getThirdUpToDateAppsListing = () =>
+  axios.get(`${BASE_URL}/thirdpartyDash/UptoDateAppsListing`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getThirdOutDatedAppsListing = () =>
+  axios.get(`${BASE_URL}/thirdpartyDash/OutDatedAppsListing`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getThirdMonthltPatchList = (inputData) =>
+  axios.post(
+    `${BASE_URL}/thirdpartyDash/MonthltPatchList`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getThirdAppWisePatchList = (inputData) =>
+  axios.post(
+    `${BASE_URL}/thirdpartyDash/AppWisePatchList`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const requestToServerForRemoteAction = (inputData) =>
+  axios.post(
+    `${BASE_URL}/RemoteAction/ReqToServer`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const requestIdForRemoteAction = (inputData) =>
+  axios.post(
+    `${BASE_URL}/RemoteAction/SelectedRequestIDList`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getAllBranchList = () =>
+  axios.get(`${BASE_URL}/dropdown/BranchDropdown`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+  export const getBranchWiseIpaddressList = (inputData) =>
+  axios.post(
+    `${BASE_URL}/dropdown/IpAddressDropdown`,
+    inputData,
     {
       headers: {
         Authorization: `Bearer ${token}`

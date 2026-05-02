@@ -141,14 +141,14 @@ export const PMOverviewDashboard = () => {
             
 
             <div className="mb-1 bg-white dark:bg-[#0B1220] p-4 ">
-                <div className="flex border-b">
+                <div className="flex">
                     {tabs.map((tab, index) => (
                         <button
                             key={index}
                             onClick={() => setActiveTab(index)}
                             className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all
                              ${activeTab === index
-                                    ? "text-md border-b-2 border-blue-500 text-blue-600"
+                                    ? "text-md border-b-3 border-blue-500 text-blue-600"
                                     : "text-gray-500 hover:text-blue-500"
                                 }`}
                         >

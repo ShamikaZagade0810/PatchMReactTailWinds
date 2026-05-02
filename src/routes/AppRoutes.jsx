@@ -8,6 +8,9 @@ import { PMOverviewDashboard } from "../pages/PMOverviewDashboard.jsx";
 import Devices from "../pages/Devices.jsx";
 import ReportsPage from "../pages/ReportsPage.jsx";
 import Adduser from "../pages/AddUser.jsx";
+import RunCmd from "../pages/RunCommand.jsx";
+import MultipleRunForm from "../pages/MultipleRunForm.jsx";
+import ApplicationUser from "../pages/ApplicationUser.jsx";
 
 import LinuxDashboard from "../pages/LinuxDashboard.jsx";
 import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
@@ -57,6 +60,23 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/runcmd"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <RunCmd />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/multiple-run"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <MultipleRunForm />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/dashboard/linuxDashboard"
           element={
@@ -78,6 +98,17 @@ export default function AppRoutes() {
 
               {/* <DbMonitoringDashboard /> */}
               <ThirdPartyDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+          <Route
+          path="/master/UserDetails"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+
+              {/* <DbMonitoringDashboard /> */}
+              <ApplicationUser />
             </ProtectedRoute>
           }
         />
