@@ -21,7 +21,8 @@ import {
   AlertTriangle,
   AppWindowMac,
   AppWindow,
-  ClipboardMinus
+  ClipboardMinus,
+  SquareTerminal
 } from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
 import logo from "../../assets/planet-gurard.png";
@@ -198,18 +199,24 @@ const sidebarData = [
     path: "master",
 
     children: [
-      {
-        name: "Create Application User",
-        path: "/master/Createuser",
+       {
+        name: "Application User Details",
+        path: "/master/UserDetails",
         icon: AppWindowMac,
         roles: ["admin"],
       },
-      {
-        name: "	View Application User",
-        path: "/master/view-user",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+      // {
+      //   name: "Create Application User",
+      //   path: "/master/Createuser",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "	View Application User",
+      //   path: "/master/view-user",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
       {
         name: "Customer Master",
         path: "/master/customer",
@@ -283,7 +290,12 @@ const sidebarData = [
     ],
   },
 
-
+ {
+    name: "Rum Command",
+    path: "/runcmd",
+    icon: SquareTerminal,
+    roles: ["admin"],
+  },
 
   {
     name: "Reports",

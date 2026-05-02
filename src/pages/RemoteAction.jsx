@@ -19,22 +19,20 @@ import {
 } from "lucide-react";
 
 import {
-  Search,
-  RefreshCw,
-  Power,
-  AlertTriangle,
-  DownloadCloud,
-  AppWindow,
-  Settings,
-  ShieldCheck
+    Search,
+    RefreshCw,
+    Power,
+    AlertTriangle,
+    DownloadCloud,
+    AppWindow,
+    Settings,
+    ShieldCheck
 } from "lucide-react";
 import { useState } from "react";
 import {
-    getPatchReport,
-    getmissingPatchReport,
-    getDeviceWiseReport,
-    getYearMonthReport,
-    getAllStatusReport
+    requestToServerForRemoteAction,
+    requestIdForRemoteAction
+
 } from "../api/projectApi";
 import { AsyncMotionValueAnimation } from 'framer-motion';
 import ReusableTable from '../components/Table/ReusableTable.jsx';
@@ -99,12 +97,8 @@ const RemoteAction = () => {
 
 
     const apiMapping = {
-        Report: {
-            missing: getmissingPatchReport,
-            patch: getPatchReport,
-            device: getDeviceWiseReport,
-            yearMonth: getYearMonthReport,
-            status: getAllStatusReport
+        Remote: {
+            DetectNow: requestToServerForRemoteAction,
         }
 
     };
@@ -123,72 +117,73 @@ const RemoteAction = () => {
     //     { id: "policydetails", name: "Policy Details", icons: TriangleAlert, iconcolor: "#EF4444" },
     // ];
 
+
     const modules = [
         {
-            id: "detect",
+            id: "DetectNow",
             name: "Detect Now",
-            icons: Search,                 // 🔍 better than FileText
+            icons: Search,
             iconcolor: "#3B82F6"
         },
         {
             id: "report",
             name: "Report Now",
-            icons: FileText,               // 📄 correct
+            icons: FileText,
             iconcolor: "#F59E0B"
         },
         {
             id: "update",
             name: "Update Now",
-            icons: RefreshCw,              // 🔄 better than ListTree
+            icons: RefreshCw,
             iconcolor: "#8B5CF6"
         },
         {
             id: "restart",
             name: "Restart Now",
-            icons: Power,                  // ⏻ better than Monitor
+            icons: Power,
             iconcolor: "#06B6D4"
         },
         {
             id: "missingpatches",
             name: "Missing Patches",
-            icons: AlertTriangle,          // ⚠️ better than Calendar
+            icons: AlertTriangle,
             iconcolor: "#0EA5E9"
         },
         {
             id: "discoverpatch",
             name: "Discover Patches",
-            icons: DownloadCloud,          // ⬇️ better than ListCheck
+            icons: DownloadCloud,
             iconcolor: "#10B981"
         },
         {
             id: "discoverapp",
             name: "Discover Application",
-            icons: AppWindow,              // 🧩 better than ClipboardClock
+            icons: AppWindow,
             iconcolor: "#6366F1"
         },
         {
             id: "synchronizepolicy",
             name: "Set Synchronise Policy",
-            icons: Settings,               // ⚙️ better than Activity
+            icons: Settings,
             iconcolor: "#22C55E"
         },
         {
             id: "policydetails",
             name: "Policy Details",
-            icons: ShieldCheck,            // 🛡️ better than TriangleAlert
+            icons: ShieldCheck,
             iconcolor: "#EF4444"
         },
     ];
 
     const filterConfig = {
-        detect: ["branchNames", "ipAddresses"],
-        report: ["branchNames", "ipAddresses"],
-        update: ["branchNames", "ipAddresses"],
-        restart: ["branchNames", "ipAddresses"],
-        missingpatches: ["branchNames", "ipAddresses"],
-        discoverpatch: ["branchNames", "ipAddresses"],
-        discoverapp: ["branchNames", "ipAddresses"],
-        synchronizepolicy: ["ipAddresses", "serverIp", "port", "patchUpdateParameter"]
+        DetectNow: ["branchNames", "ipAddress"],
+        report: ["branchNames", "ipAddress"],
+        update: ["branchNames", "ipAddress"],
+        restart: ["branchNames", "ipAddress"],
+        missingpatches: ["branchNames", "ipAddress"],
+        discoverpatch: ["branchNames", "ipAddress"],
+        discoverapp: ["branchNames", "ipAddress"],
+        synchronizepolicy: ["ipAddress", "serverIp", "port", "patchUpdateParameter"]
     };
     const selectedModule = modules[activeIndex];
     const activeFilters = filterConfig[selectedModule?.id] || [];
@@ -198,28 +193,6 @@ const RemoteAction = () => {
 
     const labelClass = "text-base text-gray-300 mb-1 block ";
     const filterFields = {
-        update: (
-            <div>
-                <label className="text-base text-gray-300 mb-1 block">Update</label>
-                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("update")}>
-                    <option value="" disabled> -- Please select value -- </option>
-                    <option value="all">All Updates</option>
-                    <option value="critical">Critical Updates</option>
-                    <option value="security">Security Updates</option>
-                </select>
-            </div>
-        ),
-
-        type: (
-            <div>
-                <label className="text-base text-gray-300 mb-1 block">Type</label>
-                <select className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("type")}>
-                    <option value="approve">Approved</option>
-                    <option value="decline">Declined</option>
-                    <option value="unapprove">Un Approved</option>
-                </select>
-            </div>
-        ),
 
         branchNames: (
             <div>
@@ -236,7 +209,7 @@ const RemoteAction = () => {
                 />
             </div>
         ),
-        ipAddresses: (
+        ipAddress: (
             <div>
                 <label className={labelClass}>IP Address</label>
                 <MultiSelect
@@ -244,61 +217,14 @@ const RemoteAction = () => {
                     value={selectedIPs}
                     onChange={setSelectedIPs}
                     placeholder="Select IP Addresses"
-                    id={"ipAddresses"}
+                    id={"ipAddress"}
                     setValue={setValue}
                 />
             </div>
         ),
 
-        year: (
-            <div>
-                <label className={labelClass}>Year</label>
-                <input
-                    type="text"
-                    placeholder="Enter Year"
-                    className={inputClass}
-                    {...register("year")}
-                />
-            </div>
-        ),
 
-        month: (
-            <div>
-                <label className={labelClass}>Month</label>
-                <select className={inputClass}  {...register("month")}>
-                    <option>Select Month</option>
-                    {[
-                        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                    ].map((m, i) => (
-                        <option key={i}>{m}</option>
-                    ))}
-                </select>
-            </div>
-        ),
 
-        category: (
-            <div>
-                <label className="text-base text-gray-300 mb-1 block">Category</label>
-                <select
-                    value={selectedCategory}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        setSelectedCategory(value);
-                        setValue('category', value);
-                        // reset dependent selections
-                        setSelectedIPs([]);
-                        setSelectedPatches([]);
-                    }}
-
-                    className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                    <option value="">-- Please select value --</option>
-                    <option value="deployment">Deployment Basis</option>
-                    <option value="endpoint">End Point Basis</option>
-                    <option value="patch">Patch Basis</option>
-                </select>
-            </div>
-        ),
 
         patchList: (
             <div>
@@ -314,22 +240,7 @@ const RemoteAction = () => {
             </div>
         ),
 
-        groupname: (
-            <div>
-                <label className="text-base text-gray-300 mb-1 block"> Group Name </label>
-                <select
-                    className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("groupname")}
-                >
-                    <option value=""  >-- Please select value --</option>
-                    <option value="All Computers" >All Computers</option>
-                    {groupnameOptions.map((g, i) => (
-                        <option key={i} value={g.value}>
-                            {g.label}
-                        </option>
-                    ))}
-                </select>
-            </div>
-        ),
+
         serverIp: (
             <div>
                 <label className={labelClass}>Server Ip</label>
@@ -370,37 +281,14 @@ const RemoteAction = () => {
         )
     };
 
+    const gettabledata = async (requestid) => {
 
-
-    const handleGenerateReportClick = async () => {
-
-        console.log("selectedModule ", selectedModule);
-
-        const inputData = filterConfig[selectedModule?.id];
-        console.log("input data", inputData);
-        if (selectedModule?.id === 'category') {
-            if (selectedCategory === "deployment") {
-                inputData.push('ipAddresses');
-                inputData.push('patchList');
-            }
+        let requestdata = {
+            "reqId": requestid
         }
-        // console.log("customDate",customDate.to);
-        const result = inputData.reduce((acc, element) => {
-            acc[element] = watch(element);
-            return acc;
-        }, {});
-
-        if (selectedModule?.id === "patch" || selectedModule?.id === "timeline") {
-            result["fromDate"] = customDate.from;
-            result["toDate"] = customDate.to;
-        }
-
-
-
-        console.log("Final Payload:", result);
+        const data = await requestIdForRemoteAction(requestdata);
 
         try {
-            const data = await apiMapping['Report'][selectedModule?.id](result);
             console.log("API Response:", data);
             let MainData = data.data.data[0].data;
             let ColumnData = data.data.data[0].column;
@@ -413,14 +301,59 @@ const RemoteAction = () => {
         } catch (error) {
             console.error("API Error:", error);
         }
+
+        console.log("New table data", data)
+    }
+
+    const handleSendRequestToMultipleClients = async () => {
+
+        console.log("selectedModule ", selectedModule);
+
+        const inputData = filterConfig[selectedModule?.id];
+        console.log("input data", inputData);
+
+        // console.log("customDate",customDate.to);
+
+        const result = inputData.reduce((acc, element) => {
+            acc[element] = watch(element);
+            return acc;
+        }, {});
+
+
+        result["type"] = "hello";
+        console.log("Final Payload:", result);
+        try {
+            const data = await apiMapping['Remote'][selectedModule?.id](result);
+            console.log("API Response:", data);
+            let requestid = data.data.data[0].ReqId;
+            console.log("response ---> ", requestid);
+            gettabledata(requestid);
+
+            const interval = setInterval(() => {
+                gettabledata(requestid);
+            }, 10000);
+
+            // Cleanup (VERY IMPORTANT)
+            return () => clearInterval(interval);
+            // let MainData = data.data.data[0].data;
+            // let ColumnData = data.data.data[0].column;
+            // let obj = {};
+            // obj.maindata = MainData;
+            // obj.columndata = ColumnData;
+            // console.log("obj ---> ", obj);
+            // setdynamicReport(obj)
+
+        } catch (error) {
+            console.error("API Error:", error);
+        }
     };
 
     {/* MAIN CONTENT */ }
     return (
-        <div className="min-h-screen bg-[#000000] text-white p-1">
+        // <div className="min-h-screen bg-[#000000] text-white p-1">
+        <div>
 
-
-            <div className="bg-[#0B1220] rounded-2xl p-6 ">
+            <div className="bg-[#0B1220] rounded-2xl p-6 shadow-xl border border-[#1E293B] ">
                 {/* Header */}
                 {/* <h2 className="text-sm text-gray-400 mb-1">REPORTS</h2> */}
                 <h1 className="text-3xl font-semibold mb-6">Remote Action </h1>
@@ -490,13 +423,13 @@ const RemoteAction = () => {
                                     {/* 🔥 Dependent filters based on category */}
                                     {key === "category" && selectedCategory === "deployment" && (
                                         <>
-                                            <div>{filterFields["ipAddresses"]}</div>
+                                            <div>{filterFields["ipAddress"]}</div>
                                             <div>{filterFields["patchList"]}</div>
                                         </>
                                     )}
 
                                     {key === "category" && selectedCategory === "endpoint" && (
-                                        <div>{filterFields["ipAddresses"]}</div>
+                                        <div>{filterFields["ipAddress"]}</div>
                                     )}
 
                                     {key === "category" && selectedCategory === "patch" && (
@@ -514,15 +447,24 @@ const RemoteAction = () => {
 
                 {/* Generate Button */}
                 <div className="flex justify-end mt-6">
-                    <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-lg" onClick={() => { handleGenerateReportClick() }}>
-                        Generate Report
+                    <button className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded-lg" onClick={() => { handleSendRequestToMultipleClients() }}>
+                        Send Request
                     </button>
                 </div>
             </div>
 
+            {/* 🔥 Divider */}
+            {/* <div className="my-6 h-[1px] bg-gradient-to-r from-transparent via-gray-500 to-transparent"></div> */}
+            <div className="flex items-center my-6">
+                <div className="flex-grow h-px bg-gray-700"></div>
+                <span className="px-4 text-sm text-gray-400">LIVE STATUS</span>
+                <div className="flex-grow h-px bg-gray-700"></div>
+            </div>
+
+
             {/* Bottom Section */}
-            <div className="bg-[#111C2E] rounded-2xl mt-6 p-10 text-center">
-                <h3 className="text-sm text-gray-400 mb-2">REPORT</h3>
+            <div className="bg-[#111C2E] rounded-2xl mt-6 p-10 text-center ">
+                {/* <h3 className="text-sm text-gray-400 mb-2">REPORT</h3> */}
                 {/* <h2 className="text-xl font-semibold mb-2">
                     No Report Generated Yet
                 </h2>

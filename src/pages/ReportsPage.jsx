@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../layouts/Css/Style.css';
 import { useForm } from "react-hook-form";
 import MultiSelect from '../layouts/MultiSelect.jsx';
@@ -27,8 +27,10 @@ import {
     getUpdateTimelineReport,
     getdeviceAgentReport,
     getFailedUpdateReport,
-    getCategoryWiseReport
+    getCategoryWiseReport,
+    getAllBranchList
 } from "../api/projectApi";
+import { ToastContainer, toast } from 'react-toastify';
 import { AsyncMotionValueAnimation } from 'framer-motion';
 import ReusableTable from '../components/Table/ReusableTable.jsx';
 
@@ -44,6 +46,7 @@ const ReportsPage = () => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [selectedRange, setSelectedRange] = useState(null);
     const [showCustomDates, setShowCustomDates] = useState(false);
+    const [branchList , setBranchList] = useState([]);
     const [dynamicReport, setdynamicReport] = useState({ columndata: [], maindata: [] });
     const [customDate, setCustomDate] = useState({
         from: "",
@@ -60,14 +63,14 @@ const ReportsPage = () => {
         { value: "192.168.0.15", label: "192.168.0.15" },
         { value: "192.168.0.54", label: "192.168.0.54" },
         { value: "192.168.0.104", label: "192.168.0.104" },
-         { value: "192.168.0.53", label: "192.168.0.53" },
+        { value: "192.168.0.53", label: "192.168.0.53" },
     ];
 
     const patchOptions = [
         { value: "KB5072033", label: "KB5072033" },
         { value: "KB5071547", label: "KB5071547" },
         { value: "KB5071142", label: "KB5071142" },
-         { value: "KB5010475", label: "KB5010475" },
+        { value: "KB5010475", label: "KB5010475" },
     ];
     const groupnameOptions = [
         { value: "allcomputers", label: "All Computers" },
@@ -85,6 +88,27 @@ const ReportsPage = () => {
     const DEFAULT_COLOR = "#3B82F6";
 
 
+    useEffect(() => {
+
+        initialApiReq();
+
+
+    }, []);
+
+
+    const branchChange = (Data)=>{
+         console.log("Data ",data);
+    }
+
+
+
+    const initialApiReq = async () => {
+        const data = await getAllBranchList();
+        console.log("data --> ", data.data.data);
+        setBranchList(data.data.data);
+
+    }
+
 
     const apiMapping = {
         Report: {
@@ -95,8 +119,8 @@ const ReportsPage = () => {
             status: getAllStatusReport,
             timeline: getUpdateTimelineReport,
             agent: getdeviceAgentReport,
-            failed : getFailedUpdateReport,
-            category : getCategoryWiseReport
+            failed: getFailedUpdateReport,
+            category: getCategoryWiseReport
         }
 
     };
@@ -123,8 +147,8 @@ const ReportsPage = () => {
         yearMonth: ["year", "month"],
         status: ["branchNames", "ipAddresses"],
         timeline: ["groupname"],
-        agent : [],
-        failed : [],
+        agent: [],
+        failed: [],
 
     };
     const selectedModule = modules[activeIndex];
@@ -151,7 +175,7 @@ const ReportsPage = () => {
             <div>
                 <label className="filter-label">Type</label>
                 <select className="filter-input focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("type")}>
-                      <option value="" disabled> -- Please select value -- </option>
+                    <option value="" disabled> -- Please select value -- </option>
                     <option value="approve">Approved</option>
                     <option value="decline">Declined</option>
                     <option value="unapprove">Un Approved</option>
@@ -164,7 +188,7 @@ const ReportsPage = () => {
                 <label className={labelClass}>Branch Name</label>
 
                 <MultiSelect
-                    options={branchOptions}
+                    options={branchList}
                     value={selectedBranches}
                     onChange={setSelectedBranches}
                     placeholder="Select Branch Names"
@@ -204,7 +228,7 @@ const ReportsPage = () => {
             <div>
                 <label className=" filter-label">Month</label>
                 <select className="filter-input focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("month")}>
-                      <option value="" disabled> -- Select Month -- </option>
+                    <option value="" disabled> -- Select Month -- </option>
                     {/* <option>Select Month</option> */}
                     {[
                         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -287,7 +311,7 @@ const ReportsPage = () => {
             if (selectedCategory === "endpoint") {
                 inputData.push('ipAddresses');
             }
-             if (selectedCategory === "patch") {
+            if (selectedCategory === "patch") {
                 inputData.push('patchList');
             }
         }
@@ -297,14 +321,28 @@ const ReportsPage = () => {
             return acc;
         }, {});
 
+        console.log("Final Payload:", result);
+        const emptyFields = Object.entries(result)
+            .filter(([key, value]) =>
+                value === null ||
+                value === undefined ||
+                value === ""
+            )
+            .map(([key]) => key);
+
+        if (emptyFields.length > 0) {
+            toast.error(`Please fill the following fields: ${emptyFields.join(", ")}`);
+            return;
+        }
+
         if (selectedModule?.id === "patch" || selectedModule?.id === "timeline" || selectedModule?.id === "agent" || selectedModule?.id === "failed") {
+            if (customDate.from == "" || customDate.to) {
+                toast("Plz Fill The Date Range Field ");
+                return;
+            }
             result["fromDate"] = customDate.from;
             result["toDate"] = customDate.to;
         }
-
-
-
-        console.log("Final Payload:", result);
 
         try {
             const data = await apiMapping['Report'][selectedModule?.id](result);
@@ -325,7 +363,7 @@ const ReportsPage = () => {
     {/* MAIN CONTENT */ }
     return (
         <div className="min-h-screen bg-[#000000] text-white p-1">
-
+            <ToastContainer />
 
             <div className="bg-[#0B1220] rounded-2xl p-6 ">
                 {/* Header */}
