@@ -328,13 +328,21 @@ export const Sidebar = ({
           <img
             src={logo}
             alt="Logo"
-            className="h-8 w-8 shrink-0 rounded-lg transition-all"
+            // className="h-8 w-8 shrink-0 rounded-lg transition-all"
+              className={`h-8 w-8 rounded-lg transition-all duration-300 
+    ${isOpen ? "scale-100" : "scale-110"}
+  `}
           />
-          {isOpen && (
+          {/* {isOpen && (
             <span className="font-bold text-gray-800 dark:text-white text-md truncate">
               PM
             </span>
-          )}
+          )} */}
+          <span className={`font-bold transition-all duration-300 
+  ${isOpen ? "opacity-100 ml-0" : "opacity-0 -ml-2"}
+`}>
+  PM
+</span>
         </div>
 
         <button
@@ -376,7 +384,9 @@ export const Sidebar = ({
               {activeItemData?.name || "Dashboard"}
             </p>
             <div className="flex items-center gap-2 text-xs text-gray-500">
-              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              {/* <div className="w-2 h-2 rounded-full bg-green-500"></div> */}
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
+<div className="w-2 h-2 rounded-full bg-green-500 absolute"></div>
               <span>Connected</span>
             </div>
           </div>
