@@ -860,3 +860,44 @@ export const getAllBranchList = () =>
       }
     }
   );
+
+    export const AddActivityCmd = (inputData) =>
+  axios.post(
+    `${BASE_URL}/RunCommand/addcmdactivity`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const getActivityCmdList = () =>
+  axios.get(`${BASE_URL}/RunCommand/ActivityCmdlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  export const getUpdateActivityCmd = (inputData) =>
+  axios.put(
+    `${BASE_URL}/RunCommand/updateActivityCmd`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+ export const getdeleteActivityCmd = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/RunCommand/deleteActivityCmd`,   
+    {
+       data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
