@@ -60,10 +60,6 @@ const ApplicationUser = () => {
 
         setEditData(item);     // store selected row
         setIsModalOpen(true);  // open modal
-
-        // Example: populate form (you can extend this)
-        // setActiveTab(0);
-        // setFormData(item);
     };
 
   return (

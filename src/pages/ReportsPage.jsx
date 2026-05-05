@@ -28,7 +28,8 @@ import {
     getdeviceAgentReport,
     getFailedUpdateReport,
     getCategoryWiseReport,
-    getAllBranchList
+    getAllBranchList,
+    getBranchWiseIpaddressList
 } from "../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
 import { AsyncMotionValueAnimation } from 'framer-motion';
@@ -46,8 +47,10 @@ const ReportsPage = () => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [selectedRange, setSelectedRange] = useState(null);
     const [showCustomDates, setShowCustomDates] = useState(false);
-    const [branchList , setBranchList] = useState([]);
+    const [branchList, setBranchList] = useState([]);
+    const [ipAddressList, setIpAddressList] = useState([]);
     const [dynamicReport, setdynamicReport] = useState({ columndata: [], maindata: [] });
+    const [loading, setLoading] = useState(false);
     const [customDate, setCustomDate] = useState({
         from: "",
         to: ""
@@ -96,8 +99,18 @@ const ReportsPage = () => {
     }, []);
 
 
-    const branchChange = (Data)=>{
-         console.log("Data ",data);
+    const branchChange = async (Data) => {
+
+        setSelectedBranches(Data);
+        const singleBranchlist = Data.map(obj => obj.label);
+
+        const reqData = {
+            "branch": singleBranchlist
+        }
+
+        const Iplist = await getBranchWiseIpaddressList(reqData);
+        setIpAddressList(Iplist.data.data);
+
     }
 
 
@@ -106,6 +119,7 @@ const ReportsPage = () => {
         const data = await getAllBranchList();
         console.log("data --> ", data.data.data);
         setBranchList(data.data.data);
+
 
     }
 
@@ -187,14 +201,12 @@ const ReportsPage = () => {
             <div>
                 <label className={labelClass}>Branch Name</label>
 
-                <MultiSelect
-                    options={branchList}
+                <MultiSelect options={branchList}
                     value={selectedBranches}
-                    onChange={setSelectedBranches}
+                    onChange={branchChange}
                     placeholder="Select Branch Names"
                     id={"branchNames"}
                     setValue={setValue}
-
                 />
             </div>
         ),
@@ -202,7 +214,7 @@ const ReportsPage = () => {
             <div>
                 <label className={labelClass}>IP Address</label>
                 <MultiSelect
-                    options={ipOptions}
+                    options={ipAddressList}
                     value={selectedIPs}
                     onChange={setSelectedIPs}
                     placeholder="Select IP Addresses"
@@ -343,7 +355,7 @@ const ReportsPage = () => {
             result["fromDate"] = customDate.from;
             result["toDate"] = customDate.to;
         }
-
+        setLoading(true);
         try {
             const data = await apiMapping['Report'][selectedModule?.id](result);
             console.log("API Response:", data);
@@ -358,12 +370,26 @@ const ReportsPage = () => {
         } catch (error) {
             console.error("API Error:", error);
         }
+        setLoading(false);
     };
 
     {/* MAIN CONTENT */ }
     return (
         <div className="min-h-screen bg-[#000000] text-white p-1">
             <ToastContainer />
+            {loading && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
+                    <div className="flex flex-col items-center gap-3">
+
+                        {/* Spinner */}
+                        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                        {/* Text */}
+                        <p className="text-white text-sm">Loading data...</p>
+
+                    </div>
+                </div>
+            )}
 
             <div className="bg-[#0B1220] rounded-2xl p-6 ">
                 {/* Header */}

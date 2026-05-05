@@ -33,7 +33,7 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
 
     let onlyvalue = newValue.map(obj => obj.value);
     
-    setValue(id, onlyvalue);
+    setValue(id, onlyvalue,  { shouldValidate: true });
     onChange(newValue);
   };
 

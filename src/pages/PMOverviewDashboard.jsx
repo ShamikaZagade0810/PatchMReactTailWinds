@@ -94,7 +94,7 @@ export const PMOverviewDashboard = () => {
             label: "Overview",
             icon: <Calendar size={18} />,
             content: (
-                  <OverviewDashboard />
+                <OverviewDashboard />
             ),
         },
         {
@@ -116,7 +116,7 @@ export const PMOverviewDashboard = () => {
                 </div>
             ),
         },
-         {
+        {
             label: "Remote Action",
             icon: <Activity size={18} />,
             content: (
@@ -138,7 +138,7 @@ export const PMOverviewDashboard = () => {
 
         <div className="min-h-screen bg-gray-200 dark:bg-[#000000] text-white  ">
 
-            
+
 
             <div className="mb-1 bg-white dark:bg-[#0B1220] p-4 ">
                 <div className="flex">

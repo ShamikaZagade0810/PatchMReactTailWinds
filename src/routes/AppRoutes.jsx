@@ -11,9 +11,9 @@ import Adduser from "../pages/AddUser.jsx";
 import RunCmd from "../pages/RunCommand.jsx";
 import MultipleRunForm from "../pages/MultipleRunForm.jsx";
 import ApplicationUser from "../pages/ApplicationUser.jsx";
-
 import LinuxDashboard from "../pages/LinuxDashboard.jsx";
 import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
+import SendMultiplePatches  from "../pages/contentDistribution/SendMultiplePatches.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -120,6 +120,16 @@ export default function AppRoutes() {
 
               {/* <DbMonitoringDashboard /> */}
               <Adduser />
+            </ProtectedRoute>
+          }
+        />
+
+
+         <Route path="/content/send-multiple"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <SendMultiplePatches />
+          
             </ProtectedRoute>
           }
         />

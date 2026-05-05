@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../layouts/Css/Style.css';
 import { useForm } from "react-hook-form";
 import MultiSelect from '../layouts/MultiSelect.jsx';
@@ -31,11 +31,14 @@ import {
 import { useState } from "react";
 import {
     requestToServerForRemoteAction,
-    requestIdForRemoteAction
+    requestIdForRemoteAction,
+    getAllBranchList,
+    getBranchWiseIpaddressList
 
 } from "../api/projectApi";
 import { AsyncMotionValueAnimation } from 'framer-motion';
 import ReusableTable from '../components/Table/ReusableTable.jsx';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const RemoteAction = () => {
@@ -49,6 +52,9 @@ const RemoteAction = () => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [selectedRange, setSelectedRange] = useState(null);
     const [showCustomDates, setShowCustomDates] = useState(false);
+    const [branchList, setBranchList] = useState([]);
+    const [ipAddressList, setIpAddressList] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [dynamicReport, setdynamicReport] = useState({ columndata: [], maindata: [] });
     const [customDate, setCustomDate] = useState({
         from: "",
@@ -103,7 +109,25 @@ const RemoteAction = () => {
 
     };
 
+    useEffect(() => {
 
+        initialApiReq();
+
+
+    }, []);
+
+
+    const initialApiReq = async () => {
+        const data = await getAllBranchList();
+        console.log("data --> ", data.data.data);
+        const Branches = [
+            { label: "ALL", value: "All" },
+            ...data.data.data
+        ];
+        setBranchList(Branches);
+
+
+    }
 
     // const modules = [
     //     { id: "detect", name: "Detect Now", icons: FileText, iconcolor: "#3B82F6" },
@@ -116,6 +140,21 @@ const RemoteAction = () => {
     //     { id: "synchronizepolicy", name: "Set Synchronise Policy", icons: Activity, iconcolor: "#22C55E" },
     //     { id: "policydetails", name: "Policy Details", icons: TriangleAlert, iconcolor: "#EF4444" },
     // ];
+
+    const branchChange = async (Data) => {
+
+        setSelectedBranches(Data);
+        const singleBranchlist = Data.map(obj => obj.label);
+
+        const reqData = {
+            "branch": singleBranchlist
+        }
+
+        const Iplist = await getBranchWiseIpaddressList(reqData);
+        setIpAddressList(Iplist.data.data);
+
+
+    }
 
 
     const modules = [
@@ -199,9 +238,9 @@ const RemoteAction = () => {
                 <label className={labelClass}>Branch Name</label>
 
                 <MultiSelect
-                    options={branchOptions}
+                    options={branchList}
                     value={selectedBranches}
-                    onChange={setSelectedBranches}
+                    onChange={branchChange}
                     placeholder="Select Branch Names"
                     id={"branchNames"}
                     setValue={setValue}
@@ -213,7 +252,7 @@ const RemoteAction = () => {
             <div>
                 <label className={labelClass}>IP Address</label>
                 <MultiSelect
-                    options={ipOptions}
+                    options={ipAddressList}
                     value={selectedIPs}
                     onChange={setSelectedIPs}
                     placeholder="Select IP Addresses"
@@ -319,16 +358,31 @@ const RemoteAction = () => {
             return acc;
         }, {});
 
-
-        result["type"] = "hello";
         console.log("Final Payload:", result);
+        const emptyFields = Object.entries(result)
+            .filter(([key, value]) =>
+                value === null ||
+                value === undefined ||
+                value === ""
+            )
+            .map(([key]) => key);
+
+        if (emptyFields.length > 0) {
+            toast.error(`Please fill the following fields: ${emptyFields.join(", ")}`);
+            return;
+        }
+
+
+        result["type"] = selectedModule?.id;
+        console.log("Final Payload:", result);
+        setLoading(true);
         try {
             const data = await apiMapping['Remote'][selectedModule?.id](result);
             console.log("API Response:", data);
             let requestid = data.data.data[0].ReqId;
             console.log("response ---> ", requestid);
             gettabledata(requestid);
-
+            setLoading(false);
             const interval = setInterval(() => {
                 gettabledata(requestid);
             }, 10000);
@@ -342,7 +396,7 @@ const RemoteAction = () => {
             // obj.columndata = ColumnData;
             // console.log("obj ---> ", obj);
             // setdynamicReport(obj)
-
+            //  inputData.forEach(obj =>  setValue(obj , ''));
         } catch (error) {
             console.error("API Error:", error);
         }
@@ -354,6 +408,20 @@ const RemoteAction = () => {
         <div>
 
             <div className="bg-[#0B1220] rounded-2xl p-6 shadow-xl border border-[#1E293B] ">
+                <ToastContainer />
+                {loading && (
+                    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
+                        <div className="flex flex-col items-center gap-3">
+
+                            {/* Spinner */}
+                            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                            {/* Text */}
+                            <p className="text-white text-sm">Loading data...</p>
+
+                        </div>
+                    </div>
+                )}
                 {/* Header */}
                 {/* <h2 className="text-sm text-gray-400 mb-1">REPORTS</h2> */}
                 <h1 className="text-3xl font-semibold mb-6">Remote Action </h1>

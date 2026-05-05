@@ -93,12 +93,7 @@ const sidebarData = [
     roles: ["admin"],
     path: "content",
     children: [
-      {
-        name: "Manage Patches",
-        path: "/content/manage",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+   
       {
         name: "Send Multiple Patches",
         path: "/content/send-multiple",
@@ -111,25 +106,6 @@ const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-      {
-        name: "View Failed Transfer",
-        path: "/content/view failed",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Patch Report",
-        path: "/content/report",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Patch ID Report",
-        path: "/content/id-report",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-
     ],
   },
 
