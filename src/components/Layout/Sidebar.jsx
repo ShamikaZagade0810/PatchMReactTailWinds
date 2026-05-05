@@ -29,36 +29,36 @@ import logo from "../../assets/planet-gurard.png";
 import { useAuth } from "../../context/AuthContext";
 
 const sidebarData = [
+  // {
+  //   name: "Dashboards",
+  //   icon: LayoutDashboard,
+  //   roles: ["admin"],
+  //   path: "/dashboard2",
+  //   children: [
+  //     {
+  //       name: "Project Reports",
+  //       path: "/dashboard2/mainDashboard",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "Incidence Dashboard",
+  //       path: "/dashboard2/incidence",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "Patch Dashboard",
+  //       path: "/dashboard2/patch",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+
+  //   ],
+  // },
+
   {
     name: "Dashboards",
-    icon: LayoutDashboard,
-    roles: ["admin"],
-    path: "/dashboard2",
-    children: [
-      {
-        name: "Project Reports",
-        path: "/dashboard2/mainDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Incidence Dashboard",
-        path: "/dashboard2/incidence",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Patch Dashboard",
-        path: "/dashboard2/patch",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-
-    ],
-  },
-
-  {
-    name: "Dashboards1",
     icon: LayoutDashboard,
     roles: ["admin"],
     path: "/dashboard",
@@ -238,33 +238,33 @@ const sidebarData = [
 
     ],
   },
-  {
-    name: "Run CMD Execution",
-    icon: LayoutDashboard,
-    roles: ["admin"],
-    path: "cmd",
+  // {
+  //   name: "Run CMD Execution",
+  //   icon: LayoutDashboard,
+  //   roles: ["admin"],
+  //   path: "cmd",
 
-    children: [
-      {
-        name: "Add Activity Command",
-        path: "/cmd/add",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "View Activity Command",
-        path: "/cmd/view",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Multiple Run Command",
-        path: "/cmd/multi-run",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-    ],
-  },
+  //   children: [
+  //     {
+  //       name: "Add Activity Command",
+  //       path: "/cmd/add",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "View Activity Command",
+  //       path: "/cmd/view",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "Multiple Run Command",
+  //       path: "/cmd/multi-run",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //   ],
+  // },
 
  {
     name: "Rum Command",
