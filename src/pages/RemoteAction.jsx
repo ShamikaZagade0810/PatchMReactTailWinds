@@ -32,7 +32,6 @@ import { useState } from "react";
 import {
     requestToServerForRemoteAction,
     requestIdForRemoteAction
-
 } from "../api/projectApi";
 import { AsyncMotionValueAnimation } from 'framer-motion';
 import ReusableTable from '../components/Table/ReusableTable.jsx';
@@ -188,8 +187,7 @@ const RemoteAction = () => {
     const selectedModule = modules[activeIndex];
     const activeFilters = filterConfig[selectedModule?.id] || [];
 
-    const inputClass =
-        "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
+    const inputClass = "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
 
     const labelClass = "text-base text-gray-300 mb-1 block ";
     const filterFields = {
