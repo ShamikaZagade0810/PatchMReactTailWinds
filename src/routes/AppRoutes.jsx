@@ -7,13 +7,25 @@ import DbMonitoringDashboard from "../pages/DbMonitoringDashboard.jsx";
 import { PMOverviewDashboard } from "../pages/PMOverviewDashboard.jsx";
 import Devices from "../pages/Devices.jsx";
 import ReportsPage from "../pages/ReportsPage.jsx";
-import Adduser from "../pages/AddUser.jsx";
-import RunCmd from "../pages/RunCommand.jsx";
-import MultipleRunForm from "../pages/MultipleRunForm.jsx";
-import ApplicationUser from "../pages/ApplicationUser.jsx";
+import Adduser from "../pages/Master/AddUser.jsx";
+
+import RunCmd from "../pages/RunCommand/RunCommand.jsx";
+import MultipleRunForm from "../pages/RunCommand/MultipleRunForm.jsx";
+import ApplicationUser from "../pages/Master/ApplicationUser.jsx";
+import ViewDevices from "../pages/Master/ViewDevices.jsx";
+import CustomerMaster from "../pages/Master/CustomerMaster.jsx";
+import BranchMaster from "../pages/Master/BranchMaster.jsx";
+import GroupMaster from "../pages/Master/GroupMaster.jsx";
+import ServerMaster from "../pages/Master/ServerMaster.jsx";
+import OEMMaster from "../pages/Master/OEMMaster.jsx";
+import SetServerPolicy from "../pages/Master/SetServerPolicy.jsx";
+import ScheduleMailReports from "../pages/Master/ScheduleMailReports.jsx";
+import MailConfig from "../pages/Master/MailConfig.jsx";
+import PeriodicReport from "../pages/Master/PeriodicReport.jsx";
+
 import LinuxDashboard from "../pages/LinuxDashboard.jsx";
 import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
-import SendMultiplePatches  from "../pages/contentDistribution/SendMultiplePatches.jsx";
+import SendMultiplePatches from "../pages/contentDistribution/SendMultiplePatches.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -77,8 +89,7 @@ export default function AppRoutes() {
           }
         />
 
-        <Route
-          path="/dashboard/linuxDashboard"
+        <Route path="/dashboard/linuxDashboard"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
 
@@ -88,11 +99,7 @@ export default function AppRoutes() {
           }
         />
 
-
-
-
-        <Route
-          path="/dashboard/thirdPartyApp"
+        <Route path="/dashboard/thirdPartyApp"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
 
@@ -102,8 +109,7 @@ export default function AppRoutes() {
           }
         />
 
-          <Route
-          path="/master/UserDetails"
+        <Route path="/master/UserDetails"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
 
@@ -113,8 +119,7 @@ export default function AppRoutes() {
           }
         />
 
-        <Route
-          path="/master/Createuser"
+        <Route path="/master/Createuser"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
 
@@ -124,19 +129,94 @@ export default function AppRoutes() {
           }
         />
 
-
-         <Route path="/content/send-multiple"
+        <Route path="/master/view-devices"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-              <SendMultiplePatches />
-          
+              <ViewDevices />
             </ProtectedRoute>
           }
         />
 
+        <Route path="/master/CustomerDetails"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <CustomerMaster />
+            </ProtectedRoute>
+          } />
+
+        <Route path="/master/Branch"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <BranchMaster />
+            </ProtectedRoute>
+          } />
+
+        <Route path="/master/Group"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <GroupMaster />
+            </ProtectedRoute>
+          } />
+
+        <Route path="/master/Server"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <ServerMaster />
+            </ProtectedRoute>
+          } />
+
+
+        <Route path="/master/OEM"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <OEMMaster />
+            </ProtectedRoute>
+          } />
+
+        <Route path="/master/setPolicy"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <SetServerPolicy />
+            </ProtectedRoute>
+          } />
+
+        <Route path="/master/MailReports"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <ScheduleMailReports />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/master/mail-config"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <MailConfig />
+            </ProtectedRoute>
+          } />
+
+        <Route path="/master/periodic-report"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PeriodicReport />
+            </ProtectedRoute>
+          } />
+          PeriodicReport
+
+
+
+
+
+
+        <Route path="/content/send-multiple"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <SendMultiplePatches />
+
+            </ProtectedRoute>
+          }
+        />
 
       </Route>
-
 
     </Routes >
   );

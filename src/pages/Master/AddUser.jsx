@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import MultiSelect from '../layouts/MultiSelect.jsx';
+import MultiSelect from '../../layouts/MultiSelect.jsx';
 
 const AddUser = () => {
     const {

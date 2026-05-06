@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import {
     requestToServerForRemoteAction,
     requestIdForRemoteAction
-} from "../api/projectApi";
-import MultiSelect from '../layouts/MultiSelect.jsx';
+} from "../../api/projectApi";
+import MultiSelect from '../../layouts/MultiSelect.jsx';
 import { useForm } from "react-hook-form";
-import ReusableTable from '../components/Table/ReusableTable.jsx';
+import ReusableTable from '../../components/Table/ReusableTable.jsx';
 
 const MultipleRunForm = () => {
   const {

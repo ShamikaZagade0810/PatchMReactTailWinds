@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Pencil, Trash2, ShieldUser } from "lucide-react";
-import MultiSelect from '../layouts/MultiSelect.jsx';
+import MultiSelect from '../../layouts/MultiSelect.jsx';
 
 const UserList = () => {
   const {
@@ -20,6 +20,9 @@ const UserList = () => {
   password: "",
   confirmPassword: ""
 });
+
+ const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
 
      
     const OEMOptions = [
@@ -41,6 +44,29 @@ const UserList = () => {
   { username: "tester", type: "User", contactNo: "1234567890", emailId: "tester@gmail.com", firstName: "tester", lastName: "new" }
 ];
 
+  useEffect(() => {
+        initialApiReq();
+    }, []);
+
+      const initialApiReq = async () => {
+            // const data = await getActivityCmdList();
+            try {
+              console.log("inside initialApiReq--> ");
+                // console.log("data --> ", data);
+                // let tableData = data.data.data[0].data;
+                // let ColumnData = data.data.data[0].column;
+                // let obj = {};
+                // obj.maindata = MainData;
+                // obj.columndata = ColumnData;
+                // console.log("tableData ---> ", tableData);
+                // setActivityList(tableData);
+                // setdynamicReport(obj)
+            } catch (error) {
+                console.error("API Error:", error);
+            }
+    
+    
+        }
   const handleEdit = (item, index) => {
         console.log("Edit clicked:", item);
         setEditData(item);     // store selected row
@@ -51,17 +77,50 @@ const UserList = () => {
         console.log("Reset clicked:", item);
         // setEditData(item);     // store selected row
          setResetData({
-    username: row.username,
+    username: item.username,
     password: "",
     confirmPassword: ""
   });
   setIsResetModalOpen(true);
     };
+
+
+       // DELETE COMMAND
+        
+    
+   const handleDelete = (item) => {
+    console.log("item:", item);
+             console.log("item.id:", item.id);    
+        setDeleteId(item); // or item.srNo       
+        setIsDeleteOpen(true);
+    };
+    const confirmDelete = async () => {
+         console.log("deleteId:", deleteId);
+         console.log("type of deleteId:", typeof deleteId);
+        try {
+            const payload = {
+                srNo: deleteId
+            };
+
+            // await getdeleteActivityCmd(payload); // your API
+    
+            toast.success("Deleted successfully");
+    
+            setIsDeleteOpen(false);
+            setDeleteId(null);
+    
+            // refresh table
+            initialApiReq();
+    
+        } catch (error) {
+            console.error(error);
+            toast.error("Delete failed");
+        }
+    };
     
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
     const inputClass = "w-full h-[34px] px-2 text-[12px] bg-[#1E293B] text-white rounded-md border border-[#2A3A55] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
-    const btnClass =
-        "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
+    const btnClass = "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
  const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
     
   return (
@@ -109,7 +168,7 @@ const UserList = () => {
 
                                         {/* Reset Password Button */}
                                         <button className="px-2 py-1 text-xs text-amber-400 hover:text-amber-500 rounded-md hover:bg-amber-500/30 transition"
-                                            onClick={() => handleResetClick(index)}><ShieldUser size={22} /> </button>                                            
+                                            onClick={() => handleRestPass(item, index)}><ShieldUser size={22} /> </button>                                            
 
                                     </div>
                                 </td>
@@ -358,6 +417,43 @@ const UserList = () => {
 
     </div>
   </div>
+)}
+
+
+{/* Delete MODAL */}
+ {isDeleteOpen && (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+
+        <div className="bg-[#0B1220] p-6 rounded-2xl border border-white/10 w-[400px] shadow-xl">
+
+            <h2 className="text-lg font-semibold mb-4">
+                Confirm Delete
+            </h2>
+
+            <p className="text-gray-300 mb-6">
+                Are you sure you want to delete this activity?
+            </p>
+
+            <div className="flex justify-end gap-3">
+
+                <button
+                    className="px-4 py-2 text-gray-400"
+                    onClick={() => setIsDeleteOpen(false)}
+                >
+                    Cancel
+                </button>
+
+                <button
+                    className="px-4 py-2 bg-red-600 text-white rounded"
+                    onClick={confirmDelete}>
+                    Yes, Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 )}
             </div>
         </div>

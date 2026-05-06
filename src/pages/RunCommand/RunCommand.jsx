@@ -8,7 +8,7 @@ import {
     getActivityCmdList,
     getUpdateActivityCmd,
     getdeleteActivityCmd
-} from "../api/projectApi";
+} from "../../api/projectApi";
 
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
 
