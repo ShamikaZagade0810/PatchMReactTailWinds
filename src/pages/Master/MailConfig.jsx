@@ -106,7 +106,7 @@ const MailConfig = () => {
             </div>
             <div className="flex justify-end mt-8 gap-3">
                 <button className={btnClass} >Submit</button>
-                <button className={resetClass} onClick={handleReset}>Reset</button>
+                <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
             </div>
         </div>
         </form>
@@ -138,6 +138,7 @@ const MailConfig = () => {
           <th className="p-3 text-left">Sender ID</th>
           <th className="p-3 text-left">Sender Email</th>
           <th className="p-3 text-left">Status</th>
+          <th className="p-3 text-left">Action</th>
         </tr>
       </thead>
 

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import MultiSelect from "../../layouts/MultiSelect";
+import axios from "axios";
 
 // import MultipleRunForm from "../MultipleRunForm";
 
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
 import {
     getAllBranchList,
-    getBranchWiseIpaddressList
+    getBranchWiseIpaddressList,
+    sendMultiplePatches
 } from "../../api/projectApi";
 
 const SendMultiplePatches = () => {
@@ -24,6 +26,7 @@ const SendMultiplePatches = () => {
     const [branchList, setBranchList] = useState([]);
     const [selectedHostName, setSelectedHostName] = useState([]);
     const [hostNameList, setHostNameList] = useState([]);
+    const [file, setFile] = useState(null);
 
 
     useEffect(() => {
@@ -88,56 +91,110 @@ const SendMultiplePatches = () => {
     }
 
 
-    const handleNextClick = ()=>{
-         console.log("Handle Click ",watch('hostNames'));
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
+    const handleNextClick = () => {
+        console.log("Handle Click ", watch('hostNames'));
     }
+
+    const onSubmit = async (e) => {
+
+        try {
+            const formData = new FormData();
+
+            formData.append("branch", "gh"); // use state/value, not string
+
+            if (!file) {
+                console.error("File is missing");
+                return;
+            }
+
+            formData.append("file", file);
+
+            const res = await sendMultiplePatches(formData);
+
+            console.log("Success:", res.data);
+
+        } catch (err) {
+            console.error("Upload error:", err);
+        }
+
+
+    };
+
+
+    const SendPatches = async () => {
+
+
+        const formData = new FormData();
+        formData.append("branch", "hello");
+        formData.append("file", file);
+        console.log(file);
+
+        try {
+            const res = await axios.post(
+                "http://localhost:8080/patch/start",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
+
+            console.log("Success:", res.data);
+        } catch (err) {
+            console.error("Upload error:", err);
+        }
+    };
+
 
 
     // 🔹 TAB 1 → Add Activity
     const AddActivityForm = () => (
-        <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* ROW 1 */}
+                        <div>
+                            <label className={labelClass}>Branch Name</label>
+                            <select className={inputClass} {...register("branchName", { onChange: (e) => handleBranchChange(e.target.value) })}>
+                                <option value="">Select Branch</option>
+                                {branchList.map((branch) => (
+                                    <option key={branch.label} value={branch.label}> {branch.label}     </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label className={labelClass}>Host Name</label>
+                            <MultiSelect
+                                options={hostNameList}
+                                value={selectedHostName}
+                                onChange={setSelectedHostName}
+                                placeholder="Select Host Names"
+                                id={"hostNames"}
+                                setValue={setValue} />
+                        </div>
+
+                        <div>
+                            <label className={labelClass}>Browse File</label>
+
+                            <input type="file" onChange={handleFileChange} />
+                        </div>
 
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                {/* ROW 1 */}
-                <div>
-                    <label className={labelClass}>Branch Name</label>
+                    </div>
 
-                    <select
-                        className={inputClass}
-                        {...register("branchName", {
-                            onChange: (e) => handleBranchChange(e.target.value)
-                        })}
-                    >
-                        <option value="">Select Branch</option>
-                        {branchList.map((branch) => (
-                            <option key={branch.label} value={branch.label}>
-                                {branch.label}
-                            </option>
-                        ))}
-                    </select>
+                    <div className="flex justify-end mt-8">
+                        <button className={btnClass} onClick={() => { SendPatches() }}>submit</button>
+                    </div>
                 </div>
-                <div>
-                    <label className={labelClass}>Host Name</label>
-
-                    <MultiSelect
-                        options={hostNameList}
-                        value={selectedHostName}
-                        onChange={setSelectedHostName}
-                        placeholder="Select Host Names"
-                        id={"hostNames"}
-                        setValue={setValue}
-
-                    />
-                </div>
-
-            </div>
-
-            <div className="flex justify-end mt-8">
-                <button className={btnClass}  onClick={() => {handleNextClick()}}>Next</button>
-            </div>
-        </div>
+            </form>
+        </>
 
     );
 
@@ -162,11 +219,7 @@ const SendMultiplePatches = () => {
                 <div>
                     <label className={labelClass}>Browse File</label>
 
-                    <input
-                        type="file"
-                        className={inputClass}
-                        onChange={(e) => console.log(e.target.files)}
-                    />
+                    <input type="file" onChange={handleFileChange} />
                 </div>
                 <div>
                     <div> <label className={labelClass}>Destination Path </label> <input type="text" className={inputClass} placeholder="Enter Timeout " /> </div>

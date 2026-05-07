@@ -118,7 +118,7 @@ const OEMMaster = () => {
      
                  <div className="flex justify-end mt-8 gap-3">
                      <button className={btnClass} >Submit</button>
-                     <button className={resetClass} onClick={handleReset}>Reset</button>
+                     <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
                  </div>
              </div>  
              </form>

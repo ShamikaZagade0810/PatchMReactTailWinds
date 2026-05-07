@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzc5NjAxODQsImV4cCI6MTc3ODA0NjU4NH0.wmNoELK-Stm6QuKMngtHFpscaw9jBdec2bJhbQhAYb0';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzgwNzEyNDEsImV4cCI6MTc3ODE1NzY0MX0.05CP_C4JmxfnEfKIq8TZdDvF4XxjupLIW9y0TZDX5TE';
 const BASE_URL = "http://192.168.0.15:8081";
 
 export const getProjects = () =>
@@ -850,7 +850,7 @@ export const getAllBranchList = () =>
   });
 
 
-  export const getBranchWiseIpaddressList = (inputData) =>
+export const getBranchWiseIpaddressList = (inputData) =>
   axios.post(
     `${BASE_URL}/dropdown/IpAddressDropdown`,
     inputData,
@@ -861,7 +861,7 @@ export const getAllBranchList = () =>
     }
   );
 
-    export const AddActivityCmd = (inputData) =>
+export const AddActivityCmd = (inputData) =>
   axios.post(
     `${BASE_URL}/RunCommand/addcmdactivity`,
     inputData,
@@ -872,7 +872,7 @@ export const getAllBranchList = () =>
     }
   );
 
-  export const getActivityCmdList = () =>
+export const getActivityCmdList = () =>
   axios.get(`${BASE_URL}/RunCommand/ActivityCmdlist`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -880,7 +880,7 @@ export const getAllBranchList = () =>
 
   });
 
-  export const getUpdateActivityCmd = (inputData) =>
+export const getUpdateActivityCmd = (inputData) =>
   axios.put(
     `${BASE_URL}/RunCommand/updateActivityCmd`,
     inputData,
@@ -891,13 +891,24 @@ export const getAllBranchList = () =>
     }
   );
 
- export const getdeleteActivityCmd = (inputData) =>
+export const getdeleteActivityCmd = (inputData) =>
   axios.delete(
-    `${BASE_URL}/RunCommand/deleteActivityCmd`,   
+    `${BASE_URL}/RunCommand/deleteActivityCmd`,
     {
-       data: inputData,
+      data: inputData,
       headers: {
         Authorization: `Bearer ${token}`
       }
+    }
+  );
+
+export const sendMultiplePatches = (inputData) =>
+  axios.post(
+    `${BASE_URL}/patch/start`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
     }
   );
