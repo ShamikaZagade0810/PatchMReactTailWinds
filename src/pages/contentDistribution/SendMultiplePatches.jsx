@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import MultiSelect from "../../layouts/MultiSelect";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 // import MultipleRunForm from "../MultipleRunForm";
 
@@ -9,8 +10,10 @@ import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
 import {
     getAllBranchList,
     getBranchWiseIpaddressList,
-    sendMultiplePatches
+    sendMultiplePatches,
+    getDownloadingPatchProgress
 } from "../../api/projectApi";
+
 
 const SendMultiplePatches = () => {
     const {
@@ -18,7 +21,8 @@ const SendMultiplePatches = () => {
         handleSubmit,
         formState: { errors },
         watch,
-        setValue
+        setValue,
+        reset
     } = useForm();
     const [activeTab, setActiveTab] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +30,7 @@ const SendMultiplePatches = () => {
     const [branchList, setBranchList] = useState([]);
     const [selectedHostName, setSelectedHostName] = useState([]);
     const [hostNameList, setHostNameList] = useState([]);
+    const [viewDownloadingProgressData, setViewDownloadingProgressData] = useState([]);
     const [file, setFile] = useState(null);
 
 
@@ -48,8 +53,8 @@ const SendMultiplePatches = () => {
 
     const tabs = [
         { label: "IP's To Send Patches", icon: <Plus size={16} /> },
-        { label: "Send  Multiple Patches", icon: <List size={16} /> },
-        { label: "View Sent Patches", icon: <List size={16} /> },
+        { label: "View Sending Patches", icon: <List size={16} /> }
+
 
     ];
 
@@ -101,27 +106,88 @@ const SendMultiplePatches = () => {
 
     const onSubmit = async (e) => {
 
+        // try {
+        //     const formData = new FormData();
+
+        //     formData.append("branch", "gh"); // use state/value, not string
+
+        //     if (!file) {
+        //         console.error("File is missing");
+        //         return;
+        //     }
+
+        //     formData.append("file", file);
+
+        //     const res = await sendMultiplePatches(formData);
+
+        //     console.log("Success:", res.data);
+
+        // } catch (err) {
+        //     console.error("Upload error:", err);
+        // }
+
+
+    };
+
+
+    const handleUpload = async () => {
+
+        // if (!selectedFile) {
+        //     alert("Please select a file");
+        //     return;
+        // }
+        console.log("File ", file);
+        const ipList = watch('ipAddress');
+
+        console.log("file", file);
+        console.log("ipAddress", watch('ipAddress'));
+        console.log("DestPath", watch('DestPath'));
+        console.log("packetsize", watch('packetsize'));
+        console.log("timeout", watch('timeout'));
+        console.log("intervaltime", watch('intervaltime'));
+        console.log("executevalue", watch('executevalue'));
+
+
+
+
         try {
+
             const formData = new FormData();
 
-            formData.append("branch", "gh"); // use state/value, not string
-
-            if (!file) {
-                console.error("File is missing");
-                return;
-            }
 
             formData.append("file", file);
+            formData.append("ipAddress", ipList);
+            formData.append("destPath", watch('DestPath'));
+            formData.append("packetsize", watch('packetsize'));
+            formData.append("timeout", watch('timeout'));
+            formData.append("intervaltime", watch('intervaltime'));
+            formData.append("executevalue", watch('executevalue'));
 
-            const res = await sendMultiplePatches(formData);
 
-            console.log("Success:", res.data);
-
-        } catch (err) {
-            console.error("Upload error:", err);
+            const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg0ODExOTMsImV4cCI6MTc3ODU2NzU5M30.g4KwgWuH5CKUGuPfrTGEeGFVk3NTLx8qlDet5X1LkzI';
+            const response = await axios.post(
+                "http://192.168.0.54:8081/upload/contentDistribution",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "Authorization": `Bearer ${token}`
+                    },
+                }
+            );
+            console.log("response ", response);
+            if (response.status == 200) {
+                toast.success(response.data);
+            } else {
+                toast.error(response.data);
+            }
+            reset();
+            // setMessage(response.data);
+            // setActiveTab(1);
+        } catch (error) {
+            console.error(error);
+            // setMessage("File upload failed");
         }
-
-
     };
 
 
@@ -135,7 +201,7 @@ const SendMultiplePatches = () => {
 
         try {
             const res = await axios.post(
-                "http://localhost:8080/patch/start",
+                "http://localhost:8080/upload/contentDistribution",
                 formData,
                 {
                     headers: {
@@ -155,42 +221,229 @@ const SendMultiplePatches = () => {
     // 🔹 TAB 1 → Add Activity
     const AddActivityForm = () => (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleUpload)}>
+
                 <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* ROW 1 */}
+
+                        {/* Branch */}
                         <div>
                             <label className={labelClass}>Branch Name</label>
-                            <select className={inputClass} {...register("branchName", { onChange: (e) => handleBranchChange(e.target.value) })}>
+
+                            <select
+                                className={inputClass}
+                                {...register("branchName", {
+                                    required: "Please select branch",
+                                    onChange: (e) =>
+                                        handleBranchChange(e.target.value)
+                                })}
+
+                            >
                                 <option value="">Select Branch</option>
+
                                 {branchList.map((branch) => (
-                                    <option key={branch.label} value={branch.label}> {branch.label}     </option>
+                                    <option
+                                        key={branch.label}
+                                        value={branch.label}
+                                    >
+                                        {branch.label}
+                                    </option>
                                 ))}
                             </select>
+
+                            {errors.branchName && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.branchName.message}
+                                </p>
+                            )}
                         </div>
+
+                        {/* IP Address */}
                         <div>
-                            <label className={labelClass}>Host Name</label>
+                            <label className={labelClass}>ipAddress</label>
+
                             <MultiSelect
                                 options={hostNameList}
                                 value={selectedHostName}
                                 onChange={setSelectedHostName}
                                 placeholder="Select Host Names"
-                                id={"hostNames"}
-                                setValue={setValue} />
+                                id={"ipAddress"}
+                                setValue={setValue}
+                            />
                         </div>
 
+                        {/* File */}
                         <div>
-                            <label className={labelClass}>Browse File</label>
 
-                            <input type="file" onChange={handleFileChange} />
+                            <label className={labelClass}>
+                                Browse File
+                            </label>
+
+                            <div
+                                style={{
+                                    display: "flex",
+                                    gap: "5px",
+                                    alignItems: "center"
+                                }}
+                            >
+
+                                <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    className={inputClass}
+                                />
+
+                                <input
+                                    type="text"
+                                    value={file ? file.name : ""}
+                                    placeholder="No file selected"
+                                    readOnly
+                                    className={inputClass}
+                                    style={{ width: "300px" }}
+                                />
+                            </div>
+
                         </div>
 
+                        {/* Destination Path */}
+                        <div>
+                            <label className={labelClass}>
+                                Destination Path
+                            </label>
 
+                            <input
+                                className={inputClass}
+                                {...register("DestPath", {
+                                    required:
+                                        "Destination Path is required"
+                                })}
+                            />
+
+                            {errors.DestPath && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.DestPath.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Packet / Interval / Timeout */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                            {/* Packet Size */}
+                            <div>
+
+                                <label className={labelClass}>
+                                    Packet Size
+                                </label>
+
+                                <input
+                                    className={inputClass}
+                                    placeholder="204800 is 200KB"
+                                    {...register("packetsize", {
+                                        required:
+                                            "Packet Size is required",
+                                        pattern: {
+                                            value: /^[0-9]+$/,
+                                            message:
+                                                "Only numeric value allowed"
+                                        }
+                                    })}
+                                />
+
+                                {errors.packetsize && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.packetsize.message}
+                                    </p>
+                                )}
+
+                            </div>
+
+                            {/* Interval */}
+                            <div>
+
+                                <label className={labelClass}>
+                                    Interval
+                                </label>
+
+                                <input
+                                    className={inputClass}
+                                    placeholder="Example : 100"
+                                    {...register("intervaltime", {
+                                        required:
+                                            "Interval is required",
+                                        pattern: {
+                                            value: /^[0-9]+$/,
+                                            message:
+                                                "Only numeric value allowed"
+                                        }
+                                    })}
+                                />
+
+                                {errors.intervaltime && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.intervaltime.message}
+                                    </p>
+                                )}
+
+                            </div>
+
+                            {/* Timeout */}
+                            <div>
+
+                                <label className={labelClass}>
+                                    TimeOut
+                                </label>
+
+                                <input
+                                    className={inputClass}
+                                    placeholder="Example : 100"
+                                    {...register("timeout", {
+                                        required:
+                                            "Timeout is required",
+                                        pattern: {
+                                            value: /^[0-9]+$/,
+                                            message:
+                                                "Only numeric value allowed"
+                                        }
+                                    })}
+                                />
+
+                                {errors.timeout && (
+                                    <p className="text-red-500 text-sm mt-1">
+                                        {errors.timeout.message}
+                                    </p>
+                                )}
+
+                            </div>
+                        </div>
+
+                        {/* Execute Checkbox */}
+                        <div className="flex items-center gap-2 mt-6">
+
+                            <input
+                                type="checkbox"
+                                {...register("executevalue")}
+                            />
+
+                            <label className={labelClass}>
+                                Execute
+                            </label>
+
+                        </div>
 
                     </div>
 
+                    {/* Submit */}
                     <div className="flex justify-end mt-8">
-                        <button className={btnClass} onClick={() => { SendPatches() }}>submit</button>
+
+                        <button
+                            type="submit"
+                            className={btnClass}
+                        >
+                            Submit
+                        </button>
+
                     </div>
                 </div>
             </form>
@@ -200,36 +453,7 @@ const SendMultiplePatches = () => {
 
     // 🔹 TAB 2 → Activity List
     const ActivityList = () => (
-        <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
-
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                {/* ROW 1 */}
-                <div>
-                    <div> <label className={labelClass}>Packet Size(Bytes)</label> <input type="number" className={inputClass} placeholder="Packet Size(Bytes)"  {...register("")} /> </div>
-                </div>
-                <div>
-                    <div> <label className={labelClass}>Interval Time(MS)</label> <input type="number" className={inputClass} placeholder="Interval Time" /> </div>
-                </div>
-
-                <div>
-                    <div> <label className={labelClass}>Time Out(MS)</label> <input type="number" className={inputClass} placeholder="Enter Timeout " /> </div>
-                </div>
-                <div>
-                    <label className={labelClass}>Browse File</label>
-
-                    <input type="file" onChange={handleFileChange} />
-                </div>
-                <div>
-                    <div> <label className={labelClass}>Destination Path </label> <input type="text" className={inputClass} placeholder="Enter Timeout " /> </div>
-                </div>
-            </div>
-
-            <div className="flex justify-end mt-8">
-                <button className={btnClass}>Submit</button>
-            </div>
-        </div>
+        <div></div>
 
     );
 
@@ -246,6 +470,31 @@ const SendMultiplePatches = () => {
                 totalFileSent: "1 GB", totalFileSize: "1 GB", elapsedTime: "00:03:10", status: "Completed"
             }
         ];
+        useEffect(() => {
+
+            getViewListingData();
+
+            const interval = setInterval(() => {
+                getViewListingData();
+            }, 60000);
+
+            return () => clearInterval(interval);
+
+        }, []);
+
+        const getViewListingData = async () => {
+            try {
+
+                const data = await getDownloadingPatchProgress();
+
+                const listingData = data.data.data[0].data;
+
+                setViewDownloadingProgressData(listingData);
+
+            } catch (error) {
+                console.error("API Error:", error);
+            }
+        };
 
         return (
             <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
@@ -254,29 +503,29 @@ const SendMultiplePatches = () => {
                     <thead className="text-xs uppercase bg-white/10">
                         <tr>
                             <th className="px-4 py-3">IP Address</th>
-                            <th className="px-4 py-3">Speed</th>
-                            <th className="px-4 py-3">Interval</th>
                             <th className="px-4 py-3">File Name</th>
-                            {/* <th className="px-4 py-3">File Name</th> */}
-                            <th className="px-4 py-3">Total %</th>
-                            <th className="px-4 py-3">Total File Sent</th>
-                            <th className="px-4 py-3">Total File Size</th>
-                            <th className="px-4 py-3">Elapsed Time</th>
-                            <th className="px-4 py-3">Status</th>
+                            <th className="px-4 py-3">Interval Time</th>
+                            <th className="px-4 py-3">Packet Size</th>
+                            <th className="px-4 py-3">Current Packet</th>
+                            <th className="px-4 py-3">Current Status</th>
+                            <th className="px-4 py-3">Transfer Status</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {data.map((row, index) => (
+                        {viewDownloadingProgressData.map((row, index) => (
                             <tr key={index} className="border-b border-white/10 hover:bg-white/5">
-                                <td className="px-4 py-3">{row.ip}</td>
-                                <td className="px-4 py-3">{row.speed}</td>
-                                <td className="px-4 py-3">{row.interval}</td>
-                                <td className="px-4 py-3">{row.fileName}</td>
+                                <td className="px-4 py-3">{row.ip_address}</td>
+                                <td className="px-4 py-3">{row.app_name}</td>
+                                <td className="px-4 py-3">{row.intervaltime}</td>
+                                <td className="px-4 py-3">{row.packetsize}</td>
+                                <td className="px-4 py-3">{row.current_packet}</td>
+                                <td className="px-4 py-3">{row.current_status}</td>
+                                <td className="px-4 py-3">{"Inprocess"}</td>
                                 {/* <td className="px-4 py-3">{row.fileName2}</td> */}
 
                                 {/* Progress Bar */}
-                                <td className="px-4 py-3 w-40">
+                                {/* <td className="px-4 py-3 w-40">
                                     <div className="w-full bg-gray-700 rounded-full h-3">
                                         <div
                                             className="bg-green-500 h-3 rounded-full transition-all"
@@ -284,13 +533,13 @@ const SendMultiplePatches = () => {
                                         ></div>
                                     </div>
                                     <div className="text-xs mt-1">{row.percentage}%</div>
-                                </td>
+                                </td> */}
 
-                                <td className="px-4 py-3">{row.totalFileSent}</td>
+                                {/* <td className="px-4 py-3">{row.totalFileSent}</td>
                                 <td className="px-4 py-3">{row.totalFileSize}</td>
-                                <td className="px-4 py-3">{row.elapsedTime}</td>
+                                <td className="px-4 py-3">{row.elapsedTime}</td> */}
 
-                                <td className="px-4 py-3">
+                                {/* <td className="px-4 py-3">
                                     <span
                                         className={`px-2 py-1 rounded text-xs ${row.status === "Completed"
                                             ? "bg-green-600"
@@ -299,7 +548,7 @@ const SendMultiplePatches = () => {
                                     >
                                         {row.status}
                                     </span>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>
@@ -354,9 +603,8 @@ const SendMultiplePatches = () => {
             case 0:
                 return <AddActivityForm />;
             case 1:
-                return <ActivityList />;
-            case 2:
                 return <ViewMultiplePatch />;
+
             default:
                 return null;
         }
@@ -375,10 +623,12 @@ const SendMultiplePatches = () => {
 
     // MAIN CONTENT
     return (
-        <div className="min-h-screen  text-white p-2">
+        <div className="min-h-screen text-white p-2">
 
-            {/* 🔷 Tabs */}
+            {/* Toast Container */}
+
             <div className=" bg-[#0B1220] rounded-xl p-2 border border-white/10">
+                <ToastContainer />
                 <div className="flex gap-2 mb-4">
                     {tabs.map((tab, index) => (
                         <button
