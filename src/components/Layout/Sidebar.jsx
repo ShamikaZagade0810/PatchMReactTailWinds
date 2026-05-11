@@ -116,12 +116,12 @@ const sidebarData = [
     path: "setting",
 
     children: [
-      {
-        name: "Approve Or Decline",
-        path: "/setting/approve-decline",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+      // {
+      //   name: "Approve Or Decline",
+      //   path: "/setting/approve-decline",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
       {
         name: "Automatic Approvals",
         path: "/setting/auto-approval",

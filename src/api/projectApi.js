@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzgwNzEyNDEsImV4cCI6MTc3ODE1NzY0MX0.05CP_C4JmxfnEfKIq8TZdDvF4XxjupLIW9y0TZDX5TE';
-const BASE_URL = "http://192.168.0.15:8081";
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg0NzQyNDQsImV4cCI6MTc3ODU2MDY0NH0.JPZUzfKlF10MnpT7MZX2vX-JodD6Pl5nvl3yQTSBLkk';
+const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -496,7 +496,7 @@ export const getInstalledPatches = (inputData) =>
   });
 
 export const getLinuxDashboardCount = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxDashboardCount`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxDashboardCount`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -505,7 +505,7 @@ export const getLinuxDashboardCount = () =>
 
 
 export const getLinuxPatchStatus = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxPatchStatus`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxPatchStatus`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -513,7 +513,7 @@ export const getLinuxPatchStatus = () =>
   });
 
 export const getLinuxBranchWiseDevices = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxBranchWiseDevices`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxBranchWiseDevices`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -521,7 +521,7 @@ export const getLinuxBranchWiseDevices = () =>
   });
 
 export const getLinuxDeviceWiseInstallOrNeededCount = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxDeviceWiseInstallOrNeededCount`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxDeviceWiseInstallOrNeededCount`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -529,7 +529,7 @@ export const getLinuxDeviceWiseInstallOrNeededCount = () =>
   });
 
 export const getPatchActivityOvertime = () =>
-  axios.get(`${BASE_URL}/dashboard/PatchActivityOvertime`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/PatchActivityOvertime`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -538,7 +538,7 @@ export const getPatchActivityOvertime = () =>
 
 
 export const getLinuxInstalledPatchList = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxInstalledPatchList`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxInstalledPatchList`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -546,7 +546,7 @@ export const getLinuxInstalledPatchList = () =>
   });
 
 export const getLinuxRiskyEndpoint = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxRiskyDevicesList`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxRiskyDevicesList`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -556,7 +556,7 @@ export const getLinuxRiskyEndpoint = () =>
 
 
 export const getLinuxModalEndpointData = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/LinuxModalEndpointData`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxModalEndpointData`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -566,7 +566,7 @@ export const getLinuxModalEndpointData = (inputData) =>
 
 
 export const getLinuxModalPatchData = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/LinuxModalPatchData`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxModalPatchData`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -575,7 +575,7 @@ export const getLinuxModalPatchData = (inputData) =>
 
 
 export const getLinuxBranchwiseModal = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/LinuxBranchwiseModal`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxBranchwiseModal`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -584,7 +584,7 @@ export const getLinuxBranchwiseModal = (inputData) =>
 
 
 export const getLinuxIpwiseModal = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/LinuxIpwisewiseModal`, {
+  axios.get(`${BASE_URL}/LinuxDashbord/LinuxIpwisewiseModal`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -912,3 +912,47 @@ export const sendMultiplePatches = (inputData) =>
       },
     }
   );
+
+  // MASTER API's
+
+  //---- VIEW DEVICES
+  // export const ViewDeviesList = (inputData) =>
+  // axios.post(
+  //   `${BASE_URL}/master/ViewDevicesList  `,
+  //   inputData,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   }
+  // );
+
+  //---- Add User
+  export const AddAppUser = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addNewAppUser`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  
+  export const getViewAppUserList = () =>
+  axios.get(`${BASE_URL}/master/viewAllAppUser`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  export const getViewDeviesList = () =>
+  axios.get(`${BASE_URL}/master/ViewDevicesList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+

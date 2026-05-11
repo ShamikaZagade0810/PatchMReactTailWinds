@@ -64,7 +64,7 @@ const Login = () => {
       <div className="relative z-10 w-full max-w-md backdrop-blur-xs bg-white border border-white/20  rounded-xl shadow-xl p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-900">PanetGuard Pro DMS
+          <h2 className="text-3xl font-bold text-gray-900">Patch Management System
 
 
           </h2>

@@ -42,7 +42,7 @@ const Loader = ({ delay = 1000, onLoadingComplete }) => {
 
       <div className="absolute mt-32 text-center">
         <p className="text-lg font-medium text-gray-900 dark:text-white">
-          PlanetGuard Pro-DMS
+         Patch Management 
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           loading data...

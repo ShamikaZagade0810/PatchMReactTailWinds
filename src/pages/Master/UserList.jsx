@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { Pencil, Trash2, ShieldUser } from "lucide-react";
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
+import { getViewAppUserList } from "../../api/projectApi";
+
 const UserList = () => {
   const {
               register,
@@ -12,17 +14,40 @@ const UserList = () => {
               setValue
           } = useForm();
 
+            useEffect(() => {
+        initialApiReq();
+    }, []);
+
+      const initialApiReq = async () => {
+           try {
+                   setLoading(true);           
+                   const res = await getViewAppUserList();           
+                   console.log("API Response:", res);           
+                   // adjust based on backend response structure
+                   setAppuser(res?.data?.data || res?.data || []);           
+               } catch (error) {
+                   console.error("Error fetching devices:", error);
+                   setAppuser([]);
+               } finally {
+                   setLoading(false);
+               }
+    
+    
+        }
+
     const [isModalOpen, setIsModalOpen] = useState(false);    
      const [editData, setEditData] = useState(null);
      const [isResetModalOpen, setIsResetModalOpen] = useState(false);
-     const [resetData, setResetData] = useState({
-  username: "",
-  password: "",
-  confirmPassword: ""
-});
+     const [resetData, setResetData] = useState({ username: "", password: "",  confirmPassword: "" });
 
  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
+
+        const [Appuser, setAppuser] = useState([]);
+     const [loading, setLoading] = useState(false);
+    
+
+
 
      
     const OEMOptions = [
@@ -44,34 +69,27 @@ const UserList = () => {
   { username: "tester", type: "User", contactNo: "1234567890", emailId: "tester@gmail.com", firstName: "tester", lastName: "new" }
 ];
 
-  useEffect(() => {
-        initialApiReq();
-    }, []);
 
-      const initialApiReq = async () => {
-            // const data = await getActivityCmdList();
-            try {
-              console.log("inside initialApiReq--> ");
-                // console.log("data --> ", data);
-                // let tableData = data.data.data[0].data;
-                // let ColumnData = data.data.data[0].column;
-                // let obj = {};
-                // obj.maindata = MainData;
-                // obj.columndata = ColumnData;
-                // console.log("tableData ---> ", tableData);
-                // setActivityList(tableData);
-                // setdynamicReport(obj)
-            } catch (error) {
-                console.error("API Error:", error);
-            }
+
     
-    
-        }
   const handleEdit = (item, index) => {
-        console.log("Edit clicked:", item);
-        setEditData(item);     // store selected row
-        setIsModalOpen(true);  // open modal
+
+    console.log("Edit clicked:", item);
+
+    const formattedOEM = (item.oemName || []).map((val) => ({ label: val, value: val }));
+    const formattedBranch = (item.branchName || []).map((val) => ({ label: val, value: val }));
+    const formattedCustomer = item.customerName ? item.customerName.split(",").map((val) => ({ label: val.trim(), value: val.trim() })) : [];
+    const updatedItem = {
+        ...item,
+        OEMNames: formattedOEM,
+        branchNames: formattedBranch,
+        CustNames: formattedCustomer
     };
+
+    setEditData(updatedItem);
+
+    setIsModalOpen(true);
+};
 
     const handleRestPass = (item, index) => {
         console.log("Reset clicked:", item);
@@ -101,7 +119,6 @@ const UserList = () => {
             const payload = {
                 srNo: deleteId
             };
-
             // await getdeleteActivityCmd(payload); // your API
     
             toast.success("Deleted successfully");
@@ -144,11 +161,21 @@ const UserList = () => {
                     </thead>
 
                     <tbody>
-                        {users.map((item, index) => (
-                            <tr
-                                key={index}
-                                className="border-b border-white/10 hover:bg-[#172033] transition"
-                            >
+                      {loading ? (
+        <tr>
+            <td colSpan="7" className="p-4 text-center text-gray-400">
+                Loading devices...
+            </td>
+        </tr>
+    ) : Appuser.length === 0 ? (
+        <tr>
+            <td colSpan="7" className="p-4 text-center text-gray-400">
+                No devices found
+            </td>
+        </tr>
+    ) : (
+                        Appuser.map((item, index) => (
+                            <tr key={index} className="border-b border-white/10 hover:bg-[#172033] transition" >
                                 <td className="p-3">{item.username}</td>
                                 <td className="p-3">{item.type}</td>
                                 <td className="p-3">{item.contactNo}</td>
@@ -173,7 +200,8 @@ const UserList = () => {
                                     </div>
                                 </td>
                             </tr>
-                        ))}
+                        ))
+                            )}
                     </tbody>
                 </table>
 

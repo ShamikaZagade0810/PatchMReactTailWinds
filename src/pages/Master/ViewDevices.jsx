@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Pencil, Trash2, ShieldUser } from "lucide-react";
 
+import { getViewDeviesList } from "../../api/projectApi";
+
 const ViewDevices = () => {
     const {
         register,
@@ -11,15 +13,42 @@ const ViewDevices = () => {
         setValue
     } = useForm();
 
-    const devices = [
-        { ipAddress: "192.168.0.104", hostName: "win-1j4tisp122i", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
-        { ipAddress: "192.168.0.15", hostName: "SHAMIKA-ZAGADE", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
-        { ipAddress: "192.168.0.164", hostName: "desktop-k1gg83m", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
-        { ipAddress: "192.168.0.164", hostName: "desktop-k1gg83m", OEMNames: "UNMANAGED", branchNames: "UNMANAGED", CustNames: "UNMANAGED", deviceStatus: "Up" },
-        { ipAddress: "192.168.0.2", hostName: "sumeetnalawade18052003", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
-        { ipAddress: "192.168.0.236", hostName: "desktop-f7v9a7c", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
-        { ipAddress: "192.168.0.37", hostName: "SHRIDHAR-VARADKAR.VELOX.CO.IN", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" }
-    ];
+    useEffect(() => {
+    initialApiReq();
+}, []);
+
+const initialApiReq = async () => {
+    try {
+        setLoading(true);
+
+        const res = await getViewDeviesList();
+
+        console.log("API Response:", res);
+
+        // adjust based on backend response structure
+        setDevices(res?.data?.data || res?.data || []);
+
+    } catch (error) {
+        console.error("Error fetching devices:", error);
+        setDevices([]);
+    } finally {
+        setLoading(false);
+    }
+};
+
+    // const devices = [
+    //     { ipAddress: "192.168.0.104", hostName: "win-1j4tisp122i", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
+    //     { ipAddress: "192.168.0.15", hostName: "SHAMIKA-ZAGADE", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
+    //     { ipAddress: "192.168.0.164", hostName: "desktop-k1gg83m", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
+    //     { ipAddress: "192.168.0.164", hostName: "desktop-k1gg83m", OEMNames: "UNMANAGED", branchNames: "UNMANAGED", CustNames: "UNMANAGED", deviceStatus: "Up" },
+    //     { ipAddress: "192.168.0.2", hostName: "sumeetnalawade18052003", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
+    //     { ipAddress: "192.168.0.236", hostName: "desktop-f7v9a7c", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" },
+    //     { ipAddress: "192.168.0.37", hostName: "SHRIDHAR-VARADKAR.VELOX.CO.IN", OEMNames: "NPCIL", branchNames: "NPCIL", CustNames: "NPCIL", deviceStatus: "Up" }
+    // ];
+
+    const [devices, setDevices] = useState([]);
+const [loading, setLoading] = useState(false);
+
 
 
     const OEMOptions = [
@@ -105,31 +134,37 @@ const ViewDevices = () => {
                     </thead>
 
                     <tbody>
-                        {devices.map((item, index) => (
-                            <tr
-                                key={index}
-                                className="border-b border-white/10 hover:bg-[#172033] transition"
-                            >
-                                <td className="p-3">{item.ipAddress}</td>
-                                <td className="p-3">{item.hostName}</td>
-                                <td className="p-3">{item.OEMNames}</td>
-                                <td className="p-3">{item.branchNames}</td>
-                                <td className="p-3">{item.CustNames}</td>
-                                <td className="p-3">{item.deviceStatus}</td>
-                                <td className="p-3 text-center">
-                                    <div className="flex justify-center gap-2">
-
-                                        {/* Edit Button */}
-                                        <button className="px-2 py-1 text-xs text-blue-400 hover:text-blue-500 rounded-md hover:bg-blue-500/30 transition"
-                                            onClick={() => handleEdit(item, index)} > <Pencil size={20} /> </button>
-                                        {/* Delete Button */}
-                                        <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
-                                            onClick={() => handleDelete(index)}><Trash2 size={20} /> </button>                                        
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
+    {loading ? (
+        <tr>
+            <td colSpan="7" className="p-4 text-center text-gray-400">
+                Loading devices...
+            </td>
+        </tr>
+    ) : devices.length === 0 ? (
+        <tr>
+            <td colSpan="7" className="p-4 text-center text-gray-400">
+                No devices found
+            </td>
+        </tr>
+    ) : (
+        devices.map((item, index) => (
+            <tr key={index} className="border-b border-white/10 hover:bg-[#172033] transition">
+                <td className="p-3">{item.ipAddress}</td>
+                <td className="p-3">{item.hostName}</td>
+                <td className="p-3">{item.oem}</td>
+                <td className="p-3">{item.branchName}</td>
+                <td className="p-3">{item.customerName}</td>
+                <td className="p-3">{item.deviceStatus}</td>
+                <td className="p-3 text-center">
+                    <div className="flex justify-center gap-2">
+                        <button onClick={() => handleEdit(item, index)} className="text-blue-400" > <Pencil size={20} /> </button>
+                        <button onClick={() => handleDelete(index)} className="text-red-400" >  <Trash2 size={20} /> </button>
+                    </div>
+                </td>
+            </tr>
+        ))
+    )}
+</tbody>
                 </table>
 
                 {/* EDIT MODAL */}

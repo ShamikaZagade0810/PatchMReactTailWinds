@@ -26,6 +26,9 @@ import PeriodicReport from "../pages/Master/PeriodicReport.jsx";
 import LinuxDashboard from "../pages/LinuxDashboard.jsx";
 import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
 import SendMultiplePatches from "../pages/contentDistribution/SendMultiplePatches.jsx";
+
+import AutomaticApproval from "../pages/patchSetting/AutomaticApproval.jsx";
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -200,13 +203,17 @@ export default function AppRoutes() {
               <PeriodicReport />
             </ProtectedRoute>
           } />
-          PeriodicReport
+
+          {/* Patch Setting */}          
+          <Route path="/setting/Auto-Approval"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <AutomaticApproval />
+            </ProtectedRoute>   } />       
 
 
 
-
-
-
+          {/* Content Distributin */}
         <Route path="/content/send-multiple"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>

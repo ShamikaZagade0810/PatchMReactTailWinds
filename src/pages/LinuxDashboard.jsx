@@ -47,8 +47,8 @@ const LinuxDashboard = () => {
   const [endpointInstalledPatches, setEndpointInstalledPatches] = useState({ columndata: [], maindata: [] });
   const [riskyEndpoint, setRiskyEndpoint] = useState({ columndata: [], maindata: [] });
   const [loading, setLoading] = useState(false);
-   const [show, setShow] = useState(false);
-  
+  const [show, setShow] = useState(false);
+
   useEffect(() => {
     console.log("Hello World");
     apiCalls();
@@ -59,15 +59,25 @@ const LinuxDashboard = () => {
 
   const apiMapping = {
     patches: {
-      total_endpoints : getLinuxModalEndpointData,
-      patchesstatus : getLinuxModalPatchData,
-      branchwise : getLinuxBranchwiseModal,
-      ipwisepatchStatus :getLinuxIpwiseModal
+      total_endpoints: getLinuxModalEndpointData,
+      patchesstatus: getLinuxModalPatchData,
+      branchwise: getLinuxBranchwiseModal,
+      ipwisepatchStatus: getLinuxIpwiseModal
 
     },
 
   };
-
+ 
+     // Get all values from chart
+    const allValues = patchActivityOverTime.flatMap((item) => [
+      item.success_count,
+      item.failed_count,
+      item.missing_count,
+    ]);
+    const maxValue = Math.max(...allValues);
+    // Create equal spacing
+    const step = Math.ceil(maxValue / 5);
+    const ticks = Array.from({ length: 6 }, (_, i) => i * step);
 
 
 
@@ -110,6 +120,9 @@ const LinuxDashboard = () => {
       obj.columndata = ColumnData;
       console.log("obj --> ", obj);
       setEndpointInstalledPatches(obj);
+      console.log("EndpointInstalledPatches obj --> ", obj);
+
+      console.log("linuxPatchStatusRes obj --> ", linuxPatchStatusRes);
 
 
       let MainData1 = linuxRiskyDevices.data.data[0].data;
@@ -117,9 +130,10 @@ const LinuxDashboard = () => {
       let obj1 = {};
       obj1.maindata = MainData1;
       obj1.columndata = ColumnData1;
-      console.log("obj --> ", obj1);
+      console.log("obj1 --> ", obj1);
 
       setRiskyEndpoint(obj1);
+      console.log("RiskyEndpoint obj --> ", obj1);
 
     } catch (error) {
       console.error("API Error:", error);
@@ -145,7 +159,7 @@ const LinuxDashboard = () => {
       title: "Inactive Agents",
       color: "red",
       id: "total_endpoints",
-       inputData: "Down",
+      inputData: "Down",
     },
     Installed_package: {
       title: "Installed Packages",
@@ -156,13 +170,13 @@ const LinuxDashboard = () => {
       title: "Missing Patches",
       color: "orange",
       id: "patchesstatus",
-       inputData: "Declined"
+      inputData: "Declined"
     },
     success_patches: {
       title: "Successful Patches",
       color: "emerald",
       id: "patchesstatus",
-        inputData: "Success"
+      inputData: "Success"
     },
     failed_patches: {
       title: "Failed / Declined",
@@ -177,28 +191,28 @@ const LinuxDashboard = () => {
     }
   };
 
- const handleClickModalParameter = async (section, label, inputData) => {
+  const handleClickModalParameter = async (section, label, inputData) => {
 
-        console.log(section, label);
-        setLoading(true);
-        const data = await apiMapping[section.toLowerCase().trim()][label](inputData);
-        console.log("data --> ", data);
-        let MainData = data.data.data[0].data;
-        let ColumnData = data.data.data[0].column;
-        console.log("Maindata --> ", MainData);
-        console.log("ColumnData --> ", ColumnData);
-        let obj = {};
-        obj.maindata = MainData;
-        obj.columndata = ColumnData;
-        obj.modelHeading = label.toUpperCase();
+    console.log(section, label);
+    setLoading(true);
+    const data = await apiMapping[section.toLowerCase().trim()][label](inputData);
+    console.log("data --> ", data);
+    let MainData = data.data.data[0].data;
+    let ColumnData = data.data.data[0].column;
+    console.log("Maindata --> ", MainData);
+    console.log("ColumnData --> ", ColumnData);
+    let obj = {};
+    obj.maindata = MainData;
+    obj.columndata = ColumnData;
+    obj.modelHeading = label.toUpperCase();
 
-        setModalData(obj);
+    setModalData(obj);
 
 
 
-        setShow(true);
-        setLoading(false);
-    }
+    setShow(true);
+    setLoading(false);
+  }
 
   const data = [
     { name: "1", value: 90 },
@@ -227,8 +241,8 @@ const LinuxDashboard = () => {
   ];
 
 
-  function EndpointCard({ key, title, value, total, color,onClickId ,inputData}) {
-   
+  function EndpointCard({ key, title, value, total, color, onClickId, inputData }) {
+
     const percent = (value / total) * 100;
 
     const colorMap = {
@@ -254,13 +268,15 @@ const LinuxDashboard = () => {
 
     const dashOffset = circumference * (1 - percent1);
 
-    const reqData = { 
-        value :inputData
+    const reqData = {
+      value: inputData
     }
+
+ 
 
     return (
       <div key={key}
-        onClick={() => {  console.log(onClickId); handleClickModalParameter('Patches', onClickId.toLowerCase(),reqData) }}
+        onClick={() => { console.log(onClickId); handleClickModalParameter('Patches', onClickId.toLowerCase(), reqData) }}
         className="dark:bg-[#121A2B] border border-gray-700 rounded-lg p-3 text-white shadow-md">
 
         {/* Top */}
@@ -306,29 +322,29 @@ const LinuxDashboard = () => {
   return (
     <div className="mb-1 bg-white dark:bg-[#0B1220] ">
 
-        <Modal
-                      show={show}
-                      setShow={setShow}
-                      data={modalData}
-      
-                  />
+      <Modal
+        show={show}
+        setShow={setShow}
+        data={modalData}
+
+      />
       <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-8 gap-4 p-4">
         {dashboardCount.map((obj, index) => {
           const key = Object.keys(obj)[0];
           const value = obj[key];
 
-          const config = cardConfig[key] || { title: key, color: "gray" , id:"" };
-          console.log("config ",config);
-          
+          const config = cardConfig[key] || { title: key, color: "gray", id: "" };
+          console.log("config ", config);
+
           return (
             <EndpointCard
               key={index}
               title={config.title}
               value={value}
-              total={100}
+              total={10000}
               color={config.color}
               onClickId={config.id}
-              inputData ={config.inputData}
+              inputData={config.inputData}
             />
           );
         })}
@@ -349,7 +365,7 @@ const LinuxDashboard = () => {
 
           {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Patch Status</h2> */}
 
-  <h2 className="card-header"> Patch Status </h2>
+          <h2 className="card-header"> Patch Status </h2>
 
           {/* Donut */}
           <div className="w-full flex justify-center items-center">
@@ -369,7 +385,7 @@ const LinuxDashboard = () => {
         <div className=" bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
           {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Branch Distribution</h2> */}
-            <h2 className="card-header"> Branch Distribution </h2>
+          <h2 className="card-header"> Branch Distribution </h2>
           <div className="flex gap-4">
 
             {/* Donut */}
@@ -397,10 +413,10 @@ const LinuxDashboard = () => {
 
         <div className="bg-[#121A2B] rounded-xl p-4">
           {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2> */}
-  <h2 className="card-header"> IPWise Patch Status </h2>
+          <h2 className="card-header"> IPWise Patch Status </h2>
           {/* Fake Chart Line */}
           <div className="  rounded-lg">
-            <div className="w-full h-[250px]">
+            <div className="w-full h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={iPWisePatchStatus}
@@ -508,7 +524,8 @@ const LinuxDashboard = () => {
                 stroke="#64748b"
                 tickLine={false}
                 axisLine={false}
-                domain={[80, 340]}
+                domain={[0, step * 5]}
+                ticks={ticks}
               />
 
               {/* Tooltip */}
@@ -561,7 +578,7 @@ const LinuxDashboard = () => {
 
         <div className="bg-[#121A2B] rounded-xl p-4">
           {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Endpoint Installed Package</h2> */}
-                  <h2 className="card-header"> Endpoint Installed Package </h2>
+          <h2 className="card-header"> Endpoint Installed Package </h2>
           {/* Fake Chart Line */}
           <div className="  rounded-lg">
             <div className="w-full h-[400px] overflow-auto">
@@ -588,7 +605,7 @@ const LinuxDashboard = () => {
                   >
                     {endpointInstalledPatches.columndata.map((col, colIndex) => {
                       const value = row[col.name.toLowerCase()];
-                  
+
 
 
                       // Custom styling logic
@@ -629,7 +646,7 @@ const LinuxDashboard = () => {
 
         <div className="bg-[#121A2B] rounded-xl p-4">
           {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Risky Devices</h2> */}
- <h2 className="card-header"> Risky Devices</h2>
+          <h2 className="card-header"> Risky Devices</h2>
           {/* Fake Chart Line */}
           <div className="rounded-lg">
             <div className="w-full h-[400px] overflow-auto">

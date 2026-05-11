@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect.jsx';
+
+import { AddAppUser } from "../../api/projectApi";
 
 const AddUser = () => {
     const {
@@ -68,67 +71,92 @@ const AddUser = () => {
     };
 
       const handleReset = () => {
-      reset({
-    firstName: "",  
-    lastName :"",      // 👈 force reset explicitly
-    email: "",
-     contact: "",
-    userName: "",
-    password: "",
-    confirmPassword: "",
-    type: "",
-    branchNames: [],
-    OEMNames: [],
-    CustNames :[]
-
-  });
-    setSelectedBranch([]);
-    setSelectedCustName([]);
-    setSelectedOEM([]);
+      reset({ firstName: "", lastName :"",   email: "", contact: "", userName: "", password: "", confirmPassword: "", type: "", branchNames: [],
+    OEMNames: [], CustNames :[] });
+    setSelectedBranch([]); setSelectedCustName([]); setSelectedOEM([]);
   };
+
+
+   // ---------------- SUBMIT API ----------------
+    const onSubmit = async (data) => {
+        const inputData = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            emailId: data.email,
+            contactNo: data.contact,
+            username: data.userName,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+            type: data.type,            
+            oem: selectedOEM.map((item) => item.value),
+            customerNames: selectedCustName.map((item) => item.value),
+            branchNames: selectedBranch.map((item) => item.value),
+        };
+
+        console.log("Payload :", inputData);
+        try {
+            const response = await AddAppUser(inputData);
+            console.log("Add User Response :", response.data.status);
+            // alert("User Added Successfully");
+            if(response.data.status === 200){
+                 toast.success(response.data.message);
+                handleReset();
+            }
+             else if (response.data.status === 409) {
+                            toast.warning(response.data.message);
+                        }
+            else {
+                toast.error(response.data.message);
+           }
+            
+        } catch (error) {
+            console.error("Add User Error :", error);
+            alert(
+                error?.response?.data?.message ||
+                "Failed to add user"
+            );
+        }
+    };
 
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
     const inputClass = "w-full h-[34px] px-2 text-[12px] bg-[#1E293B] text-white rounded-md border border-[#2A3A55] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
-    const btnClass =
-        "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
+    const btnClass = "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
  const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
     
 
     return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
+    // <form onSubmit={handleSubmit((data) => console.log(data))}>
+    <form onSubmit={handleSubmit(onSubmit)}>
     <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
-            <h2 className="text-lg font-semibold mb-6">Add Activity Command</h2>
-
+            <h2 className="text-lg font-semibold mb-6">Add Application User </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
               {/* ROW 1 */}
                 <div>
                     <label className={labelClass}> First Name </label>
                     <input className={inputClass} placeholder="Enter First Name" {...register("firstName", { required: "First name required" })} />
-                                    {errors.firstName && (<p className="text-red-500 text-xs mt-1">{errors.firstName.message} </p>  )}
+                    {errors.firstName && (<p className="text-red-500 text-xs mt-1">{errors.firstName.message} </p>  )}
                 </div>
 
                 <div>
                     <label className={labelClass}> Last name </label>
                     <input className={inputClass} placeholder="Enter Last Name"   {...register("lastName", { required: "Last name required" })} />
-                                    {errors.lastName && ( <p className="text-red-500 text-xs mt-1"> {errors.lastName.message} </p> )}
+                      {errors.lastName && ( <p className="text-red-500 text-xs mt-1"> {errors.lastName.message} </p> )}
                 </div>
 
                 <div>
                     <label className={labelClass}>Email Id </label>
                     <input className={inputClass} placeholder="Enter Email Id"  {...register("email", { required: "Email is required",
-                            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email address" } })} />
-                            {errors.email && ( <p className="text-red-500 text-xs mt-1"> {errors.email.message} </p> )}
+                      pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email address" } })} />
+                     {errors.email && ( <p className="text-red-500 text-xs mt-1"> {errors.email.message} </p> )}
                 </div>
 
                 {/* ROW 2 */}
 
                 <div>
                     <label className={labelClass}> Contact Number    </label>
-                    <input type="tel" className={inputClass} placeholder="Enter Contact Number" {...register("contact", {
-                    required: "Contact is required",
-                    pattern: { value: /^[0-9]{10}$/,  message: "Enter valid 10 digit number" } })}
-                    onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ""); }} />
+                    <input type="tel" className={inputClass} placeholder="Enter Contact Number" {...register("contact", { required: "Contact is required",
+                    pattern: { value: /^[0-9]{10}$/,  message: "Enter valid 10 digit number" } })} onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ""); }} />
                     {errors.contact && ( <p className="text-red-500 text-xs mt-1"> {errors.contact.message} </p> )}
                 </div>
 
@@ -140,11 +168,7 @@ const AddUser = () => {
                     <option value="admin">Admin</option>
                     <option value="host">Host</option>
                 </select>
-                {errors.type && (
-  <p className="text-red-500 text-xs mt-1">
-    {errors.type.message}
-  </p>
-)}
+                {errors.type && (<p className="text-red-500 text-xs mt-1"> {errors.type.message} </p> )}
                 </div>
 
                 <div>
@@ -157,7 +181,7 @@ const AddUser = () => {
                 <div>
                     <label className={labelClass}> User Name </label>
                     <input className={inputClass} placeholder="Enter User Name" {...register("userName", { required: "User name required" })} />
-                                    {errors.userName && ( <p className="text-red-500 text-xs mt-1"> {errors.userName.message} </p> )}
+                    {errors.userName && ( <p className="text-red-500 text-xs mt-1"> {errors.userName.message} </p> )}
                 </div>
 
                 <div>
@@ -180,12 +204,11 @@ const AddUser = () => {
                     <label className={labelClass}> OEM </label>
                      <MultiSelect options={OEMOptions}
                     value={selectedOEM}
-                    // onChange={branchChange}
                      onChange={setSelectedOEM}
                     placeholder="Select OEM Names"  
                     id={"OEMNames"}
-                    setValue={setValue}
-                />{errors?.OEMNames && ( <p className="text-red-400 text-xs mt-1"> {errors.OEMNames.message} </p>  )}              
+                    setValue={setValue} />
+                    {errors?.OEMNames && ( <p className="text-red-400 text-xs mt-1"> {errors.OEMNames.message} </p>  )}              
                 </div>
 
                 <div>
@@ -196,8 +219,8 @@ const AddUser = () => {
                      onChange={setSelectedCustName}
                     placeholder="Select Customer Names"
                     id={"CustNames"}
-                    setValue={setValue}
-                /> {errors?.CustNames && ( <p className="text-red-400 text-xs mt-1"> {errors.CustNames.message} </p>  )}
+                    setValue={setValue} /> 
+                    {errors?.CustNames && ( <p className="text-red-400 text-xs mt-1"> {errors.CustNames.message} </p>  )}
                 </div>
 
                 <div>
@@ -207,9 +230,8 @@ const AddUser = () => {
                 onChange={setSelectedBranch}
                 placeholder="Select Branch Names"
                 id={"branchNames"}
-                setValue={setValue}
-              //  error={errors?.branchNames}
-              />  {errors?.branchNames && ( <p className="text-red-400 text-xs mt-1"> {errors.branchNames.message} </p>  )}
+                setValue={setValue} />  
+                {errors?.branchNames && ( <p className="text-red-400 text-xs mt-1"> {errors.branchNames.message} </p>  )}
                 </div>
             </div>
 
