@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
+
+import { AddCustomer, getCustomerList, getUpdateCustomer, deleteCustomer } from "../../api/projectApi";
 
 const CustomerMaster = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -21,21 +24,22 @@ const CustomerMaster = () => {
     }, []);
 
     const initialApiReq = async () => {
-        // const data = await getActivityCmdList();
-        try {
-            console.log("inside initialApiReq--> ");
-            // console.log("data --> ", data);
-            // let tableData = data.data.data[0].data;
-            // let ColumnData = data.data.data[0].column;
-            // let obj = {};
-            // obj.maindata = MainData;
-            // obj.columndata = ColumnData;
-            // console.log("tableData ---> ", tableData);
-            // setActivityList(tableData);
-            // setdynamicReport(obj)
-        } catch (error) {
-            console.error("API Error:", error);
-        }
+       try {
+               setLoading(true);
+       
+               const res = await getCustomerList();
+       
+               console.log("customerlist API Response:", res);
+       
+               // adjust based on backend response structure
+               setcustomerlist(res?.data?.data || res?.data || []);
+       
+           } catch (error) {
+               console.error("Error fetching customerlist:", error);
+               setcustomerlist([]);
+           } finally {
+               setLoading(false);
+           }
 
     }
     const [activeTab, setActiveTab] = useState(0);
@@ -45,17 +49,18 @@ const CustomerMaster = () => {
         // { label: "Multiple Run Command", icon: <Play size={16} /> },
     ];
 
-    const customerlist = [
-        { name: "NPCIL", label: "NPCIL" },
-        { name: "NHPC", label: "NHPC" },
-        { name: "ABC", label: "ABC" }
-    ]
+    // const customerlist = [
+    //     { name: "NPCIL", label: "NPCIL" },
+    //     { name: "NHPC", label: "NHPC" },
+    //     { name: "ABC", label: "ABC" }
+    // ]
 
     const handleReset = () => {
-        reset({
-            customer: ""
-        });
+        reset({ customer: "" });
     };
+
+        const [customerlist, setcustomerlist] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const [iseditModalOpen, setIseditModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
@@ -63,16 +68,85 @@ const CustomerMaster = () => {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
 
-    const handleEdit = (item, index) => {
+    // ---------------- SUBMIT API ----------------
+        const onSubmit = async (data) => {
+            const inputData = {
+                customerName: data.customer,               
+            };
+    
+            console.log("Payload :", inputData);
+            try {
+                const response = await AddCustomer(inputData);
+                console.log("Add Customer Response :", response.data.status);
+                // alert("User Added Successfully");
+                if(response.data.status === 200){
+                     toast.success(response.data.message);
+                    handleReset();
+                }
+                 else if (response.data.status === 409) {
+                                toast.warning(response.data.message);
+                            }
+                else {
+                    toast.error(response.data.message);
+               }
+                
+            } catch (error) {
+                console.error("Add User Error :", error);
+                alert(
+                    error?.response?.data?.message ||
+                    "Failed to add user"
+                );
+            }
+        };
+
+    const handleEdit = (item) => {
         console.log("Edit clicked:", item);
         setEditData(item);     // store selected row
         setIseditModalOpen(true);  // open modal
     };
 
+     const handleUpdateCustomer = async () => {
+        console.log("Edit Data:", editData);
+            try {
+                const inputData = {
+        srNo: editData?.srNo,
+        customerName: editData?.customerName
+                };
+        
+                console.log("Update Payload :", inputData);
+                const response = await getUpdateCustomer(inputData);
+                console.log("Update Response :", response?.data);
+                 console.log("Update Response Satus:", response?.data.status);
+                // alert("User Updated Successfully");
+                if(response.data.status === 200){
+                                 toast.success(response.data.message);
+                                setIseditModalOpen(false);
+                            }
+                             else if (response.data.status === 409) {
+                                            toast.warning(response.data.message);
+                                        }
+                            else {
+                                toast.error(response.data.message);
+                           }
+                // setIsModalOpen(false);
+                initialApiReq();
+        
+            } catch (error) {
+        
+                console.error("Update Error :", error);
+        
+                alert(
+                    error?.response?.data?.message ||
+                    "Failed to update user"
+                );
+            }
+        };
+        
+
     const handleDelete = (item) => {
         console.log("item:", item);
-        console.log("item.id:", item.id);
-        setDeleteId(item); // or item.srNo       
+        console.log("item.id:", item.srNo);
+        setDeleteId(item.srNo); // or item.srNo       
         setIsDeleteOpen(true);
     };
     const confirmDelete = async () => {
@@ -83,15 +157,20 @@ const CustomerMaster = () => {
                 srNo: deleteId
             };
 
-            // await getdeleteActivityCmd(payload); // your API
-
-            toast.success("Deleted successfully");
-
-            setIsDeleteOpen(false);
-            setDeleteId(null);
-
-            // refresh table
-            initialApiReq();
+            // toast.success("Deleted successfully");
+              console.log("Delete Payload:", payload);
+                                    const response = await deleteCustomer(payload);    
+                                    // toast.success("Deleted successfully");
+                                     if(response.data.status === 200){
+                                                 toast.success(response.data.message);
+                                                setIsDeleteOpen(false);
+                                            }
+                                    else if (response.data.status === 409) { toast.warning(response.data.message); }
+                                    else { toast.error(response.data.message); }
+            
+            // setIsDeleteOpen(false);
+            setDeleteId(null);            
+            initialApiReq(); // refresh table
 
         } catch (error) {
             console.error(error);
@@ -107,7 +186,7 @@ const CustomerMaster = () => {
         if (activeTab === 0) {
             return (
                 <>
-                <form onSubmit={handleSubmit((data) => handleCustomerSubmit(data))}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
                     <h2 className="text-lg font-semibold mb-6">Add Customer</h2>
 
@@ -151,18 +230,15 @@ const CustomerMaster = () => {
                                         key={index}
                                         className="border-b border-white/10 hover:bg-[#172033] transition"
                                     >
-                                        <td className="p-3 text-center">{item.label}</td>
+                                        <td className="p-3 text-center">{item.customerName}</td>
                                         <td className="p-3 text-center">
                                             <div className="flex justify-center gap-2">
-
                                                 {/* Edit Button */}
                                                 <button className="px-2 py-1 text-xs text-blue-400 hover:text-blue-500 rounded-md hover:bg-blue-500/30 transition"
-                                                    onClick={() => handleEdit(item, index)} > <Pencil size={20} /> </button>
-
+                                                    onClick={() => handleEdit(item)} > <Pencil size={20} /> </button>
                                                 {/* Delete Button */}
                                                 <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
-                                                    onClick={() => handleDelete(index)}><Trash2 size={20} /> </button>
-
+                                                    onClick={() => handleDelete(item)}><Trash2 size={20} /> </button>
 
                                             </div>
                                         </td>
@@ -181,18 +257,13 @@ const CustomerMaster = () => {
                                         {/* Customer Name */}
                                         <div>
                                             <label className={labelClass}>Customer Name</label>
-                                            <input className={inputClass}
-                                                key="customername"
-                                                value={editData?.label || ""}
-                                                onChange={(e) => setEditData({ ...editData, label: e.target.value })} />
+                                            <input className={inputClass} key="customername" value={editData?.customerName || ""}
+                                                onChange={(e) => setEditData({ ...editData, customerName : e.target.value })} />
                                         </div>
                                     </div>
                                     {/* Buttons */}
                                     <div className="flex justify-end gap-3 mt-6">
-                                        <button className={btnClass} onClick={() => {
-                                            console.log("Updated User Data:", editData);
-                                            setIseditModalOpen(false);
-                                        }} > Update  </button>
+                                        <button className={btnClass} onClick={handleUpdateCustomer}> Update  </button>
                                         <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
 
                                     </div>

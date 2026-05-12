@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Pencil, Trash2, ShieldUser } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
-import { getViewAppUserList } from "../../api/projectApi";
+import { getViewAppUserList, getUpdateAppUser, getdeleteAppUser } from "../../api/projectApi";
 
 const UserList = () => {
   const {
@@ -46,9 +47,6 @@ const UserList = () => {
         const [Appuser, setAppuser] = useState([]);
      const [loading, setLoading] = useState(false);
     
-
-
-
      
     const OEMOptions = [
         { value: "NPCIL", label: "NPCIL" },
@@ -71,11 +69,9 @@ const UserList = () => {
 
 
 
-    
+    // populate data in edit modal
   const handleEdit = (item, index) => {
-
     console.log("Edit clicked:", item);
-
     const formattedOEM = (item.oemName || []).map((val) => ({ label: val, value: val }));
     const formattedBranch = (item.branchName || []).map((val) => ({ label: val, value: val }));
     const formattedCustomer = item.customerName ? item.customerName.split(",").map((val) => ({ label: val.trim(), value: val.trim() })) : [];
@@ -85,10 +81,55 @@ const UserList = () => {
         branchNames: formattedBranch,
         CustNames: formattedCustomer
     };
-
     setEditData(updatedItem);
-
     setIsModalOpen(true);
+};
+
+const handleUpdateUser = async () => {
+    try {
+        const inputData = {
+            id: editData?.srNo,
+            firstName: editData?.firstName,
+            lastName: editData?.lastName,
+            emailId: editData?.emailId,
+            contactNo: editData?.contactNo,
+            username: editData?.username,
+            // if password not available remove these 2 fields
+            password: editData?.password || "",
+            confirmPassword: editData?.confirmPassword || "",
+            type: editData?.type,
+            oem: (editData?.OEMNames || []).map( (item) => item.value ),
+            customerNames: (editData?.CustNames || []).map( (item) => item.value ),
+            branchNames: (editData?.branchNames || []).map( (item) => item.value )
+        };
+
+        console.log("Update Payload :", inputData);
+        const response = await getUpdateAppUser(inputData);
+        console.log("Update Response :", response?.data);
+         console.log("Update Response Satus:", response?.data.status);
+        // alert("User Updated Successfully");
+        if(response.data.status === 200){
+                         toast.success(response.data.message);
+                        setIsModalOpen(false);
+                    }
+                     else if (response.data.status === 409) {
+                                    toast.warning(response.data.message);
+                                }
+                    else {
+                        toast.error(response.data.message);
+                   }
+        setIsModalOpen(false);
+        initialApiReq();
+
+    } catch (error) {
+
+        console.error("Update Error :", error);
+
+        alert(
+            error?.response?.data?.message ||
+            "Failed to update user"
+        );
+    }
 };
 
     const handleRestPass = (item, index) => {
@@ -98,8 +139,7 @@ const UserList = () => {
     username: item.username,
     password: "",
     confirmPassword: ""
-  });
-  setIsResetModalOpen(true);
+  }); setIsResetModalOpen(true);
     };
 
 
@@ -107,9 +147,8 @@ const UserList = () => {
         
     
    const handleDelete = (item) => {
-    console.log("item:", item);
-             console.log("item.id:", item.id);    
-        setDeleteId(item); // or item.srNo       
+    console.log("item:", item);  
+        setDeleteId(item.srNo); // or item.srNo       
         setIsDeleteOpen(true);
     };
     const confirmDelete = async () => {
@@ -117,11 +156,18 @@ const UserList = () => {
          console.log("type of deleteId:", typeof deleteId);
         try {
             const payload = {
-                srNo: deleteId
+                id: deleteId
             };
             // await getdeleteActivityCmd(payload); // your API
-    
-            toast.success("Deleted successfully");
+             console.log("Delete Payload:", payload);
+            const response = await getdeleteAppUser(payload);    
+            // toast.success("Deleted successfully");
+             if(response.data.status === 200){
+                         toast.success(response.data.message);
+                        setIsModalOpen(false);
+                    }
+            else if (response.data.status === 409) { toast.warning(response.data.message); }
+            else { toast.error(response.data.message); }
     
             setIsDeleteOpen(false);
             setDeleteId(null);
@@ -191,7 +237,7 @@ const UserList = () => {
 
                                         {/* Delete Button */}
                                         <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
-                                            onClick={() => handleDelete(index)}><Trash2 size={20} /> </button>
+                                           onClick={() => handleDelete(item)}><Trash2 size={20} /> </button>
 
                                         {/* Reset Password Button */}
                                         <button className="px-2 py-1 text-xs text-amber-400 hover:text-amber-500 rounded-md hover:bg-amber-500/30 transition"
@@ -346,24 +392,8 @@ const UserList = () => {
 
       {/* Buttons */}
       <div className="flex justify-end gap-3 mt-6">
-
-        <button
-          className="px-4 py-2 text-gray-400 hover:text-white"
-          onClick={() => setIsModalOpen(false)}
-        >
-          Cancel
-        </button>
-
-        <button
-          className={btnClass}
-          onClick={() => {
-            console.log("Updated User Data:", editData);
-            setIsModalOpen(false);
-          }}
-        >
-          Update
-        </button>
-
+        <button className="px-4 py-2 text-gray-400 hover:text-white" onClick={() => setIsModalOpen(false)} > Cancel </button>
+        <button className={btnClass} onClick={handleUpdateUser}> Update </button>
       </div>
     </div>
   </div>

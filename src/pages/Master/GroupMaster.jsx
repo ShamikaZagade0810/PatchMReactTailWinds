@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
 
+import { AddGroupMaster, getGroupMasterList, getUpdateGroupMaster, deleteGroupMaster } from "../../api/projectApi";
 
 const GroupMaster = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -22,21 +24,19 @@ const GroupMaster = () => {
     }, []);
 
     const initialApiReq = async () => {
-        // const data = await getActivityCmdList();
         try {
-            console.log("inside initialApiReq--> ");
-            // console.log("data --> ", data);
-            // let tableData = data.data.data[0].data;
-            // let ColumnData = data.data.data[0].column;
-            // let obj = {};
-            // obj.maindata = MainData;
-            // obj.columndata = ColumnData;
-            // console.log("tableData ---> ", tableData);
-            // setActivityList(tableData);
-            // setdynamicReport(obj)
-        } catch (error) {
-            console.error("API Error:", error);
-        }
+                                               setLoading(true);                               
+                                               const res = await getGroupMasterList();                               
+                                               console.log("grouplist API Response:", res);                               
+                                               // adjust based on backend response structure
+                                               setgrouplist(res?.data?.data || res?.data || []);
+                                       
+                                           } catch (error) {
+                                               console.error("Error fetching grouplist:", error);
+                                               setgrouplist([]);
+                                           } finally {
+                                               setLoading(false);
+                                           } 
 
     }
     const [activeTab, setActiveTab] = useState(0);
@@ -45,12 +45,37 @@ const GroupMaster = () => {
         { label: "View Customer List", icon: <List size={16} /> }
         // { label: "Multiple Run Command", icon: <Play size={16} /> },
     ];
+          const [grouplist, setgrouplist] = useState([]);
+                const [loading, setLoading] = useState([]);
 
-    const grouplist = [
-        { name: "NPCIL", label: "NPCIL" },
-        { name: "NHPC", label: "NHPC" },
-        { name: "ABC", label: "ABC" }
-    ]
+    // const grouplist = [
+    //     { name: "NPCIL", label: "NPCIL" },
+    //     { name: "NHPC", label: "NHPC" },
+    //     { name: "ABC", label: "ABC" }
+    // ]
+
+    // ---------------- SUBMIT API ----------------
+                        const onSubmit = async (data) => {
+                            const inputData = {
+                                groupName: data.group,               
+                            };
+                    
+                            console.log("Payload :", inputData);
+                            try {
+                                const response = await AddGroupMaster(inputData);
+                                console.log("Add group Response :", response.data.status);
+                                // alert("User Added Successfully");
+                                if(response.data.status === 200){
+                                     toast.success(response.data.message);
+                                    handleReset();
+                                }
+                                 else if (response.data.status === 409) { toast.warning(response.data.message); }
+                                else { toast.error(response.data.message); }                            
+                            } catch (error) {
+                                console.error("Add group Error :", error);
+                                alert(  error?.response?.data?.message ||"Failed to add group" );
+                            }
+                        };
 
     const handleReset = () => { reset({ group: ""  });  };
 
@@ -66,10 +91,47 @@ const GroupMaster = () => {
         setIseditModalOpen(true);  // open modal
     };
 
+    const handleUpdateGroup = async () => {
+                        console.log("Edit Data:", editData);
+                            try {
+                                const inputData = {
+                        srNo: editData?.srNo,
+                        groupName: editData?.groupName
+                                };
+                        
+                                console.log("Update Payload :", inputData);
+                                const response = await getUpdateGroupMaster(inputData);
+                                console.log("Update Response :", response?.data);
+                                 console.log("Update Response Satus:", response?.data.status);
+                                // alert("User Updated Successfully");
+                                if(response.data.status === 200){
+                                                 toast.success(response.data.message);
+                                                setIseditModalOpen(false);
+                                            }
+                                             else if (response.data.status === 409) {
+                                                            toast.warning(response.data.message);
+                                                        }
+                                            else {
+                                                toast.error(response.data.message);
+                                           }
+                                // setIsModalOpen(false);
+                                initialApiReq();
+                        
+                            } catch (error) {
+                        
+                                console.error("Update Error :", error);
+                        
+                                alert(
+                                    error?.response?.data?.message ||
+                                    "Failed to update user"
+                                );
+                            }
+                        };
+
     const handleDelete = (item) => {
         console.log("item:", item);
-        console.log("item.id:", item.id);
-        setDeleteId(item); // or item.srNo       
+        console.log("item.id:", item.srNo) ;
+        setDeleteId(item.srNo ); // or item.srNo       
         setIsDeleteOpen(true);
     };
     const confirmDelete = async () => {
@@ -79,14 +141,18 @@ const GroupMaster = () => {
             const payload = {
                 srNo: deleteId
             };
-
-            // await getdeleteActivityCmd(payload); // your API
-
-            toast.success("Deleted successfully");
-
-            setIsDeleteOpen(false);
+            // toast.success("Deleted successfully");
+             console.log("Delete Payload:", payload);
+                                                                const response = await deleteGroupMaster(payload);    
+                                                                // toast.success("Deleted successfully");
+                                                                 if(response.data.status === 200){
+                                                                             toast.success(response.data.message);
+                                                                            setIsDeleteOpen(false);
+                                                                        }
+                                                                else if (response.data.status === 409) { toast.warning(response.data.message); }
+                                                                else { toast.error(response.data.message); }
+            // setIsDeleteOpen(false);
             setDeleteId(null);
-
             // refresh table
             initialApiReq();
 
@@ -104,7 +170,7 @@ const GroupMaster = () => {
         if (activeTab === 0) {
             return (
                  <>
-                <form onSubmit={handleSubmit((data) => handleGroupSubmit(data))}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
                     <h2 className="text-lg font-semibold mb-6">Add Group</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -116,7 +182,7 @@ const GroupMaster = () => {
                     </div>
 
                     <div className="flex justify-end mt-8 gap-3">
-                        <button className={btnClass} onClick={() => { handleAddCustomer() }}>Submit</button>
+                        <button className={btnClass} >Submit</button>
                         <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
                     </div>
                 </div>
@@ -143,11 +209,8 @@ const GroupMaster = () => {
 
                             <tbody>
                                 {grouplist.map((item, index) => (
-                                    <tr
-                                        key={index}
-                                        className="border-b border-white/10 hover:bg-[#172033] transition"
-                                    >
-                                        <td className="p-3 text-center">{item.label}</td>
+                                    <tr key={index} className="border-b border-white/10 hover:bg-[#172033] transition" >
+                                        <td className="p-3 text-center">{item.groupName}</td>
                                         <td className="p-3 text-center">
                                             <div className="flex justify-center gap-2">
                                                 {/* Edit Button */}
@@ -156,7 +219,7 @@ const GroupMaster = () => {
 
                                                 {/* Delete Button */}
                                                 <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
-                                                    onClick={() => handleDelete(index)}><Trash2 size={20} /> </button>
+                                                    onClick={() => handleDelete(item)}><Trash2 size={20} /> </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -178,18 +241,15 @@ const GroupMaster = () => {
                                         {/* Customer Name */}
                                         <div>
                                             <label className={labelClass}>Group Name</label>
-                                            <input className={inputClass} value={editData?.label || ""}
-                                                onChange={(e) => setEditData({ ...editData, label: e.target.value })} />
+                                            <input className={inputClass} value={editData?.groupName || ""}
+                                                onChange={(e) => setEditData({ ...editData, groupName: e.target.value })} />
                                         </div>
 
                                     </div>
 
                                     {/* Buttons */}
                                     <div className="flex justify-end gap-3 mt-6">
-                                        <button className={btnClass} onClick={() => {
-                                            console.log("Updated group Data:", editData);
-                                            setIseditModalOpen(false);
-                                        }} > Update  </button>
+                                        <button className={btnClass} onClick={handleUpdateGroup}> Update  </button>
                                         <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
 
                                     </div>

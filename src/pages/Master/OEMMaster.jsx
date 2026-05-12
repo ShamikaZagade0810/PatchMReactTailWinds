@@ -1,6 +1,10 @@
 import React, {useState, useEffect  } from 'react'
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
+
+import { AddOEMMaster, getOEMMasterList, getUpdateOEMMaster, deleteOEMMaster } from "../../api/projectApi";
+
 
 const OEMMaster = () => {
        const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -21,23 +25,24 @@ const OEMMaster = () => {
                  }, []);
              
                    const initialApiReq = async () => {
-                         // const data = await getActivityCmdList();
                          try {
-                           console.log("inside initialApiReq--> ");
-                             // console.log("data --> ", data);
-                             // let tableData = data.data.data[0].data;
-                             // let ColumnData = data.data.data[0].column;
-                             // let obj = {};
-                             // obj.maindata = MainData;
-                             // obj.columndata = ColumnData;
-                             // console.log("tableData ---> ", tableData);
-                             // setActivityList(tableData);
-                             // setdynamicReport(obj)
-                         } catch (error) {
-                             console.error("API Error:", error);
-                         }      
+                              setLoading(true);                               
+                                                                          const res = await getOEMMasterList();                               
+                                                                          console.log("OEMLIST API Response:", res);                               
+                                                                          // adjust based on backend response structure
+                                                                          setoemlist(res?.data?.data || res?.data || []);
+                                                                  
+                                                                      } catch (error) {
+                                                                          console.error("Error fetching OEMLIST:", error);
+                                                                          setoemlist([]);
+                                                                      } finally {
+                                                                          setLoading(false);
+                                                                      }      
                  
                      }
+
+               const [oemlist, setoemlist] = useState([]);
+                            const [loading, setLoading] = useState([]);
          const [activeTab, setActiveTab] = useState(0);
           const tabs = [
              { label: "Add OEM", icon: <Plus size={16} /> },
@@ -45,11 +50,33 @@ const OEMMaster = () => {
              // { label: "Multiple Run Command", icon: <Play size={16} /> },
          ];
      
-         const oemlist=[
-             {name:"NPCIL", label: "NPCIL"},
-             {name:"NHPC", label: "NHPC"},
-             {name:"ABC", label: "ABC"}        
-         ]
+        //  const oemlist=[
+        //      {name:"NPCIL", label: "NPCIL"},
+        //      {name:"NHPC", label: "NHPC"},
+        //      {name:"ABC", label: "ABC"}        
+        //  ]
+         // ---------------- SUBMIT API ----------------
+                                const onSubmit = async (data) => {
+                                    const inputData = {
+                                        vendorName: data.oem,               
+                                    };
+                            
+                                    console.log("Payload :", inputData);
+                                    try {
+                                        const response = await AddOEMMaster(inputData);
+                                        console.log("Add group Response :", response.data.status);
+                                        // alert("User Added Successfully");
+                                        if(response.data.status === 200){
+                                             toast.success(response.data.message);
+                                            handleReset();
+                                        }
+                                         else if (response.data.status === 409) { toast.warning(response.data.message); }
+                                        else { toast.error(response.data.message); }                            
+                                    } catch (error) {
+                                        console.error("Add group Error :", error);
+                                        alert(  error?.response?.data?.message ||"Failed to add group" );
+                                    }
+                                };
      
           const handleReset = () => { reset({ branch: "" });  };
          
@@ -64,11 +91,49 @@ const OEMMaster = () => {
                  setEditData(item);     // store selected row
                  setIseditModalOpen(true);  // open modal
              };
+
+             
+              const handleUpdateVendor = async () => {
+                                     console.log("Edit Data:", editData);
+                                         try {
+                                             const inputData = {
+                                     srNo: editData?.srNo,
+                                     vendorName: editData?.vendorName
+                                             };
+                                     
+                                             console.log("Update Payload :", inputData);
+                                             const response = await getUpdateOEMMaster(inputData);
+                                             console.log("Update Response :", response?.data);
+                                              console.log("Update Response Satus:", response?.data.status);
+                                             // alert("User Updated Successfully");
+                                             if(response.data.status === 200){
+                                                              toast.success(response.data.message);
+                                                             setIseditModalOpen(false);
+                                                         }
+                                                          else if (response.data.status === 409) {
+                                                                         toast.warning(response.data.message);
+                                                                     }
+                                                         else {
+                                                             toast.error(response.data.message);
+                                                        }
+                                             // setIsModalOpen(false);
+                                             initialApiReq();
+                                     
+                                         } catch (error) {
+                                     
+                                             console.error("Update Error :", error);
+                                     
+                                             alert(
+                                                 error?.response?.data?.message ||
+                                                 "Failed to update user"
+                                             );
+                                         }
+                                     };
      
               const handleDelete = (item) => {
              console.log("item:", item);
-             console.log("item.id:", item.id);
-             setDeleteId(item); // or item.srNo       
+             console.log("item.id:",  item.srNo);
+             setDeleteId( item.srNo); // or item.srNo       
              setIsDeleteOpen(true);
          };
          const confirmDelete = async () => {
@@ -78,12 +143,18 @@ const OEMMaster = () => {
                  const payload = {
                      srNo: deleteId
                  };
+                //  toast.success("Deleted successfully");
+                console.log("Delete Payload:", payload);
+                                                                                const response = await deleteOEMMaster(payload);    
+                                                                                // toast.success("Deleted successfully");
+                                                                                 if(response.data.status === 200){
+                                                                                             toast.success(response.data.message);
+                                                                                            setIsDeleteOpen(false);
+                                                                                        }
+                                                                                else if (response.data.status === 409) { toast.warning(response.data.message); }
+                                                                                else { toast.error(response.data.message); }
      
-                 // await getdeleteActivityCmd(payload); // your API
-     
-                 toast.success("Deleted successfully");
-     
-                 setIsDeleteOpen(false);
+                //  setIsDeleteOpen(false);
                  setDeleteId(null);
      
                  // refresh table
@@ -104,7 +175,7 @@ const OEMMaster = () => {
        if (activeTab === 0) {
          return (
             <>
-                <form onSubmit={handleSubmit((data) => handleOEMSubmit(data))}>
+                 <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
                  <h2 className="text-lg font-semibold mb-6">Add OEM</h2>
      
@@ -148,7 +219,7 @@ const OEMMaster = () => {
                                      key={index}
                                      className="border-b border-white/10 hover:bg-[#172033] transition"
                                  >
-                                     <td className="p-3 text-center">{item.label}</td>                      
+                                     <td className="p-3 text-center">{item.vendorName}</td>                      
                                      <td className="p-3 text-center">
                                          <div className="flex justify-center gap-2">    
                                              {/* Edit Button */}
@@ -157,7 +228,7 @@ const OEMMaster = () => {
      
                                              {/* Delete Button */}
                                              <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
-                                                 onClick={() => handleDelete(index)}><Trash2 size={20} /> </button>     
+                                                 onClick={() => handleDelete(item)}><Trash2 size={20} /> </button>     
                                          </div>
                                      </td>
                                  </tr>
@@ -173,17 +244,15 @@ const OEMMaster = () => {
                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">     
                                      <div>
                                          <label className={labelClass}>OEM Name</label>
-                                         <input className={inputClass} value={editData?.label || ""}
-                                             onChange={(e) => setEditData({ ...editData, label: e.target.value }) }/>
+                                         <input className={inputClass} value={editData?.vendorName || ""}
+                                             onChange={(e) => setEditData({ ...editData, vendorName: e.target.value }) }/>
                                      </div>                                              
      
                                  </div>
      
                                  {/* Buttons */}
                                  <div className="flex justify-end gap-3 mt-6">
-                                     <button className={btnClass} onClick={() => {
-                                         console.log("Updated OEM Data:", editData);
-                                         setIseditModalOpen(false);  }} > Update  </button>
+                                     <button className={btnClass} onClick={handleUpdateVendor} > Update  </button>
                                      <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>     
                                  </div>
                              </div>

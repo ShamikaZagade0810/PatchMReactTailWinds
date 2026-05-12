@@ -938,15 +938,36 @@ export const sendMultiplePatches = (inputData) =>
       }
     }
   );
-
   
   export const getViewAppUserList = () =>
   axios.get(`${BASE_URL}/master/viewAllAppUser`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
-
   });
+
+export const getUpdateAppUser = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updateAppUser`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const getdeleteAppUser = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteAppUser`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
 
   export const getViewDeviesList = () =>
   axios.get(`${BASE_URL}/master/ViewDevicesList`, {
@@ -956,3 +977,244 @@ export const sendMultiplePatches = (inputData) =>
 
   });
 
+  
+export const UpdateViewDevices = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updateViewDevices `,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteViewDevices = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteViewDevices `,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+  //---- Customer Master
+  export const AddCustomer = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addCustomerMaster`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  
+  export const getCustomerList = () =>
+  axios.get(`${BASE_URL}/master/viewCustomerMaster `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getUpdateCustomer = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updateCustomer`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteCustomer = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteCustomer`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+  //---- Branch Master
+  export const AddBranch = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addBranch`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  
+  export const getBranchList = () =>
+  axios.get(`${BASE_URL}/master/viewBranch `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getUpdateBranch = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/editBranch`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteBranch = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteBranch`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  
+  //---- Group Master
+  export const AddGroupMaster = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addGroup`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  
+  export const getGroupMasterList = () =>
+  axios.get(`${BASE_URL}/master/viewGroup `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getUpdateGroupMaster = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/editGroup`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteGroupMaster = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteGroup`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+    //---- Server Master
+  export const AddServerMaster = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addServer`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  
+  export const getServerMasterList = () =>
+  axios.get(`${BASE_URL}/master/viewAllServer `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getUpdateServerMaster = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/editServer`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteServerMaster = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteServer`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+     //---- OEM Master
+  export const AddOEMMaster = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addVendor`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  
+  export const getOEMMasterList = () =>
+  axios.get(`${BASE_URL}/master/viewAllVendor `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getUpdateOEMMaster = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updateVendor`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteOEMMaster = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteVendor`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+
+  export const getDownloadingPatchProgress = () =>
+  axios.get(`${BASE_URL}/upload/viewDownloadingPatchProgress`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });

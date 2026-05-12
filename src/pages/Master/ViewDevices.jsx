@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Pencil, Trash2, ShieldUser } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
 
-import { getViewDeviesList } from "../../api/projectApi";
+import { getViewDeviesList, UpdateViewDevices, deleteViewDevices } from "../../api/projectApi";
 
 const ViewDevices = () => {
     const {
@@ -70,16 +71,64 @@ const [loading, setLoading] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
 
-    const handleEdit = (item, index) => {
+    const handleEdit = (item) => {
         console.log("Edit clicked:", item);
-        setEditData(item);     // store selected row
+        const updatedItem = {
+        ...item,
+        OEMNames: item.oem || "",
+        branchNames: item.branchName || "",
+        CustNames: item.customerName || ""
+    };
+        setEditData(updatedItem);     // store selected row
         setIseditModalOpen(true);  // open modal
     };
+
+    const handleUpdateDevices = async () => {
+        try {
+            const inputData = {
+    id: editData?.id,
+    ipAddress: editData?.ipAddress,
+    pcName: editData?.hostName,
+    oem: editData?.OEMNames,
+    branchName: editData?.branchNames,
+    customerName: editData?.CustNames
+            };
+    
+            console.log("Update Payload :", inputData);
+            const response = await UpdateViewDevices(inputData);
+            console.log("Update Response :", response?.data);
+             console.log("Update Response Satus:", response?.data.status);
+            // alert("User Updated Successfully");
+            if(response.data.status === 200){
+                             toast.success(response.data.message);
+                            setIseditModalOpen(false);
+                        }
+                         else if (response.data.status === 409) {
+                                        toast.warning(response.data.message);
+                                    }
+                        else {
+                            toast.error(response.data.message);
+                       }
+            // setIsModalOpen(false);
+            initialApiReq();
+    
+        } catch (error) {
+    
+            console.error("Update Error :", error);
+    
+            alert(
+                error?.response?.data?.message ||
+                "Failed to update user"
+            );
+        }
+    };
+    
+
 
     const handleDelete = (item) => {
         console.log("item:", item);
         console.log("item.id:", item.id);
-        setDeleteId(item); // or item.srNo       
+        setDeleteId(item.id); // or item.srNo       
         setIsDeleteOpen(true);
     };
     const confirmDelete = async () => {
@@ -87,20 +136,29 @@ const [loading, setLoading] = useState(false);
         console.log("type of deleteId:", typeof deleteId);
         try {
             const payload = {
-                srNo: deleteId
+                id: deleteId
             };
 
             // await getdeleteActivityCmd(payload); // your API
 
-            toast.success("Deleted successfully");
+            // toast.success("Deleted successfully");
+              console.log("Delete Payload:", payload);
+                        const response = await deleteViewDevices(payload);    
+                        // toast.success("Deleted successfully");
+                         if(response.data.status === 200){
+                                     toast.success(response.data.message);
+                                    setIsDeleteOpen(false);
+                                }
+                        else if (response.data.status === 409) { toast.warning(response.data.message); }
+                        else { toast.error(response.data.message); }
 
-            setIsDeleteOpen(false);
+            // setIsDeleteOpen(false);
             setDeleteId(null);
 
             // refresh table
             initialApiReq();
 
-        } catch (error) {s
+        } catch (error) {
             console.error(error);
             toast.error("Delete failed");
         }
@@ -157,8 +215,8 @@ const [loading, setLoading] = useState(false);
                 <td className="p-3">{item.deviceStatus}</td>
                 <td className="p-3 text-center">
                     <div className="flex justify-center gap-2">
-                        <button onClick={() => handleEdit(item, index)} className="text-blue-400" > <Pencil size={20} /> </button>
-                        <button onClick={() => handleDelete(index)} className="text-red-400" >  <Trash2 size={20} /> </button>
+                        <button onClick={() => handleEdit(item)} className="text-blue-400" > <Pencil size={20} /> </button>
+                        <button onClick={() => handleDelete(item)} className="text-red-400" >  <Trash2 size={20} /> </button>
                     </div>
                 </td>
             </tr>
@@ -243,10 +301,7 @@ const [loading, setLoading] = useState(false);
                             <div className="flex justify-end gap-3 mt-6">
                                 <button className="px-4 py-2 text-gray-400 hover:text-white" onClick={() => setIseditModalOpen(false)} >Cancel </button>
 
-                                <button className={btnClass} onClick={() => {
-                                    console.log("Updated User Data:", editData);
-                                    setIseditModalOpen(false);
-                                }} > Update  </button>
+                                <button className={btnClass} onClick={handleUpdateDevices}> Update  </button>
 
                             </div>
                         </div>
