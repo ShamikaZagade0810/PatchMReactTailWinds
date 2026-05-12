@@ -61,7 +61,7 @@ const ServerMaster = () => {
         { value: "NHPC", label: "NHPC" },
     ];
 
-    const handleReset = () => { reset({ branchNames: "", CustNames: "", server: "", ipaddress: "", serverstatus:"" }); };
+    const handleReset = () => { reset({ branchNames: "", CustNames: "", server: "", ipaddress: "", serverstatus: "" }); };
 
     const [iseditModalOpen, setIseditModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
@@ -105,72 +105,72 @@ const ServerMaster = () => {
         }
     };
 
-       const handleServerSubmit = (data) => {
-  console.log("Form Data:", data);
-};
+    const handleServerSubmit = (data) => {
+        console.log("Form Data:", data);
+    };
 
     const renderContent = () => {
         if (activeTab === 0) {
             return (
-                 <>
-                <form onSubmit={handleSubmit((data) => handleServerSubmit(data))}>
-                <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
-                    <h2 className="text-lg font-semibold mb-6">Add Server</h2>
+                <>
+                    <form onSubmit={handleSubmit((data) => handleServerSubmit(data))}>
+                        <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
+                            <h2 className="text-lg font-semibold mb-6">Add Server</h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label className={labelClass}> Server Name</label>
-                            <input className={inputClass} placeholder="Enter server Name"  {...register("server",  { required: "Server Name is required" })} />
-                            {errors.server && <p className="text-red-500 text-xs">{errors.server.message}</p>}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label className={labelClass}> Server Name</label>
+                                    <input className={inputClass} placeholder="Enter server Name"  {...register("server", { required: "Server Name is required" })} />
+                                    {errors.server && <p className="text-red-500 text-xs">{errors.server.message}</p>}
+                                </div>
+                                <div>
+                                    <label className={labelClass}> IP Address</label>
+                                    <input className={inputClass} placeholder="Enter IP Address"  {...register("ipaddress", { required: "IP Address is required" })} />
+                                    {errors.ipaddress && <p className="text-red-500 text-xs">{errors.ipaddress.message}</p>}
+                                </div>
+
+                                {/* Branch Name */}
+                                <div>
+                                    <label className={labelClass}>Branch Name</label>
+                                    <select className={inputClass} defaultValue="" {...register("branchNames", { required: "Branch Name is required" })} >
+                                        <option value="" disabled>-- Please select value --</option>
+                                        {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
+                                    </select>
+                                    {errors.branchNames && <p className="text-red-500 text-xs">{errors.branchNames.message}</p>}
+                                </div>
+
+                                {/* Customer Name */}
+                                <div>
+                                    <label className={labelClass}>Customer Name</label>
+                                    <select className={inputClass} defaultValue="" {...register("CustNames", { required: "Customer Name is required" })} >
+                                        <option value="" disabled>-- Please select value --</option>
+                                        {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
+                                    </select>
+                                    {errors.CustNames && <p className="text-red-500 text-xs">{errors.CustNames.message}</p>}
+                                </div>
+
+                                {/* Server Status */}
+                                <div>
+                                    <label className={labelClass}>Server Status</label>
+                                    <select className={inputClass} defaultValue="" {...register("serverstatus", { required: "Server Status is required" })} >
+                                        <option value="" disabled>-- Please select value --</option>
+                                        <option value="Upstream">UpStream</option>
+                                        <option value="DownStream">DownStream</option>
+                                        {/* {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))} */}
+                                    </select>
+                                    {errors.serverstatus && <p className="text-red-500 text-xs">{errors.serverstatus.message}</p>}
+                                </div>
+
+
+
+                            </div>
+
+                            <div className="flex justify-end mt-8 gap-3">
+                                <button className={btnClass} >Submit</button>
+                                <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
+                            </div>
                         </div>
-                        <div>
-                            <label className={labelClass}> IP Address</label>
-                            <input className={inputClass} placeholder="Enter IP Address"  {...register("ipaddress",  { required: "IP Address is required" })} />
-                            {errors.ipaddress && <p className="text-red-500 text-xs">{errors.ipaddress.message}</p>}
-                        </div>
-
-                        {/* Branch Name */}
-                         <div>
-                            <label className={labelClass}>Branch Name</label>     
-                        <select className={inputClass} defaultValue="" {...register("branchNames",  { required: "Branch Name is required" })} >
-                            <option value="" disabled>-- Please select value --</option>
-                            {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
-                        </select>
-                        {errors.branchNames && <p className="text-red-500 text-xs">{errors.branchNames.message}</p>}
-                        </div>
-
-                        {/* Customer Name */}
-                        <div>
-                            <label className={labelClass}>Customer Name</label>                            
-                            <select className={inputClass} defaultValue="" {...register("CustNames",  { required: "Customer Name is required" })} >
-                            <option value="" disabled>-- Please select value --</option>
-                            {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
-                            </select>
-                            {errors.CustNames && <p className="text-red-500 text-xs">{errors.CustNames.message}</p>}
-                        </div>
-
-                         {/* Server Status */}
-                        <div>
-                            <label className={labelClass}>Server Status</label>                            
-                            <select className={inputClass} defaultValue="" {...register("serverstatus",  { required: "Server Status is required" })} >
-                            <option value="" disabled>-- Please select value --</option>
-                             <option value="Upstream">UpStream</option>
-                              <option value="DownStream">DownStream</option>
-                            {/* {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))} */}
-                            </select>
-                            {errors.serverstatus && <p className="text-red-500 text-xs">{errors.serverstatus.message}</p>}
-                        </div>
-
-                        
-
-                    </div>
-
-                    <div className="flex justify-end mt-8 gap-3">
-                        <button className={btnClass} >Submit</button>
-                        <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
-                    </div>
-                </div>
-                </form>
+                    </form>
                 </>
             );
         }
@@ -230,44 +230,44 @@ const ServerMaster = () => {
                                             <input className={inputClass} value={editData?.serverName || ""}
                                                 onChange={(e) => setEditData({ ...editData, serverName: e.target.value })} />
                                         </div>
-                                         <div>
+                                        <div>
                                             <label className={labelClass}>IP Address</label>
                                             <input className={inputClass} value={editData?.ipAddress || ""}
                                                 onChange={(e) => setEditData({ ...editData, ipAddress: e.target.value })} />
                                         </div>
-                                        
-                                {/* Branch Name */}
-                                <div>
-                                    <label className={labelClass}>Branch Name</label>
-                                    <select className={inputClass}
-                                        value={editData?.branchNames || ""}
-                                        onChange={(e) => setEditData({ ...editData, branchNames: e.target.value })} >
-                                        <option value="" disabled>-- Please select value --</option>
-                                        {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
-                                    </select>
-                                </div>
+
+                                        {/* Branch Name */}
+                                        <div>
+                                            <label className={labelClass}>Branch Name</label>
+                                            <select className={inputClass}
+                                                value={editData?.branchNames || ""}
+                                                onChange={(e) => setEditData({ ...editData, branchNames: e.target.value })} >
+                                                <option value="" disabled>-- Please select value --</option>
+                                                {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
+                                            </select>
+                                        </div>
 
                                         {/* Customer Name */}
-                                <div>
-                                    <label className={labelClass}>Customer Name</label>
-                                    <select className={inputClass}
-                                        value={editData?.CustNames || ""}
-                                        onChange={(e) => setEditData({ ...editData, CustNames: e.target.value })} >
-                                        <option value="" disabled>-- Please select value --</option>
-                                        {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
-                                    </select>
-                                </div>
-                                
-                                {/* Type */}
-        <div>
-          <label className={labelClass}>Server Status</label>
-          <select className={inputClass}  value={editData?.serverStatus || ""}
-            onChange={(e) => setEditData({ ...editData, serverStatus: e.target.value }) } >
-            <option value="">-- Please select value --</option>
-            <option value="Upstream">UpStream</option>
-            <option value="DownStream">DownStream</option>
-          </select>
-        </div>
+                                        <div>
+                                            <label className={labelClass}>Customer Name</label>
+                                            <select className={inputClass}
+                                                value={editData?.CustNames || ""}
+                                                onChange={(e) => setEditData({ ...editData, CustNames: e.target.value })} >
+                                                <option value="" disabled>-- Please select value --</option>
+                                                {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
+                                            </select>
+                                        </div>
+
+                                        {/* Type */}
+                                        <div>
+                                            <label className={labelClass}>Server Status</label>
+                                            <select className={inputClass} value={editData?.serverStatus || ""}
+                                                onChange={(e) => setEditData({ ...editData, serverStatus: e.target.value })} >
+                                                <option value="">-- Please select value --</option>
+                                                <option value="Upstream">UpStream</option>
+                                                <option value="DownStream">DownStream</option>
+                                            </select>
+                                        </div>
 
 
                                     </div>
