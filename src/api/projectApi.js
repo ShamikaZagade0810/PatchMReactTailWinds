@@ -913,22 +913,22 @@ export const sendMultiplePatches = (inputData) =>
     }
   );
 
-  // MASTER API's
+// MASTER API's
 
-  //---- VIEW DEVICES
-  // export const ViewDeviesList = (inputData) =>
-  // axios.post(
-  //   `${BASE_URL}/master/ViewDevicesList  `,
-  //   inputData,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   }
-  // );
+//---- VIEW DEVICES
+// export const ViewDeviesList = (inputData) =>
+// axios.post(
+//   `${BASE_URL}/master/ViewDevicesList  `,
+//   inputData,
+//   {
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   }
+// );
 
-  //---- Add User
-  export const AddAppUser = (inputData) =>
+//---- Add User
+export const AddAppUser = (inputData) =>
   axios.post(
     `${BASE_URL}/master/addNewAppUser`,
     inputData,
@@ -969,7 +969,8 @@ export const getUpdateAppUser = (inputData) =>
   );
 
 
-  export const getViewDeviesList = () =>
+
+export const getViewDeviesList = () =>
   axios.get(`${BASE_URL}/master/ViewDevicesList`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1211,10 +1212,142 @@ export const getUpdateOEMMaster = (inputData) =>
 
 
 
-  export const getDownloadingPatchProgress = () =>
+export const getDownloadingPatchProgress = () =>
   axios.get(`${BASE_URL}/upload/viewDownloadingPatchProgress`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
 
   });
+
+export const addSetServerPolicy = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addServerPolicy`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const viewAllServerPolicy = () =>
+  axios.get(`${BASE_URL}/master/viewAllServerPolicy`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+
+export const editSetServerPolicy = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updateServerPolicy`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const deleteSelectedPolicyServer = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteServerPolicy`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const addMailConfig = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addMailConfig`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const viewAllMailConfig = () =>
+  axios.get(`${BASE_URL}/master/viewMailConfig`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+export const editMailConfig = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updateMailConfig`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const deleteSelectMailConfig = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deleteMailConfig`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const addPeriodicReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/master/addPeriodicReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const viewAllPeriodicReportList = () =>
+  axios.get(`${BASE_URL}/master/viewAllPeriodicReport`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  export const editPeriodicReport = (inputData) =>
+  axios.put(
+    `${BASE_URL}/master/updatePeriodicReport`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+  export const deleteSelectPeriodicReport = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/master/deletePeriodicReport`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );

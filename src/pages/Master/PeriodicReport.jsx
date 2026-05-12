@@ -2,6 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2, MailPlus, CalendarClock } from "lucide-react";
+import {
+    addPeriodicReport,
+    viewAllPeriodicReportList,
+    editPeriodicReport,
+    deleteSelectPeriodicReport 
+} from "../../api/projectApi";
+import { ToastContainer, toast } from 'react-toastify';
 
 const PeriodicReport = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -17,6 +24,18 @@ const PeriodicReport = () => {
         reset,
         clearErrors
     } = useForm();
+
+    const [editId, setEditId] = useState(-1);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [deleteId, setDeleteId] = useState(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [viewPeriodicConfigListData, setViewPeriodicConfigListData] = useState([]);
+
+
+
+
+
+
     useEffect(() => {
         initialApiReq();
     }, []);
@@ -25,19 +44,23 @@ const PeriodicReport = () => {
         // const data = await getActivityCmdList();
         try {
             console.log("inside initialApiReq--> ");
-            // console.log("data --> ", data);
-            // let tableData = data.data.data[0].data;
-            // let ColumnData = data.data.data[0].column;
-            // let obj = {};
-            // obj.maindata = MainData;
-            // obj.columndata = ColumnData;
-            // console.log("tableData ---> ", tableData);
-            // setActivityList(tableData);
-            // setdynamicReport(obj)
+            getData();
         } catch (error) {
             console.error("API Error:", error);
         }
     }
+
+
+    const getData = async () => {
+        console.log("Hello World");
+        const resData = await viewAllPeriodicReportList();
+
+        console.log("resData ", resData.data.data);
+        setViewPeriodicConfigListData(resData.data.data);
+
+    }
+
+
 
     const reportsList = [
         { reportName: "NotInstalled Report", reportType: "Daily", scheduleTime: "13:00:00", scheduleDay: "", recipientName: "tester", recipientEmail: "test@gmail.com" },
@@ -53,14 +76,112 @@ const PeriodicReport = () => {
         { value: "View Application Users", label: "View Application Users" }
     ]
 
-    const handlemailconfig = (data) => {
+    const handlemailconfig = async (data) => {
         console.log("Form Data:", data);
+        data.scheduleDay = data.scheduleDay || "";
+        data.scheduleTime = data.scheduleTime
+            ? `${data.scheduleTime}:00`
+            : "00:00:00";
+
+
+        try {
+            if (!isEditMode) {
+
+                const res = await addPeriodicReport(data);
+                console.log("Res Data--->  ", res);
+                if (res.data.status == 200) {
+                    toast.success(res.data.message, {
+                        onClose: () => {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    toast.error(res.data.message);
+                }
+            } else {
+                data.id = editId;
+                const res = await editPeriodicReport(data);
+                console.log("Res Data--->  ", res);
+                if (res.data.status == 200) {
+                    toast.success(res.data.message, {
+                        onClose: () => {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    toast.error(res.data.message);
+                }
+            }
+
+            reset();
+        } catch (ex) {
+            console.log("Exception ", ex);
+        }
+
+
     };
 
-    const handleReset = () => { reset({ reportName: "", recipientName: "", recipientemail: "", reportType: "", scheduleTime:"" }); clearErrors(); };
+    const handleEdit = (item, index) => {
+        console.log("item ", item);
+
+        Object.entries(item).forEach(([key, value]) => {
+
+
+            setValue(key, value);
+
+        });
+        setIsEditMode(true);
+        setEditId(item.id);
+
+
+
+    }
+
+     const confirmDelete = async () => {
+            console.log("deleteId:", deleteId);
+            console.log("type of deleteId:", typeof deleteId);
+            try {
+                const payload = {
+                    id: deleteId
+                };
+                const res = await deleteSelectPeriodicReport(payload);
+                // await getdeleteActivityCmd(payload); // your API
+                if (res.data.status == 200) {
+                    toast.success(res.data.message, {
+                        onClose: () => {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    toast.success(res.data.message);
+                }
+    
+    
+                setIsDeleteOpen(false);
+                setDeleteId(null);
+    
+                // refresh table
+                // initialApiReq();
+    
+            } catch (error) {
+                console.error(error);
+                toast.error("Delete failed");
+            }
+        };
+
+    const handleDelete = (item) => {
+        console.log("item:", item);
+        console.log("item.id:", item.id);
+        setDeleteId(item.id); // or item.srNo       
+        setIsDeleteOpen(true);
+    };
+
+
+    const handleReset = () => { reset({ reportName: "", recipientName: "", recipientemail: "", reportType: "", scheduleTime: "" }); clearErrors(); };
 
     return (
         <>
+            <ToastContainer />
             <form onSubmit={handleSubmit((data) => handlemailconfig(data))}>
                 <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
                     <h2 className="text-lg font-semibold mb-6">Periodic Report</h2>
@@ -80,10 +201,11 @@ const PeriodicReport = () => {
                         </div>
                         <div>
                             <label className={labelClass}>Recipient Email </label>
-                            <input className={inputClass} placeholder="Enter Recipient  Email"  {...register("recipientemail", { required: "Recipient Email is required",
+                            <input className={inputClass} placeholder="Enter Recipient  Email"  {...register("recipientEmail", {
+                                required: "Recipient Email is required",
                                 pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid Recipient email address" }
                             })} />
-                            {errors.recipientemail && (<p className="text-red-500 text-xs mt-1"> {errors.recipientemail.message} </p>)}
+                            {errors.recipientEmail && (<p className="text-red-500 text-xs mt-1"> {errors.recipientEmail.message} </p>)}
                         </div>
 
                         <div>
@@ -126,7 +248,7 @@ const PeriodicReport = () => {
 
                     </div>
                     <div className="flex justify-end mt-8 gap-3">
-                        <button  className={btnClass} >Submit</button>
+                        <button className={btnClass} >Submit</button>
                         <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
                     </div>
                 </div>
@@ -166,7 +288,7 @@ const PeriodicReport = () => {
 
                         {/* Body */}
                         <tbody>
-                            {reportsList.map((item, index) => (
+                            {viewPeriodicConfigListData.map((item, index) => (
                                 <tr key={index} className="border-b border-white/10 hover:bg-[#172033]">
                                     <td className="p-3">{item.reportName}</td>
                                     <td className="p-3">{item.recipientName}</td>
@@ -192,6 +314,19 @@ const PeriodicReport = () => {
                     </table>
                 </div>
             </div>
+
+            {isDeleteOpen && (
+                                        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                                            <div className="bg-[#0B1220] p-6 rounded-2xl border border-white/10 w-[400px] shadow-xl">
+                                                <h2 className="text-lg font-semibold mb-4"> Confirm Delete </h2>
+                                                <p className="text-gray-300 mb-6"> Are you sure you want to delete this OEM? </p>
+                                                <div className="flex justify-end gap-3">
+                                                    <button className={resetClass} onClick={() => setIsDeleteOpen(false)} > Cancel </button>
+                                                    <button className="px-4 py-2 bg-red-600 text-white rounded" onClick={confirmDelete}> Yes, Delete </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
 
         </>
 

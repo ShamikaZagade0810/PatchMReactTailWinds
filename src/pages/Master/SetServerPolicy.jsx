@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
 import { div } from 'framer-motion/client';
+import {
+    addSetServerPolicy,
+    viewAllServerPolicy,
+    editSetServerPolicy,
+    deleteSelectedPolicyServer 
+} from "../../api/projectApi";
+import { ToastContainer, toast } from 'react-toastify';
 
 const SetServerPolicy = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -20,26 +27,39 @@ const SetServerPolicy = () => {
     useEffect(() => {
         initialApiReq();
     }, []);
+     const [activeTab, setActiveTab] = useState(0);
+     const [viewServerListData ,setViewServerListData] = useState([]);
+
+    useEffect(() => {
+
+        if (activeTab === 1) {
+            getData();
+        }
+
+    }, [activeTab]);
+ 
+
+    const getData = async()=>{
+          console.log("Hello World");
+          const resData = await viewAllServerPolicy();
+
+          console.log("resData ",resData.data.data);
+          setViewServerListData(resData.data.data);
+
+    }
+
 
     const initialApiReq = async () => {
         // const data = await getActivityCmdList();
         try {
             console.log("inside initialApiReq--> ");
-            // console.log("data --> ", data);
-            // let tableData = data.data.data[0].data;
-            // let ColumnData = data.data.data[0].column;
-            // let obj = {};
-            // obj.maindata = MainData;
-            // obj.columndata = ColumnData;
-            // console.log("tableData ---> ", tableData);
-            // setActivityList(tableData);
-            // setdynamicReport(obj)
+
         } catch (error) {
             console.error("API Error:", error);
         }
 
     }
-    const [activeTab, setActiveTab] = useState(0);
+   
     const tabs = [
         { label: "Add Server Policy", icon: <Plus size={16} /> },
         { label: "View Server Policy List", icon: <List size={16} /> }
@@ -73,7 +93,7 @@ const SetServerPolicy = () => {
     const handleDelete = (item) => {
         console.log("item:", item);
         console.log("item.id:", item.id);
-        setDeleteId(item); // or item.srNo       
+        setDeleteId( item.id); // or item.srNo       
         setIsDeleteOpen(true);
     };
     const confirmDelete = async () => {
@@ -81,12 +101,17 @@ const SetServerPolicy = () => {
         console.log("type of deleteId:", typeof deleteId);
         try {
             const payload = {
-                srNo: deleteId
+                id: deleteId
             };
-
+           const res = await deleteSelectedPolicyServer(payload);
             // await getdeleteActivityCmd(payload); // your API
-
-            toast.success("Deleted successfully");
+            if(res.data.status == 200){
+                 toast.success(res.data.message );
+                  window.location.reload();
+            }else{
+                  toast.success(res.data.message );
+            }
+            
 
             setIsDeleteOpen(false);
             setDeleteId(null);
@@ -100,100 +125,160 @@ const SetServerPolicy = () => {
         }
     };
 
- const handleSetPolicySubmit = (data) => {
-  console.log("Form Data:", data);
-};
+    const handleSetPolicySubmit = async (data) => {
+
+
+        const payload = {
+            policyName: data.policyName,
+            serverIpAddress: data.serverIpAddress,
+            serverPort: Number(data.serverPort),
+            parameter: data.parameter,
+            priorityServer: String(data.priorityServer),
+            branchName: data.branchName,
+            scheduleDay: data.scheduleDay || "",
+            scheduleTime: data.scheduleTime
+                ? `${data.scheduleTime}:00`
+                : "00:00:00",
+        };
+
+        console.log("Final Payload :", payload);
+        try {
+
+
+            const res = await addSetServerPolicy(payload);
+            console.log("Res Data--->  ", res);
+            if (res.data.status == 200) {
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message);
+            }
+            reset();
+        } catch (ex) {
+            console.log("Exception ", ex);
+        }
+
+
+    };
+
+
+      const handleEditSetPolicySubmit = async (data) => {
+
+
+    
+
+        console.log("Final Payload :", data);
+        try {
+
+
+            const res = await editSetServerPolicy(data);
+            console.log("Res Data--->  ", res);
+            if (res.data.status == 200) {
+                toast.success(res.data.message);
+                  window.location.reload();
+            } else {
+                toast.error(res.data.message);
+            }
+           
+        } catch (ex) {
+            console.log("Exception ", ex);
+        }
+
+
+    };
 
     const renderContent = () => {
         if (activeTab === 0) {
             return (
-                 <>
-                <form onSubmit={handleSubmit((data) => handleSetPolicySubmit(data))}>
-                <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
-                    <h2 className="text-lg font-semibold mb-6">Set Server Policy</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <label className={labelClass}> Policy Name</label>
-                            <input className={inputClass} placeholder="Enter Policy Name"  {...register("policyName",  { required: "Policy Name is required" })} />
-                            {errors.policyName && <p className="text-red-500 text-xs">{errors.policyName.message}</p>}
-                        </div>
-                        <div>
-                            <label className={labelClass}>IP Address</label>
-                            <input className={inputClass} placeholder="Enter IP Address"  {...register("ipAddress",  { required: "IP Address is required" })} />
-                            {errors.ipAddress && <p className="text-red-500 text-xs">{errors.ipAddress.message}</p>}
-                        </div>
-                        <div>
-                            <label className={labelClass}> Port</label>
-                            <input className={inputClass} placeholder="Enter Policy Name"  {...register("port",  { required: "Policy Name is required" })} />
-                            {errors.port && <p className="text-red-500 text-xs">{errors.port.message}</p>}
-                        </div>
-                        {/* Branch Name */}
-                        <div>
-                            <label className={labelClass}>Branch Name</label>
-                            <select className={inputClass} defaultValue="" {...register("branchNames",  { required: "Branch Name is required" })} >
-                                <option value="" disabled>-- Please select value --</option>
-                                {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
-                            </select>
-                            {errors.branchNames && <p className="text-red-500 text-xs">{errors.branchNames.message}</p>}
-                        </div>
-
-                        {/* Parameter */}
-                        <div>
-                            <label className={labelClass}>Parameter</label>
-                            <select className={inputClass} defaultValue="" {...register("parameter",  { required: "Branch Name is required" })} >
-                                <option value="" disabled>-- Please select value --</option>
-                                <option value="2">Notify for download and notify for install</option>
-                                <option value="3">Auto download and notify for install</option>
-                                <option value="4">Auto download and schedule the install</option>
-                                {/* {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))} */}
-                            </select>
-                              {errors.parameter && <p className="text-red-500 text-xs">{errors.parameter.message}</p>}
-                        </div>
-                        {selectedParam === "4" && (
-                            <>
-                                {/* Schedule Day */}
+                <>
+                    <form onSubmit={handleSubmit((data) => handleSetPolicySubmit(data))}>
+                        <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
+                            <h2 className="text-lg font-semibold mb-6">Set Server Policy</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
-                                    <label className={labelClass}>Schedule Day</label>
-                                    <select className={inputClass} {...register("scheduleDay", { required: "Schedule Day is required" })}>
-                                        <option value="">-- Select Day --</option>
-                                        <option value="Monday">Monday</option>
-                                        <option value="Tuesday">Tuesday</option>
-                                        <option value="Wednesday">Wednesday</option>
-                                        <option value="Thursday">Thursday</option>
-                                        <option value="Friday">Friday</option>
-                                        <option value="Saturday">Saturday</option>
-                                        <option value="Sunday">Sunday</option>
+                                    <label className={labelClass}> Policy Name</label>
+                                    <input className={inputClass} placeholder="Enter Policy Name"  {...register("policyName", { required: "Policy Name is required" })} />
+                                    {errors.policyName && <p className="text-red-500 text-xs">{errors.policyName.message}</p>}
+                                </div>
+                                <div>
+                                    <label className={labelClass}>IP Address</label>
+                                    <input className={inputClass} placeholder="Enter IP Address"  {...register("serverIpAddress", { required: "IP Address is required" })} />
+                                    {errors.ipAddress && <p className="text-red-500 text-xs">{errors.ipAddress.message}</p>}
+                                </div>
+                                <div>
+                                    <label className={labelClass}> Port</label>
+                                    <input type="number" className={inputClass} placeholder="Enter Policy Name"  {...register("serverPort", { required: "Policy Name is required" })} />
+                                    {errors.port && <p className="text-red-500 text-xs">{errors.port.message}</p>}
+                                </div>
+                                {/* Branch Name */}
+                                <div>
+                                    <label className={labelClass}>Branch Name</label>
+                                    <select className={inputClass} defaultValue="" {...register("branchName", { required: "Branch Name is required" })} >
+                                        <option value="" disabled>-- Please select value --</option>
+                                        {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
                                     </select>
-                                     {errors.scheduleDay && <p className="text-red-500 text-xs">{errors.scheduleDay.message}</p>}
+                                    {errors.branchNames && <p className="text-red-500 text-xs">{errors.branchNames.message}</p>}
                                 </div>
 
-                                {/* Schedule Time */}
+                                {/* Parameter */}
                                 <div>
-                                    <label className={labelClass}>Schedule Time</label>
-                                    <input type="time" className={inputClass} {...register("scheduleTime", { required: "Schedule Time is required"  })} />
-                                     {errors.scheduleTime && <p className="text-red-500 text-xs">{errors.scheduleTime.message}</p>}
+                                    <label className={labelClass}>Parameter</label>
+                                    <select className={inputClass} defaultValue="" {...register("parameter", { required: "Branch Name is required" })} >
+                                        <option value="" disabled>-- Please select value --</option>
+                                        <option value="2">Notify for download and notify for install</option>
+                                        <option value="3">Auto download and notify for install</option>
+                                        <option value="4">Auto download and schedule the install</option>
+                                        {/* {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))} */}
+                                    </select>
+                                    {errors.parameter && <p className="text-red-500 text-xs">{errors.parameter.message}</p>}
                                 </div>
-                            </>
-                        )}
+                                {selectedParam === "4" && (
+                                    <>
+                                        {/* Schedule Day */}
+                                        <div>
+                                            <label className={labelClass}>Schedule Day</label>
+                                            <select className={inputClass} {...register("scheduleDay", { required: "Schedule Day is required" })}>
+                                                <option value="">-- Select Day --</option>
+                                                <option value="Monday">Monday</option>
+                                                <option value="Tuesday">Tuesday</option>
+                                                <option value="Wednesday">Wednesday</option>
+                                                <option value="Thursday">Thursday</option>
+                                                <option value="Friday">Friday</option>
+                                                <option value="Saturday">Saturday</option>
+                                                <option value="Sunday">Sunday</option>
+                                            </select>
+                                            {errors.scheduleDay && <p className="text-red-500 text-xs">{errors.scheduleDay.message}</p>}
+                                        </div>
 
-                        <div>
-                            <div className="flex items-center gap-3 mt-7">
-                                <input type="checkbox" id="priorityServer" className="h-4 w-4 accent-blue-500" {...register("priorityServer")} />
-                                <label htmlFor="priorityServer" className={labelClass}> Priority Server </label>
+                                        {/* Schedule Time */}
+                                        <div>
+                                            <label className={labelClass}>Schedule Time</label>
+                                            <input type="time" className={inputClass} {...register("scheduleTime", { required: "Schedule Time is required" })} />
+                                            {errors.scheduleTime && <p className="text-red-500 text-xs">{errors.scheduleTime.message}</p>}
+                                        </div>
+                                    </>
+                                )}
+
+                                <div>
+                                    <div className="flex items-center gap-3 mt-7">
+                                        <input type="checkbox" id="priorityServer" className="h-4 w-4 accent-blue-500" {...register("priorityServer")} />
+                                        <label htmlFor="priorityServer" className={labelClass}> Priority Server </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex justify-end mt-8 gap-3">
+                                <button className={btnClass} type="submit">Submit</button>
+                                <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex justify-end mt-8 gap-3">
-                        <button className={btnClass} onClick={() => { handleAddOem() }}>Submit</button>
-                        <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
-                    </div>
-                </div>
-                </form>
+                    </form>
                 </>
             );
         }
 
         else if (activeTab === 1) {
+
+
+
             return (
                 <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
                     <h2 className="text-lg font-semibold mb-4">
@@ -215,7 +300,7 @@ const SetServerPolicy = () => {
                             </thead>
 
                             <tbody>
-                                {serversPolicyList.map((item, index) => (
+                                {viewServerListData.map((item, index) => (
                                     <tr key={index} className="border-b border-white/10 hover:bg-[#172033] transition" >
                                         <td className="p-3 text-center">{item.policyName}</td>
                                         <td className="p-3 text-center">{item.serverIpAddress}</td>
@@ -231,7 +316,7 @@ const SetServerPolicy = () => {
 
                                                 {/* Delete Button */}
                                                 <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
-                                                    onClick={() => handleDelete(index)}><Trash2 size={20} /> </button>
+                                                    onClick={() => handleDelete(item)}><Trash2 size={20} /> </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -315,7 +400,10 @@ const SetServerPolicy = () => {
                                     <div className="flex justify-end gap-3 mt-6">
                                         <button className={btnClass} onClick={() => {
                                             console.log("Updated OEM Data:", editData);
+                                            handleEditSetPolicySubmit(editData);
                                             setIseditModalOpen(false);
+
+
                                         }} > Update  </button>
                                         <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
                                     </div>
@@ -345,6 +433,7 @@ const SetServerPolicy = () => {
     return (
         <div className="min-h-screen  text-white p-2">
             {/* 🔷 Tabs */}
+            <ToastContainer />
             <div className=" bg-[#0B1220] rounded-xl p-2 border border-white/10">
                 <div className="flex gap-2 mb-4">
                     {tabs.map((tab, index) => (
