@@ -28,6 +28,9 @@ import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
 import SendMultiplePatches from "../pages/contentDistribution/SendMultiplePatches.jsx";
 
 import AutomaticApproval from "../pages/patchSetting/AutomaticApproval.jsx";
+import PatchTree from "../pages/PatchTree/PatchTree.jsx";
+import PatchTreeUpdateDashboard from "../pages/PatchTree/PatchTreeUpdateDashboard.jsx";
+import PatchTreeThirdDashboard from "../pages/PatchTree/PatchTreeThirdDashboard.jsx";
 
 export default function AppRoutes() {
   return (
@@ -190,7 +193,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           } />
 
-          <Route path="/master/mail-config"
+        <Route path="/master/mail-config"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <MailConfig />
@@ -204,16 +207,16 @@ export default function AppRoutes() {
             </ProtectedRoute>
           } />
 
-          {/* Patch Setting */}          
-          <Route path="/setting/Auto-Approval"
+        {/* Patch Setting */}
+        <Route path="/setting/Auto-Approval"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <AutomaticApproval />
-            </ProtectedRoute>   } />       
+            </ProtectedRoute>} />
 
 
 
-          {/* Content Distributin */}
+        {/* Content Distributin */}
         <Route path="/content/send-multiple"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
@@ -222,6 +225,26 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+
+        <Route path="/dashboard/patchTree"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchTree />
+            </ProtectedRoute>} />
+
+        <Route path="/patchTree/updates"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchTreeUpdateDashboard />
+            </ProtectedRoute>} />
+
+
+        <Route path="/patchTree/ThirdUpdate"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchTreeThirdDashboard />
+            </ProtectedRoute>} />
 
       </Route>
 

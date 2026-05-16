@@ -46,7 +46,9 @@ import {
     getIpWisePatchList,
     getOSWisePatchList,
     getthirdPartySeverityPatchList,
-    getPatchHistoryList
+    getPatchHistoryList,
+    windowsOverallComplaince,
+    windowsComplainceDataDashboard
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
@@ -66,6 +68,9 @@ const OverviewDashboard = () => {
     const [show, setShow] = useState(false);
     const [modalData, setModalData] = useState({});
     const [loading, setLoading] = useState(false);
+    const [overallComplainceRate, setOverallComplainceRate] = useState(0);
+    const [complianceData, setComplianceData] = useState([]);
+
 
     // const columns = [
     //     { label: "Name", key: "name" },
@@ -175,7 +180,9 @@ const OverviewDashboard = () => {
                 ipRes,
                 osPieRes,
                 osListRes,
-                topDevicesRes
+                topDevicesRes,
+                windowsOverallComplainceRes,
+                windowsComplainceDataDashboardRes
             ] = await Promise.all([
                 getPatches(),
                 getOSCount(),
@@ -186,7 +193,9 @@ const OverviewDashboard = () => {
                 getIpWiseStatusData(),
                 getOsUpdatesPie(),
                 getOsUpdatesList(),
-                getTopRiskyDevices()
+                getTopRiskyDevices(),
+                windowsOverallComplaince(),
+                windowsComplainceDataDashboard()
             ]);
 
 
@@ -204,6 +213,11 @@ const OverviewDashboard = () => {
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
             setTopDevices(topDevicesRes.data.data);
+            setOverallComplainceRate(windowsOverallComplainceRes.data.data[0].value);
+            setComplianceData(windowsComplainceDataDashboardRes.data.data);
+            console.log("windowsOverallComplainceRes ", windowsOverallComplainceRes.data.data[0].value);
+            console.log("windowsComplainceDataDashboardRes ", windowsComplainceDataDashboardRes.data.data);
+
 
         } catch (error) {
             console.error("API Error:", error);
@@ -297,9 +311,13 @@ const OverviewDashboard = () => {
     ];
 
 
+    const getSeverity = (rate) => {
+        if (rate >= 90) return "Low";
+        if (rate >= 70) return "Medium";
+        return "High";
+    };
 
-
-
+    const severity = getSeverity(overallComplainceRate);
 
     return (
         <div className="mb-1 bg-gray-100 dark:bg-[#0B1220] ">
@@ -366,7 +384,7 @@ const OverviewDashboard = () => {
                                     fill="none"
                                     stroke="#3b82f6"
                                     strokeWidth="8"
-                                    strokeDasharray={`${45 * 2.51} 251`}
+                                    strokeDasharray={`${overallComplainceRate * 2.51} 251`}
                                 // strokeLinecap="round"
                                 />
 
@@ -412,24 +430,25 @@ const OverviewDashboard = () => {
                             {/* Center Text */}
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
                                 <span className="text-md md:text-xl text-black dark:text-white">
-                                    45%
+                                    {overallComplainceRate}%
                                 </span>
-                                <span className="text-xs text-yellow-400">
-                                    Medium
+
+                                <span
+                                    className={`text-xs ${severity === "High"
+                                        ? "text-red-500"
+                                        : severity === "Medium"
+                                            ? "text-yellow-400"
+                                            : "text-green-500"
+                                        }`}
+                                >
+                                    {severity}
                                 </span>
                             </div>
                         </div>
 
                         {/* Bars */}
                         <div className="flex-1 w-full space-y-3">
-                            {[
-                                { label: "Enrollment", value: 23 },
-                                { label: "Scan Failed", value: 43 },
-                                { label: "Device Patch Enabled", value: 33 },
-                                { label: "Device with scan failed", value: 13 },
-                                { label: "Device with no scan in 30 days", value: 73 },
-                                { label: "Device with failed patches", value: 23 },
-                            ].map((item, i) => (
+                            {complianceData.map((item, i) => (
                                 <div key={i}>
                                     <div className="flex justify-between text-xs">
                                         <span className="text-gray-700 dark:text-white">
@@ -585,7 +604,7 @@ const OverviewDashboard = () => {
                         {/* Left Card */}
                         <div className="bg-white dark:bg-[#141D2E] rounded-xl p-4 flex flex-col items-center justify-center border dark:border-[#191F48] shadow-lg">
                             <div className="text-lg md:text-2xl font-bold text-white">
-                                {securityPosture?.compliance ?? 0}%
+                                {securityPosture?.complaince ?? 0}%
                             </div>
                             <p className="text-sm md:text-md text-gray-300 mt-1">Compliance</p>
                             <p className="text-xs md:text-xs text-green-400 mt-1">+3% this week</p>
@@ -597,8 +616,8 @@ const OverviewDashboard = () => {
                             {/* Compliance */}
                             <div className="h-14 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300 border border-[#191F48]">
                                 <div className="text-sm md:text-md">
-                                    <div>Compliance</div>
-                                    <div>{securityPosture?.needed ?? 0}</div>
+                                    <div>Critical</div>
+                                    <div>{securityPosture?.missingCriticalUpdate ?? 0}</div>
                                 </div>
 
                                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-md flex items-center justify-center"
@@ -610,8 +629,8 @@ const OverviewDashboard = () => {
                             {/* Risk */}
                             <div className="h-14 bg-[#141D2E] rounded-lg flex items-center justify-between px-3 text-gray-300 border border-[#191F48]">
                                 <div className="text-sm md:text-md">
-                                    <div>Risk Level</div>
-                                    <div>15</div>
+                                    <div>Security</div>
+                                    <div>{securityPosture?.missingSecurityUpdate ?? 0}</div>
                                 </div>
 
                                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-md flex items-center justify-center"

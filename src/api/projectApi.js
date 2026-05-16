@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg0NzQyNDQsImV4cCI6MTc3ODU2MDY0NH0.JPZUzfKlF10MnpT7MZX2vX-JodD6Pl5nvl3yQTSBLkk';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg4MjAyMTUsImV4cCI6MTc3ODkwNjYxNX0.vyA6RdcLcVF4LIXE9PUa_2hA5iVVlNFAQAy6CD3KYLY';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1351,3 +1351,21 @@ export const viewAllPeriodicReportList = () =>
       }
     }
   );
+
+
+  
+export const windowsOverallComplaince = () =>
+  axios.get(`${BASE_URL}/dashboard/overallComplainceData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  export const windowsComplainceDataDashboard = () =>
+  axios.get(`${BASE_URL}/dashboard/complainceDataDashboard`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });

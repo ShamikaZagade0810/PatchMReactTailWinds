@@ -166,7 +166,7 @@ import logo from "../../assets/planet-gurard.png";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
+export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled }) => {
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
@@ -242,7 +242,8 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     }
     console.log("tab ", tab);
   }
-
+  
+  console.log("isPatchTreeSidebarEnabled",isPatchTreeSidebarEnabled);
 
 
   return (
@@ -261,23 +262,24 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
         </button>
 
         {/* Center - Logo and Brand Name */}
-
-        <div className={`absolute transition-all duration-200 ease-in-out ${isSidebarOpen ? "left-[14%]" : "left-[4.8%]"
-          } bg-[#0f172a] p-2 inline-flex rounded-lg  gap-2`}>
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => handleClickTab(tab)}
-              className={`px-4 py-2 text-xs font-medium rounded-md transition-all duration-200
+        {!isPatchTreeSidebarEnabled &&
+          <div className={`absolute transition-all duration-200 ease-in-out ${isSidebarOpen ? "left-[14%]" : "left-[4.8%]"
+            } bg-[#0f172a] p-2 inline-flex rounded-lg  gap-2`}>
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => handleClickTab(tab)}
+                className={`px-4 py-2 text-xs font-medium rounded-md transition-all duration-200
             ${active === tab
-                  ? "bg-blue-600 text-white shadow"
-                  : "text-gray-300 bg-[#1e293b]"
-                }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+                    ? "bg-blue-600 text-white shadow"
+                    : "text-gray-300 bg-[#1e293b]"
+                  }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        }
 
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3">
           <img src={logo} alt="Velox Logo" className="h-8 w-8 rounded-lg" />
