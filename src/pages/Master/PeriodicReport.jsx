@@ -68,7 +68,6 @@ const PeriodicReport = () => {
     ];
 
 
-
     const reportNameList = [
         { value: "Patch Report", label: "Patch Report" },
         { value: "NotInstalled Report", label: "NotInstalled Report" },
@@ -79,9 +78,7 @@ const PeriodicReport = () => {
     const handlemailconfig = async (data) => {
         console.log("Form Data:", data);
         data.scheduleDay = data.scheduleDay || "";
-        data.scheduleTime = data.scheduleTime
-            ? `${data.scheduleTime}:00`
-            : "00:00:00";
+        data.scheduleTime = data.scheduleTime  ? `${data.scheduleTime}`  : "00:00:00";
 
 
         try {

@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
+import { Plus, List, Play, Pencil, Trash2, CalendarClock } from "lucide-react";
+
 import MultipleRunForm from "./MultipleRunForm";
+import ScheduleRunCmd from "./ScheduleRunCmd";
+import { AddActivityCmd, getActivityCmdList, getUpdateActivityCmd, getdeleteActivityCmd } from "../../api/projectApi";
 
-import {
-    AddActivityCmd,
-    getActivityCmdList,
-    getUpdateActivityCmd,
-    getdeleteActivityCmd
-} from "../../api/projectApi";
-
-import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
 
 const RunCommand = () => {
     const {
@@ -34,6 +30,7 @@ const RunCommand = () => {
         { label: "Add Activity", icon: <Plus size={16} /> },
         { label: "Activity Command List", icon: <List size={16} /> },
         { label: "Multiple Run Command", icon: <Play size={16} /> },
+         { label: "Schedule Run Command", icon: <CalendarClock size={16} /> },
     ];
 
     const rumtable = [
@@ -148,9 +145,7 @@ const RunCommand = () => {
 
     };
 
-    // DELETE COMMAND
-    
-
+    // DELETE COMMAND   
     const handleDelete = (item) => {
         console.log("item:", item);
         //  console.log("item.id:", item.id);
@@ -403,6 +398,8 @@ const confirmDelete = async () => {
                 return <ActivityList />;
             case 2:
                 return <MultipleRunForm />;
+             case 3:
+                return <ScheduleRunCmd />;
             default:
                 return null;
         }

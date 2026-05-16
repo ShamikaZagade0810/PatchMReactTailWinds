@@ -136,9 +136,7 @@ const SetServerPolicy = () => {
             priorityServer: String(data.priorityServer),
             branchName: data.branchName,
             scheduleDay: data.scheduleDay || "",
-            scheduleTime: data.scheduleTime
-                ? `${data.scheduleTime}:00`
-                : "00:00:00",
+            scheduleTime: data.scheduleTime ? `${data.scheduleTime}:00` : "00:00:00",
         };
 
         console.log("Final Payload :", payload);

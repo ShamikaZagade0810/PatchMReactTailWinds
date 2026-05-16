@@ -275,55 +275,34 @@ const SendMultiplePatches = () => {
 
                         {/* File */}
                         <div>
+                            <label className={labelClass}> Browse File </label>
+                            <div style={{ display: "flex", gap: "5px", alignItems: "center" }} >
+                                <input id="fileUpload" type="file" onChange={handleFileChange} style={{ display: "none" }} />
 
-                            <label className={labelClass}>
-                                Browse File
-                            </label>
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    gap: "5px",
-                                    alignItems: "center"
-                                }}
-                            >
-
-                                <input
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    className={inputClass}
-                                />
-
-                                <input
-                                    type="text"
-                                    value={file ? file.name : ""}
-                                    placeholder="No file selected"
-                                    readOnly
-                                    className={inputClass}
-                                    style={{ width: "300px" }}
-                                />
+                                {/* Custom button */}
+                                <label htmlFor="fileUpload" style={{
+                                    padding: "9px 16px", background: "#3b82f6", color: "#fff", borderRadius: "8px", cursor: "pointer",
+                                    fontSize: "14px", fontWeight: 500, transition: "all 0.2s ease", boxShadow: "0 2px 6px rgba(59,130,246,0.25)", userSelect: "none",
+                                }} onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = "#2563eb";
+                                    e.currentTarget.style.transform = "translateY(-1px)";
+                                    e.currentTarget.style.boxShadow = "0 6px 12px rgba(37,99,235,0.3)";
+                                }} onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = "#3b82f6";
+                                    e.currentTarget.style.transform = "translateY(0px)";
+                                    e.currentTarget.style.boxShadow = "0 2px 6px rgba(59,130,246,0.25)";
+                                }} onMouseDown={(e) => { e.currentTarget.style.transform = "scale(0.96)"; }}
+                                    onMouseUp={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; }} >
+                                    Choose File </label>
+                                <input type="text" value={file ? file.name : ""} placeholder="No file selected" readOnly
+                                    className={inputClass} style={{ width: "300px" }} />
                             </div>
-
                         </div>
-
                         {/* Destination Path */}
                         <div>
-                            <label className={labelClass}>
-                                Destination Path
-                            </label>
-
-                            <input
-                                className={inputClass}
-                                {...register("DestPath", {
-                                    required:
-                                        "Destination Path is required"
-                                })}
-                            />
-
-                            {errors.DestPath && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {errors.DestPath.message}
-                                </p>
+                            <label className={labelClass}> Destination Path </label>
+                            <input className={inputClass} {...register("DestPath", { required: "Destination Path is required" })} />
+                            {errors.DestPath && (<p className="text-red-500 text-sm mt-1"> {errors.DestPath.message} </p>
                             )}
                         </div>
 

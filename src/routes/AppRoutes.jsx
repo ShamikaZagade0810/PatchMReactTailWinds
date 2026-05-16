@@ -28,6 +28,9 @@ import ThirdPartyDashboard from "../pages/ThirdPartyDashboard.jsx";
 import SendMultiplePatches from "../pages/contentDistribution/SendMultiplePatches.jsx";
 
 import AutomaticApproval from "../pages/patchSetting/AutomaticApproval.jsx";
+import ProductClass from "../pages/patchSetting/ProductClassification.jsx";
+import UpdatesSyncSchedule from "../pages/patchSetting/UpdatesSyncSchedule.jsx";
+import ClientSyncPolicyMainPage from "../pages/patchSetting/ClientSyncPolicyMainPage.jsx";
 
 export default function AppRoutes() {
   return (
@@ -38,59 +41,42 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={["admin", "DBA"]}>
             <MainLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route
-          index
-          element={<Navigate to="/dashboard/mainDashboard" replace />}
-        />
+          </ProtectedRoute> } >
 
-        <Route
-          path="/dashboard/mainDashboard"
+        <Route index
+          element={<Navigate to="/dashboard/mainDashboard" replace />} />
+
+        <Route path="/dashboard/mainDashboard"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-
               {/* <DbMonitoringDashboard /> */}
               <PMOverviewDashboard />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
-        <Route
-          path="/devices/:username/:ipaddress"
+        <Route path="/devices/:username/:ipaddress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-
               {/* <DbMonitoringDashboard /> */}
               <Devices />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route path="/reports"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <ReportsPage />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute>  } />
 
         <Route path="/runcmd"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <RunCmd />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route path="/multiple-run"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <MultipleRunForm />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route path="/dashboard/linuxDashboard"
           element={
@@ -98,9 +84,7 @@ export default function AppRoutes() {
 
               {/* <DbMonitoringDashboard /> */}
               <LinuxDashboard />
-            </ProtectedRoute>
-          }
-        />
+            </ProtectedRoute> } />
 
         <Route path="/dashboard/thirdPartyApp"
           element={
@@ -190,7 +174,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           } />
 
-          <Route path="/master/mail-config"
+        <Route path="/master/mail-config"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <MailConfig />
@@ -204,24 +188,46 @@ export default function AppRoutes() {
             </ProtectedRoute>
           } />
 
-          {/* Patch Setting */}          
-          <Route path="/setting/Auto-Approval"
+        {/* Patch Setting */}
+        <Route path="/setting/Auto-Approval"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <AutomaticApproval />
-            </ProtectedRoute>   } />       
+            </ProtectedRoute>} />
+
+        <Route path="/setting/product-class"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <ProductClass />
+            </ProtectedRoute>} />
+
+
+        <Route path="/setting/sync-schedule"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <UpdatesSyncSchedule />
+            </ProtectedRoute>} />
+
+
+          <Route path="/setting/client-sync-policy"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <ClientSyncPolicyMainPage />
+            </ProtectedRoute>} />
 
 
 
-          {/* Content Distributin */}
+        {/* Content Distributin */}
         <Route path="/content/send-multiple"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <SendMultiplePatches />
+              
 
             </ProtectedRoute>
-          }
-        />
+          } />
+
+
 
       </Route>
 

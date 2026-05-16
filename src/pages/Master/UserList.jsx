@@ -122,13 +122,8 @@ const handleUpdateUser = async () => {
         initialApiReq();
 
     } catch (error) {
-
         console.error("Update Error :", error);
-
-        alert(
-            error?.response?.data?.message ||
-            "Failed to update user"
-        );
+        alert( error?.response?.data?.message || "Failed to update user" );
     }
 };
 
@@ -143,9 +138,7 @@ const handleUpdateUser = async () => {
     };
 
 
-       // DELETE COMMAND
-        
-    
+       // DELETE COMMAND       
    const handleDelete = (item) => {
     console.log("item:", item);  
         setDeleteId(item.srNo); // or item.srNo       
@@ -384,8 +377,7 @@ const handleUpdateUser = async () => {
     }}
     placeholder="Select Customer Names"
     id={"branchNames"}
-    setValue={setValue}
-  />
+    setValue={setValue} />
   </div>
 
       </div>
@@ -401,78 +393,42 @@ const handleUpdateUser = async () => {
 
 {isResetModalOpen && (
   <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-
     <div className="bg-[#0B1220] rounded-2xl p-6 w-[400px] border border-white/10 shadow-xl">
-
       <h2 className="text-lg font-semibold mb-6">Reset Password</h2>
-
       <div className="grid gap-4">
-
         {/* Username */}
         <div>
           <label className={labelClass}>User Name</label>
-          <input
-            className={inputClass}
-            value={resetData.username}
-            disabled
-          />
+          <input className={inputClass} value={resetData.username} disabled />
         </div>
 
         {/* New Password */}
         <div>
           <label className={labelClass}>New Password</label>
-          <input
-            type="password"
-            className={inputClass}
-            value={resetData.password}
-            onChange={(e) =>
-              setResetData({ ...resetData, password: e.target.value })
-            }
-          />
+          <input type="password" className={inputClass} value={resetData.password}
+            onChange={(e) => setResetData({ ...resetData, password: e.target.value }) } />
         </div>
 
         {/* Confirm Password */}
         <div>
           <label className={labelClass}>Confirm Password</label>
-          <input
-            type="password"
-            className={inputClass}
-            value={resetData.confirmPassword}
-            onChange={(e) =>
-              setResetData({ ...resetData, confirmPassword: e.target.value })
-            }
-          />
+          <input type="password" className={inputClass} value={resetData.confirmPassword}
+            onChange={(e) => setResetData({ ...resetData, confirmPassword: e.target.value }) } />
         </div>
-
       </div>
 
       {/* Buttons */}
       <div className="flex justify-end gap-3 mt-6">
-
-        <button
-          className="px-4 py-2 text-gray-400 hover:text-white"
-          onClick={() => setIsResetModalOpen(false)}
-        >
-          Cancel
-        </button>
-
-        <button
-          className={btnClass}
-          onClick={() => {
+        <button className="px-4 py-2 text-gray-400 hover:text-white" onClick={() => setIsResetModalOpen(false)} > Cancel </button>
+        <button className={btnClass} onClick={() => {
             if (resetData.password !== resetData.confirmPassword) {
               alert("Passwords do not match");
               return;
             }
-
             console.log("Reset Password Data:", resetData);
             setIsResetModalOpen(false);
-          }}
-        >
-          Update
-        </button>
-
+          }} >  Update </button>
       </div>
-
     </div>
   </div>
 )}
@@ -481,36 +437,14 @@ const handleUpdateUser = async () => {
 {/* Delete MODAL */}
  {isDeleteOpen && (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-
         <div className="bg-[#0B1220] p-6 rounded-2xl border border-white/10 w-[400px] shadow-xl">
-
-            <h2 className="text-lg font-semibold mb-4">
-                Confirm Delete
-            </h2>
-
-            <p className="text-gray-300 mb-6">
-                Are you sure you want to delete this activity?
-            </p>
-
+            <h2 className="text-lg font-semibold mb-4">Confirm Delete</h2>
+            <p className="text-gray-300 mb-6">Are you sure you want to delete this User?</p>
             <div className="flex justify-end gap-3">
-
-                <button
-                    className="px-4 py-2 text-gray-400"
-                    onClick={() => setIsDeleteOpen(false)}
-                >
-                    Cancel
-                </button>
-
-                <button
-                    className="px-4 py-2 bg-red-600 text-white rounded"
-                    onClick={confirmDelete}>
-                    Yes, Delete
-                </button>
-
+                <button className="px-4 py-2 text-gray-400" onClick={() => setIsDeleteOpen(false)} > Cancel </button>
+                <button className="px-4 py-2 bg-red-600 text-white rounded" onClick={confirmDelete}> Yes, Delete </button>
             </div>
-
         </div>
-
     </div>
 )}
             </div>

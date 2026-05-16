@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg0NzQyNDQsImV4cCI6MTc3ODU2MDY0NH0.JPZUzfKlF10MnpT7MZX2vX-JodD6Pl5nvl3yQTSBLkk';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg5MDU1NzcsImV4cCI6MTc3ODk5MTk3N30.I0Z5ApxuwzUsU1xUEAisKGQ8ksTj6KVh8Y5QR8on63I';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -938,8 +938,8 @@ export const AddAppUser = (inputData) =>
       }
     }
   );
-  
-  export const getViewAppUserList = () =>
+
+export const getViewAppUserList = () =>
   axios.get(`${BASE_URL}/master/viewAllAppUser`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -957,7 +957,7 @@ export const getUpdateAppUser = (inputData) =>
     }
   );
 
-  export const getdeleteAppUser = (inputData) =>
+export const getdeleteAppUser = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteAppUser`,
     {
@@ -970,6 +970,7 @@ export const getUpdateAppUser = (inputData) =>
 
 
 
+
 export const getViewDeviesList = () =>
   axios.get(`${BASE_URL}/master/ViewDevicesList`, {
     headers: {
@@ -978,7 +979,7 @@ export const getViewDeviesList = () =>
 
   });
 
-  
+
 export const UpdateViewDevices = (inputData) =>
   axios.put(
     `${BASE_URL}/master/updateViewDevices `,
@@ -990,7 +991,7 @@ export const UpdateViewDevices = (inputData) =>
     }
   );
 
-  export const deleteViewDevices = (inputData) =>
+export const deleteViewDevices = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteViewDevices `,
     {
@@ -1002,8 +1003,8 @@ export const UpdateViewDevices = (inputData) =>
   );
 
 
-  //---- Customer Master
-  export const AddCustomer = (inputData) =>
+//---- Customer Master
+export const AddCustomer = (inputData) =>
   axios.post(
     `${BASE_URL}/master/addCustomerMaster`,
     inputData,
@@ -1013,8 +1014,8 @@ export const UpdateViewDevices = (inputData) =>
       }
     }
   );
-  
-  export const getCustomerList = () =>
+
+export const getCustomerList = () =>
   axios.get(`${BASE_URL}/master/viewCustomerMaster `, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1032,7 +1033,7 @@ export const getUpdateCustomer = (inputData) =>
     }
   );
 
-  export const deleteCustomer = (inputData) =>
+export const deleteCustomer = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteCustomer`,
     {
@@ -1044,8 +1045,8 @@ export const getUpdateCustomer = (inputData) =>
   );
 
 
-  //---- Branch Master
-  export const AddBranch = (inputData) =>
+//---- Branch Master
+export const AddBranch = (inputData) =>
   axios.post(
     `${BASE_URL}/master/addBranch`,
     inputData,
@@ -1055,8 +1056,8 @@ export const getUpdateCustomer = (inputData) =>
       }
     }
   );
-  
-  export const getBranchList = () =>
+
+export const getBranchList = () =>
   axios.get(`${BASE_URL}/master/viewBranch `, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1074,7 +1075,7 @@ export const getUpdateBranch = (inputData) =>
     }
   );
 
-  export const deleteBranch = (inputData) =>
+export const deleteBranch = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteBranch`,
     {
@@ -1085,9 +1086,9 @@ export const getUpdateBranch = (inputData) =>
     }
   );
 
-  
-  //---- Group Master
-  export const AddGroupMaster = (inputData) =>
+
+//---- Group Master
+export const AddGroupMaster = (inputData) =>
   axios.post(
     `${BASE_URL}/master/addGroup`,
     inputData,
@@ -1097,8 +1098,8 @@ export const getUpdateBranch = (inputData) =>
       }
     }
   );
-  
-  export const getGroupMasterList = () =>
+
+export const getGroupMasterList = () =>
   axios.get(`${BASE_URL}/master/viewGroup `, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1116,7 +1117,7 @@ export const getUpdateGroupMaster = (inputData) =>
     }
   );
 
-  export const deleteGroupMaster = (inputData) =>
+export const deleteGroupMaster = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteGroup`,
     {
@@ -1127,8 +1128,8 @@ export const getUpdateGroupMaster = (inputData) =>
     }
   );
 
-    //---- Server Master
-  export const AddServerMaster = (inputData) =>
+//---- Server Master
+export const AddServerMaster = (inputData) =>
   axios.post(
     `${BASE_URL}/master/addServer`,
     inputData,
@@ -1138,8 +1139,8 @@ export const getUpdateGroupMaster = (inputData) =>
       }
     }
   );
-  
-  export const getServerMasterList = () =>
+
+export const getServerMasterList = () =>
   axios.get(`${BASE_URL}/master/viewAllServer `, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1157,7 +1158,7 @@ export const getUpdateServerMaster = (inputData) =>
     }
   );
 
-  export const deleteServerMaster = (inputData) =>
+export const deleteServerMaster = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteServer`,
     {
@@ -1169,8 +1170,8 @@ export const getUpdateServerMaster = (inputData) =>
   );
 
 
-     //---- OEM Master
-  export const AddOEMMaster = (inputData) =>
+//---- OEM Master
+export const AddOEMMaster = (inputData) =>
   axios.post(
     `${BASE_URL}/master/addVendor`,
     inputData,
@@ -1180,8 +1181,8 @@ export const getUpdateServerMaster = (inputData) =>
       }
     }
   );
-  
-  export const getOEMMasterList = () =>
+
+export const getOEMMasterList = () =>
   axios.get(`${BASE_URL}/master/viewAllVendor `, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1199,7 +1200,7 @@ export const getUpdateOEMMaster = (inputData) =>
     }
   );
 
-  export const deleteOEMMaster = (inputData) =>
+export const deleteOEMMaster = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deleteVendor`,
     {
@@ -1329,7 +1330,7 @@ export const viewAllPeriodicReportList = () =>
 
   });
 
-  export const editPeriodicReport = (inputData) =>
+export const editPeriodicReport = (inputData) =>
   axios.put(
     `${BASE_URL}/master/updatePeriodicReport`,
     inputData,
@@ -1341,9 +1342,132 @@ export const viewAllPeriodicReportList = () =>
   );
 
 
-  export const deleteSelectPeriodicReport = (inputData) =>
+export const deleteSelectPeriodicReport = (inputData) =>
   axios.delete(
     `${BASE_URL}/master/deletePeriodicReport`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+// ================= SCHEDULE MULTIPLE RUN COMAND ===========
+
+export const AddActivityScheduler = (inputData) =>
+  axios.post(
+    `${BASE_URL}/RunCommand/AddcmdScheduler`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getActivitySchedulerList = () =>
+  axios.get(`${BASE_URL}/RunCommand/listcmdScheduler `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getUpdateActivityScheduler = (inputData) =>
+  axios.put(
+    `${BASE_URL}/RunCommand/updatecmdScheduler`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const deleteActivityScheduler = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/RunCommand/deletecmdScheduler`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getUpdateStatusActivityScheduler = (inputData) =>
+  axios.put(
+    `${BASE_URL}/RunCommand/UpdatestatuscmdScheduler`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+// sumit changes  Auto Approval Rule --> Patch Setting
+
+export const AddAutoApprovalRule = async (inputData) => {
+  return await axios.post(
+    `${BASE_URL}/view-approval-rule/addApprovalRule`,
+    inputData
+  );
+};
+
+
+export const getAutoApprovalRule = async () => {
+  return await axios.get(
+    `${BASE_URL}/view-approval-rule/viewAllApprovalRule`,
+   
+  );
+};
+
+
+export const enableViewApprovalRule = (inputData) =>
+  axios.put(
+    `${BASE_URL}/view-approval-rule/enableApprovalRule/${inputData}`,
+    
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const disableViewApprovalRule = (inputData) =>
+  axios.put(
+    `${BASE_URL}/view-approval-rule/disableApprovalRule/${inputData}`,
+    
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getAutoApprovalRuleById = async (InputData) => {
+  return await axios.get(
+    `${BASE_URL}/view-approval-rule/viewSingleApprovalRule/${InputData}`,
+   
+  );
+};
+
+
+  export const UpdateAutoApprovalRule = (inputData,id) =>
+  axios.put(
+    `${BASE_URL}/view-approval-rule/updateApprovalRule/${id}`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const deleteAutoApprovalRule = (inputData , id) =>
+  axios.delete(
+    `${BASE_URL}/view-approval-rule/deleteApprovalRule/${id}`,
     {
       data: inputData,
       headers: {

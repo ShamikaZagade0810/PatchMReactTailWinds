@@ -127,13 +127,7 @@ const sidebarData = [
         path: "/setting/auto-approval",
         icon: AppWindowMac,
         roles: ["admin"],
-      },
-      {
-        name: "View Approval Rule",
-        path: "/setting/view-rule",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+      },      
       {
         name: "Product And Classifications",
         path: "/setting/product-class",
@@ -147,23 +141,23 @@ const sidebarData = [
         roles: ["admin"],
       },
       {
-        name: "View Sync Policy",
-        path: "/setting/sync-policy",
+        name: "Client Sync Policy",
+        path: "/setting/client-sync-policy",
         icon: AppWindowMac,
         roles: ["admin"],
       },
-      {
-        name: "Client Wise Sync Policy",
-        path: "/setting/client-policy",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "View Client Wise Sync Policy",
-        path: "/setting/view-client-policy",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+      // {
+      //   name: "Client Wise Sync Policy",
+      //   path: "/setting/client-policy",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "View Client Wise Sync Policy",
+      //   path: "/setting/view-client-policy",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
 
     ],
   },

@@ -95,15 +95,8 @@ const MultipleRunForm = () => {
 
 
   useEffect(() => {
-    register("branchNames", {
-      validate: (value) =>
-        value?.length > 0 || "At least 1 branch must be selected"
-    });
-
-    register("ipAddress", {
-      validate: (value) =>
-        value?.length > 0 || "At least 1 IP must be selected"
-    });
+    register("branchNames", { validate: (value) => value?.length > 0 || "At least 1 branch must be selected" });
+    register("ipAddress", { validate: (value) => value?.length > 0 || "At least 1 IP must be selected" });
   }, [register]);
 
   const branchOptions = [

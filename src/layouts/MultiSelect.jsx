@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select", setValue, id ,   error,    isRequired = true}) => {
+const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select", setValue, id, error, isRequired = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef();
-
+  console.log("value --->", value,"options --->", options);
   // close on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -31,13 +31,13 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
       newValue = [...value, option];
     }
 
-      // ✅ validation rule example: required at least 1
+    // ✅ validation rule example: required at least 1
 
 
     let onlyvalue = newValue.map(obj => obj.value);
-    
+
     // setValue(id, onlyvalue);
-      setValue(id, onlyvalue, { shouldValidate: true });
+    setValue(id, onlyvalue, { shouldValidate: true });
     onChange(newValue);
   };
 
@@ -62,10 +62,10 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
           </span>
         ))}
         {error && (
-  <p className="text-red-500 text-xs mt-1">
-    {error.message || "This field is required"}
-  </p>
-)}
+          <p className="text-red-500 text-xs mt-1">
+            {error.message || "This field is required"}
+          </p>
+        )}
       </div>
 
       {/* Dropdown */}
