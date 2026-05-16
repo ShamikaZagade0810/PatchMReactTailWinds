@@ -45,6 +45,7 @@
 
 import { Navbar } from "../components/Layout/Navbar";
 import { Sidebar } from "../components/Layout/Sidebar";
+import { PatchTreeSideBar } from "../components/Layout/PatchTreeSideBar";
 import { Footer } from "../components/Layout/Footer";
 import { useSidebar } from "../hooks/useSidebar";
 import { Outlet } from "react-router-dom";
@@ -55,8 +56,8 @@ import Loader from "../components/Loader";
 
 export default function MainLayout() {
 
-    const [loading, setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(true);
+  const [isPatchTreeSidebarEnabled, setIsPatchTreeSidebarEnabled] = useState(false);
   const {
     isSidebarOpen,
     toggleSidebar,
@@ -66,8 +67,12 @@ export default function MainLayout() {
     setActiveItem,
   } = useSidebar();
 
-
-    
+  useEffect(() => {
+    if (activeItem == '/dashboard/patchTree') {
+      setIsPatchTreeSidebarEnabled(true);
+    }
+  }, [activeItem])
+  console.log("activeItem ", activeItem);
   // const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
@@ -110,36 +115,49 @@ export default function MainLayout() {
     return () => ws.close();
   }, []);
 
- useEffect(() => {
-      const timer = setTimeout(() => setLoading(false), 1200);
-      return () => clearTimeout(timer);
-    }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+  console.log("isPatchTreeSidebarEnabled in mainlayout",isPatchTreeSidebarEnabled);
+
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-[#000000] ">
-      <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+      <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} isPatchTreeSidebarEnabled={isPatchTreeSidebarEnabled} />
+      {!isPatchTreeSidebarEnabled ?
+        <Sidebar
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          activeItem={activeItem}
+          onItemClick={setActiveItem}
+          onAccordionClick={handleAccordionClick}
+          isItemExpanded={isItemExpanded}
 
-      <Sidebar
-        isOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        activeItem={activeItem}
-        onItemClick={setActiveItem}
-        onAccordionClick={handleAccordionClick}
-        isItemExpanded={isItemExpanded}
-      />
-
+        />
+        :
+        <PatchTreeSideBar
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          activeItem={activeItem}
+          onItemClick={setActiveItem}
+          onAccordionClick={handleAccordionClick}
+          isItemExpanded={isItemExpanded}
+        />
+      }
       <main
         className={`
           pt-16 pb-12 transition-all 
-          ${isSidebarOpen ? "ml-50" : "ml-20"}
+          ${!isSidebarOpen  ? "ml-20" : isSidebarOpen && !isPatchTreeSidebarEnabled ? "ml-50" : "ml-70" }
         `}
       >
-   {   !loading ? ( <div className="p-2 max-w-10xl mx-auto ">
-          <Outlet />
+        {!loading ? (<div className="p-2 max-w-10xl mx-auto ">
+          {/* <Outlet  /> */}
+          <Outlet context={{ setIsPatchTreeSidebarEnabled }} />
         </div>
-        ):(
+        ) : (
           <Loader />
         )}
-       
+
 
       </main>
 

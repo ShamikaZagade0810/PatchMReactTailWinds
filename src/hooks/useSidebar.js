@@ -10,6 +10,7 @@ export const useSidebar = () => {
   useEffect(() => {
     const path = location.pathname;
     setActiveItem(path);
+   
     
     // Auto-expand based on current path
     const pathSegments = path.split("/").filter(Boolean);

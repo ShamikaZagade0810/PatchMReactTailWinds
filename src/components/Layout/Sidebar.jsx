@@ -72,7 +72,7 @@ const sidebarData = [
       },
       {
         name: "Patch Tree",
-        path: "/dashboard/status",
+        path: "/dashboard/patchTree",
         icon: AppWindowMac,
         roles: ["admin"],
       },
@@ -100,12 +100,7 @@ const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-      {
-        name: "View Sending Patches",
-        path: "/content/view-sending",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+    
     ],
   },
 

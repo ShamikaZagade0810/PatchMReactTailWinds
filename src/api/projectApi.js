@@ -1475,3 +1475,20 @@ export const getAutoApprovalRuleById = async (InputData) => {
       }
     }
   );
+
+  
+export const windowsOverallComplaince = () =>
+  axios.get(`${BASE_URL}/dashboard/overallComplainceData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  export const windowsComplainceDataDashboard = () =>
+  axios.get(`${BASE_URL}/dashboard/complainceDataDashboard`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });

@@ -31,6 +31,9 @@ import AutomaticApproval from "../pages/patchSetting/AutomaticApproval.jsx";
 import ProductClass from "../pages/patchSetting/ProductClassification.jsx";
 import UpdatesSyncSchedule from "../pages/patchSetting/UpdatesSyncSchedule.jsx";
 import ClientSyncPolicyMainPage from "../pages/patchSetting/ClientSyncPolicyMainPage.jsx";
+import PatchTree from "../pages/PatchTree/PatchTree.jsx";
+import PatchTreeUpdateDashboard from "../pages/PatchTree/PatchTreeUpdateDashboard.jsx";
+import PatchTreeThirdDashboard from "../pages/PatchTree/PatchTreeThirdDashboard.jsx";
 
 export default function AppRoutes() {
   return (
@@ -228,6 +231,26 @@ export default function AppRoutes() {
           } />
 
 
+
+
+        <Route path="/dashboard/patchTree"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchTree />
+            </ProtectedRoute>} />
+
+        <Route path="/patchTree/updates"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchTreeUpdateDashboard />
+            </ProtectedRoute>} />
+
+
+        <Route path="/patchTree/ThirdUpdate"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchTreeThirdDashboard />
+            </ProtectedRoute>} />
 
       </Route>
 
