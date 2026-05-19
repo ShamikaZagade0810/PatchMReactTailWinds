@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg5MDU1NzcsImV4cCI6MTc3ODk5MTk3N30.I0Z5ApxuwzUsU1xUEAisKGQ8ksTj6KVh8Y5QR8on63I';
-const BASE_URL = "http://192.168.0.17:8081";
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkxNjY5ODEsImV4cCI6MTc3OTI1MzM4MX0.Crrkr5mp2QuqZP9PrZJIIaRBVImNbcPTNTsuowXBoFM';
+const BASE_URL = "http://192.168.0.54:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -1419,7 +1419,7 @@ export const AddAutoApprovalRule = async (inputData) => {
 export const getAutoApprovalRule = async () => {
   return await axios.get(
     `${BASE_URL}/view-approval-rule/viewAllApprovalRule`,
-   
+
   );
 };
 
@@ -1427,7 +1427,7 @@ export const getAutoApprovalRule = async () => {
 export const enableViewApprovalRule = (inputData) =>
   axios.put(
     `${BASE_URL}/view-approval-rule/enableApprovalRule/${inputData}`,
-    
+
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -1435,10 +1435,10 @@ export const enableViewApprovalRule = (inputData) =>
     }
   );
 
-  export const disableViewApprovalRule = (inputData) =>
+export const disableViewApprovalRule = (inputData) =>
   axios.put(
     `${BASE_URL}/view-approval-rule/disableApprovalRule/${inputData}`,
-    
+
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -1449,12 +1449,12 @@ export const enableViewApprovalRule = (inputData) =>
 export const getAutoApprovalRuleById = async (InputData) => {
   return await axios.get(
     `${BASE_URL}/view-approval-rule/viewSingleApprovalRule/${InputData}`,
-   
+
   );
 };
 
 
-  export const UpdateAutoApprovalRule = (inputData,id) =>
+export const UpdateAutoApprovalRule = (inputData, id) =>
   axios.put(
     `${BASE_URL}/view-approval-rule/updateApprovalRule/${id}`,
     inputData,
@@ -1465,7 +1465,7 @@ export const getAutoApprovalRuleById = async (InputData) => {
     }
   );
 
-  export const deleteAutoApprovalRule = (inputData , id) =>
+export const deleteAutoApprovalRule = (inputData, id) =>
   axios.delete(
     `${BASE_URL}/view-approval-rule/deleteApprovalRule/${id}`,
     {
@@ -1476,7 +1476,7 @@ export const getAutoApprovalRuleById = async (InputData) => {
     }
   );
 
-  
+
 export const windowsOverallComplaince = () =>
   axios.get(`${BASE_URL}/dashboard/overallComplainceData`, {
     headers: {
@@ -1485,10 +1485,75 @@ export const windowsOverallComplaince = () =>
 
   });
 
-  export const windowsComplainceDataDashboard = () =>
+export const windowsComplainceDataDashboard = () =>
   axios.get(`${BASE_URL}/dashboard/complainceDataDashboard`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
 
   });
+
+
+export const PatchTreewsus_dashboard_statistics = () =>
+  axios.get(`${BASE_URL}/PatchTree/wsus-dashboard-statistics`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getSynchronizeStatus = () =>
+  axios.get(`${BASE_URL}/PatchTree/getSynchronizeStatus`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+  
+export const getSyncPercent = () =>
+  axios.get(`${BASE_URL}/PatchTree/getSyncPercent`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+    
+export const getServerStatisticData = () =>
+  axios.get(`${BASE_URL}/PatchTree/getServerStatisticData`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+  export const getComputerStatusPie = () =>
+  axios.get(`${BASE_URL}/PatchTree/getComputerStatusPie`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+  
+  export const getupdateStatus = () =>
+  axios.get(`${BASE_URL}/PatchTree/getupdateStatus`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+    export const getrecentActivity = () =>
+  axios.get(`${BASE_URL}/PatchTree/dashboard-timeline`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+

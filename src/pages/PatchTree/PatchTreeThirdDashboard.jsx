@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import {
     CheckCircle2,
     ShieldCheck,
@@ -6,6 +6,16 @@ import {
     AlertTriangle,
     ArrowUpRight,
 } from "lucide-react";
+import SinglePieCharts from '../../components/Charts/SinglePiecharts';
+import {
+    PatchTreewsus_dashboard_statistics,
+    getSynchronizeStatus,
+    getSyncPercent,
+    getServerStatisticData,
+    getComputerStatusPie,
+    getupdateStatus,
+    getrecentActivity
+} from "../../api/projectApi";
 
 const patchCards = [
     {
@@ -19,6 +29,7 @@ const patchCards = [
         iconBg: "bg-cyan-500/15",
         iconColor: "text-cyan-400",
         line: "bg-cyan-400",
+        id: "totalPatches"
     },
     {
         title: "Successful Updates",
@@ -31,6 +42,7 @@ const patchCards = [
         iconBg: "bg-emerald-500/15",
         iconColor: "text-emerald-400",
         line: "bg-emerald-400",
+        id: "successfullyInstalledPatches"
     },
     {
         title: "Failed Updates",
@@ -43,6 +55,7 @@ const patchCards = [
         iconBg: "bg-red-500/15",
         iconColor: "text-red-400",
         line: "bg-red-400",
+        id: "failedUniquePatches"
     },
     {
         title: "Missing Patches",
@@ -55,10 +68,93 @@ const patchCards = [
         iconBg: "bg-yellow-500/15",
         iconColor: "text-yellow-400",
         line: "bg-yellow-400",
+        id: "missingUniquePatches"
     },
 ];
 
+
 function PatchTreeThirdDashboard() {
+    const [patchTreeWsusDashboardStatistics, setPatchTreeWsusDashboardStatistics] = useState({});
+    const [synchronizeStatus, setSynchronizeStatus] = useState({});
+    const [syncPercent, setSyncPercent] = useState({});
+    const [serverStatisticData, setServerStatisticData] = useState({});
+    const [computerStatusPie, setComputerStatusPie] = useState([]);
+    const [updateStatus, setUpdateStatus] = useState([]);
+    const [recentActivity, setRecentActivity] = useState([]);
+
+
+
+    useEffect(() => {
+        console.log("Hello World");
+        apiCalls();
+
+
+    }, []);
+
+
+
+
+    const apiCalls = async () => {
+        try {
+            const [
+                PatchTreewsus_dashboard_statisticsRes,
+                getSynchronizeStatusRes,
+                getSyncPercentRes,
+                getServerStatisticDataRes,
+                getComputerStatusPieRes,
+                getupdateStatusRes,
+                getrecentActivityRes
+
+            ] = await Promise.all([
+                PatchTreewsus_dashboard_statistics(),
+                getSynchronizeStatus(),
+                getSyncPercent(),
+                getServerStatisticData(),
+                getComputerStatusPie(),
+                getupdateStatus(),
+                getrecentActivity()
+            ]);
+        console.log("Computer Status ",  getComputerStatusPieRes.data.data);
+           
+            setPatchTreeWsusDashboardStatistics(
+                PatchTreewsus_dashboard_statisticsRes.data.data
+            );
+
+            setSynchronizeStatus(
+                getSynchronizeStatusRes.data.data
+            );
+
+            setSyncPercent(
+                getSyncPercentRes.data.data
+            );
+
+            setServerStatisticData(
+                getServerStatisticDataRes.data.data
+            );
+
+            setComputerStatusPie(
+                getComputerStatusPieRes.data.data
+            );
+
+            setUpdateStatus(
+                getupdateStatusRes.data.data
+            );
+
+            setRecentActivity(
+                getrecentActivityRes.data.data
+            );
+
+
+
+        } catch (error) {
+            console.error("API Error:", error);
+        }
+    };
+
+    const handleClickModalParameter =()=>{
+
+    }
+
     return (
         <div className="mb-1 bg-gray-100 dark:bg-[#0B1220] p-3">
             <div className="grid grid-cols-12 gap-4 bg-[#121A2B] p-2">
@@ -80,7 +176,7 @@ function PatchTreeThirdDashboard() {
                     p-2.5 transition-all duration-300
                     hover:scale-[1.02]
                     hover:shadow-lg ${card.glow}
-                    h-[115px] group`}
+                    h-[105px] group`}
                                     >
 
                                         {/* Glow */}
@@ -95,7 +191,7 @@ function PatchTreeThirdDashboard() {
                                                 </p>
 
                                                 <h2 className="mt-1 text-lg font-bold text-white leading-none">
-                                                    {card.value}
+                                                    {patchTreeWsusDashboardStatistics[card.id] || 0}
                                                 </h2>
                                             </div>
 
@@ -119,13 +215,7 @@ function PatchTreeThirdDashboard() {
                                         </div>
 
                                         {/* Mini Graph */}
-                                        <div className="mt-3 flex items-end gap-[2px] h-6">
-                                            <div className={`h-1 w-full rounded-full ${card.line} opacity-40`} />
-                                            <div className={`h-2 w-full rounded-full ${card.line} opacity-60`} />
-                                            <div className={`h-3 w-full rounded-full ${card.line} opacity-80`} />
-                                            <div className={`h-2 w-full rounded-full ${card.line} opacity-60`} />
-                                            <div className={`h-4 w-full rounded-full ${card.line}`} />
-                                        </div>
+
 
                                         {/* Bottom Border */}
                                         <div
@@ -138,29 +228,29 @@ function PatchTreeThirdDashboard() {
                         </div>
                         <div className='grid grid-cols-3 gap-2 mt-2'>
                             {/* Computers */}
-                            <div className="bg-[#1E273A] rounded-lg p-1 border border-[#1E293B] h-[60px] flex flex-col justify-center">
+                            <div className="bg-[#1E273A] rounded-lg p-1 border border-[#1E293B] h-[70px] flex flex-col justify-center">
                                 <p className="text-[8px] uppercase tracking-[1.5px] text-gray-300">
                                     Computers
                                 </p>
 
                                 <h3 className="text-lg font-bold text-white leading-none mt-1">
-                                    412
+                                    {patchTreeWsusDashboardStatistics['totalMachines'] || 0}
                                 </h3>
                             </div>
 
                             {/* Groups */}
-                            <div className="bg-[#1E273A] rounded-lg p-2 border border-[#1E293B]  h-[60px] flex flex-col justify-center">
+                            <div className="bg-[#1E273A] rounded-lg p-2 border border-[#1E293B]  h-[70px] flex flex-col justify-center">
                                 <p className="text-[8px] uppercase tracking-[1.5px] text-gray-300">
                                     Groups
                                 </p>
 
                                 <h3 className="text-lg font-bold text-white leading-none mt-1">
-                                    18
+                                    {patchTreeWsusDashboardStatistics['totalGroups'] || 0}
                                 </h3>
                             </div>
 
                             {/* Sync Errors */}
-                            <div className="bg-[#1E273A] rounded-lg p-2 border border-red-500/20  h-[60px] flex flex-col justify-center">
+                            <div className="bg-[#1E273A] rounded-lg p-2 border border-red-500/20  h-[70px] flex flex-col justify-center">
                                 <p className="text-[8px] uppercase tracking-[1.5px] text-gray-300">
                                     Sync Errors
                                 </p>
@@ -178,7 +268,7 @@ function PatchTreeThirdDashboard() {
 
 
                 <div className="col-span-12 xl:col-span-4">
-                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3">
+                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-2">
 
                         {/* Header */}
                         <div className="flex items-center justify-between mb-2">
@@ -386,7 +476,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-white">
-                                        105,132
+                                                {serverStatisticData['unapprovedPatches']}
                                     </span>
                                 </div>
 
@@ -410,7 +500,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-green-400">
-                                        13
+                                      {serverStatisticData['approvedPatches']}
                                     </span>
                                 </div>
 
@@ -434,7 +524,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-gray-300">
-                                        3,105
+                                       {serverStatisticData['declinedPatches']}
                                     </span>
                                 </div>
 
@@ -458,7 +548,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-cyan-400">
-                                        108,250
+                                      {serverStatisticData['totalPatches']}
                                     </span>
                                 </div>
 
@@ -517,30 +607,11 @@ function PatchTreeThirdDashboard() {
                             {/* Donut Chart */}
                             <div className="relative w-48 h-48 flex items-center justify-center">
 
-                                {/* Donut */}
-                                <div
-                                    className="w-44 h-44 rounded-full"
-                                    style={{
-                                        background: `
-            conic-gradient(
-              #38E27B 0% 75.7%,
-              #11C5F5 75.7% 87.4%,
-              #F7B500 87.4% 94%,
-              #FF4D4F 94% 97.4%,
-              #F84DFF 97.4% 100%
-            )
-          `,
-                                    }}
-                                >
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <div className="w-28 h-28 rounded-full bg-[#07111F] border border-slate-700 flex flex-col items-center justify-center">
-                                            <h3 className="text-white text-4xl font-bold">412</h3>
-                                            <p className="text-slate-400 text-xs tracking-[3px] mt-1">
-                                                ENDPOINTS
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                           <div className="w-50 h-50 relative">
+                            <SinglePieCharts data={computerStatusPie} onSliceClick={handleClickModalParameter} datakey={"thirdpartypie"} />
+
+                        </div>
+                     
                             </div>
 
                             {/* Stats */}
@@ -616,12 +687,7 @@ function PatchTreeThirdDashboard() {
                         </div>
 
 
-
                     </div>
-
-
-
-
                 </div>
 
 
@@ -653,7 +719,7 @@ function PatchTreeThirdDashboard() {
 
                                 {/* Donut */}
                                 <div
-                                    className="w-44 h-44 rounded-full"
+                                    className="w-40 h-40 rounded-full"
                                     style={{
                                         background: `
             conic-gradient(
@@ -668,7 +734,7 @@ function PatchTreeThirdDashboard() {
                                 >
                                     <div className="w-full h-full flex items-center justify-center">
                                         <div className="w-28 h-28 rounded-full bg-[#07111F] border border-slate-700 flex flex-col items-center justify-center">
-                                            <h3 className="text-white text-4xl font-bold">412</h3>
+                                            <h3 className="text-white text-3xl font-bold">412</h3>
                                             <p className="text-slate-400 text-xs tracking-[3px] mt-1">
                                                 ENDPOINTS
                                             </p>
