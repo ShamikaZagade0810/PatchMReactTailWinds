@@ -139,8 +139,6 @@ const OverviewDashboard = () => {
 
         setModalData(obj);
 
-
-
         setShow(true);
         setLoading(false);
     }
