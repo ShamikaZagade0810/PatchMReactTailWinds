@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg5MDU1NzcsImV4cCI6MTc3ODk5MTk3N30.I0Z5ApxuwzUsU1xUEAisKGQ8ksTj6KVh8Y5QR8on63I';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkxNjQ2ODQsImV4cCI6MTc3OTI1MTA4NH0.VYYlTcp5xw_92HxbX_J3_LI8tFObHrlRY3fFdUxFVtA';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1406,8 +1406,9 @@ export const getUpdateStatusActivityScheduler = (inputData) =>
     }
   );
 
-// sumit changes  Auto Approval Rule --> Patch Setting
+// sumit changes  
 
+  // ================================= AUTO APPROVAL RULE PATCH SETTING ================================// 
 export const AddAutoApprovalRule = async (inputData) => {
   return await axios.post(
     `${BASE_URL}/view-approval-rule/addApprovalRule`,
@@ -1492,3 +1493,129 @@ export const windowsOverallComplaince = () =>
     }
 
   });
+
+  // ================================= Products And Classification ================================// 
+
+  export const getProductsListing = () =>
+  axios.get(`${BASE_URL}/products-classification/products`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+    export const getClassificationsListing = () =>
+  axios.get(`${BASE_URL}/products-classification/classifications`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+  
+  export const updateProductClass = (inputData) =>
+  axios.put(
+    `${BASE_URL}/products-classification/updateProductClass`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+      export const getselectedProductsList = () =>
+  axios.get(`${BASE_URL}/products-classification/selected-products`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+      export const getselectedClassificationsList = () =>
+  axios.get(`${BASE_URL}/products-classification/selected-classifications`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+// ================================= UPDATE SYNC SCHEDULE ================================// 
+
+export const AddUpdatesSyncSchedule = async (inputData) => {
+  return await axios.post(
+    `${BASE_URL}/updates-sync-schedule/saveUpdateSyncSchedule`,
+    inputData
+  );
+};
+
+
+export const getUpdatesSyncScheduleList = () =>
+  axios.get(`${BASE_URL}/updates-sync-schedule/listUpdatesSyncSchedule`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  // ================================= View Synchronization Policy ================================// 
+
+  
+export const getAllViewSyncPolicy = () =>
+  axios.get(`${BASE_URL}/client-sync/listViewSyncPolicy`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const deleteViewSyncPolicy = (inputData , id) =>
+  axios.delete(
+    `${BASE_URL}/client-sync/deleteViewSyncPolicy/${id}`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  // ================================= Client Wise Synchronization Policy ================================// 
+
+export const AddClientWiseSyncPolicy = async (inputData) => {
+  return await axios.post(
+    `${BASE_URL}/client-sync/saveClientWiseSyncPolicy`,
+    inputData
+  );
+};
+
+  // ================================= View Client Wise Synchronization Policy ================================// 
+
+export const getAllViewClientWiseSyncPolicy = () =>
+  axios.get(`${BASE_URL}/client-sync/listViewClientWiseSyncPolicy`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  export const updateViewClientWiseSyncPolicy = (inputData) =>
+  axios.put(
+    `${BASE_URL}/client-sync/updateViewClientWiseSyncPolicy`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const deleteViewClientWiseSyncPolicy = (inputData , id) =>
+  axios.delete(
+    `${BASE_URL}/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );

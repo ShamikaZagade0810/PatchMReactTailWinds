@@ -19,183 +19,117 @@ import {
     CircleDot,
 } from 'lucide-react';
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { getProductsListing, getClassificationsListing, updateProductClass, getselectedProductsList, getselectedClassificationsList } from "../../api/projectApi";
 
 const ProductClassification = () => {
 
-const productList = [
-  { value: ".NET 10.0", label: ".NET 10.0" },
-  { value: ".NET 5.0", label: ".NET 5.0" },
-  { value: ".NET 6.0", label: ".NET 6.0" },
-  { value: ".NET 7.0", label: ".NET 7.0" },
-  { value: ".NET 8.0", label: ".NET 8.0" },
-  { value: ".NET 9.0", label: ".NET 9.0" },
-  { value: ".NET Core 2.1", label: ".NET Core 2.1" },
-  { value: ".NET Core 3.1", label: ".NET Core 3.1" },
-  { value: "Active Directory Rights Management Services Client 2.0", label: "Active Directory Rights Management Services Client 2.0" },
-  { value: "Active Directory", label: "Active Directory" },
-  { value: "AksEdge Category", label: "AksEdge Category" },
-  { value: "AKS-EE", label: "AKS-EE" },
-  { value: "Antigen for Exchange/SMTP", label: "Antigen for Exchange/SMTP" },
-  { value: "Antigen", label: "Antigen" },
-  { value: "ASP.NET Web and Data Frameworks", label: "ASP.NET Web and Data Frameworks" },
-  { value: "ASP.NET Web Frameworks", label: "ASP.NET Web Frameworks" },
-  { value: "Azure Connected Machine Agent 3", label: "Azure Connected Machine Agent 3" },
-  { value: "Azure Connected Machine Agent", label: "Azure Connected Machine Agent" },
-  { value: "Azure File Sync agent updates for Windows Server 2012 R2", label: "Azure File Sync agent updates for Windows Server 2012 R2" },
-  { value: "Azure File Sync agent updates for Windows Server 2016", label: "Azure File Sync agent updates for Windows Server 2016" },
-  { value: "Azure File Sync agent updates for Windows Server 2019", label: "Azure File Sync agent updates for Windows Server 2019" },
-  { value: "Azure File Sync agent updates for Windows Server 2022", label: "Azure File Sync agent updates for Windows Server 2022" },
-  { value: "Azure File Sync agent updates for Windows Server 2025", label: "Azure File Sync agent updates for Windows Server 2025" },
-  { value: "Azure File Sync", label: "Azure File Sync" },
-  { value: "Azure IoT Edge for Linux on Windows Category", label: "Azure IoT Edge for Linux on Windows Category" },
-  { value: "Azure IoT Edge for Linux on Windows", label: "Azure IoT Edge for Linux on Windows" },
-  { value: "Azure Stack HCI", label: "Azure Stack HCI" },
-  { value: "Bing Bar", label: "Bing Bar" },
-  { value: "Bing", label: "Bing" },
-  { value: "BizTalk Server 2002", label: "BizTalk Server 2002" },
-  { value: "BizTalk Server 2006R2", label: "BizTalk Server 2006R2" },
-  { value: "BizTalk Server 2009", label: "BizTalk Server 2009" },
-  { value: "BizTalk Server 2013", label: "BizTalk Server 2013" },
-  { value: "BizTalk Server", label: "BizTalk Server" },
-  { value: "CAPICOM", label: "CAPICOM" },
-  { value: "Category for System Center Online Client", label: "Category for System Center Online Client" },
-  { value: "Compute Cluster Pack", label: "Compute Cluster Pack" },
-  { value: "Data Protection Manager 2006", label: "Data Protection Manager 2006" },
-  { value: "Developer Tools, Runtimes, and Redistributables", label: "Developer Tools, Runtimes, and Redistributables" },
-  { value: "Device Health", label: "Device Health" },
-  { value: "Dictionary Updates for Microsoft IMEs", label: "Dictionary Updates for Microsoft IMEs" },
-  { value: "EU Browser Choice Update-For Europe Only", label: "EU Browser Choice Update-For Europe Only" },
-  { value: "Exchange 2000 Server", label: "Exchange 2000 Server" },
-  { value: "Exchange Server 2003", label: "Exchange Server 2003" },
-  { value: "Exchange Server 2007 and Above Anti-spam", label: "Exchange Server 2007 and Above Anti-spam" },
-  { value: "Exchange Server 2007", label: "Exchange Server 2007" },
-  { value: "Exchange Server 2010", label: "Exchange Server 2010" },
-  { value: "Exchange Server 2013", label: "Exchange Server 2013" },
-  { value: "Exchange Server 2016", label: "Exchange Server 2016" },
-  { value: "Exchange Server 2019", label: "Exchange Server 2019" },
-  { value: "Exchange Server 2025", label: "Exchange Server 2025" },
-  { value: "Exchange", label: "Exchange" },
-  { value: "Expression Design 1", label: "Expression Design 1" },
-  { value: "Expression Design 2", label: "Expression Design 2" },
-  { value: "Expression Design 3", label: "Expression Design 3" },
-  { value: "Expression Design 4", label: "Expression Design 4" },
-  { value: "Expression Media 2", label: "Expression Media 2" },
-  { value: "Expression Media V1", label: "Expression Media V1" },
-  { value: "Expression Web 3", label: "Expression Web 3" },
-  { value: "Expression Web 4", label: "Expression Web 4" },
-  { value: "Expression", label: "Expression" },
-  { value: "Firewall Client for ISA Server", label: "Firewall Client for ISA Server" },
-  { value: "Forefront Client Security", label: "Forefront Client Security" },
-  { value: "Forefront Identity Manager 2010 R2", label: "Forefront Identity Manager 2010 R2" },
-  { value: "Forefront Identity Manager 2010", label: "Forefront Identity Manager 2010" },
-  { value: "Forefront Protection Category", label: "Forefront Protection Category" },
-  { value: "Forefront Server Security Category", label: "Forefront Server Security Category" },
-  { value: "Forefront Threat Management Gateway, Definition Updates for HTTP Malware Inspection", label: "Forefront Threat Management Gateway, Definition Updates for HTTP Malware Inspection" },
-  { value: "Forefront TMG MBE", label: "Forefront TMG MBE" },
-  { value: "Forefront TMG", label: "Forefront TMG" },
-  { value: "Forefront", label: "Forefront" },
-  { value: "HealthVault Connection Center Upgrades", label: "HealthVault Connection Center Upgrades" },
-  { value: "HealthVault Connection Center", label: "HealthVault Connection Center" },
-  { value: "Host Integration Server 2000", label: "Host Integration Server 2000" },
-  { value: "Host Integration Server 2004", label: "Host Integration Server 2004" },
-  { value: "Host Integration Server 2006", label: "Host Integration Server 2006" },
-  { value: "Host Integration Server 2009", label: "Host Integration Server 2009" },
-  { value: "Host Integration Server 2010", label: "Host Integration Server 2010" },
-  { value: "HPC Pack 2008", label: "HPC Pack 2008" },
-  { value: "HPC Pack", label: "HPC Pack" },
-  { value: "Internet Security and Acceleration Server 2004", label: "Internet Security and Acceleration Server 2004" },
-  { value: "Internet Security and Acceleration Server 2006", label: "Internet Security and Acceleration Server 2006" },
-  { value: "Internet Security and Acceleration Server", label: "Internet Security and Acceleration Server" },
-  { value: "Kernel Updates", label: "Kernel Updates" },
-  { value: "Local Publisher", label: "Local Publisher" },
-  { value: "Locally published packages", label: "Locally published packages" },
-  { value: "Microsoft 365 Apps/Office 2019/Office LTSC", label: "Microsoft 365 Apps/Office 2019/Office LTSC" },
-  { value: "Microsoft Advanced Threat Analytics", label: "Microsoft Advanced Threat Analytics" },
-  { value: "Microsoft Application Virtualization 4.5", label: "Microsoft Application Virtualization 4.5" },
-  { value: "Microsoft Application Virtualization 4.6", label: "Microsoft Application Virtualization 4.6" },
-  { value: "Microsoft Application Virtualization 5.0", label: "Microsoft Application Virtualization 5.0" },
-  { value: "Microsoft Application Virtualization", label: "Microsoft Application Virtualization" },
-  { value: "Microsoft Azure Backup Server V3 - Data Protection Manager", label: "Microsoft Azure Backup Server V3 - Data Protection Manager" },
-  { value: "Microsoft Azure Backup Server V4 - Data Protection Manager", label: "Microsoft Azure Backup Server V4 - Data Protection Manager" },
-  { value: "Microsoft Azure Edge Appliance", label: "Microsoft Azure Edge Appliance" },
-  { value: "Microsoft Azure Information Protection Unified Labeling Client", label: "Microsoft Azure Information Protection Unified Labeling Client" },
-  { value: "Microsoft Azure Information Protection", label: "Microsoft Azure Information Protection" },
-  { value: "Microsoft Azure Site Recovery Provider", label: "Microsoft Azure Site Recovery Provider" },
-  { value: "Microsoft Azure StorSimple", label: "Microsoft Azure StorSimple" },
-  { value: "Microsoft Azure", label: "Microsoft Azure" },
-  { value: "Microsoft BitLocker Administration and Monitoring v1", label: "Microsoft BitLocker Administration and Monitoring v1" },
-  { value: "Microsoft BitLocker Administration and Monitoring", label: "Microsoft BitLocker Administration and Monitoring" },
-  { value: "Microsoft Defender Antivirus", label: "Microsoft Defender Antivirus" },
-  { value: "Microsoft Defender for Endpoint", label: "Microsoft Defender for Endpoint" },
-  { value: "Microsoft Dynamics CRM 2011 SHS", label: "Microsoft Dynamics CRM 2011 SHS" },
-  { value: "Microsoft Dynamics CRM 2011", label: "Microsoft Dynamics CRM 2011" },
-  { value: "Microsoft Dynamics CRM 2013", label: "Microsoft Dynamics CRM 2013" },
-  { value: "Microsoft Dynamics CRM 2015", label: "Microsoft Dynamics CRM 2015" },
-  { value: "Microsoft Dynamics CRM 2016 SHS", label: "Microsoft Dynamics CRM 2016 SHS" },
-  { value: "Microsoft Dynamics CRM 2016", label: "Microsoft Dynamics CRM 2016" },
-  { value: "Microsoft Dynamics CRM", label: "Microsoft Dynamics CRM" },
-  { value: "Microsoft Edge", label: "Microsoft Edge" },
-  { value: "Microsoft HealthVault", label: "Microsoft HealthVault" },
-  { value: "Microsoft Lync 2010", label: "Microsoft Lync 2010" },
-  { value: "Microsoft Lync Server 2010", label: "Microsoft Lync Server 2010" },
-  { value: "Microsoft Lync Server 2013", label: "Microsoft Lync Server 2013" },
-  { value: "Microsoft Lync Server and Microsoft Lync", label: "Microsoft Lync Server and Microsoft Lync" },
-  { value: "Microsoft Monitoring Agent (MMA)", label: "Microsoft Monitoring Agent (MMA)" },
-  { value: "Microsoft Monitoring Agent", label: "Microsoft Monitoring Agent" },
-  { value: "Microsoft ODBC Driver 17 for SQL Server", label: "Microsoft ODBC Driver 17 for SQL Server" },
-  { value: "Microsoft ODBC Driver 18 for SQL Server", label: "Microsoft ODBC Driver 18 for SQL Server" },
-  { value: "Microsoft OLE DB Driver 18 for SQL Server", label: "Microsoft OLE DB Driver 18 for SQL Server" },
-  { value: "Microsoft OLE DB Driver 19 for SQL Server", label: "Microsoft OLE DB Driver 19 for SQL Server" }
-];
+    // DYNAMIC STATES
+    const [productList, setProductList] = useState([]);
+    const [classificationList, setClassificationList] = useState([]);
+    const [syncStatus, setSyncStatus] = useState({ value: 'Pending', subtitle: 'Awaiting update', color: 'text-yellow-400' });
 
-const classificationList = [
-  { value: "Classifications Updates", label: "Classifications Updates" },
-  { value: "Applications", label: "Applications" },
-  { value: "Critical Updates", label: "Critical Updates" },
-  { value: "Definition Updates", label: "Definition Updates" },
-  { value: "Driver Sets", label: "Driver Sets" },
-  { value: "Drivers", label: "Drivers" },
-  { value: "Feature Packs", label: "Feature Packs" },
-  { value: "Security Updates", label: "Security Updates" },
-  { value: "Service Packs", label: "Service Packs" },
-  { value: "Tools", label: "Tools" },
-  { value: "Update Rollups", label: "Update Rollups" },
-  { value: "Updates", label: "Updates" },
-  { value: "Upgrades", label: "Upgrades" }
-];
-
-const classificationIcons = {
-    Applications: MonitorSmartphone,
-    'Critical Updates': BadgeAlert,
-    'Definition Updates': ShieldCheck,
-    'Driver Sets': HardDrive,
-    Drivers: Cpu,
-    'Feature Packs': Sparkles,
-    'Security Updates': ShieldCheck,
-    'Service Packs': Package,
-    Tools: Wrench,
-    'Update Rollups': Layers3,
-    Updates: RefreshCcw,
-    Upgrades: CircleDot,
+const getClassificationIcon = (classificationName = '') => {
+    const name = classificationName.toLowerCase();
+    if (name.includes('application')) return MonitorSmartphone;
+    if ( name.includes('critical') || name.includes('alert') )  return BadgeAlert;
+    if ( name.includes('security') || name.includes('definition') ) return ShieldCheck;
+    if ( name.includes('driver') )  return HardDrive;
+    if ( name.includes('feature') ) return Sparkles;
+    if ( name.includes('service') ) return Package;
+    if ( name.includes('tool') ) return Wrench;
+    if ( name.includes('rollup') ) return Layers3;
+    if ( name.includes('update') ) return RefreshCcw;
+    if ( name.includes('upgrade') ) return CircleDot;
+    // DEFAULT ICON
+    return Layers3;
 };
 
-    const [selectedProducts, setSelectedProducts] = useState([
-        '.NET 10.0',
-        '.NET 5.0',
-        '.NET 6.0',
-        '.NET 7.0',
-    ]);
+const [search, setSearch] = useState('');
 
-    const [enabledClassifications, setEnabledClassifications] = useState([
-        'Applications',
-        'Critical Updates',
-        'Updates',
-    ]);
+// ======================== Selected Products & Classifcation ======================== //
+const [selectedProducts, setSelectedProducts] = useState([]);
 
-    const [search, setSearch] = useState('');
+const [enabledClassifications, setEnabledClassifications] = useState([]);
+
+const fetchSelectedProducts = async () => {
+    try {
+        const response = await getselectedProductsList();
+
+        if (response?.data?.status === 200) {
+
+            const selectedData =
+                response.data.data.map((item) => item.value);
+
+            setSelectedProducts(selectedData);
+        }
+
+    } catch (error) {
+        console.log("Error fetching selected products:", error);
+        toast.error("Failed to fetch selected products");
+    }
+};
+
+const fetchSelectedClassifications = async () => {
+    try {
+
+        const response = await getselectedClassificationsList();
+
+        if (response?.data?.status === 200) {
+
+            const selectedData =
+                response.data.data.map((item) => item.value);
+
+            setEnabledClassifications(selectedData);
+        }
+
+    } catch (error) {
+        console.log("Error fetching selected classifications:", error);
+        toast.error("Failed to fetch selected classifications");
+    }
+};
+
+    
+
+// ======================== Fetch All Products & Classifcation List ======================== //
+     // FETCH PRODUCTS
+    const fetchProducts = async () => {
+        try {
+            const response = await getProductsListing();
+
+            if (response?.data?.status === 200) {
+                setProductList(response.data.data || []);
+            }
+        } catch (error) {
+            console.log("Error fetching products:", error);
+            toast.error("Failed to fetch products");
+        }
+    };
+
+    // FETCH CLASSIFICATIONS
+    const fetchClassifications = async () => {
+        try {
+            const response = await getClassificationsListing();
+
+            if (response?.data?.status === 200) {
+                setClassificationList(response.data.data || []);
+            }
+        } catch (error) {
+            console.log("Error fetching classifications:", error);
+            toast.error("Failed to fetch classifications");
+        }
+    };
+
+    // INITIAL LOAD
+    useEffect(() => {
+        fetchProducts();
+        fetchClassifications();
+        fetchSelectedProducts();
+    fetchSelectedClassifications();
+    }, []);
+
 
     const toggleProduct = (product) => {
         setSelectedProducts((prev) =>
@@ -223,6 +157,56 @@ const classificationIcons = {
     setSearch('');
 };
 
+const handleUpdate = async () => {
+
+    try {
+          // LOADING STATUS
+        setSyncStatus({
+            value: 'Updating',
+            subtitle: 'Saving changes...',
+            color: 'text-blue-400'
+        });
+
+        const inputData = {
+            productNames: selectedProducts,
+            classificationNames: enabledClassifications
+        };
+
+        const response = await updateProductClass(inputData);
+
+        if (response?.data?.status === 200) {
+            toast.success(  response?.data?.message || "Updated successfully" );
+             // SUCCESS STATUS
+            setSyncStatus({
+                value: 'Updated',
+                subtitle: 'Configuration synced',
+                color: 'text-emerald-400'
+            });
+        } else if (response?.data?.status === 409) {
+            toast.warning(  response?.data?.message || "Check again" );            
+        } 
+        
+        else { toast.error("Failed to update"); 
+            // FAILED STATUS
+            setSyncStatus({
+                value: 'Failed',
+                subtitle: 'Update failed',
+                color: 'text-red-400'
+            });
+        }
+
+    } catch (error) {
+        console.log("Update error:", error);
+        toast.error( error?.response?.data?.message || "Something went wrong" );
+        // FAILED STATUS
+            setSyncStatus({
+                value: 'Failed',
+                subtitle: 'Update failed',
+                color: 'text-red-400'
+            });
+    }
+};
+
 // MAIN CONTENT
     return (
         <div className="min-h-screen  text-white p-2 ">
@@ -244,7 +228,7 @@ const classificationIcons = {
                             <RotateCcw size={16} /> Reset
                         </button>
 
-                        <button className="h-10 px-5 rounded-lg bg-blue-600 hover:bg-blue-700 transition flex items-center gap-2 text-sm font-medium shadow-md shadow-blue-500/20">
+                        <button onClick={handleUpdate} className="h-10 px-5 rounded-lg bg-blue-600 hover:bg-blue-700 transition flex items-center gap-2 text-sm font-medium shadow-md shadow-blue-500/20">
                             <Save size={16} /> Update
                         </button>
                     </div>
@@ -255,7 +239,7 @@ const classificationIcons = {
                     {[
                         { title: 'Products selected', value: selectedProducts.length, total: productList.length, icon: Boxes, color: 'text-cyan-400',  },
                         { title: 'Classifications', value: enabledClassifications.length, total: classificationList.length, icon: Layers3, color: 'text-emerald-400', },
-                        { title: 'Sync status', value: 'Pending', subtitle: 'Awaiting update', icon: RefreshCcw, color: 'text-yellow-400', }                        
+                        { title: 'Sync status', value: syncStatus.value,  subtitle: syncStatus.subtitle, icon: RefreshCcw, color:  syncStatus.color, }                        
                     ].map((card, idx) => {
                         const Icon = card.icon;
                         return (
@@ -384,7 +368,8 @@ const classificationIcons = {
                                 const enabled =
                                     enabledClassifications.includes( item.value );
 
-                                const Icon = classificationIcons[item.value] || Layers3;
+                                // const Icon = classificationIcons[item.value] || Layers3;
+                                const Icon = getClassificationIcon(item.value);
 
                                 return (
                                     <div

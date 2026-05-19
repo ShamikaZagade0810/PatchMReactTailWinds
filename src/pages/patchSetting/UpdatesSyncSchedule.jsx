@@ -1,17 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-    Clock3,
-    RefreshCcw,
-    CalendarClock,
-    ShieldCheck,
-    Zap,
-    RotateCw,
-    Search,
-    Circle,
-    RotateCcw,
-    Save,
-    CalendarDays,
+    Clock3, RefreshCcw, CalendarClock, ShieldCheck, Zap, RotateCw,
+    Search, Circle, RotateCcw, Save, CalendarDays,
 } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
+
+import { AddUpdatesSyncSchedule, getUpdatesSyncScheduleList, } from "../../api/projectApi";
+
 
 const UpdatesSyncSchedule = () => {
 
@@ -20,30 +15,78 @@ const UpdatesSyncSchedule = () => {
     const [firstSync, setFirstSync] = useState("08:00");
     const [status, setStatus] = useState("Pending");
    
-    // const [tableData, setTableData] = useState([]);
- const tableData = [
-    { syncType: "manual", firstSyncOn: "NA", syncPerDay: "NA" }
-];
+    const [tableData, setTableData] = useState([]);
+//  const tableData = [
+//     { syncType: "manual", firstSyncOn: "NA", syncPerDay: "NA" }
+// ];
 
+useEffect(() => {
+    fetchScheduleList();
+}, []);
+
+
+const fetchScheduleList = async () => {
+    try {
+        const res = await getUpdatesSyncScheduleList();
+
+        console.log("list response:", res.data);
+
+        // backend structure: { message, data, status }
+        setTableData(res.data.data || []);
+
+    } catch (error) {
+        console.error("Error fetching schedule list:", error);
+    }
+};
 
     const syncOptions = Array.from({ length: 24 }, (_, i) => i + 1);
 
     const isManual = syncMode === "manual";
 
-    const handleSubmit = () => {
-        const payload = {
-            syncType: isManual ? "Manual" : "Automatic",
-            firstSync: isManual ? "NA" : firstSync,
-            perDay: isManual ? "NA" : `${syncPerDay}×`,
-            status: "Saved",
-        };
+    const handleSubmit = async () => {
+    try {
+        const payload =
+            syncMode === "manual"
+                ? {
+                      syncType: "manual",
+                  }
+                : {
+                      syncType: "automatic",
+                      firstSync: firstSync,       // e.g. "08:00"
+                      syncPerDay: String(syncPerDay), // ensure string if backend expects it
+                  };
 
-        console.log("submit payload "+payload);
+        console.log("submit payload", payload);
 
-        setStatus("Saved");
+        const response = await AddUpdatesSyncSchedule(payload);
 
-        // setTableData([payload]);
-    };
+        console.log("API response:", response.data);
+         if (response?.data?.status === 200) {
+                    toast.success(  response?.data?.message || "Updated successfully" );
+                      // ✅ refresh list after successful submit
+            fetchScheduleList();
+             setStatus("Saved");
+                    
+                } else if (response?.data?.status === 409) {
+                    toast.warning(  response?.data?.message || "Check again" );     
+                           
+                } 
+                
+                else { toast.error("Failed to update"); 
+                     setStatus("Failed");
+                }
+
+          // ✅ refresh list after successful submit
+            fetchScheduleList();
+
+        // optional: update table if needed later
+        // setTableData(prev => [...prev, payload]);
+
+    } catch (error) {
+        console.error("Submit failed:", error);
+        setStatus("Failed");
+    }
+};
 
     const handleReset = () => {
     setSyncMode("manual");
@@ -295,32 +338,27 @@ const UpdatesSyncSchedule = () => {
                                         </tr>
                                     </thead>
 
-                                    <tbody>
-  {tableData.map((item, index) => (
-    <tr
-      key={index}
-      className="border-b border-white/5 hover:bg-white/[0.02] transition-all"
-    >
-      <td className="px-5 py-4">
-        <div className="flex items-center gap-3">
-          <div className="h-2 w-2 rounded-full bg-cyan-400" />
-
-          <span className="text-xs capitalize">
-            {item.syncType}
-          </span>
-        </div>
+                                   <tbody>
+  {tableData && tableData.length > 0 ? (
+    tableData.map((item, index) => (
+      <tr key={index} className="border-b border-white/5 hover:bg-white/[0.02] transition-all" >
+        <td className="px-5 py-4">
+          <div className="flex items-center gap-3">
+            <div className="h-2 w-2 rounded-full bg-cyan-400" />
+            <span className="text-xs capitalize">{item.syncType}</span>
+          </div>
+        </td>
+        <td className="px-5 py-4 text-xs text-gray-400"> {item.firstSync} </td>
+        <td className="px-5 py-4 text-xs text-gray-400"> {item.syncPerDay} </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={3} className="text-center py-10 text-gray-500 text-sm">
+        No data available
       </td>
-
-      <td className="px-5 py-4 text-xs text-gray-400">
-        {item.firstSyncOn}
-      </td>
-
-      <td className="px-5 py-4 text-xs text-gray-400">
-        {item.syncPerDay}
-      </td>
-     
     </tr>
-  ))}
+  )}
 </tbody>
                                 </table>
                             </div>

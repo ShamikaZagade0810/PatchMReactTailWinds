@@ -1,29 +1,54 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2, ClipboardList, SquareCheckBig, Ban } from "lucide-react";
+import { ToastContainer, toast } from 'react-toastify';
+import { getAllViewSyncPolicy, deleteViewSyncPolicy } from "../../api/projectApi";
+
 
 const ViewSyncPolicy = () => {
 
-    const syncpolicy = [
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.4", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.39", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.2", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.37", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.5", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.236", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.15", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.53", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.92", port: 8503, parameter: 4, day: "Sunday", time: "13" }, 
-        { serverIp: "192.168.0.4", ipAddress: "192.168.0.132", port: 8503, parameter: 3, day: "NA", time: "NA" }
-    ];
+    // const syncpolicyList = [
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.4", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.39", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.2", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.37", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.5", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.236", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.15", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.53", port: 8530, parameter: 3, day: "NA", time: "NA" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.92", port: 8503, parameter: 4, day: "Sunday", time: "13" }, 
+    //     { serverIp: "192.168.0.4", ipAddress: "192.168.0.132", port: 8503, parameter: 3, day: "NA", time: "NA" }
+    // ];
 
+    const [syncpolicyList, setsyncpolicyList] = useState([]);
+        const [loading, setLoading] = useState(false);
+    
+        // ---------- Listing API
+        useEffect(() => {
+            initialApiReq();
+        }, []);
+    
+        const initialApiReq = async () => {
+            try {
+                setLoading(true);
+                const res = await getAllViewSyncPolicy();
+                console.log("API Response:", res);
+                setsyncpolicyList(res?.data?.data || res?.data || []);
+            } catch (error) {
+                console.error("Error fetching View Sync Policy:", error);
+                setsyncpolicyList([]);
+            } finally {
+                setLoading(false);
+            }  
+        }
+ // ------------------------------- DELETE API
       const [isDeleteOpen, setIsDeleteOpen] = useState(false);
         const [deleteId, setDeleteId] = useState(null);
     
         // DELETE COMMAND       
         const handleDelete = (item) => {
-            console.log("item:", item.srNo);  
-                setDeleteId(item.srNo); // or item.srNo       
+            console.log("item:", item.id);  
+                setDeleteId(item.id); // or item.srNo       
                 setIsDeleteOpen(true);
             };
 
@@ -34,25 +59,21 @@ const ViewSyncPolicy = () => {
                     const inputData  = {
                         id: deleteId
                     };
-                    // await getdeleteActivityCmd(payload); // your API
                      console.log("Delete Payload:");
-                    // const response =  await deleteAutoApprovalRule(inputData , deleteId);;
-                    // // toast.success("Deleted successfully");
-                    //  if(response.data.status === 200){
-                    //              toast.success(response.data.message);
-                    //             setIsDeleteOpen(false);
-                    //              setDeleteId(null);
-                    //                // refresh table
-                    //             await getData();
-                    // }
-                    // else if (response.data.status === 409) { toast.warning(response.data.message || "Something went Wrong"); }
-                    // else { toast.error(response.data.message || "Error"); }
+                    const response =  await deleteViewSyncPolicy(inputData , deleteId);;
+                    // toast.success("Deleted successfully");
+                     if(response.data.status === 200){
+                                 toast.success(response.data.message);
+                                setIsDeleteOpen(false);
+                                 setDeleteId(null);
+                                await initialApiReq();
+                    }
+                    else if (response.data.status === 409) { toast.warning(response.data.message || "Something went Wrong"); }
+                    else { toast.error(response.data.message || "Error"); }
             
-                    // setIsDeleteOpen(false);
-                    // setDeleteId(null);        
-                    // // refresh table
-                    // initialApiReq();
-            
+                    setIsDeleteOpen(false);
+                    setDeleteId(null);     
+                    initialApiReq();            
                 } catch (error) {
                     console.error(error);
                     toast.error("Delete failed");
@@ -79,7 +100,16 @@ const ViewSyncPolicy = () => {
                             </thead>
 
                             <tbody>
-                                {syncpolicy.map((item, index) => (
+                                {loading ? (
+                            <tr>
+                                <td colSpan="7" className="p-4 text-center text-gray-400"> Loading data... </td>
+                            </tr>
+                        ) : syncpolicyList.length === 0 ? (
+                            <tr>
+                                <td colSpan="7" className="p-4 text-center text-gray-400"> No Data found </td>
+                            </tr>
+                        ) : (                                
+                                syncpolicyList.map((item, index) => (
                                     <tr key={index} className="border-b border-white/10 hover:bg-[#172033] transition" >
                                         {/* <td className="p-3">{item.srNo}</td> */}  {/* Sr No */}
                                         
@@ -107,7 +137,8 @@ const ViewSyncPolicy = () => {
 
                                         
                                     </tr>
-                                ))}
+                                ))
+                            )}
                             </tbody>
                         </table>
 

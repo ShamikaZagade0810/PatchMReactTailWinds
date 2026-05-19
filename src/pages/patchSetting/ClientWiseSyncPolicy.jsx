@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
-import { deleteAutoApprovalRule } from "../../api/projectApi";
+import { AddClientWiseSyncPolicy } from "../../api/projectApi";
 
 const ClientWiseSyncPolicy = ({ editData, setEditData }) => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -54,10 +54,7 @@ const ClientWiseSyncPolicy = ({ editData, setEditData }) => {
             ipaddress: editData.ipAddress || [],
         });
 
-        const formattedIPs = editData.ipAddress?.map((ip) => ({
-            value: ip,
-            label: ip,
-        })) || [];
+        const formattedIPs = editData.ipAddress?.map((ip) => ({ value: ip, label: ip, })) || [];
 
         setSelectedip(formattedIPs);
     }
@@ -69,42 +66,33 @@ const ClientWiseSyncPolicy = ({ editData, setEditData }) => {
 
     // ---------------- SUBMIT API ----------------
     const onSubmit = async (data) => {
-        // const inputData = {
-        //     firstName: data.firstName,
-        //     lastName: data.lastName,
-        //     emailId: data.email,
-        //     contactNo: data.contact,
-        //     username: data.userName,
-        //     password: data.password,
-        //     confirmPassword: data.confirmPassword,
-        //     type: data.type,            
-        //     oem: selectedOEM.map((item) => item.value),
-        //     customerNames: selectedCustName.map((item) => item.value),
-        //     branchNames: selectedBranch.map((item) => item.value),
-        // };
+        const inputData = {
+            policyName: data.policyName,
+            serverIp: data.serverIp,
+            port: data.port,
+            patchUpdateParameter: data.parameter,
+            osType: data.ostype,
+            scheduleDay: data.scheduleDay,
+            scheduleTime: data.scheduleTime ? `${data.scheduleTime}:00` : "00:00:00",
+            type: data.type,            
+            ipAddress: selectedip.map((item) => item.value),
+            
+        };        
 
         console.log("Payload :", inputData);
         try {
-            //     const response = await AddAppUser(inputData);
-            //     console.log("Add User Response :", response.data.status);
-            //     // alert("User Added Successfully");
-            //     if(response.data.status === 200){
-            //          toast.success(response.data.message);
-            //         handleReset();
-            //     }
-            //      else if (response.data.status === 409) {
-            //                     toast.warning(response.data.message);
-            //                 }
-            //     else {
-            //         toast.error(response.data.message);
-            //    }
-
+                const response = await AddClientWiseSyncPolicy(inputData);
+                console.log("Add Client Wise Sync Policy Response :", response.data.status);
+                // alert("User Added Successfully");
+                if(response.data.status === 200){
+                     toast.success(response.data.message);
+                    handleReset();
+                }
+                 else if (response.data.status === 409) { toast.warning(response.data.message); }
+                else { toast.error(response.data.message); }
         } catch (error) {
-            console.error("Add User Error :", error);
-            alert(
-                error?.response?.data?.message ||
-                "Failed to add user"
-            );
+            console.error("Add Client Wise Sync Policy Error :", error);
+            alert( error?.response?.data?.message || "Failed to  Add Client Wise Sync Policy" );
         }
     };
 
