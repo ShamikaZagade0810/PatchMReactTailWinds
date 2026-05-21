@@ -328,13 +328,9 @@ export const PatchTreeSideBar = ({
 
                         {isOpen && (
                             <div>
-                                <h2 className="text-white text-sm font-semibold tracking-wide">
-                                    ScanPlus
-                                </h2>
+                                <h2 className="text-white text-sm font-semibold tracking-wide"> ScanPlus </h2>
 
-                                <p className="text-[8px] uppercase tracking-[2px] text-slate-400">
-                                    Patch Management
-                                </p>
+                                <p className="text-[10px] uppercase tracking-[2px] text-slate-400"> Patch Management </p>
                             </div>
                         )}
                     </div>
@@ -413,7 +409,6 @@ export const PatchTreeSideBar = ({
                             )}
 
                             <Server className="w-4 h-4 text-cyan-400" />
-
                             {isOpen && (
                                 <span className="text-sm text-white truncate">
                                     Upstream — WIN-14TISP122I
@@ -450,10 +445,8 @@ export const PatchTreeSideBar = ({
                                     <Database className="w-4 h-4 text-slate-300" />
 
                                     {isOpen && (
-                                        <span
-                                            className="text-sm text-slate-300 cursor-pointer hover:text-white"
-                                            onClick={() => navigate("/patchTree/updates")}
-                                        >
+                                        <span className="text-sm text-slate-300 cursor-pointer hover:text-white"
+                                            onClick={() => navigate("/patchTree/updates")} >
                                             Updates
                                         </span>
                                     )}
@@ -465,23 +458,12 @@ export const PatchTreeSideBar = ({
                                 <div className="ml-5 space-y-1">
                                     {/* All Updates */}
                                     <button
-                                        className="
-                      w-full
-                      flex
-                      items-center
-                      justify-between
-                      px-2
-                      py-2
-                      rounded-md
-                      hover:bg-[#0e1f33]
-                      transition-all
-                    "
-                                    >
+                                        className=" w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all ">
                                         <div className="flex items-center gap-2">
                                             <FileText className="w-4 h-4 text-slate-300" />
 
                                             {isOpen && (
-                                                <span className="text-sm text-slate-300"  onClick={() => navigate("/patchTree/ThirdUpdate")}>
+                                                <span className="text-sm text-slate-300" onClick={() => navigate("/patchTree/ThirdUpdate")}>
                                                     All Updates
                                                 </span>
                                             )}
@@ -496,34 +478,16 @@ export const PatchTreeSideBar = ({
 
                                     {/* Critical Updates */}
                                     <button
-                                        className="
-                      w-full
-                      flex
-                      items-center
-                      justify-between
-                      px-2
-                      py-2
-                      rounded-md
-                      bg-[#111827]
-                      border border-red-500/20
-                      hover:bg-[#172033]
-                      transition-all
-                    "
-                                    >
+                                        className=" w-full flex items-center justify-between px-2 py-2 rounded-md bg-[#111827]  hover:bg-[#172033] transition-all " >
                                         <div className="flex items-center gap-2">
                                             <AlertTriangle className="w-4 h-4 text-red-400" />
-
                                             {isOpen && (
-                                                <span className="text-sm text-red-400">
-                                                    Critical Updates
-                                                </span>
+                                                <span className="text-sm text-red-400" onClick={() => navigate("/patchTree/CriticalUpdate")} > Critical Updates </span>
                                             )}
                                         </div>
 
                                         {isOpen && (
-                                            <span className="text-[10px] bg-red-500/20 border border-red-500/30 text-red-400 px-2 py-[2px] rounded-md">
-                                                11.2k
-                                            </span>
+                                            <span className="text-[10px] bg-red-500/20 border border-red-500/30 text-red-400 px-2 py-[2px] rounded-md"> 11.2k </span>
                                         )}
                                     </button>
 

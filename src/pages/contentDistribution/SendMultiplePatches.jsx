@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import MultiSelect from "../../layouts/MultiSelect";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast} from 'react-toastify';
 
 // import MultipleRunForm from "../MultipleRunForm";
 
@@ -53,9 +53,9 @@ const SendMultiplePatches = () => {
 
     const tabs = [
         { label: "IP's To Send Patches", icon: <Plus size={16} /> },
-        { label: "View Sending Patches", icon: <List size={16} /> }
-
-
+        { label: "View Sending Patches", icon: <List size={16} /> },
+        { label: "Ip Wise Patch Patches", icon: <List size={16} /> },
+         { label: "File Wise Patch Patches", icon: <List size={16} /> }     
     ];
 
     const rumtable = [
@@ -64,20 +64,16 @@ const SendMultiplePatches = () => {
         { "ActivityName": "Ping Cmd", "Command": "ping 192.168.0.15", "SubCommand": "ping 192.168.0.15" }
     ]
 
-
-
-
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
     const inputClass = "w-full h-[34px] px-2 text-[12px] bg-[#1E293B] text-white rounded-md border border-[#2A3A55] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
-    const btnClass =
-        "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
+    const btnClass = "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
+    
     const branchOptions = [
         { value: "npcil", label: "NPCIL" },
         { value: "sbi", label: "SBI" },
         { value: "hdfc", label: "HDFC" },
         { value: "icici", label: "ICICI" }
     ];
-
 
     const handleBranchChange = async (branch) => {
 
@@ -90,9 +86,6 @@ const SendMultiplePatches = () => {
 
         const Iplist = await getBranchWiseIpaddressList(reqData);
         setHostNameList(Iplist.data.data);
-
-
-
     }
 
 
@@ -105,7 +98,6 @@ const SendMultiplePatches = () => {
     }
 
     const onSubmit = async (e) => {
-
         // try {
         //     const formData = new FormData();
 
@@ -147,13 +139,9 @@ const SendMultiplePatches = () => {
         console.log("intervaltime", watch('intervaltime'));
         console.log("executevalue", watch('executevalue'));
 
-
-
-
         try {
 
             const formData = new FormData();
-
 
             formData.append("file", file);
             formData.append("ipAddress", ipList);
@@ -164,9 +152,9 @@ const SendMultiplePatches = () => {
             formData.append("executevalue", watch('executevalue'));
 
 
-            const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzg0ODExOTMsImV4cCI6MTc3ODU2NzU5M30.g4KwgWuH5CKUGuPfrTGEeGFVk3NTLx8qlDet5X1LkzI';
+            const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkyNTEwMzksImV4cCI6MTc3OTMzNzQzOX0.nhPLq2fDwrFYrjdta54r6s3FU8WPDoY5UMHNye71VFo';
             const response = await axios.post(
-                "http://192.168.0.54:8081/upload/contentDistribution",
+                "http://192.168.0.17:8081/upload/contentDistribution",
                 formData,
                 {
                     headers: {
@@ -201,7 +189,7 @@ const SendMultiplePatches = () => {
 
         try {
             const res = await axios.post(
-                "http://localhost:8080/upload/contentDistribution",
+                "http://localhost:8081/upload/contentDistribution",
                 formData,
                 {
                     headers: {
@@ -430,14 +418,7 @@ const SendMultiplePatches = () => {
 
     );
 
-    // 🔹 TAB 2 → Activity List
-    const ActivityList = () => (
-        <div></div>
-
-    );
-
-    // 🔹 TAB 3 → Activity List
-    // 🔹 TAB 3 → Activity List
+       // 🔹 TAB 2 → Activity List
     const ViewMultiplePatch = () => {
         const data = [
             {
@@ -465,9 +446,7 @@ const SendMultiplePatches = () => {
             try {
 
                 const data = await getDownloadingPatchProgress();
-
                 const listingData = data.data.data[0].data;
-
                 setViewDownloadingProgressData(listingData);
 
             } catch (error) {
@@ -537,45 +516,108 @@ const SendMultiplePatches = () => {
         );
     };
 
-    // 🔹 TAB 3 → Multiple Run
-    //     const MultipleRunForm = () => (
-    //         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
-    //             <h2 className="text-lg font-semibold mb-6">
-    //                 Multiple Run Command
-    //             </h2>
-    //  <div className="grid gap-4">
-    //     <div>
-    //            <label className={labelClass}>Branch Name</label>
 
-    //                 <MultiSelect options={branchOptions}
-    //                     value={selectedBranches}
-    //                     onChange={setSelectedBranches}
-    //                     placeholder="Select Branch Names"
-    //                     id={"branchNames"}
-    //                     setValue={setValue}
+      const contentDisatributiondata = [          
+            {
+            srNo: 1, ipAddress : "192.168.0.15", appName: "spdownloader", currentPacket: "0", currentStatus: "Downloading", destinationPath : "D:\\patch",
+            packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-04-20 16:20:13.0"
+            },
+            {
+            srNo: 2, ipAddress : "192.168.0.24", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloaded", destinationPath : "D:\\patch",
+            packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-05-1 16:20:13.0"
+            },
+             {
+            srNo: 3, ipAddress : "192.168.0.54", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloading", destinationPath : "D:\\patch",
+            packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-05-20 16:20:13.0"
+            },
+            {
+            srNo: 4, ipAddress : "192.168.0.15", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloading", destinationPath : "D:\\patch",
+            packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-05-20 16:20:13.0"
+            }
+        ];    
 
-    //                 />
-    // </div>
-    // <div>
-    //                 <label className={labelClass}>Branch Name</label>
+     // 🔹 TAB 3 → IP Wise Patch Report
+    const IpWiseReport = () => {      
+      
+        return (
+            <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
 
-    //                 <MultiSelect
-    //                     options={branchOptions}
-    //                     value={selectedBranches}
-    //                     onChange={setSelectedBranches}
-    //                     placeholder="Select Branch Names"
-    //                     id={"branchNames"}
-    //                     setValue={setValue}
+                <table className="w-full text-sm text-left text-white">
+                    <thead className="text-xs uppercase bg-white/10">
+                        <tr>
+                            <th className="px-4 py-3">IP Address</th>
+                            <th className="px-4 py-3">File Name</th>
+                            <th className="px-4 py-3">Interval Time</th>
+                            <th className="px-4 py-3">Packet Size</th>
+                            <th className="px-4 py-3">Current Packet</th>
+                            <th className="px-4 py-3">Current Status</th>
+                            <th className="px-4 py-3">Destination Path</th>
+                            <th className="px-4 py-3">Created At</th>
+                        </tr>
+                    </thead>
 
-    //                 />
-    //                 </div>
-    //                 </div>
+                    <tbody>
+                        {contentDisatributiondata.map((row, index) => (
+                            <tr key={index} className="border-b border-white/10 hover:bg-white/5">
+                                <td className="px-4 py-3">{row.ipAddress}</td>
+                                <td className="px-4 py-3">{row.appName}</td>
+                                <td className="px-4 py-3">{row.intervalTime}</td>
+                                <td className="px-4 py-3">{row.packetSize}</td>
+                                <td className="px-4 py-3">{row.currentPacket}</td>
+                                <td className="px-4 py-3">{row.currentStatus}</td>
+                                 <td className="px-4 py-3">{row.destinationPath}</td>
+                                 {/* <td className="px-4 py-3">{row.createdAt}</td> */}
+                                 <td className="px-4 py-3"> {new Date(row.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", 
+                                    hour: "2-digit", minute: "2-digit", hour12: false, }).replace(/\//g, "-").replace(",", "")}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-    //             <div className="flex justify-end mt-6">
-    //                 <button className={btnClass}>Execute</button>
-    //             </div>
-    //         </div>
-    //     );
+            </div>
+        );
+    };
+
+      // 🔹 TAB 4 → IP Wise Patch Report
+    const FileWiseReport = () => {      
+      
+        return (
+            <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
+
+                <table className="w-full text-sm text-left text-white">
+                    <thead className="text-xs uppercase bg-white/10">
+                        <tr>
+                            <th className="px-4 py-3">IP Address</th>
+                            <th className="px-4 py-3">File Name</th>
+                            <th className="px-4 py-3">Interval Time</th>
+                            <th className="px-4 py-3">Packet Size</th>
+                            <th className="px-4 py-3">Current Packet</th>
+                            <th className="px-4 py-3">Current Status</th>
+                            <th className="px-4 py-3">Destination Path</th>
+                            <th className="px-4 py-3">Created At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {contentDisatributiondata.map((row, index) => (
+                            <tr key={index} className="border-b border-white/10 hover:bg-white/5">
+                                <td className="px-4 py-3">{row.ipAddress}</td>
+                                <td className="px-4 py-3">{row.appName}</td>
+                                <td className="px-4 py-3">{row.intervalTime}</td>
+                                <td className="px-4 py-3">{row.packetSize}</td>
+                                <td className="px-4 py-3">{row.currentPacket}</td>
+                                <td className="px-4 py-3">{row.currentStatus}</td>
+                                 <td className="px-4 py-3">{row.destinationPath}</td>
+                                 <td className="px-4 py-3">{row.createdAt}</td>                                                               
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+            </div>
+        );
+    };
+    
     // 🔹 Render based on tab
     const renderContent = () => {
         switch (activeTab) {
@@ -583,7 +625,10 @@ const SendMultiplePatches = () => {
                 return <AddActivityForm />;
             case 1:
                 return <ViewMultiplePatch />;
-
+            case 2:
+                return <IpWiseReport />;
+            case 3:
+                return <FileWiseReport />;
             default:
                 return null;
         }
