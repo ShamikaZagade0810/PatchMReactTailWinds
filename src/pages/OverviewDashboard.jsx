@@ -211,8 +211,12 @@ const OverviewDashboard = () => {
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
             setTopDevices(topDevicesRes.data.data);
-            setOverallComplainceRate(windowsOverallComplainceRes.data.data[0].value);
-            setComplianceData(windowsComplainceDataDashboardRes.data.data);
+            setOverallComplainceRate(
+                windowsComplainceDataDashboardRes.data.data[
+                windowsComplainceDataDashboardRes.data.data.length - 1
+                ].value
+            );
+            setComplianceData(windowsComplainceDataDashboardRes.data.data.slice(0, -1));
             console.log("windowsOverallComplainceRes ", windowsOverallComplainceRes.data.data[0].value);
             console.log("windowsComplainceDataDashboardRes ", windowsComplainceDataDashboardRes.data.data);
 

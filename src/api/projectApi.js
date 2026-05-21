@@ -314,7 +314,7 @@ export const getTopRiskyDevices = () =>
 
 
 export const getCriticalPatchesList = () =>
-  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
+  axios.get(`${BASE_URL}/dashboard/MissingCriticalList`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

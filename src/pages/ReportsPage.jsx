@@ -327,11 +327,20 @@ const ReportsPage = () => {
                 inputData.push('patchList');
             }
         }
-        // console.log("customDate",customDate.to);
+        console.log("customDate",customDate.from,customDate.to);
         const result = inputData.reduce((acc, element) => {
             acc[element] = watch(element);
             return acc;
         }, {});
+  
+           if (selectedModule?.id === "patch" || selectedModule?.id === "timeline" || selectedModule?.id === "agent" || selectedModule?.id === "failed") {
+            if (customDate.from == "" || customDate.to == "") {
+                toast("Plz Fill The Date Range Field!! ");
+                return;
+            }
+            result["fromDate"] = customDate.from;
+            result["toDate"] = customDate.to;
+        }
 
         console.log("Final Payload:", result);
         const emptyFields = Object.entries(result)
@@ -347,14 +356,7 @@ const ReportsPage = () => {
             return;
         }
 
-        if (selectedModule?.id === "patch" || selectedModule?.id === "timeline" || selectedModule?.id === "agent" || selectedModule?.id === "failed") {
-            if (customDate.from == "" || customDate.to) {
-                toast("Plz Fill The Date Range Field ");
-                return;
-            }
-            result["fromDate"] = customDate.from;
-            result["toDate"] = customDate.to;
-        }
+    
         setLoading(true);
         try {
             const data = await apiMapping['Report'][selectedModule?.id](result);
