@@ -79,7 +79,7 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Patch Repository",
-    path: "/patch-repository",
+    path: "/Thirdparty/patch-repository",
     icon: FolderOpen,
     roles: ["admin"],
   },
