@@ -441,17 +441,7 @@ function PatchTreeThirdDashboard() {
                 transition-all duration-300
                 active:scale-95
             "
-                                        onClick={() => {
-                                            console.log("Next Sync Triggered");
-                                            const getSyncPercentData = await getSyncPercent();
-                                            let data = getSyncPercentData.data.data[0];
-                                            let obj = {
-                                                 syncStatus : data.c_status,
-                                                 lastSyncTime :date,
-                                                 
-                                            }
-
-                                        }}
+                                      
                                     >
                                         Sync Now
                                     </button>

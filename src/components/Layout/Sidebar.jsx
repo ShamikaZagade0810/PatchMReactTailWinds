@@ -24,259 +24,336 @@ import {
   ClipboardMinus,
   SquareTerminal
 } from "lucide-react";
+
+import {
+  PackageCheck,
+  BadgeInfo,
+
+  Monitor,
+  List,
+  FolderOpen,
+
+  FileBarChart,
+} from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
 import logo from "../../assets/planet-gurard.png";
 import { useAuth } from "../../context/AuthContext";
 
-const sidebarData = [
-  // {
-  //   name: "Dashboards",
-  //   icon: LayoutDashboard,
-  //   roles: ["admin"],
-  //   path: "/dashboard2",
-  //   children: [
-  //     {
-  //       name: "Project Reports",
-  //       path: "/dashboard2/mainDashboard",
-  //       icon: AppWindowMac,
-  //       roles: ["admin"],
-  //     },
-  //     {
-  //       name: "Incidence Dashboard",
-  //       path: "/dashboard2/incidence",
-  //       icon: AppWindowMac,
-  //       roles: ["admin"],
-  //     },
-  //     {
-  //       name: "Patch Dashboard",
-  //       path: "/dashboard2/patch",
-  //       icon: AppWindowMac,
-  //       roles: ["admin"],
-  //     },
+// const sidebarData = [
+//   // {
+//   //   name: "Dashboards",
+//   //   icon: LayoutDashboard,
+//   //   roles: ["admin"],
+//   //   path: "/dashboard2",
+//   //   children: [
+//   //     {
+//   //       name: "Project Reports",
+//   //       path: "/dashboard2/mainDashboard",
+//   //       icon: AppWindowMac,
+//   //       roles: ["admin"],
+//   //     },
+//   //     {
+//   //       name: "Incidence Dashboard",
+//   //       path: "/dashboard2/incidence",
+//   //       icon: AppWindowMac,
+//   //       roles: ["admin"],
+//   //     },
+//   //     {
+//   //       name: "Patch Dashboard",
+//   //       path: "/dashboard2/patch",
+//   //       icon: AppWindowMac,
+//   //       roles: ["admin"],
+//   //     },
 
-  //   ],
-  // },
+//   //   ],
+//   // },
 
-  {
-    name: "Dashboards",
-    icon: LayoutDashboard,
-    roles: ["admin"],
-    path: "/dashboard",
-    children: [
-      {
-        name: "Status",
-        path: "/dashboard/mainDashboard",
+//   {
+//     name: "Dashboards",
+//     icon: LayoutDashboard,
+//     roles: ["admin"],
+//     path: "/dashboard",
+//     children: [
+//       {
+//         name: "Status",
+//         path: "/dashboard/mainDashboard",
 
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Patch Tree",
-        path: "/dashboard/patchTree",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Third Party",
-        path: "/dashboard/status",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-
-
-    ],
-  },
-
-  {
-    name: "Content Distribution",
-    icon: Share2,
-    roles: ["admin"],
-    path: "content",
-    children: [
-   
-      {
-        name: "Send Multiple Patches",
-        path: "/content/send-multiple",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-    
-    ],
-  },
-
-  {
-    name: "Patch Setting",
-    icon: LayoutDashboard,
-    roles: ["admin"],
-    path: "setting",
-
-    children: [
-      // {
-      //   name: "Approve Or Decline",
-      //   path: "/setting/approve-decline",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-      {
-        name: "Automatic Approvals",
-        path: "/setting/auto-approval",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },      
-      {
-        name: "Product And Classifications",
-        path: "/setting/product-class",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Update Sync Schedule",
-        path: "/setting/sync-schedule",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Client Sync Policy",
-        path: "/setting/client-sync-policy",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      // {
-      //   name: "Client Wise Sync Policy",
-      //   path: "/setting/client-policy",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-      // {
-      //   name: "View Client Wise Sync Policy",
-      //   path: "/setting/view-client-policy",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-
-    ],
-  },
-
-  {
-    name: "Master",
-    icon: LayoutDashboard,
-    roles: ["admin"],
-    path: "master",
-
-    children: [
-       {
-        name: "Application User Details",
-        path: "/master/UserDetails",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      // {
-      //   name: "Create Application User",
-      //   path: "/master/Createuser",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-      {
-        name: "	View Devices",
-        path: "/master/view-devices",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Customer Master",
-        path: "/master/CustomerDetails",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Branch Master",
-        path: "/master/Branch",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Group Master",
-        path: "/master/Group",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Server Master",
-        path: "/master/Server",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "OEM Master",
-        path: "/master/OEM",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-       {
-        name: "Set Server Policy",
-        path: "/master/setPolicy",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },      
-      {
-        name: "Schedule Mail Reports",
-        path: "/master/MailReports",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      // {
-      //   name: "Periodic Report",
-      //   path: "/master/periodic-report",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-
-    ],
-  },
-  // {
-  //   name: "Run CMD Execution",
-  //   icon: LayoutDashboard,
-  //   roles: ["admin"],
-  //   path: "cmd",
-
-  //   children: [
-  //     {
-  //       name: "Add Activity Command",
-  //       path: "/cmd/add",
-  //       icon: AppWindowMac,
-  //       roles: ["admin"],
-  //     },
-  //     {
-  //       name: "View Activity Command",
-  //       path: "/cmd/view",
-  //       icon: AppWindowMac,
-  //       roles: ["admin"],
-  //     },
-  //     {
-  //       name: "Multiple Run Command",
-  //       path: "/cmd/multi-run",
-  //       icon: AppWindowMac,
-  //       roles: ["admin"],
-  //     },
-  //   ],
-  // },
-
- {
-    name: "Rum Command",
-    path: "/runcmd",
-    icon: SquareTerminal,
-    roles: ["admin"],
-  },
-
-  {
-    name: "Reports",
-    path: "/reports",
-    icon: ClipboardMinus,
-    roles: ["admin"],
-  },
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Patch Tree",
+//         path: "/dashboard/patchTree",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Third Party",
+//         path: "/section/Thirdparty",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
 
 
-];
+//     ],
+//   },
+
+//   {
+//     name: "Content Distribution",
+//     icon: Share2,
+//     roles: ["admin"],
+//     path: "content",
+//     children: [
+
+//       {
+//         name: "Send Multiple Patches",
+//         path: "/content/send-multiple",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+
+//     ],
+//   },
+
+//   {
+//     name: "Patch Setting",
+//     icon: LayoutDashboard,
+//     roles: ["admin"],
+//     path: "setting",
+
+//     children: [
+//       // {
+//       //   name: "Approve Or Decline",
+//       //   path: "/setting/approve-decline",
+//       //   icon: AppWindowMac,
+//       //   roles: ["admin"],
+//       // },
+//       {
+//         name: "Automatic Approvals",
+//         path: "/setting/auto-approval",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Product And Classifications",
+//         path: "/setting/product-class",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Update Sync Schedule",
+//         path: "/setting/sync-schedule",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Client Sync Policy",
+//         path: "/setting/client-sync-policy",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       // {
+//       //   name: "Client Wise Sync Policy",
+//       //   path: "/setting/client-policy",
+//       //   icon: AppWindowMac,
+//       //   roles: ["admin"],
+//       // },
+//       // {
+//       //   name: "View Client Wise Sync Policy",
+//       //   path: "/setting/view-client-policy",
+//       //   icon: AppWindowMac,
+//       //   roles: ["admin"],
+//       // },
+
+//     ],
+//   },
+
+//   {
+//     name: "Master",
+//     icon: LayoutDashboard,
+//     roles: ["admin"],
+//     path: "master",
+
+//     children: [
+//       {
+//         name: "Application User Details",
+//         path: "/master/UserDetails",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       // {
+//       //   name: "Create Application User",
+//       //   path: "/master/Createuser",
+//       //   icon: AppWindowMac,
+//       //   roles: ["admin"],
+//       // },
+//       {
+//         name: "	View Devices",
+//         path: "/master/view-devices",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Customer Master",
+//         path: "/master/CustomerDetails",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Branch Master",
+//         path: "/master/Branch",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Group Master",
+//         path: "/master/Group",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Server Master",
+//         path: "/master/Server",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "OEM Master",
+//         path: "/master/OEM",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Set Server Policy",
+//         path: "/master/setPolicy",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       {
+//         name: "Schedule Mail Reports",
+//         path: "/master/MailReports",
+//         icon: AppWindowMac,
+//         roles: ["admin"],
+//       },
+//       // {
+//       //   name: "Periodic Report",
+//       //   path: "/master/periodic-report",
+//       //   icon: AppWindowMac,
+//       //   roles: ["admin"],
+//       // },
+
+//     ],
+//   },
+//   // {
+//   //   name: "Run CMD Execution",
+//   //   icon: LayoutDashboard,
+//   //   roles: ["admin"],
+//   //   path: "cmd",
+
+//   //   children: [
+//   //     {
+//   //       name: "Add Activity Command",
+//   //       path: "/cmd/add",
+//   //       icon: AppWindowMac,
+//   //       roles: ["admin"],
+//   //     },
+//   //     {
+//   //       name: "View Activity Command",
+//   //       path: "/cmd/view",
+//   //       icon: AppWindowMac,
+//   //       roles: ["admin"],
+//   //     },
+//   //     {
+//   //       name: "Multiple Run Command",
+//   //       path: "/cmd/multi-run",
+//   //       icon: AppWindowMac,
+//   //       roles: ["admin"],
+//   //     },
+//   //   ],
+//   // },
+
+//   {
+//     name: "Rum Command",
+//     path: "/runcmd",
+//     icon: SquareTerminal,
+//     roles: ["admin"],
+//   },
+
+//   {
+//     name: "Reports",
+//     path: "/reports",
+//     icon: ClipboardMinus,
+//     roles: ["admin"],
+//   },
+
+
+// ];
+
+
+// const ThirdPartySidebarData = [
+//   {
+//     name: "Dashboard",
+//     path: "/dashboard",
+//     icon: LayoutDashboard,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Missing Apps",
+//     path: "/missing-apps",
+//     icon: AlertTriangle,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Installed Apps",
+//     path: "/installed-apps",
+//     icon: PackageCheck,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Patch Status",
+//     path: "/patch-status",
+//     icon: BadgeInfo,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Latest Software",
+//     path: "/latest-software",
+//     icon: Database,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Host View",
+//     path: "/host-view",
+//     icon: Monitor,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Patch Progress",
+//     path: "/patch-progress",
+//     icon: List,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Patch Repository",
+//     path: "/patch-repository",
+//     icon: FolderOpen,
+//     roles: ["admin"],
+//   },
+//   {
+//     name: "Reports",
+//     path: "/reports",
+//     icon: FileText,
+//     roles: ["admin"],
+//     children: [
+//       {
+//         name: "Patch Reports",
+//         path: "/reports/patch",
+//         icon: FileBarChart,
+//         roles: ["admin"],
+//       },
+//     ],
+//   },
+// ];
 
 export const Sidebar = ({
   isOpen,
@@ -285,7 +362,10 @@ export const Sidebar = ({
   onItemClick,
   onAccordionClick,
   isItemExpanded,
+  sidebarData
 }) => {
+  console.log("sidebar --->", sidebarData);
+
   const [openAccordion, setOpenAccordion] = useState(null);
   const activeItemData = useMemo(() => {
     return sidebarData.find((item) => item?.path === activeItem);
@@ -295,7 +375,7 @@ export const Sidebar = ({
 
   const filteredSidebar = useMemo(() => {
     return sidebarData.filter((item) => item?.roles?.includes(user?.role));
-  }, [user?.role]);
+  }, [user?.role,sidebarData]);
 
   return (
     <aside
@@ -312,7 +392,7 @@ export const Sidebar = ({
             src={logo}
             alt="Logo"
             // className="h-8 w-8 shrink-0 rounded-lg transition-all"
-              className={`h-8 w-8 rounded-lg transition-all duration-300 
+            className={`h-8 w-8 rounded-lg transition-all duration-300 
     ${isOpen ? "scale-100" : "scale-110"}
   `}
           />
@@ -324,8 +404,8 @@ export const Sidebar = ({
           <span className={`font-bold transition-all duration-300 
   ${isOpen ? "opacity-100 ml-0" : "opacity-0 -ml-2"}
 `}>
-  PM
-</span>
+            PM
+          </span>
         </div>
 
         <button
@@ -369,11 +449,11 @@ export const Sidebar = ({
             <div className="flex items-center gap-2 text-xs text-gray-500">
               {/* <div className="w-2 h-2 rounded-full bg-green-500"></div> */}
               <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
-<div className="w-2 h-2 rounded-full bg-green-500 absolute"></div>
+              <div className="w-2 h-2 rounded-full bg-green-500 absolute"></div>
               <span>Connected</span>
             </div>
           </div>
-          
+
         ) : (
           <div className="flex justify-center">
             <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-500 to-blue-600"></div>

@@ -1,0 +1,255 @@
+import {
+  LayoutDashboard,
+  ListTree,
+  Share2,
+  FolderGit2,
+  Server,
+  Package,
+  Shield,
+  Users,
+  FileText,
+  Activity,
+  PlayCircle,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+  Database,
+  GitBranch,
+  CheckCircle,
+  AlertTriangle,
+  AppWindowMac,
+  AppWindow,
+  ClipboardMinus,
+  SquareTerminal
+} from "lucide-react";
+
+import {
+  PackageCheck,
+  BadgeInfo,
+
+  Monitor,
+  List,
+  FolderOpen,
+
+  FileBarChart,
+} from "lucide-react";
+
+export const ThirdPartySidebarData = [
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+  },
+  {
+    name: "Missing Apps",
+    path: "/missing-apps",
+    icon: AlertTriangle,
+    roles: ["admin"],
+  },
+  {
+    name: "Installed Apps",
+    path: "/installed-apps",
+    icon: PackageCheck,
+    roles: ["admin"],
+  },
+  {
+    name: "Patch Status",
+    path: "/patch-status",
+    icon: BadgeInfo,
+    roles: ["admin"],
+  },
+  {
+    name: "Latest Software",
+    path: "/latest-software",
+    icon: Database,
+    roles: ["admin"],
+  },
+  {
+    name: "Host View",
+    path: "/host-view",
+    icon: Monitor,
+    roles: ["admin"],
+  },
+  {
+    name: "Patch Progress",
+    path: "/patch-progress",
+    icon: List,
+    roles: ["admin"],
+  },
+  {
+    name: "Patch Repository",
+    path: "/patch-repository",
+    icon: FolderOpen,
+    roles: ["admin"],
+  },
+  {
+    name: "Reports",
+    path: "/reports",
+    icon: FileText,
+    roles: ["admin"],
+    children: [
+      {
+        name: "Patch Reports",
+        path: "/reports/patch",
+        icon: FileBarChart,
+        roles: ["admin"],
+      },
+    ],
+  },
+];
+
+
+export const sidebarData = [
+  {
+    name: "Dashboards",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+    path: "/dashboard",
+    children: [
+      {
+        name: "Status",
+        path: "/dashboard/mainDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Patch Tree",
+        path: "/dashboard/patchTree",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Third Party",
+        path: "/section/Thirdparty",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
+  },
+
+  {
+    name: "Content Distribution",
+    icon: Share2,
+    roles: ["admin"],
+    path: "content",
+    children: [
+      {
+        name: "Send Multiple Patches",
+        path: "/content/send-multiple",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
+  },
+
+  {
+    name: "Patch Setting",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+    path: "setting",
+    children: [
+      {
+        name: "Automatic Approvals",
+        path: "/setting/auto-approval",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Product And Classifications",
+        path: "/setting/product-class",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Update Sync Schedule",
+        path: "/setting/sync-schedule",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Client Sync Policy",
+        path: "/setting/client-sync-policy",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
+  },
+
+  {
+    name: "Master",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+    path: "master",
+    children: [
+      {
+        name: "Application User Details",
+        path: "/master/UserDetails",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "View Devices",
+        path: "/master/view-devices",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Customer Master",
+        path: "/master/CustomerDetails",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Branch Master",
+        path: "/master/Branch",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Group Master",
+        path: "/master/Group",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Server Master",
+        path: "/master/Server",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "OEM Master",
+        path: "/master/OEM",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Set Server Policy",
+        path: "/master/setPolicy",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Schedule Mail Reports",
+        path: "/master/MailReports",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
+  },
+
+  {
+    name: "Rum Command",
+    path: "/runcmd",
+    icon: SquareTerminal,
+    roles: ["admin"],
+  },
+
+  {
+    name: "Reports",
+    path: "/reports",
+    icon: ClipboardMinus,
+    roles: ["admin"],
+  },
+];

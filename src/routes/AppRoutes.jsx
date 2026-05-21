@@ -47,7 +47,7 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={["admin", "DBA"]}>
             <MainLayout />
-          </ProtectedRoute> } >
+          </ProtectedRoute>} >
 
         <Route index
           element={<Navigate to="/dashboard/mainDashboard" replace />} />
@@ -57,32 +57,32 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <PMOverviewDashboard />
-            </ProtectedRoute> } />
+            </ProtectedRoute>} />
 
         <Route path="/devices/:username/:ipaddress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <Devices />
-            </ProtectedRoute> } />
+            </ProtectedRoute>} />
 
         <Route path="/reports"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <ReportsPage />
-            </ProtectedRoute>  } />
+            </ProtectedRoute>} />
 
         <Route path="/runcmd"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <RunCmd />
-            </ProtectedRoute> } />
+            </ProtectedRoute>} />
 
         <Route path="/multiple-run"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <MultipleRunForm />
-            </ProtectedRoute> } />
+            </ProtectedRoute>} />
 
         <Route path="/dashboard/linuxDashboard"
           element={
@@ -90,7 +90,7 @@ export default function AppRoutes() {
 
               {/* <DbMonitoringDashboard /> */}
               <LinuxDashboard />
-            </ProtectedRoute> } />
+            </ProtectedRoute>} />
 
         <Route path="/dashboard/thirdPartyApp"
           element={
@@ -215,7 +215,7 @@ export default function AppRoutes() {
             </ProtectedRoute>} />
 
 
-          <Route path="/setting/client-sync-policy"
+        <Route path="/setting/client-sync-policy"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <ClientSyncPolicyMainPage />
@@ -228,7 +228,7 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <SendMultiplePatches />
-              
+
 
             </ProtectedRoute>
           } />
@@ -255,13 +255,20 @@ export default function AppRoutes() {
               <PatchTreeThirdDashboard />
             </ProtectedRoute>} />
 
-             <Route path="/patchTree/CriticalUpdate"
+        <Route path="/patchTree/CriticalUpdate"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <CriticalUpdates />
             </ProtectedRoute>} />
 
-         <Route path="/patchTree/patchDetails/:srNo"
+                <Route path="/section/Thirdparty"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <PMOverviewDashboard />
+            </ProtectedRoute> } />
+
+        <Route path="/patchTree/patchDetails/:srNo"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchDetails />
@@ -269,7 +276,7 @@ export default function AppRoutes() {
 
 
 
-      </Route>  
+      </Route>
     </Routes >
   );
 }

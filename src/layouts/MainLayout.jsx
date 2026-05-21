@@ -53,11 +53,14 @@ import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
+import { ThirdPartySidebarData } from "../api/SidebarcontentFile";
+import { sidebarData } from "../api/SidebarcontentFile";
 
 export default function MainLayout() {
 
   const [loading, setLoading] = useState(true);
   const [isPatchTreeSidebarEnabled, setIsPatchTreeSidebarEnabled] = useState(false);
+  const [sidebarContent ,setSidebarContent] = useState(sidebarData);
   const {
     isSidebarOpen,
     toggleSidebar,
@@ -70,7 +73,11 @@ export default function MainLayout() {
   useEffect(() => {
     if (activeItem == '/dashboard/patchTree') {
       setIsPatchTreeSidebarEnabled(true);
+    }else if(activeItem == '/section/Thirdparty'){
+      setSidebarContent(ThirdPartySidebarData);
     }
+
+    
   }, [activeItem])
   console.log("activeItem ", activeItem);
   // const [alerts, setAlerts] = useState([]);
@@ -132,7 +139,7 @@ export default function MainLayout() {
           onItemClick={setActiveItem}
           onAccordionClick={handleAccordionClick}
           isItemExpanded={isItemExpanded}
-
+          sidebarData={sidebarContent}
         />
         :
         <PatchTreeSideBar
