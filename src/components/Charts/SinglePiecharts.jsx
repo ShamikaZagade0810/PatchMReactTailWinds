@@ -133,8 +133,8 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                                     value: data.name === "MISSING" ? "Declined" : data.name
                                 }
                                 onSliceClick('patches', 'patchesstatus', reqdata);
-                            } 
-                            
+                            }
+
                             else if (datakey == "linuxBranchDistribution") {
                                 reqdata = {
                                     value: data.name

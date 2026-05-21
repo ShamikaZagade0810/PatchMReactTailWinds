@@ -81,7 +81,7 @@ function PatchTreeThirdDashboard() {
     const [computerStatusPie, setComputerStatusPie] = useState([]);
     const [updateStatus, setUpdateStatus] = useState([]);
     const [recentActivity, setRecentActivity] = useState([]);
-
+    const COLORS = ["#ff4d4f", "#fa8c16", "#fadb14", "#52c41a"];
 
 
     useEffect(() => {
@@ -114,14 +114,14 @@ function PatchTreeThirdDashboard() {
                 getupdateStatus(),
                 getrecentActivity()
             ]);
-        console.log("Computer Status ",  getComputerStatusPieRes.data.data);
-           
+            console.log("Computer Status ", getComputerStatusPieRes.data.data);
+
             setPatchTreeWsusDashboardStatistics(
                 PatchTreewsus_dashboard_statisticsRes.data.data
             );
 
             setSynchronizeStatus(
-                getSynchronizeStatusRes.data.data
+                getSynchronizeStatusRes.data.data[0] || {}
             );
 
             setSyncPercent(
@@ -140,8 +140,14 @@ function PatchTreeThirdDashboard() {
                 getupdateStatusRes.data.data
             );
 
+            let approvedActivities = getrecentActivityRes.data.data.approvedUpdates;
+            let installationTimeline = getrecentActivityRes.data.data.installationTimeline
+            const mergedActivities = [
+                ...approvedActivities,
+                ...installationTimeline
+            ];
             setRecentActivity(
-                getrecentActivityRes.data.data
+                mergedActivities
             );
 
 
@@ -151,7 +157,7 @@ function PatchTreeThirdDashboard() {
         }
     };
 
-    const handleClickModalParameter =()=>{
+    const handleClickModalParameter = () => {
 
     }
 
@@ -309,7 +315,7 @@ function PatchTreeThirdDashboard() {
                                 </span>
 
                                 <span className="text-gray-400 text-xs">
-                                    — last sync succeeded
+                                    — last sync  {synchronizeStatus?.lastSyncResult || "N/A"}
                                 </span>
                             </div>
 
@@ -324,14 +330,14 @@ function PatchTreeThirdDashboard() {
                             {/* Status */}
                             <div className="bg-[#1E273A] rounded-xl p-3">
                                 <p className="text-[10px] uppercase tracking-wider text-gray-300 mb-2">
-                                    Status
+                                    Current  Status
                                 </p>
 
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-indigo-400"></div>
 
                                     <span className="text-white text-sm font-semibold">
-                                        Idle
+                                        {synchronizeStatus?.syncStatus || "N/A"}
                                     </span>
                                 </div>
                             </div>
@@ -377,33 +383,79 @@ function PatchTreeThirdDashboard() {
                                         <circle cx="12" cy="12" r="9" />
                                     </svg>
 
-                                    Today, 04:22 AM
+                                    {synchronizeStatus?.lastSyncTime || "N/A"}
                                 </div>
                             </div>
 
                             <div className='bg-[#1E273A] rounded-xl p-3'>
+
                                 <p className="text-[10px] uppercase tracking-wider text-gray-300 mb-2">
                                     Next Sync
                                 </p>
 
-                                <div className="flex items-center gap-2 text-gray-300 text-xs">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="w-4 h-4 text-gray-500"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 8v4l3 3"
-                                        />
-                                        <circle cx="12" cy="12" r="9" />
-                                    </svg>
+                                <div className="flex items-center justify-between gap-3">
 
-                                    Today, 04:22 AM
+                                    {/* Time */}
+                                    <div className="flex items-center gap-2 text-gray-300 text-xs">
+
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="w-4 h-4 text-gray-500"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            strokeWidth={2}
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M12 8v4l3 3"
+                                            />
+
+                                            <circle cx="12" cy="12" r="9" />
+                                        </svg>
+
+                                        <span>
+                                            {new Date().toLocaleString("en-IN", {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true,
+                                                day: "2-digit",
+                                                month: "short"
+                                            })}
+                                        </span>
+                                    </div>
+
+                                    {/* Sync Button */}
+                                    <button
+                                        className="
+                px-3 py-1.5
+                rounded-lg
+                bg-cyan-500/15
+                border border-cyan-400/20
+                text-cyan-300
+                text-[11px]
+                font-medium
+                hover:bg-cyan-500/25
+                hover:border-cyan-400/40
+                transition-all duration-300
+                active:scale-95
+            "
+                                        onClick={() => {
+                                            console.log("Next Sync Triggered");
+                                            const getSyncPercentData = await getSyncPercent();
+                                            let data = getSyncPercentData.data.data[0];
+                                            let obj = {
+                                                 syncStatus : data.c_status,
+                                                 lastSyncTime :date,
+                                                 
+                                            }
+
+                                        }}
+                                    >
+                                        Sync Now
+                                    </button>
+
                                 </div>
                             </div>
 
@@ -476,7 +528,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-white">
-                                                {serverStatisticData['unapprovedPatches']}
+                                        {serverStatisticData['unapprovedPatches']}
                                     </span>
                                 </div>
 
@@ -500,7 +552,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-green-400">
-                                      {serverStatisticData['approvedPatches']}
+                                        {serverStatisticData['approvedPatches']}
                                     </span>
                                 </div>
 
@@ -524,7 +576,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-gray-300">
-                                       {serverStatisticData['declinedPatches']}
+                                        {serverStatisticData['declinedPatches']}
                                     </span>
                                 </div>
 
@@ -548,7 +600,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     <span className="text-sm font-semibold text-cyan-400">
-                                      {serverStatisticData['totalPatches']}
+                                        {serverStatisticData['totalPatches']}
                                     </span>
                                 </div>
 
@@ -579,11 +631,11 @@ function PatchTreeThirdDashboard() {
             </div>
 
 
-            <div className="grid grid-cols-12 gap-4 mt-1 bg-[#121A2B] p-2">
+            <div className="grid grid-cols-12 gap-4 mt-1 bg-[#121A2B] p-2 items-stretch">
 
                 {/* LEFT SMALL CARDS SECTION */}
                 <div className="col-span-12 xl:col-span-4">
-                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3">
+                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3  h-full flex flex-col">
 
                         <div className="flex items-start justify-between mb-6">
                             <div>
@@ -607,80 +659,59 @@ function PatchTreeThirdDashboard() {
                             {/* Donut Chart */}
                             <div className="relative w-48 h-48 flex items-center justify-center">
 
-                           <div className="w-50 h-50 relative">
-                            <SinglePieCharts data={computerStatusPie} onSliceClick={handleClickModalParameter} datakey={"thirdpartypie"} />
+                                <div className="w-50 h-50 relative">
+                                    <SinglePieCharts data={computerStatusPie} onSliceClick={handleClickModalParameter} datakey={"thirdpartypie"} />
 
-                        </div>
-                     
+                                </div>
+
                             </div>
 
                             {/* Stats */}
-                            <div className="flex-1 space-y-5">
+                            <div className="flex-1 space-y-3 overflow-x-auto pr-2">
 
-                                {[
-                                    {
-                                        label: "Patched",
-                                        percent: "75.7%",
-                                        value: 312,
-                                        color: "bg-green-400",
-                                        width: "75%",
-                                    },
-                                    {
-                                        label: "Partial",
-                                        percent: "11.7%",
-                                        value: 48,
-                                        color: "bg-cyan-400",
-                                        width: "12%",
-                                    },
-                                    {
-                                        label: "Unpatched",
-                                        percent: "6.6%",
-                                        value: 27,
-                                        color: "bg-yellow-400",
-                                        width: "7%",
-                                    },
-                                    {
-                                        label: "Failed",
-                                        percent: "3.4%",
-                                        value: 14,
-                                        color: "bg-red-400",
-                                        width: "4%",
-                                    },
-                                    {
-                                        label: "Offline",
-                                        percent: "2.7%",
-                                        value: 11,
-                                        color: "bg-pink-400",
-                                        width: "3%",
-                                    },
-                                ].map((item, index) => (
-                                    <div key={index} className="flex items-center gap-3">
+                                {computerStatusPie.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex items-center gap-2 min-w-[420px]"
+                                    >
 
                                         {/* Dot */}
-                                        <div className={`w-3 h-3 rounded-full ${item.color} shadow-lg`} />
+                                        <div
+                                            className="w-2.5 h-2.5 rounded-full shadow-lg"
+                                            style={{
+                                                backgroundColor:
+                                                    COLORS[index % COLORS.length]
+                                            }}
+                                        />
 
                                         {/* Label */}
-                                        <div className="w-20 text-sm text-slate-200">
-                                            {item.label}
+                                        <div className="w-24 text-[11px] text-slate-200 truncate">
+                                            {item.name}
                                         </div>
 
                                         {/* Progress */}
-                                        <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+
                                             <div
-                                                className={`h-full ${item.color} rounded-full`}
-                                                style={{ width: item.width }}
+                                                className="h-full rounded-full"
+                                                style={{
+                                                    width: "20%",
+                                                    backgroundColor:
+                                                        COLORS[index % COLORS.length]
+                                                }}
                                             />
                                         </div>
 
                                         {/* Percentage */}
-                                        <div className="w-14 text-right text-sm text-slate-400">
-                                            {item.percent}
+                                        <div className="w-12 text-right text-[10px] text-slate-400">
+                                            20%
                                         </div>
 
                                         {/* Value */}
-                                        <div className="w-8 text-right text-sm font-semibold text-white">
+                                        <div className="w-8 text-right text-[11px] font-semibold text-white">
                                             {item.value}
                                         </div>
+
                                     </div>
                                 ))}
                             </div>
@@ -693,13 +724,13 @@ function PatchTreeThirdDashboard() {
 
 
                 <div className="col-span-12 xl:col-span-4">
-                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3">
+                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3  h-full flex flex-col">
 
                         <div className="flex items-start justify-between mb-6">
                             <div>
                                 <h2 className="text-white text-lg font-semibold flex items-center gap-2">
                                     <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-                                    Patch Status
+                                    Computer Status
                                 </h2>
                                 <p className="text-slate-400 text-sm mt-1">
                                     Real-time fleet patching breakdown
@@ -717,116 +748,71 @@ function PatchTreeThirdDashboard() {
                             {/* Donut Chart */}
                             <div className="relative w-48 h-48 flex items-center justify-center">
 
-                                {/* Donut */}
-                                <div
-                                    className="w-40 h-40 rounded-full"
-                                    style={{
-                                        background: `
-            conic-gradient(
-              #38E27B 0% 75.7%,
-              #11C5F5 75.7% 87.4%,
-              #F7B500 87.4% 94%,
-              #FF4D4F 94% 97.4%,
-              #F84DFF 97.4% 100%
-            )
-          `,
-                                    }}
-                                >
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <div className="w-28 h-28 rounded-full bg-[#07111F] border border-slate-700 flex flex-col items-center justify-center">
-                                            <h3 className="text-white text-3xl font-bold">412</h3>
-                                            <p className="text-slate-400 text-xs tracking-[3px] mt-1">
-                                                ENDPOINTS
-                                            </p>
-                                        </div>
-                                    </div>
+                                <div className="w-50 h-50 relative">
+                                    <SinglePieCharts data={updateStatus} onSliceClick={handleClickModalParameter} datakey={"updateStatuspie"} />
+
                                 </div>
+
                             </div>
 
                             {/* Stats */}
-                            <div className="flex-1 space-y-5">
+                            <div className="flex-1 space-y-3 overflow-x-auto pr-2">
 
-                                {[
-                                    {
-                                        label: "Patched",
-                                        percent: "75.7%",
-                                        value: 312,
-                                        color: "bg-green-400",
-                                        width: "75%",
-                                    },
-                                    {
-                                        label: "Partial",
-                                        percent: "11.7%",
-                                        value: 48,
-                                        color: "bg-cyan-400",
-                                        width: "12%",
-                                    },
-                                    {
-                                        label: "Unpatched",
-                                        percent: "6.6%",
-                                        value: 27,
-                                        color: "bg-yellow-400",
-                                        width: "7%",
-                                    },
-                                    {
-                                        label: "Failed",
-                                        percent: "3.4%",
-                                        value: 14,
-                                        color: "bg-red-400",
-                                        width: "4%",
-                                    },
-                                    {
-                                        label: "Offline",
-                                        percent: "2.7%",
-                                        value: 11,
-                                        color: "bg-pink-400",
-                                        width: "3%",
-                                    },
-                                ].map((item, index) => (
-                                    <div key={index} className="flex items-center gap-3">
+                                {updateStatus.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex items-center gap-2 min-w-[420px]"
+                                    >
 
                                         {/* Dot */}
-                                        <div className={`w-3 h-3 rounded-full ${item.color} shadow-lg`} />
+                                        <div
+                                            className="w-2.5 h-2.5 rounded-full shadow-lg"
+                                            style={{
+                                                backgroundColor:
+                                                    COLORS[index % COLORS.length]
+                                            }}
+                                        />
 
                                         {/* Label */}
-                                        <div className="w-20 text-sm text-slate-200">
-                                            {item.label}
+                                        <div className="w-24 text-[11px] text-slate-200 truncate">
+                                            {item.name}
                                         </div>
 
                                         {/* Progress */}
-                                        <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+
                                             <div
-                                                className={`h-full ${item.color} rounded-full`}
-                                                style={{ width: item.width }}
+                                                className="h-full rounded-full"
+                                                style={{
+                                                    width: "20%",
+                                                    backgroundColor:
+                                                        COLORS[index % COLORS.length]
+                                                }}
                                             />
                                         </div>
 
                                         {/* Percentage */}
-                                        <div className="w-14 text-right text-sm text-slate-400">
-                                            {item.percent}
+                                        <div className="w-12 text-right text-[10px] text-slate-400">
+                                            20%
                                         </div>
 
                                         {/* Value */}
-                                        <div className="w-8 text-right text-sm font-semibold text-white">
+                                        <div className="w-8 text-right text-[11px] font-semibold text-white">
                                             {item.value}
                                         </div>
+
                                     </div>
                                 ))}
                             </div>
                         </div>
 
 
-
                     </div>
-
-
-
-
                 </div>
 
 
                 <div className="col-span-12 xl:col-span-4">
-                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3">
+                    <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3  h-full flex flex-col">
 
 
                         <div className="flex items-center justify-between mb-6">
@@ -871,79 +857,135 @@ function PatchTreeThirdDashboard() {
                         </div>
 
                         {/* Timeline */}
-                        <div className="relative space-y-4">
+                        <div className="relative space-y-4 max-h-[300px] overflow-y-auto scrollbar-hide pr-2">
 
                             {/* Vertical Line */}
                             <div className="absolute left-[9px] top-0 bottom-0 w-px bg-slate-700"></div>
 
-                            {[
-                                {
-                                    title: "KB5034441 deployed",
-                                    sub: "WS-FIN-117 • Win 11",
-                                    desc: "Took 3m 14s",
-                                    time: "12:42",
-                                    color: "bg-green-400",
-                                },
-                                {
-                                    title: "Installation failed",
-                                    sub: "SRV-DB-04 • KB5031988",
-                                    desc: "Error 0x80073712",
-                                    time: "12:31",
-                                    color: "bg-red-400",
-                                },
-                                {
-                                    title: "Patch approved by NPCIL",
-                                    sub: "12 updates • Critical batch",
-                                    desc: "by poc@npcil.gov.in",
-                                    time: "12:18",
-                                    color: "bg-cyan-400",
-                                },
-                                {
-                                    title: "Reboot completed",
-                                    sub: "8 endpoints • Server group A",
-                                    desc: "Downtime 1m 08s",
-                                    time: "11:54",
-                                    color: "bg-yellow-400",
-                                },
-                            ].map((item, index) => (
+                            {recentActivity.map((item, index) => (
+
                                 <div
                                     key={index}
                                     className="relative pl-8"
                                 >
+
                                     {/* Timeline Dot */}
                                     <div
-                                        className={`absolute left-0 top-3 w-5 h-5 rounded-full border-4 border-[#081120] ${item.color} shadow-lg`}
+                                        className="absolute left-0 top-3 w-5 h-5 rounded-full border-4 border-[#081120] shadow-lg"
+                                        style={{
+                                            backgroundColor:
+                                                item.Card === "APPROVAL"
+                                                    ? "#22d3ee"
+                                                    : item.InstallationStatus === "Installed"
+                                                        ? "#4ade80"
+                                                        : "#f87171"
+                                        }}
                                     />
 
-                                    {/* Activity Card */}
-                                    <div className="rounded-2xl border border-slate-800 bg-[#0B1628]/80 backdrop-blur-md p-4 hover:border-cyan-500/30 transition-all duration-300">
+                                    {/* ========================= */}
+                                    {/* APPROVAL CARD */}
+                                    {/* ========================= */}
+                                    {item.Card === "APPROVAL" ? (
 
-                                        <div className="flex items-start justify-between">
+                                        <div className="rounded-2xl border border-cyan-500/20 bg-[#0B1628]/80 backdrop-blur-md p-4 hover:border-cyan-400/40 transition-all duration-300 shadow-lg">
 
-                                            <div>
-                                                <h3 className="text-white text-[15px] font-semibold">
-                                                    {item.title}
-                                                </h3>
+                                            <div className="flex items-start justify-between gap-3">
 
-                                                <p className="text-slate-400 text-sm mt-1">
-                                                    {item.sub}
-                                                </p>
+                                                {/* Left */}
+                                                <div className="min-w-0 flex-1">
 
-                                                <p className="text-slate-500 text-sm mt-2">
-                                                    {item.desc}
-                                                </p>
+                                                    {/* Badge */}
+                                                    <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 mb-3">
+
+                                                        <div className="w-2 h-2 rounded-full bg-cyan-400" />
+
+                                                        <span className="text-[10px] tracking-wider font-semibold text-cyan-300">
+                                                            APPROVAL
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Patch */}
+                                                    <h3 className="text-white text-[13px] font-semibold leading-snug line-clamp-2">
+
+                                                        {item.PatchTitle}
+
+                                                    </h3>
+
+                                                    {/* Approved By */}
+                                                    <div className="mt-3">
+
+                                                        <p className="text-[10px] uppercase tracking-wide text-slate-500">
+                                                            Approved By
+                                                        </p>
+
+                                                        <p className="text-[12px] text-slate-300 truncate">
+                                                            {item.ApprovedBy}
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+
+                                                {/* Time */}
+                                                <div className="text-right shrink-0">
+
+                                                    <p className="text-[10px] uppercase tracking-wide text-slate-500">
+                                                        Approved
+                                                    </p>
+
+                                                    <p className="text-[11px] text-slate-300 mt-1">
+                                                        {new Date(item.ApprovedDate).toLocaleDateString()}
+                                                    </p>
+
+                                                    <p className="text-[10px] text-slate-500">
+                                                        {new Date(item.ApprovedDate).toLocaleTimeString()}
+                                                    </p>
+
+                                                </div>
                                             </div>
-
-                                            <span className="text-xs text-slate-500">
-                                                {item.time}
-                                            </span>
                                         </div>
-                                    </div>
+
+                                    ) : (
+
+                                        /* ========================= */
+                                        /* INSTALLATION CARD */
+                                        /* ========================= */
+
+                                        <div className="rounded-2xl border border-slate-800 bg-[#0B1628]/80 backdrop-blur-md p-4 hover:border-cyan-500/30 transition-all duration-300">
+
+                                            <div className="flex items-start justify-between gap-4">
+
+                                                <div className="min-w-0">
+
+                                                    {/* Patch Title */}
+                                                    <h3 className="text-white text-[13px] font-semibold line-clamp-2">
+                                                        {item.PatchTitle}
+                                                    </h3>
+
+                                                    {/* Machine */}
+                                                    <p className="text-slate-400 text-[11px] mt-1">
+                                                        {item.FullDomainName} • {item.IPAddress}
+                                                    </p>
+
+                                                    {/* Classification */}
+                                                    <p className="text-slate-500 text-[11px] mt-2">
+                                                        {item.Classification} • {item.InstallationStatus}
+                                                    </p>
+
+                                                </div>
+
+                                                {/* Time */}
+                                                <span className="text-[10px] text-slate-500 whitespace-nowrap">
+                                                    {new Date(
+                                                        item.LastChangeTime
+                                                    ).toLocaleString()}
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
-
-
 
                     </div>
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkxNjQ2ODQsImV4cCI6MTc3OTI1MTA4NH0.VYYlTcp5xw_92HxbX_J3_LI8tFObHrlRY3fFdUxFVtA';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkyNTEwMzksImV4cCI6MTc3OTMzNzQzOX0.nhPLq2fDwrFYrjdta54r6s3FU8WPDoY5UMHNye71VFo';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -314,7 +314,7 @@ export const getTopRiskyDevices = () =>
 
 
 export const getCriticalPatchesList = () =>
-  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
+  axios.get(`${BASE_URL}/dashboard/MissingCriticalList`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
