@@ -85,13 +85,13 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Reports",
-    path: "/reports",
+    path: "/Thirdparty/patch-report",
     icon: FileText,
     roles: ["admin"],
     children: [
       {
         name: "Patch Reports",
-        path: "/reports/patch",
+        path: "/Thirdparty/patch-report",
         icon: FileBarChart,
         roles: ["admin"],
       },
