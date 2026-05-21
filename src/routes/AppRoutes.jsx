@@ -37,6 +37,8 @@ import PatchTreeUpdateDashboard from "../pages/PatchTree/PatchTreeUpdateDashboar
 import PatchTreeThirdDashboard from "../pages/PatchTree/PatchTreeThirdDashboard.jsx";
 import CriticalUpdates from "../pages/PatchTree/CriticalUpdates.jsx";
 import PatchDetails from "../pages/PatchTree/PatchDetails.jsx";
+import PatchRepository from "../pages/ThirdPartyPages/PatchRepository.jsx";
+import ThirdPartyReport from "../pages/ThirdPartyPages/ThirdPartyReport.jsx";
 
 import MissingApps from "../pages/ThirdPartyPages/MissingApps.jsx";
 import InstalledApps from "../pages/ThirdPartyPages/InstalledApps.jsx";
@@ -264,12 +266,12 @@ export default function AppRoutes() {
               <CriticalUpdates />
             </ProtectedRoute>} />
 
-                <Route path="/section/Thirdparty"
+        <Route path="/section/Thirdparty"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <PMOverviewDashboard />
-            </ProtectedRoute> } />
+            </ProtectedRoute>} />
 
         <Route path="/patchTree/patchDetails/:srNo"
           element={
@@ -288,6 +290,19 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <InstalledApps />
             </ProtectedRoute>} />
+        <Route path="/Thirdparty/patch-repository"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchRepository />
+            </ProtectedRoute>} />
+
+        <Route path="/Thirdparty/patch-report"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <ThirdPartyReport />
+            </ProtectedRoute>} />
+
+
 
 
       </Route>

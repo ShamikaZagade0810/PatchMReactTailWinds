@@ -1408,7 +1408,7 @@ export const getUpdateStatusActivityScheduler = (inputData) =>
 
 // sumit changes  
 
-  // ================================= AUTO APPROVAL RULE PATCH SETTING ================================// 
+// ================================= AUTO APPROVAL RULE PATCH SETTING ================================// 
 export const AddAutoApprovalRule = async (inputData) => {
   return await axios.post(
     `${BASE_URL}/view-approval-rule/addApprovalRule`,
@@ -1494,9 +1494,9 @@ export const windowsComplainceDataDashboard = () =>
 
   });
 
-  // ================================= Products And Classification ================================// 
+// ================================= Products And Classification ================================// 
 
-  export const getProductsListing = () =>
+export const getProductsListing = () =>
   axios.get(`${BASE_URL}/products-classification/products`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1504,15 +1504,15 @@ export const windowsComplainceDataDashboard = () =>
 
   });
 
-    export const getClassificationsListing = () =>
+export const getClassificationsListing = () =>
   axios.get(`${BASE_URL}/products-classification/classifications`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
 
   });
-  
-  export const updateProductClass = (inputData) =>
+
+export const updateProductClass = (inputData) =>
   axios.put(
     `${BASE_URL}/products-classification/updateProductClass`,
     inputData,
@@ -1523,7 +1523,7 @@ export const windowsComplainceDataDashboard = () =>
     }
   );
 
-      export const getselectedProductsList = () =>
+export const getselectedProductsList = () =>
   axios.get(`${BASE_URL}/products-classification/selected-products`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1531,9 +1531,9 @@ export const windowsComplainceDataDashboard = () =>
 
   });
 
-      export const getselectedClassificationsList = () =>
+export const getselectedClassificationsList = () =>
   axios.get(`${BASE_URL}/products-classification/selected-classifications`, {
-     headers: {
+    headers: {
       Authorization: `Bearer ${token}`
     }
 
@@ -1560,26 +1560,26 @@ export const AddUpdatesSyncSchedule = async (inputData) => {
 
 export const getUpdatesSyncScheduleList = () =>
   axios.get(`${BASE_URL}/updates-sync-schedule/listUpdatesSyncSchedule`, {
-     headers: {
+    headers: {
       Authorization: `Bearer ${token}`
     }
 
   });
- 
 
-    // ================================= View Synchronization Policy ================================// 
 
-  
+// ================================= View Synchronization Policy ================================// 
+
+
 export const getAllViewSyncPolicy = () =>
   axios.get(`${BASE_URL}/client-sync/listViewSyncPolicy`, {
-     headers: {
+    headers: {
       Authorization: `Bearer ${token}`
     }
 
   });
 
-  
-export const deleteViewSyncPolicy = (inputData , id) =>
+
+export const deleteViewSyncPolicy = (inputData, id) =>
   axios.delete(
     `${BASE_URL}/client-sync/deleteViewSyncPolicy/${id}`,
     {
@@ -1591,7 +1591,7 @@ export const deleteViewSyncPolicy = (inputData , id) =>
   );
 
 
-  // ================================= Client Wise Synchronization Policy ================================// 
+// ================================= Client Wise Synchronization Policy ================================// 
 
 export const AddClientWiseSyncPolicy = async (inputData) => {
   return await axios.post(
@@ -1600,7 +1600,7 @@ export const AddClientWiseSyncPolicy = async (inputData) => {
   );
 };
 
-  // ================================= View Client Wise Synchronization Policy ================================// 
+// ================================= View Client Wise Synchronization Policy ================================// 
 
 export const getAllViewClientWiseSyncPolicy = () =>
   axios.get(`${BASE_URL}/client-sync/listViewClientWiseSyncPolicy`, {
@@ -1609,7 +1609,7 @@ export const getAllViewClientWiseSyncPolicy = () =>
     }
   });
 
-  export const updateViewClientWiseSyncPolicy = (inputData) =>
+export const updateViewClientWiseSyncPolicy = (inputData) =>
   axios.put(
     `${BASE_URL}/client-sync/updateViewClientWiseSyncPolicy`,
     inputData,
@@ -1621,7 +1621,7 @@ export const getAllViewClientWiseSyncPolicy = () =>
   );
 
 
-export const deleteViewClientWiseSyncPolicy = (inputData , id) =>
+export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
   axios.delete(
     `${BASE_URL}/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
     {
@@ -1633,7 +1633,7 @@ export const deleteViewClientWiseSyncPolicy = (inputData , id) =>
   );
 
 
-    // ================================= Patch Tree ================================// 
+// ================================= Patch Tree ================================// 
 
 
 export const getSynchronizeStatus = () =>
@@ -1645,7 +1645,7 @@ export const getSynchronizeStatus = () =>
   });
 
 
-  
+
 export const getSyncPercent = () =>
   axios.get(`${BASE_URL}/PatchTree/getSyncPercent`, {
     headers: {
@@ -1655,7 +1655,7 @@ export const getSyncPercent = () =>
   });
 
 
-    
+
 export const getServerStatisticData = () =>
   axios.get(`${BASE_URL}/PatchTree/getServerStatisticData`, {
     headers: {
@@ -1665,7 +1665,7 @@ export const getServerStatisticData = () =>
   });
 
 
-  export const getComputerStatusPie = () =>
+export const getComputerStatusPie = () =>
   axios.get(`${BASE_URL}/PatchTree/getComputerStatusPie`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1674,8 +1674,8 @@ export const getServerStatisticData = () =>
   });
 
 
-  
-  export const getupdateStatus = () =>
+
+export const getupdateStatus = () =>
   axios.get(`${BASE_URL}/PatchTree/getupdateStatus`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1683,9 +1683,42 @@ export const getServerStatisticData = () =>
 
   });
 
-    export const getrecentActivity = () =>
+export const getrecentActivity = () =>
   axios.get(`${BASE_URL}/PatchTree/dashboard-timeline`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
+  });
+
+
+
+export const getThirdPartyPatchRepo = () =>
+  axios.get(`${BASE_URL}/thirdparty/PatchRepository`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getThirdPartyCompletedApps  = (inputData) =>
+  axios.get(`${BASE_URL}/thirdparty/completed-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+  export const getThirdPartyPendingApps  = (inputData) =>
+  axios.get(`${BASE_URL}/thirdparty/pending-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+    export const getThirdPartyFailedApps  = (inputData) =>
+  axios.get(`${BASE_URL}/thirdparty/failed-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
   });
