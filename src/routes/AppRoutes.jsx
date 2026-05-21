@@ -38,6 +38,9 @@ import PatchTreeThirdDashboard from "../pages/PatchTree/PatchTreeThirdDashboard.
 import CriticalUpdates from "../pages/PatchTree/CriticalUpdates.jsx";
 import PatchDetails from "../pages/PatchTree/PatchDetails.jsx";
 
+import MissingApps from "../pages/ThirdPartyPages/MissingApps.jsx";
+import InstalledApps from "../pages/ThirdPartyPages/InstalledApps.jsx";
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -274,6 +277,17 @@ export default function AppRoutes() {
               <PatchDetails />
             </ProtectedRoute>} />
 
+          <Route path="/thirdparty/Missing-Apps"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <MissingApps />
+            </ProtectedRoute>} />
+
+            <Route path="/thirdparty/Installed-Apps"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <InstalledApps />
+            </ProtectedRoute>} />
 
 
       </Route>

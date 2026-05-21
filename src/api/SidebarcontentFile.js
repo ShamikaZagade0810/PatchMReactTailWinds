@@ -43,13 +43,13 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Missing Apps",
-    path: "/missing-apps",
+    path: "/thirdparty/Missing-Apps",
     icon: AlertTriangle,
     roles: ["admin"],
   },
   {
     name: "Installed Apps",
-    path: "/installed-apps",
+    path: "/thirdparty/Installed-Apps",
     icon: PackageCheck,
     roles: ["admin"],
   },
