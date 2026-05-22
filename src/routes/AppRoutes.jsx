@@ -42,6 +42,10 @@ import ThirdPartyReport from "../pages/ThirdPartyPages/ThirdPartyReport.jsx";
 
 import MissingApps from "../pages/ThirdPartyPages/MissingApps.jsx";
 import InstalledApps from "../pages/ThirdPartyPages/InstalledApps.jsx";
+import HostView from "../pages/ThirdPartyPages/HostView.jsx";
+import HostDetails from "../pages/ThirdPartyPages/HostDetails.jsx";
+import PatchRepositoryNew from "../pages/ThirdPartyPages/PatchRepositoryNew.jsx";
+import LatestSoftware from "../pages/ThirdPartyPages/LatestSoftware.jsx";
 
 export default function AppRoutes() {
   return (
@@ -300,6 +304,30 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <ThirdPartyReport />
+            </ProtectedRoute>} />
+
+            <Route path="/Thirdparty/host-view"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <HostView />
+            </ProtectedRoute>} />
+
+            <Route path="/Thirdparty/host-details/:ipAddress"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <HostDetails />
+            </ProtectedRoute>} />
+
+            <Route path="/Thirdparty/patch-repo"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchRepositoryNew />
+            </ProtectedRoute>} />
+
+            <Route path="/Thirdparty/latest-software"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <LatestSoftware />
             </ProtectedRoute>} />
 
 

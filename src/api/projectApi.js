@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkzMzgyMTAsImV4cCI6MTc3OTQyNDYxMH0.V6oHR-Tf7LMqyRaPgXuJzCu0hUKeATnk9p2hDFP-n74';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk0MjQ0NTMsImV4cCI6MTc3OTUxMDg1M30.YHSP2hp2f2R4qtBMlvHogWeFnZxyaod_XUjwxo7N7WU';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1717,6 +1717,14 @@ export const getThirdPartyCompletedApps  = (inputData) =>
 
     export const getThirdPartyFailedApps  = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/failed-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+export const getThirdPartyHostView = (inputData) =>
+  axios.get(`${BASE_URL}/thirdparty/host-summary`, {
     headers: {
       Authorization: `Bearer ${token}`
     },

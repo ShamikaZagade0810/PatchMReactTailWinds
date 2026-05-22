@@ -61,13 +61,13 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Latest Software",
-    path: "/latest-software",
+    path: "/Thirdparty/latest-software",
     icon: Database,
     roles: ["admin"],
   },
   {
     name: "Host View",
-    path: "/host-view",
+    path: "/Thirdparty/host-view",
     icon: Monitor,
     roles: ["admin"],
   },
@@ -80,6 +80,12 @@ export const ThirdPartySidebarData = [
   {
     name: "Patch Repository",
     path: "/Thirdparty/patch-repository",
+    icon: FolderOpen,
+    roles: ["admin"],
+  },
+    {
+    name: "Patch Repository New",
+    path: "/Thirdparty/patch-repo",
     icon: FolderOpen,
     roles: ["admin"],
   },
