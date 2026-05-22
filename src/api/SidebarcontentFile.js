@@ -55,7 +55,7 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Patch Status",
-    path: "/patch-status",
+    path: "/thirdparty/Patch_Status",
     icon: BadgeInfo,
     roles: ["admin"],
   },
@@ -73,7 +73,7 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Patch Progress",
-    path: "/patch-progress",
+    path: "/thirdparty/patch-progress",
     icon: List,
     roles: ["admin"],
   },

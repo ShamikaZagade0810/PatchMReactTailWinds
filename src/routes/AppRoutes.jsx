@@ -46,6 +46,8 @@ import HostView from "../pages/ThirdPartyPages/HostView.jsx";
 import HostDetails from "../pages/ThirdPartyPages/HostDetails.jsx";
 import PatchRepositoryNew from "../pages/ThirdPartyPages/PatchRepositoryNew.jsx";
 import LatestSoftware from "../pages/ThirdPartyPages/LatestSoftware.jsx";
+import PatchStatus from "../pages/ThirdPartyPages/PatchStatus.jsx";
+import PatchProgress from "../pages/ThirdPartyPages/PatchProgress.jsx";
 
 export default function AppRoutes() {
   return (
@@ -283,13 +285,13 @@ export default function AppRoutes() {
               <PatchDetails />
             </ProtectedRoute>} />
 
-          <Route path="/thirdparty/Missing-Apps"
+        <Route path="/thirdparty/Missing-Apps"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <MissingApps />
             </ProtectedRoute>} />
 
-            <Route path="/thirdparty/Installed-Apps"
+        <Route path="/thirdparty/Installed-Apps"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <InstalledApps />
@@ -330,8 +332,18 @@ export default function AppRoutes() {
               <LatestSoftware />
             </ProtectedRoute>} />
 
+        <Route path="/thirdparty/Patch_Status"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchStatus />
+            </ProtectedRoute>} />
 
 
+  <Route path="/thirdparty/patch-progress"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchProgress />
+            </ProtectedRoute>} />
 
       </Route>
     </Routes >

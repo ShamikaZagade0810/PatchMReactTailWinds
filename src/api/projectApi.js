@@ -1699,7 +1699,7 @@ export const getThirdPartyPatchRepo = () =>
     }
   });
 
-export const getThirdPartyCompletedApps  = (inputData) =>
+export const getThirdPartyCompletedApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/completed-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1707,7 +1707,7 @@ export const getThirdPartyCompletedApps  = (inputData) =>
     params: inputData
   });
 
-  export const getThirdPartyPendingApps  = (inputData) =>
+export const getThirdPartyPendingApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/pending-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1715,7 +1715,7 @@ export const getThirdPartyCompletedApps  = (inputData) =>
     params: inputData
   });
 
-    export const getThirdPartyFailedApps  = (inputData) =>
+export const getThirdPartyFailedApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/failed-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1730,3 +1730,52 @@ export const getThirdPartyHostView = (inputData) =>
     },
     params: inputData
   });
+
+export const getThirdPartyMissingApps = () =>
+  axios.get(`${BASE_URL}/thirdparty/missing-apps `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+
+
+export const thirdPartyMissingApprovePatches = (inputData) =>
+  axios.post(
+    `${BASE_URL}/thirdparty/approve-missing-apps`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getThirdPartyInstalledApps = () =>
+  axios.get(`${BASE_URL}/thirdparty/installed-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  export const getThirdPartyPatchStatus = () =>
+  axios.get(`${BASE_URL}/thirdparty/patch-status`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  
+  export const getThirdPartypatchprogress = () =>
+  axios.get(`${BASE_URL}/thirdparty/patch-progress`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
