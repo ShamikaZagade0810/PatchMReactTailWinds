@@ -1754,3 +1754,21 @@ export const getThirdPartyInstalledApps = () =>
     }
 
   });
+
+  export const getThirdPartyPatchStatus = () =>
+  axios.get(`${BASE_URL}/thirdparty/patch-status`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+  
+  export const getThirdPartypatchprogress = () =>
+  axios.get(`${BASE_URL}/thirdparty/patch-progress`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
