@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom"
 import {
     Search, RefreshCw, Download, CheckCircle2, ShieldAlert, AlertTriangle,
     ChevronLeft, ChevronRight
 } from 'lucide-react';
+import { getThirdPartyInstalledApps } from "../../api/projectApi";
 
 const InstalledApps = () => {
 
@@ -38,15 +39,18 @@ const InstalledApps = () => {
     const [search, setSearch] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [ThirdPartyInstalledApp, setThirdPartyInstalledApp] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     // Filter Data
     const filteredData = useMemo(() => {
-        return thirdinstalledapps.filter((item) =>
-            item.application.toLowerCase().includes(search.toLowerCase()) ||
-            item.hostName.toLowerCase().includes(search.toLowerCase()) ||
-            item.ipAddress.toLowerCase().includes(search.toLowerCase())
+        return ThirdPartyInstalledApp.filter((item) =>
+            item.appname.toLowerCase().includes(search.toLowerCase()) ||
+            item.hostname.toLowerCase().includes(search.toLowerCase()) ||
+            item.ipAddress.toLowerCase().includes(search.toLowerCase()) ||
+             item.patchStatus.toLowerCase().includes(search.toLowerCase())
         );
-    }, [search]);
+    }, [search,ThirdPartyInstalledApp]);
 
     // Pagination
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
@@ -54,6 +58,24 @@ const InstalledApps = () => {
         const start = (currentPage - 1) * rowsPerPage;
         return filteredData.slice(start, start + rowsPerPage);
     }, [filteredData, currentPage, rowsPerPage]);
+
+
+    useEffect(() => {
+
+        getData();
+
+
+    }, []);
+
+    const getData = async () => {
+
+        setLoading(true);
+        const Repodata = await getThirdPartyInstalledApps();
+        console.log("Data --> ", Repodata.data.data);
+        setThirdPartyInstalledApp(Repodata.data.data[0].data);
+        setLoading(false);
+
+    }
 
 
 
@@ -86,7 +108,7 @@ const InstalledApps = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-[10px] text-cyan-500 uppercase tracking-wide"> Total Installed Apps </p>
-                            <h2 className="text-2xl font-bold mt-1"> {thirdinstalledapps.length} </h2>
+                            <h2 className="text-2xl font-bold mt-1"> {ThirdPartyInstalledApp.length} </h2>
                         </div>
 
                         <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
@@ -100,7 +122,7 @@ const InstalledApps = () => {
                         <div>
                             <p className="text-[10px] text-red-500 uppercase tracking-wide"> Outdated Apps </p>
                             <h2 className="text-2xl font-bold mt-1">
-                                {thirdinstalledapps.filter(item => item.status === "OUTDATED").length}
+                                {ThirdPartyInstalledApp.filter(item => item.patchStatus === "OUTDATED").length}
                             </h2>
                         </div>
 
@@ -113,7 +135,7 @@ const InstalledApps = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-[10px] text-green-500 uppercase tracking-wide"> Latest Version Available </p>
-                            <h2 className="text-2xl font-bold mt-1"> {thirdinstalledapps.filter(item => item.latestVersion === "Yes").length}</h2>
+                            <h2 className="text-2xl font-bold mt-1"> {ThirdPartyInstalledApp.filter(item => item.latestVersion !== "NA").length}</h2>
                         </div>
 
                         <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
@@ -184,13 +206,13 @@ const InstalledApps = () => {
                                 <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
                                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.ipAddress} </td>
-                                    <td className="px-4 py-3"> {item.hostName} </td>
-                                    <td className="px-4 py-3 font-medium text-white"> {item.application} </td>
-                                    <td className="px-4 py-3 text-gray-300"> {item.installedVersion} </td>
-                                    <td className={`px-4 py-3 font-medium ${ item.latestVersion === "Yes" ? "text-emerald-400" : "text-red-400" }`}> {item.latestVersion} </td>
+                                    <td className="px-4 py-3"> {item.hostname} </td>
+                                    <td className="px-4 py-3 font-medium text-white"> {item.appname} </td>
+                                    <td className="px-4 py-3 text-gray-300"> {item.version} </td>
+                                    <td className={`px-4 py-3 font-medium ${item.updateAvailable  ? "text-emerald-400" : "text-red-400"}`}> {item.latestVersion} </td>
                                     <td className="px-4 py-3">
                                         <span className="px-2.5 py-1 rounded-full text-[10px] bg-red-500/10 border border-red-500/20 text-red-400 ">
-                                            {item.update}
+                                            {item.patchStatus}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3 text-cyan-400"> {item.publisher} </td>

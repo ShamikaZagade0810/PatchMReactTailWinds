@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from "react-router-dom"
 import {
     Search, RefreshCw, Download, CheckCircle2, ShieldAlert, AlertTriangle,
     ChevronLeft, ChevronRight
 } from 'lucide-react';
+import {  getThirdPartyMissingApps, thirdPartyMissingApprovePatches } from "../../api/projectApi";
+import { ToastContainer, toast } from 'react-toastify';
 
 const MissingApps = () => {
     const thirdmissingapps = [
@@ -37,15 +39,37 @@ const MissingApps = () => {
     const [search, setSearch] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [ThirdPartyMissingApp, setThirdPartyMissingApp] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+
+
+    useEffect(() => {
+
+        getData();
+
+
+    }, []);
+
+    const getData = async () => {
+
+        setLoading(true);
+        const Repodata = await getThirdPartyMissingApps();
+        console.log("Data --> ", Repodata.data.data);
+        setThirdPartyMissingApp(Repodata.data.data);
+        setLoading(false);
+
+    }
 
     // Filter Data
     const filteredData = useMemo(() => {
-        return thirdmissingapps.filter((item) =>
-            item.application.toLowerCase().includes(search.toLowerCase()) ||
-            item.hostName.toLowerCase().includes(search.toLowerCase()) ||
-            item.ipAddress.toLowerCase().includes(search.toLowerCase())
+        return ThirdPartyMissingApp.filter((item) =>
+            item.app.toLowerCase().includes(search.toLowerCase()) ||
+            item.host.toLowerCase().includes(search.toLowerCase()) ||
+            item.ip.toLowerCase().includes(search.toLowerCase())
         );
-    }, [search]);
+    }, [search, ThirdPartyMissingApp]);
 
     // Pagination
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
@@ -57,7 +81,7 @@ const MissingApps = () => {
 
 
     // select all
-    const [selectedRows, setSelectedRows] = useState([]);
+
 
     // Select All
     const handleSelectAll = (e) => {
@@ -69,17 +93,59 @@ const MissingApps = () => {
     };
 
     // Single Row Select
-    const handleRowSelect = (srNo) => {
-        setSelectedRows((prev) =>
-            prev.includes(srNo)
-                ? prev.filter((id) => id !== srNo)
-                : [...prev, srNo]
-        );
+    // const handleRowSelect = (srNo) => {
+    //     setSelectedRows((prev) =>
+    //         prev.includes(srNo)
+    //             ? prev.filter((id) => id !== srNo)
+    //             : [...prev, srNo]
+    //     );
+    // };
+
+    const handleRowSelect = (item) => {
+        setSelectedRows((prev) => {
+            const alreadyExists = prev.some(
+                (row) => row.srNo === item.srNo
+            );
+
+            return alreadyExists
+                ? prev.filter((row) => row.srNo !== item.srNo)
+                : [...prev, item];
+        });
     };
 
-    return (
-        <div className="bg-[#050B18] rounded-xl p-4 border border-white/10 min-h-screen text-white text-sm">
+    const handleClickApprove = async () => {
+        try {
+            const reqData = selectedRows.map(obj => ({
+                ip: obj.ip,
+                app: obj.app
+            }));
+            console.log("Hii ", reqData);
 
+            const resdata = await thirdPartyMissingApprovePatches(reqData);
+            console.log("Approved response", resdata.data.message)
+            if (resdata.data.status === 200) {
+                toast.success("Successfully Approved")
+                // Clear selected rows
+                setSelectedRows([]);
+                await getData();
+            }
+            else {
+                toast.error("Something went Wrong !! ")
+            }
+        } catch (error) {
+
+            console.error(error);
+            toast.error("API Error");
+
+        }
+
+
+    }
+
+    return (
+        
+        <div className="bg-[#050B18] rounded-xl p-4 border border-white/10 min-h-screen text-white text-sm">
+<ToastContainer />
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
 
@@ -95,6 +161,9 @@ const MissingApps = () => {
 
                     <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
                         <Download size={14} /> Export
+                    </button>
+                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300" onClick={() => handleClickApprove()}>
+                        <Download size={14} /> Approve
                     </button>
                 </div>
             </div>
@@ -112,7 +181,7 @@ const MissingApps = () => {
                             <ShieldAlert size={18} className="text-cyan-400" />
                         </div>
                     </div>
-                </div>             
+                </div>
 
                 <div className="bg-[#0B1220] rounded-xl p-4 border border-[#1e293b] hover:border-red-400 hover:shadow-[0_0_15px_rgba(239,68,68,0.25)] transition-all duration-300">
                     <div className="flex items-center justify-between">
@@ -128,7 +197,7 @@ const MissingApps = () => {
                         </div>
                     </div>
                 </div>
-                 <div className="bg-[#0B1220] rounded-xl p-4 border border-[#1e293b] hover:border-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] transition-all duration-300">
+                <div className="bg-[#0B1220] rounded-xl p-4 border border-[#1e293b] hover:border-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.25)] transition-all duration-300">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-[10px] text-green-500 uppercase tracking-wide"> Selected Apps </p>
@@ -204,12 +273,17 @@ const MissingApps = () => {
                                 <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
                                     <td className="px-4 py-3">
-                                         <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item.srNo)} 
-                                         className="w-4 h-4 rounded border border-[#334155] bg-[#111827] accent-cyan-500 cursor-pointer" />
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedRows.some(
+                                                (row) => row.srNo === item.srNo
+                                            )}
+                                            onChange={() => handleRowSelect(item)}
+                                        />
                                     </td>
-                                    <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.ipAddress} </td>
-                                    <td className="px-4 py-3"> {item.hostName} </td>
-                                    <td className="px-4 py-3 font-medium text-white"> {item.application} </td>
+                                    <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.ip} </td>
+                                    <td className="px-4 py-3"> {item.host} </td>
+                                    <td className="px-4 py-3 font-medium text-white"> {item.app} </td>
                                     <td className="px-4 py-3 text-gray-300"> {item.installedVersion} </td>
                                     <td className="px-4 py-3 text-cyan-400"> {item.latestVersion} </td>
                                     <td className="px-4 py-3">
@@ -247,6 +321,7 @@ const MissingApps = () => {
 
                 </div>
             </div>
+            
         </div>
     )
 }

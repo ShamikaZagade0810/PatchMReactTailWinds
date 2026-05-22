@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3NzkzMzgyMTAsImV4cCI6MTc3OTQyNDYxMH0.V6oHR-Tf7LMqyRaPgXuJzCu0hUKeATnk9p2hDFP-n74';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk0MjQ0NTMsImV4cCI6MTc3OTUxMDg1M30.YHSP2hp2f2R4qtBMlvHogWeFnZxyaod_XUjwxo7N7WU';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1699,7 +1699,7 @@ export const getThirdPartyPatchRepo = () =>
     }
   });
 
-export const getThirdPartyCompletedApps  = (inputData) =>
+export const getThirdPartyCompletedApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/completed-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1707,7 +1707,7 @@ export const getThirdPartyCompletedApps  = (inputData) =>
     params: inputData
   });
 
-  export const getThirdPartyPendingApps  = (inputData) =>
+export const getThirdPartyPendingApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/pending-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1715,10 +1715,42 @@ export const getThirdPartyCompletedApps  = (inputData) =>
     params: inputData
   });
 
-    export const getThirdPartyFailedApps  = (inputData) =>
+export const getThirdPartyFailedApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/failed-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
     params: inputData
+  });
+
+
+export const getThirdPartyMissingApps = () =>
+  axios.get(`${BASE_URL}/thirdparty/missing-apps `, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+
+
+export const thirdPartyMissingApprovePatches = (inputData) =>
+  axios.post(
+    `${BASE_URL}/thirdparty/approve-missing-apps`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+export const getThirdPartyInstalledApps = () =>
+  axios.get(`${BASE_URL}/thirdparty/installed-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
   });
