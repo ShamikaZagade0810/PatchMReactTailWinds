@@ -50,6 +50,7 @@ import PatchStatus from "../pages/ThirdPartyPages/PatchStatus.jsx";
 import PatchProgress from "../pages/ThirdPartyPages/PatchProgress.jsx";
 import LinuxMissingApp from "../pages/LinuxPages/LinuxMissingApp.jsx";
 import LinuxReportsPage from "../pages/LinuxPages/LinuxReportsPage.jsx";
+import NetworkPatchDashboard from "../pages/NetworkDevices.jsx/NetworkPatchDashboard.jsx";
 
 export default function AppRoutes() {
   return (
@@ -373,6 +374,13 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <LinuxReportsPage />
+            </ProtectedRoute>} />
+
+        <Route path="/section/NetDevice"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NetworkPatchDashboard />
             </ProtectedRoute>} />
 
       </Route>

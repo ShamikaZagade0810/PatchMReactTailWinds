@@ -16,8 +16,7 @@ export const AccordionItem = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const hasChildren = item.children && item.children.length > 0;
-  console.log("has children : ", item.children);
-  console.log("has item : ", item);
+  
 
   const navigate = useNavigate();
 

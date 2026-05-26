@@ -375,7 +375,7 @@ export const Sidebar = ({
 
   const filteredSidebar = useMemo(() => {
     return sidebarData.filter((item) => item?.roles?.includes(user?.role));
-  }, [user?.role,sidebarData]);
+  }, [user?.role, sidebarData]);
 
   return (
     <aside

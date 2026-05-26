@@ -53,16 +53,16 @@ import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import { ThirdPartySidebarData  } from "../api/SidebarcontentFile";
+import { ThirdPartySidebarData } from "../api/SidebarcontentFile";
 
 import { sidebarData } from "../api/SidebarcontentFile";
-import { LinuxSidebarData  } from "../api/SidebarcontentFile";
+import { LinuxSidebarData } from "../api/SidebarcontentFile";
 
 export default function MainLayout() {
 
   const [loading, setLoading] = useState(true);
   const [isPatchTreeSidebarEnabled, setIsPatchTreeSidebarEnabled] = useState(false);
-  const [sidebarContent ,setSidebarContent] = useState(sidebarData);
+  const [sidebarContent, setSidebarContent] = useState(sidebarData);
   const {
     isSidebarOpen,
     toggleSidebar,
@@ -73,17 +73,20 @@ export default function MainLayout() {
   } = useSidebar();
 
   useEffect(() => {
+    console.log("active --- Item ", activeItem);
     if (activeItem == '/dashboard/patchTree') {
       setIsPatchTreeSidebarEnabled(true);
-    }else if(activeItem == '/section/Thirdparty'){
+    } else if (activeItem == '/section/Thirdparty' || activeItem == '/dashboard/thirdpartyApp') {
       setSidebarContent(ThirdPartySidebarData);
-    }else if(activeItem == '/section/Linux'){
-        setSidebarContent(LinuxSidebarData);
-    }else{
-       setIsPatchTreeSidebarEnabled(false);
+    } else if (activeItem == '/section/Linux' || activeItem == '/dashboard/linuxDashboard') {
+      setSidebarContent(LinuxSidebarData);
+    } else if (activeItem == '/dashboard/mainDashboard') {
+      setSidebarContent(sidebarData);
+    }else {
+      setIsPatchTreeSidebarEnabled(false);
     }
 
-    
+
   }, [activeItem])
   console.log("activeItem ", activeItem);
   // const [alerts, setAlerts] = useState([]);
@@ -132,7 +135,7 @@ export default function MainLayout() {
     const timer = setTimeout(() => setLoading(false), 1200);
     return () => clearTimeout(timer);
   }, []);
-  console.log("isPatchTreeSidebarEnabled in mainlayout",isPatchTreeSidebarEnabled);
+  console.log("isPatchTreeSidebarEnabled in mainlayout", isPatchTreeSidebarEnabled);
 
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-[#000000] ">
@@ -160,7 +163,7 @@ export default function MainLayout() {
       <main
         className={`
           pt-16 pb-12 transition-all 
-          ${!isSidebarOpen  ? "ml-20" : isSidebarOpen && !isPatchTreeSidebarEnabled ? "ml-50" : "ml-70" }
+          ${!isSidebarOpen ? "ml-20" : isSidebarOpen && !isPatchTreeSidebarEnabled ? "ml-50" : "ml-70"}
         `}
       >
         {!loading ? (<div className="p-2 max-w-10xl mx-auto ">
