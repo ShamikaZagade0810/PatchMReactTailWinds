@@ -53,6 +53,12 @@ import LinuxReportsPage from "../pages/LinuxPages/LinuxReportsPage.jsx";
 import NetworkPatchDashboard from "../pages/NetworkDevices.jsx/NetworkPatchDashboard.jsx";
 import NetworkDeviceDashboard from "../pages/NetworkDevices.jsx/NetworkDeviceDashboard.jsx";
 
+import PatchDeploymentCenter from "../pages/NetworkDevices.jsx/PatchDeploymentCenter.jsx";
+import NetworkMonitoringAlertsDashboard from "../pages/NetworkDevices.jsx/NetworkMonitoringAlertsDashboard.jsx";
+import ConfigurationManagerDashboard from "../pages/NetworkDevices.jsx/ConfigurationManagerDashboard.jsx";
+import NetworkDeviceConfigurationForm from "../pages/NetworkDevices.jsx/NetworkDeviceConfigurationForm.jsx";
+import FirmwareInventoryDashboard from "../pages/NetworkDevices.jsx/FirmwareInventoryDashboard.jsx";
+import ConfigurationBackupHistory from "../pages/NetworkDevices.jsx/ConfigurationBackupHistory.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -390,6 +396,53 @@ export default function AppRoutes() {
               {/* <DbMonitoringDashboard /> */}
               <NetworkDeviceDashboard />
             </ProtectedRoute>} />
+
+
+        <Route path="/section/PatchDeploymentCenter"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <PatchDeploymentCenter />
+            </ProtectedRoute>} />
+
+
+        <Route path="/section/NetworkMonitoringAlertsDashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NetworkMonitoringAlertsDashboard />
+            </ProtectedRoute>} />
+
+
+        <Route path="/section/ConfigurationManagerDashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <ConfigurationManagerDashboard />
+            </ProtectedRoute>} />
+
+        <Route path="/section/NetworkDeviceConfigurationForm"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NetworkDeviceConfigurationForm />
+            </ProtectedRoute>} />
+        <Route path="/section/FirmwareInventoryDashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <FirmwareInventoryDashboard />
+            </ProtectedRoute>} />
+
+              <Route path="/section/ConfigurationBackupHistory"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <ConfigurationBackupHistory />
+            </ProtectedRoute>} />
+
+
+
 
       </Route>
     </Routes >
