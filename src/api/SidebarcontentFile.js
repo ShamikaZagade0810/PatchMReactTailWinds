@@ -137,9 +137,45 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-       {
+      {
         name: "Network Devices",
         path: "/section/NetDevice",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "PatchDeploymentCenter",
+        path: "/section/PatchDeploymentCenter",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "NetworkMonitoringAlertsDashboard",
+        path: "/section/NetworkMonitoringAlertsDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "ConfigurationManagerDashboard",
+        path: "/section/ConfigurationManagerDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "NetworkDeviceConfigurationForm",
+        path: "/section/NetworkDeviceConfigurationForm",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "FirmwareInventoryDashboard",
+        path: "/section/FirmwareInventoryDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "ConfigurationBackupHistory",
+        path: "/section/ConfigurationBackupHistory",
         icon: AppWindowMac,
         roles: ["admin"],
       },
@@ -280,7 +316,7 @@ export const LinuxSidebarData = [
     icon: AlertTriangle,
     roles: ["admin"],
   },
-    {
+  {
     name: "Report",
     path: "/Linux/Report",
     icon: LayoutDashboard,

@@ -116,7 +116,7 @@ export default function NetworkPatchDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           <div className="bg-white rounded-2xl shadow-md p-5">
             <h2 className="text-gray-500 text-sm">Total Devices</h2>
-            <p className="text-3xl font-bold mt-3 text-black">48</p>
+            <p className="text-3xl font-bold mt-3">48</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-md p-5">
@@ -143,7 +143,7 @@ export default function NetworkPatchDashboard() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-black">
+            <table className="w-full text-left">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="p-4">Device</th>
@@ -284,6 +284,150 @@ export default function NetworkPatchDashboard() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+
+function ComplianceSection() {
+  const complianceData = [
+    {
+      policy: "SSH Enabled",
+      compliant: 42,
+      nonCompliant: 6,
+    },
+    {
+      policy: "SNMPv3 Configured",
+      compliant: 38,
+      nonCompliant: 10,
+    },
+    {
+      policy: "Default Password Removed",
+      compliant: 45,
+      nonCompliant: 3,
+    },
+  ];
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden mt-6">
+      <div className="p-5 border-b">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Compliance & Security Policies
+        </h2>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="p-4">Policy</th>
+              <th className="p-4">Compliant Devices</th>
+              <th className="p-4">Non-Compliant Devices</th>
+              <th className="p-4">Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {complianceData.map((item, index) => (
+              <tr key={index} className="border-t hover:bg-gray-50">
+                <td className="p-4 font-medium">{item.policy}</td>
+                <td className="p-4 text-green-600 font-semibold">
+                  {item.compliant}
+                </td>
+                <td className="p-4 text-red-600 font-semibold">
+                  {item.nonCompliant}
+                </td>
+                <td className="p-4">
+                  {item.nonCompliant > 5 ? (
+                    <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
+                      Attention Needed
+                    </span>
+                  ) : (
+                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                      Healthy
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function ConfigDiffViewer() {
+  return (
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden mt-6">
+      <div className="p-5 border-b flex items-center justify-between">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Configuration Difference Viewer
+        </h2>
+
+        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm">
+          Compare Configurations
+        </button>
+      </div>
+
+      <div className="p-5 bg-gray-900 text-green-400 font-mono text-sm overflow-x-auto">
+        <pre>
+{`- telnet enable
++ ssh enable
+
+- snmp-server community public
++ snmp-server group secure v3
+
+- vlan 100
++ vlan 200`}
+        </pre>
+      </div>
+    </div>
+  );
+}
+
+function TopologyOverview() {
+  const nodes = [
+    "Core Firewall",
+    "Core Switch",
+    "Distribution Switch",
+    "Branch Router",
+    "Wireless Controller",
+  ];
+
+  return (
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden mt-6 mb-10">
+      <div className="p-5 border-b">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          Network Topology Overview
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-6">
+        {nodes.map((node, index) => (
+          <div
+            key={index}
+            className="bg-blue-50 border border-blue-200 rounded-2xl p-5 text-center shadow-sm"
+          >
+            <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center mx-auto mb-4 text-lg font-bold">
+              {index + 1}
+            </div>
+
+            <h3 className="font-semibold text-gray-700">{node}</h3>
+            <p className="text-sm text-gray-500 mt-2">Online</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function ExtendedSections() {
+  return (
+    <div className="max-w-7xl mx-auto px-6">
+      <ComplianceSection />
+      <ConfigDiffViewer />
+      <TopologyOverview />
     </div>
   );
 }
