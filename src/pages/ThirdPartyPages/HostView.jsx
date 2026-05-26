@@ -151,10 +151,7 @@ const HostView = () => {
         {/* Host Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 p-3">
           {hostviewdata.map((item, index) => (
-            <div
-              key={index}
-              className="bg-[#0F172A] border border-white/10 rounded-xl p-4 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(34,211,238,0.15)] transition-all duration-300 flex flex-col justify-between"
-            >
+            <div key={index} className="bg-[#0F172A] border border-white/10 rounded-xl p-4 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(34,211,238,0.15)] transition-all duration-300 flex flex-col justify-between" >
               {/* Top */}
               <div>
                 <div className="flex items-start justify-between">

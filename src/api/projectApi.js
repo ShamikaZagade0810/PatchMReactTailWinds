@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk0MjQ0NTMsImV4cCI6MTc3OTUxMDg1M30.YHSP2hp2f2R4qtBMlvHogWeFnZxyaod_XUjwxo7N7WU';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk3NjkyNzUsImV4cCI6MTc3OTg1NTY3NX0.rNZBN8NdNPX9OqnD-PJBzcX04RXfYcZ-KeinDxs9PqI';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1723,13 +1723,7 @@ export const getThirdPartyFailedApps = (inputData) =>
     params: inputData
   });
 
-export const getThirdPartyHostView = (inputData) =>
-  axios.get(`${BASE_URL}/thirdparty/host-summary`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    params: inputData
-  });
+
 
 export const getThirdPartyMissingApps = () =>
   axios.get(`${BASE_URL}/thirdparty/missing-apps `, {
@@ -1778,4 +1772,44 @@ export const getThirdPartyInstalledApps = () =>
     }
 
   });
+  
+export const getThirdPartyHostView = (inputData) =>
+  axios.get(`${BASE_URL}/thirdparty/host-summary`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+  export const getThirdPartyHostinfo = (ip) =>
+  axios.get(`${BASE_URL}/thirdparty/host-info`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: { ip: ip }
+  });
+
+export const getThirdPartyHostappsdetails = (hostname,ip) =>
+  axios.get(`${BASE_URL}/thirdparty/host-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      hostname: hostname,
+      ip: ip
+     }
+  });
+
+export const getThirdPartylatestSoftware = () =>
+  axios.get(`${BASE_URL}/thirdparty/latest-software`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+
+
+
 

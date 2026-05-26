@@ -4,15 +4,12 @@ import MultiSelect from "../../layouts/MultiSelect";
 import axios from "axios";
 import { ToastContainer, toast} from 'react-toastify';
 
-// import MultipleRunForm from "../MultipleRunForm";
+import IPWiseReport from "./IPWiseReport";
+import FileWiseReport from "./FileWiseReport";
 
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
-import {
-    getAllBranchList,
-    getBranchWiseIpaddressList,
-    sendMultiplePatches,
-    getDownloadingPatchProgress
-} from "../../api/projectApi";
+import { getAllBranchList, getBranchWiseIpaddressList, sendMultiplePatches, getDownloadingPatchProgress } from "../../api/projectApi";
+
 
 
 const SendMultiplePatches = () => {
@@ -537,86 +534,86 @@ const SendMultiplePatches = () => {
         ];    
 
      // 🔹 TAB 3 → IP Wise Patch Report
-    const IpWiseReport = () => {      
+    // const IpWiseReport = () => {      
       
-        return (
-            <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
+    //     return (
+    //         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
 
-                <table className="w-full text-sm text-left text-white">
-                    <thead className="text-xs uppercase bg-white/10">
-                        <tr>
-                            <th className="px-4 py-3">IP Address</th>
-                            <th className="px-4 py-3">File Name</th>
-                            <th className="px-4 py-3">Interval Time</th>
-                            <th className="px-4 py-3">Packet Size</th>
-                            <th className="px-4 py-3">Current Packet</th>
-                            <th className="px-4 py-3">Current Status</th>
-                            <th className="px-4 py-3">Destination Path</th>
-                            <th className="px-4 py-3">Created At</th>
-                        </tr>
-                    </thead>
+    //             <table className="w-full text-sm text-left text-white">
+    //                 <thead className="text-xs uppercase bg-white/10">
+    //                     <tr>
+    //                         <th className="px-4 py-3">IP Address</th>
+    //                         <th className="px-4 py-3">File Name</th>
+    //                         <th className="px-4 py-3">Interval Time</th>
+    //                         <th className="px-4 py-3">Packet Size</th>
+    //                         <th className="px-4 py-3">Current Packet</th>
+    //                         <th className="px-4 py-3">Current Status</th>
+    //                         <th className="px-4 py-3">Destination Path</th>
+    //                         <th className="px-4 py-3">Created At</th>
+    //                     </tr>
+    //                 </thead>
 
-                    <tbody>
-                        {contentDisatributiondata.map((row, index) => (
-                            <tr key={index} className="border-b border-white/10 hover:bg-white/5">
-                                <td className="px-4 py-3">{row.ipAddress}</td>
-                                <td className="px-4 py-3">{row.appName}</td>
-                                <td className="px-4 py-3">{row.intervalTime}</td>
-                                <td className="px-4 py-3">{row.packetSize}</td>
-                                <td className="px-4 py-3">{row.currentPacket}</td>
-                                <td className="px-4 py-3">{row.currentStatus}</td>
-                                 <td className="px-4 py-3">{row.destinationPath}</td>
-                                 {/* <td className="px-4 py-3">{row.createdAt}</td> */}
-                                 <td className="px-4 py-3"> {new Date(row.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", 
-                                    hour: "2-digit", minute: "2-digit", hour12: false, }).replace(/\//g, "-").replace(",", "")}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+    //                 <tbody>
+    //                     {contentDisatributiondata.map((row, index) => (
+    //                         <tr key={index} className="border-b border-white/10 hover:bg-white/5">
+    //                             <td className="px-4 py-3">{row.ipAddress}</td>
+    //                             <td className="px-4 py-3">{row.appName}</td>
+    //                             <td className="px-4 py-3">{row.intervalTime}</td>
+    //                             <td className="px-4 py-3">{row.packetSize}</td>
+    //                             <td className="px-4 py-3">{row.currentPacket}</td>
+    //                             <td className="px-4 py-3">{row.currentStatus}</td>
+    //                              <td className="px-4 py-3">{row.destinationPath}</td>
+    //                              {/* <td className="px-4 py-3">{row.createdAt}</td> */}
+    //                              <td className="px-4 py-3"> {new Date(row.createdAt).toLocaleString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", 
+    //                                 hour: "2-digit", minute: "2-digit", hour12: false, }).replace(/\//g, "-").replace(",", "")}</td>
+    //                         </tr>
+    //                     ))}
+    //                 </tbody>
+    //             </table>
 
-            </div>
-        );
-    };
+    //         </div>
+    //     );
+    // };
 
       // 🔹 TAB 4 → IP Wise Patch Report
-    const FileWiseReport = () => {      
+    // const FileWiseReport = () => {      
       
-        return (
-            <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
+    //     return (
+    //         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
 
-                <table className="w-full text-sm text-left text-white">
-                    <thead className="text-xs uppercase bg-white/10">
-                        <tr>
-                            <th className="px-4 py-3">IP Address</th>
-                            <th className="px-4 py-3">File Name</th>
-                            <th className="px-4 py-3">Interval Time</th>
-                            <th className="px-4 py-3">Packet Size</th>
-                            <th className="px-4 py-3">Current Packet</th>
-                            <th className="px-4 py-3">Current Status</th>
-                            <th className="px-4 py-3">Destination Path</th>
-                            <th className="px-4 py-3">Created At</th>
-                        </tr>
-                    </thead>
+    //             <table className="w-full text-sm text-left text-white">
+    //                 <thead className="text-xs uppercase bg-white/10">
+    //                     <tr>
+    //                         <th className="px-4 py-3">IP Address</th>
+    //                         <th className="px-4 py-3">File Name</th>
+    //                         <th className="px-4 py-3">Interval Time</th>
+    //                         <th className="px-4 py-3">Packet Size</th>
+    //                         <th className="px-4 py-3">Current Packet</th>
+    //                         <th className="px-4 py-3">Current Status</th>
+    //                         <th className="px-4 py-3">Destination Path</th>
+    //                         <th className="px-4 py-3">Created At</th>
+    //                     </tr>
+    //                 </thead>
 
-                    <tbody>
-                        {contentDisatributiondata.map((row, index) => (
-                            <tr key={index} className="border-b border-white/10 hover:bg-white/5">
-                                <td className="px-4 py-3">{row.ipAddress}</td>
-                                <td className="px-4 py-3">{row.appName}</td>
-                                <td className="px-4 py-3">{row.intervalTime}</td>
-                                <td className="px-4 py-3">{row.packetSize}</td>
-                                <td className="px-4 py-3">{row.currentPacket}</td>
-                                <td className="px-4 py-3">{row.currentStatus}</td>
-                                 <td className="px-4 py-3">{row.destinationPath}</td>
-                                 <td className="px-4 py-3">{row.createdAt}</td>                                                               
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+    //                 <tbody>
+    //                     {contentDisatributiondata.map((row, index) => (
+    //                         <tr key={index} className="border-b border-white/10 hover:bg-white/5">
+    //                             <td className="px-4 py-3">{row.ipAddress}</td>
+    //                             <td className="px-4 py-3">{row.appName}</td>
+    //                             <td className="px-4 py-3">{row.intervalTime}</td>
+    //                             <td className="px-4 py-3">{row.packetSize}</td>
+    //                             <td className="px-4 py-3">{row.currentPacket}</td>
+    //                             <td className="px-4 py-3">{row.currentStatus}</td>
+    //                              <td className="px-4 py-3">{row.destinationPath}</td>
+    //                              <td className="px-4 py-3">{row.createdAt}</td>                                                               
+    //                         </tr>
+    //                     ))}
+    //                 </tbody>
+    //             </table>
 
-            </div>
-        );
-    };
+    //         </div>
+    //     );
+    // };
     
     // 🔹 Render based on tab
     const renderContent = () => {
@@ -626,7 +623,7 @@ const SendMultiplePatches = () => {
             case 1:
                 return <ViewMultiplePatch />;
             case 2:
-                return <IpWiseReport />;
+                return <IPWiseReport />;
             case 3:
                 return <FileWiseReport />;
             default:
