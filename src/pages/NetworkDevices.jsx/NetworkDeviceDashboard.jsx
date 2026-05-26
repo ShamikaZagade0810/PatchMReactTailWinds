@@ -136,22 +136,20 @@ const NetworkDeviceDashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 items-stretch">
 
                 {/* LEFT: DEVICE TABLE */}
-                <div className="lg:col-span-2 bg-[#0f172a] p-4 rounded-xl flex flex-col max-h-[600px]">
+                <div className="lg:col-span-2 bg-[#0f172a] p-4 rounded-xl flex flex-col max-h-[610px]">
 
                     {/* FIXED TITLE */}
-                    <h2 className="text-lg font-semibold mb-3 flex-shrink-0">
-                        Device Inventory
-                    </h2>
+                    <h2 className="text-lg font-semibold mb-3 flex-shrink-0"> Device Inventory </h2>
 
+<div className="h-px bg-gray-800 my-2"></div>
                     {/* SEARCH + COUNT ROW */}
                     <div className="flex justify-between items-center mb-3 flex-shrink-0">
-
                         {/* SEARCH */}
                         <input type="text" placeholder="Search devices..." value={search} onChange={(e) => setSearch(e.target.value)}
-                            className="w-1/2 px-3 py-2 text-sm rounded-lg bg-[#1e293b] text-white outline-none border border-gray-700" />
+                            className=" w-[85%] px-3 py-2 text-sm rounded-lg bg-[#111827] text-white outline-none border border-gray-700" />
 
                         {/* SHOWING TEXT */}
-                        <div className="text-sm text-gray-400"> Showing {paginatedData.length} of {filteredData.length} </div>
+                        <div className="text-sm text-gray-400 pr-4"> Showing {paginatedData.length} of {filteredData.length} </div>
                     </div>
 
                     {/* TABLE WRAPPER */}
@@ -205,7 +203,7 @@ const NetworkDeviceDashboard = () => {
 
 
                 {/* RIGHT COLUMN */}
-                <div className="flex flex-col gap-6 h-[650px]">
+                <div className="flex flex-col gap-3 h-[650px]">
                     {/* ===== Configuration History CARD ===== */}
                     {/* ===== Configuration History CARD ===== */}
                     <div className="bg-[#0f172a] p-4 rounded-xl flex flex-col max-h-[300px]">

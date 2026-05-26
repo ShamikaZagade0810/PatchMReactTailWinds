@@ -44,9 +44,7 @@ const MissingApps = () => {
     const [loading, setLoading] = useState(false);
 
 
-
     useEffect(() => {
-
         getData();
 
 
