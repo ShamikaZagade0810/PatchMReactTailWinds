@@ -83,7 +83,7 @@ export const ThirdPartySidebarData = [
     icon: FolderOpen,
     roles: ["admin"],
   },
-    {
+  {
     name: "Patch Repository New",
     path: "/Thirdparty/patch-repo",
     icon: FolderOpen,
@@ -128,6 +128,12 @@ export const sidebarData = [
       {
         name: "Third Party",
         path: "/section/Thirdparty",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Linux",
+        path: "/section/Linux",
         icon: AppWindowMac,
         roles: ["admin"],
       },
@@ -259,3 +265,23 @@ export const sidebarData = [
     roles: ["admin"],
   },
 ];
+
+export const LinuxSidebarData = [
+
+  {
+    name: "Missing Apps",
+    path: "/linux/Missing-Apps",
+    icon: AlertTriangle,
+    roles: ["admin"],
+  },
+    {
+    name: "Report",
+    path: "/Linux/Report",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+  }
+
+];
+
+
+

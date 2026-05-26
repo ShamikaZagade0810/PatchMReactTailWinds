@@ -53,8 +53,10 @@ import { useEffect, useState } from "react";
 // import toast from "react-hot-toast";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import { ThirdPartySidebarData } from "../api/SidebarcontentFile";
+import { ThirdPartySidebarData  } from "../api/SidebarcontentFile";
+
 import { sidebarData } from "../api/SidebarcontentFile";
+import { LinuxSidebarData  } from "../api/SidebarcontentFile";
 
 export default function MainLayout() {
 
@@ -75,6 +77,10 @@ export default function MainLayout() {
       setIsPatchTreeSidebarEnabled(true);
     }else if(activeItem == '/section/Thirdparty'){
       setSidebarContent(ThirdPartySidebarData);
+    }else if(activeItem == '/section/Linux'){
+        setSidebarContent(LinuxSidebarData);
+    }else{
+       setIsPatchTreeSidebarEnabled(false);
     }
 
     

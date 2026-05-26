@@ -1756,7 +1756,7 @@ export const getThirdPartyInstalledApps = () =>
 
   });
 
-  export const getThirdPartyPatchStatus = () =>
+export const getThirdPartyPatchStatus = () =>
   axios.get(`${BASE_URL}/thirdparty/patch-status`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1764,8 +1764,8 @@ export const getThirdPartyInstalledApps = () =>
 
   });
 
-  
-  export const getThirdPartypatchprogress = () =>
+
+export const getThirdPartypatchprogress = () =>
   axios.get(`${BASE_URL}/thirdparty/patch-progress`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1813,3 +1813,23 @@ export const getThirdPartylatestSoftware = () =>
 
 
 
+  
+export const getLinuxMissingApps = () =>
+  axios.get(`${BASE_URL}/linux/linux-missing-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const LinuxMissingApprovePatches = (inputData) =>
+  axios.post(
+    `${BASE_URL}/linux/approve-missing-apps`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
