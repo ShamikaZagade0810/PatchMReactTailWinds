@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk0MjQ0NTMsImV4cCI6MTc3OTUxMDg1M30.YHSP2hp2f2R4qtBMlvHogWeFnZxyaod_XUjwxo7N7WU';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk3NjkyNzUsImV4cCI6MTc3OTg1NTY3NX0.rNZBN8NdNPX9OqnD-PJBzcX04RXfYcZ-KeinDxs9PqI';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1762,7 +1762,7 @@ export const getThirdPartyInstalledApps = () =>
 
   });
 
-  export const getThirdPartyPatchStatus = () =>
+export const getThirdPartyPatchStatus = () =>
   axios.get(`${BASE_URL}/thirdparty/patch-status`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1770,8 +1770,8 @@ export const getThirdPartyInstalledApps = () =>
 
   });
 
-  
-  export const getThirdPartypatchprogress = () =>
+
+export const getThirdPartypatchprogress = () =>
   axios.get(`${BASE_URL}/thirdparty/patch-progress`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1779,3 +1779,23 @@ export const getThirdPartyInstalledApps = () =>
 
   });
 
+  
+export const getLinuxMissingApps = () =>
+  axios.get(`${BASE_URL}/linux/linux-missing-apps`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const LinuxMissingApprovePatches = (inputData) =>
+  axios.post(
+    `${BASE_URL}/linux/approve-missing-apps`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );

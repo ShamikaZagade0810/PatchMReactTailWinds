@@ -48,6 +48,8 @@ import PatchRepositoryNew from "../pages/ThirdPartyPages/PatchRepositoryNew.jsx"
 import LatestSoftware from "../pages/ThirdPartyPages/LatestSoftware.jsx";
 import PatchStatus from "../pages/ThirdPartyPages/PatchStatus.jsx";
 import PatchProgress from "../pages/ThirdPartyPages/PatchProgress.jsx";
+import LinuxMissingApp from "../pages/LinuxPages/LinuxMissingApp.jsx";
+import LinuxReportsPage from "../pages/LinuxPages/LinuxReportsPage.jsx";
 
 export default function AppRoutes() {
   return (
@@ -308,25 +310,25 @@ export default function AppRoutes() {
               <ThirdPartyReport />
             </ProtectedRoute>} />
 
-            <Route path="/Thirdparty/host-view"
+        <Route path="/Thirdparty/host-view"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <HostView />
             </ProtectedRoute>} />
 
-            <Route path="/Thirdparty/host-details/:ipAddress"
+        <Route path="/Thirdparty/host-details/:ipAddress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <HostDetails />
             </ProtectedRoute>} />
 
-            <Route path="/Thirdparty/patch-repo"
+        <Route path="/Thirdparty/patch-repo"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchRepositoryNew />
             </ProtectedRoute>} />
 
-            <Route path="/Thirdparty/latest-software"
+        <Route path="/Thirdparty/latest-software"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <LatestSoftware />
@@ -339,10 +341,38 @@ export default function AppRoutes() {
             </ProtectedRoute>} />
 
 
-  <Route path="/thirdparty/patch-progress"
+        <Route path="/thirdparty/patch-progress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchProgress />
+            </ProtectedRoute>} />
+
+        <Route path="/section/Linux"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <PMOverviewDashboard />
+            </ProtectedRoute>} />
+
+        <Route path="/linux/Missing-Apps"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <LinuxMissingApp />
+            </ProtectedRoute>} />
+
+        <Route path="/linux/Missing-Apps"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <LinuxMissingApp />
+            </ProtectedRoute>} />
+
+        <Route path="/Linux/Report"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <LinuxReportsPage />
             </ProtectedRoute>} />
 
       </Route>
