@@ -273,13 +273,7 @@ const MissingApps = () => {
                                 <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
                                     <td className="px-4 py-3">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedRows.some(
-                                                (row) => row.srNo === item.srNo
-                                            )}
-                                            onChange={() => handleRowSelect(item)}
-                                        />
+                                        <input type="checkbox" checked={selectedRows.some(  (row) => row.srNo === item.srNo )} onChange={() => handleRowSelect(item)} />
                                     </td>
                                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.ip} </td>
                                     <td className="px-4 py-3"> {item.host} </td>

@@ -143,6 +143,12 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+      {
+        name: "Network Devices New",
+        path: "/section/NeWNetworkDevice",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
     ],
   },
 
@@ -269,6 +275,20 @@ export const sidebarData = [
     path: "/reports",
     icon: ClipboardMinus,
     roles: ["admin"],
+  },
+  {
+    name: "Network  Devices",
+    icon: Share2,
+    roles: ["admin"],
+    path: "network",
+    children: [     
+       {
+        name: "Network Devices New",
+        path: "/section/NeWNetworkDevice",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
   },
 ];
 

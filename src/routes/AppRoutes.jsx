@@ -51,6 +51,7 @@ import PatchProgress from "../pages/ThirdPartyPages/PatchProgress.jsx";
 import LinuxMissingApp from "../pages/LinuxPages/LinuxMissingApp.jsx";
 import LinuxReportsPage from "../pages/LinuxPages/LinuxReportsPage.jsx";
 import NetworkPatchDashboard from "../pages/NetworkDevices.jsx/NetworkPatchDashboard.jsx";
+import NetworkDeviceDashboard from "../pages/NetworkDevices.jsx/NetworkDeviceDashboard.jsx";
 
 export default function AppRoutes() {
   return (
@@ -381,6 +382,13 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <NetworkPatchDashboard />
+            </ProtectedRoute>} />
+
+            <Route path="/section/NeWNetworkDevice"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NetworkDeviceDashboard />
             </ProtectedRoute>} />
 
       </Route>
