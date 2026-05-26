@@ -124,9 +124,7 @@ export default function PatchDeploymentCenter() {
 
         <div className="bg-white rounded-2xl shadow-md overflow-hidden">
           <div className="p-5 border-b flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Patch Deployment Jobs
-            </h2>
+            <h2 className="text-2xl font-semibold text-gray-800"> Patch Deployment Jobs </h2>
 
             <div className="flex gap-3">
               <input
@@ -145,8 +143,8 @@ export default function PatchDeploymentCenter() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
+          <div className="overflow-x-auto ">
+            <table className="w-full text-left text-black">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="p-4">Device</th>

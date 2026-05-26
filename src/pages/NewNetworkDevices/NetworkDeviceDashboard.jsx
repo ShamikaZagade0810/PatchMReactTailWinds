@@ -1,4 +1,10 @@
 import React, { useMemo, useState } from "react";
+import {
+    Monitor,
+    ShieldAlert,
+    AlertTriangle,
+    DatabaseBackup
+} from "lucide-react";
 
 const NetworkDeviceDashboard = () => {
 
@@ -107,8 +113,27 @@ const NetworkDeviceDashboard = () => {
     return (
         //    <div className="p-6 bg-[#0f172a] min-h-screen text-white space-y-6">
         <div className="p-2 min-h-screen text-white space-y-4">
+            {/* ===== HEADER ACTION ===== */}
+<div className="flex justify-start mb-4">
+    <button
+        className="
+            px-4 py-2
+            text-sm font-medium
+            rounded-lg
+            bg-cyan-400/50
+            text-cyan-200
+            border border-cyan-500/20
+            hover:bg-cyan-500/40
+            hover:border-cyan-500/40
+            transition-all duration-300
+            shadow-sm hover:shadow-cyan-500/20
+        "
+    >
+        Discover Devices
+    </button>
+</div>
             {/* ===== Row 1: Summary Cards ===== */}
-   {/* ===== Row 1: Summary Cards ===== */}
+            {/* ===== Row 1: Summary Cards ===== */}
 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
     {networkdevicecount.map((item) => {
@@ -120,13 +145,59 @@ const NetworkDeviceDashboard = () => {
             4: "text-green-400 hover:border-green-500 hover:shadow-green-500/30",
         };
 
+        const icons = {
+            1: <Monitor size={22} />,
+            2: <AlertTriangle size={22} />,
+            3: <ShieldAlert size={22} />,
+            4: <DatabaseBackup size={22} />,
+        };
+        const iconBgStyles = {
+    1: "bg-cyan-500/10",
+    2: "bg-orange-500/10",
+    3: "bg-red-500/10",
+    4: "bg-green-500/10",
+};
+
         return (
             <div
                 key={item.id}
-                className={` bg-[#0f172a] p-4 rounded-xl border border-transparent shadow-none transition-all duration-300
-                    hover:-translate-y-1 hover:shadow-lg ${cardStyles[item.id]} `} >
-                <p className="text-sm opacity-80"> {item.title} </p>
-                <h2 className="text-2xl font-bold mt-1"> {item.count} </h2>
+                className={`
+                    bg-[#0f172a]
+                    p-4 rounded-xl
+                    border border-transparent
+                    shadow-none
+                    transition-all duration-300
+                    hover:-translate-y-1 hover:shadow-lg
+                    ${cardStyles[item.id]}
+                `}
+            >
+
+                {/* TOP SECTION */}
+                <div className="flex items-center justify-between">
+
+                    <div>
+                        <p className="text-sm opacity-80">
+                            {item.title}
+                        </p>
+
+                        <h2 className="text-2xl font-bold mt-2">
+                            {item.count}
+                        </h2>
+                    </div>
+
+                    {/* ICON */}
+                    {/* ICON */}
+<div
+    className={`
+        h-12 w-12
+        rounded-full
+        flex items-center justify-center
+        ${iconBgStyles[item.id]}
+    `}
+>
+    {icons[item.id]}
+</div>
+                </div>
             </div>
         );
     })}
@@ -141,7 +212,7 @@ const NetworkDeviceDashboard = () => {
                     {/* FIXED TITLE */}
                     <h2 className="text-lg font-semibold mb-3 flex-shrink-0"> Device Inventory </h2>
 
-<div className="h-px bg-gray-800 my-2"></div>
+                    <div className="h-px bg-gray-800 my-2"></div>
                     {/* SEARCH + COUNT ROW */}
                     <div className="flex justify-between items-center mb-3 flex-shrink-0">
                         {/* SEARCH */}
@@ -158,7 +229,7 @@ const NetworkDeviceDashboard = () => {
                         <table className="w-full text-sm">
 
                             {/* HEADER */}
-                            <thead className="bg-[#1e293b] text-gray-300 sticky top-0">
+                            <thead className="bg-[#2a3a52] text-gray-300 sticky top-0">
                                 <tr>
                                     <th className="py-3 px-3 text-left">Device</th>
                                     <th className="py-3 px-3 text-left">Vendor</th>

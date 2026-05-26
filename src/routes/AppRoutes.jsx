@@ -60,6 +60,7 @@ import NetworkDeviceConfigurationForm from "../pages/NetworkDevices.jsx/NetworkD
 import FirmwareInventoryDashboard from "../pages/NetworkDevices.jsx/FirmwareInventoryDashboard.jsx";
 import ConfigurationBackupHistory from "../pages/NetworkDevices.jsx/ConfigurationBackupHistory.jsx";
 import NewNetworkMonitoringAlertsDashboard from "../pages/NewNetworkDevices/NetworkMonitoringAlertsDashboard.jsx";
+import PatchDeploymentCenterNew from "../pages/NewNetworkDevices/PatchDeploymentCenterNew.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -402,7 +403,6 @@ export default function AppRoutes() {
         <Route path="/section/PatchDeploymentCenter"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-              {/* <DbMonitoringDashboard /> */}
               <PatchDeploymentCenter />
             </ProtectedRoute>} />
 
@@ -448,6 +448,12 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <NewNetworkMonitoringAlertsDashboard />
+            </ProtectedRoute>} />
+
+            <Route path="/section/deplyment-center"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <PatchDeploymentCenterNew />
             </ProtectedRoute>} />
 
 
