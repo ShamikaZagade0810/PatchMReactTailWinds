@@ -320,6 +320,12 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+           {
+       name: "Patch Deploymnet Cycle",
+        path: "/section/deplyment-center",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
        {
         name: "Network Monitoring Alert",
         path: "/section/NeWNetworkMonitoringAlert",
@@ -328,12 +334,7 @@ export const sidebarData = [
       },
       
         
-         {
-       name: "Patch Deploymnet Cycle",
-        path: "/section/deplyment-center",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+    
        {
         name: "Configuration Manager",
         path: "/section/NewConfigurationManagerDashboard",
