@@ -320,6 +320,12 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+       {
+        name: "Network Monitoring Alert",
+        path: "/section/NeWNetworkMonitoringAlert",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
     ],
   },
 ];
