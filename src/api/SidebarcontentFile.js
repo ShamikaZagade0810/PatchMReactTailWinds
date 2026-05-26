@@ -326,6 +326,24 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+       {
+        name: "Configuration Manager",
+        path: "/section/NewConfigurationManagerDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+       {
+        name: "Firmware Inventory",
+        path: "/section/NewFirmwareInventoryDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Config Backup",
+        path: "/section/NewConfigurationBackupHistory",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
     ],
   },
 ];

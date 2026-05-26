@@ -60,6 +60,9 @@ import NetworkDeviceConfigurationForm from "../pages/NetworkDevices.jsx/NetworkD
 import FirmwareInventoryDashboard from "../pages/NetworkDevices.jsx/FirmwareInventoryDashboard.jsx";
 import ConfigurationBackupHistory from "../pages/NetworkDevices.jsx/ConfigurationBackupHistory.jsx";
 import NewNetworkMonitoringAlertsDashboard from "../pages/NewNetworkDevices/NetworkMonitoringAlertsDashboard.jsx";
+import NewConfigurationManagerDashboard from "../pages/NewNetworkDevices/NewConfigurationManagerDashboard.jsx";
+import NewFirmwareInventoryDashboard from "../pages/NewNetworkDevices/NewFirmwareInventoryDashboard.jsx";
+import NewConfigurationBackupHistory from "../pages/NewNetworkDevices/NewConfigurationBackupHistory.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -450,6 +453,26 @@ export default function AppRoutes() {
               <NewNetworkMonitoringAlertsDashboard />
             </ProtectedRoute>} />
 
+        <Route path="/section/NewConfigurationManagerDashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NewConfigurationManagerDashboard />
+            </ProtectedRoute>} />
+
+        <Route path="/section/NewFirmwareInventoryDashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NewFirmwareInventoryDashboard />
+            </ProtectedRoute>} />
+
+        <Route path="/section/NewConfigurationBackupHistory"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NewConfigurationBackupHistory />
+            </ProtectedRoute>} />
 
 
 
