@@ -51,7 +51,7 @@ import PatchProgress from "../pages/ThirdPartyPages/PatchProgress.jsx";
 import LinuxMissingApp from "../pages/LinuxPages/LinuxMissingApp.jsx";
 import LinuxReportsPage from "../pages/LinuxPages/LinuxReportsPage.jsx";
 import NetworkPatchDashboard from "../pages/NetworkDevices.jsx/NetworkPatchDashboard.jsx";
-import NetworkDeviceDashboard from "../pages/NetworkDevices.jsx/NetworkDeviceDashboard.jsx";
+import NetworkDeviceDashboard from "../pages/NewNetworkDevices/NetworkDeviceDashboard.jsx";
 
 import PatchDeploymentCenter from "../pages/NetworkDevices.jsx/PatchDeploymentCenter.jsx";
 import NetworkMonitoringAlertsDashboard from "../pages/NetworkDevices.jsx/NetworkMonitoringAlertsDashboard.jsx";
