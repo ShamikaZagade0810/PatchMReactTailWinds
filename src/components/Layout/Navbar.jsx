@@ -149,6 +149,7 @@
 // };
 
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Bell,
   Search,
@@ -191,8 +192,35 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
       read: false,
     },
   ]);
+
+
   const [active, setActive] = useState("Windows");
+
   const tabs = ["Windows", "Linux", "ThirdParty"];
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("Navigated to:",);
+    switch (location.pathname) {
+      case '/section/Thirdparty':
+        setActive("ThirdParty");
+        navigate('/dashboard/thirdpartyApp');
+        break;
+
+      case '/section/Linux':
+        setActive("Linux");
+        navigate('/dashboard/linuxDashboard');
+        break;
+
+      case '/dashboard/linuxDashboard':
+    
+        break;
+
+
+    }
+
+
+  }, [location]);
 
   const dropdownRef = useRef(null);
 
@@ -242,8 +270,8 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
     }
     console.log("tab ", tab);
   }
-  
-  console.log("isPatchTreeSidebarEnabled",isPatchTreeSidebarEnabled);
+
+  console.log("isPatchTreeSidebarEnabled", isPatchTreeSidebarEnabled);
 
 
   return (

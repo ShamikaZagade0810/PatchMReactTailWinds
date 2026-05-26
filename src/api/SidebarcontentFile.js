@@ -137,6 +137,12 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+       {
+        name: "Network Devices",
+        path: "/section/NetDevice",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
     ],
   },
 
