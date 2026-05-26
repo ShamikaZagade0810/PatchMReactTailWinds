@@ -1691,6 +1691,7 @@ export const getrecentActivity = () =>
   });
 
 
+  // ================================= Third Party  ================================// 
 
 export const getThirdPartyPatchRepo = () =>
   axios.get(`${BASE_URL}/thirdparty/PatchRepository`, {
@@ -1808,13 +1809,8 @@ export const getThirdPartylatestSoftware = () =>
 
   });
 
-
-
-
-
-
-  
-export const getLinuxMissingApps = () =>
+// ================================= Linux  ================================// 
+  export const getLinuxMissingApps = () =>
   axios.get(`${BASE_URL}/linux/linux-missing-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1833,3 +1829,50 @@ export const LinuxMissingApprovePatches = (inputData) =>
       }
     }
   );
+
+// -----------------Linux Reports
+export const getLinuxCompletedReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/linux-reports/linux-completed`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const getLinuxFailedReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/linux-reports/linux-failed`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const getLinuxPendingReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/linux-reports/linux-pending`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  export const getLinuxMissingReport = (inputData) =>
+  axios.post(
+    `${BASE_URL}/linux-reports/linux-missing`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  

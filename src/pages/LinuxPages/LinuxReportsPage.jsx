@@ -1,28 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../layouts/Css/Style.css';
 import { useForm } from "react-hook-form";
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 import Select, { components } from "react-select";
-import {
-    Calendar,
-    FileText,
-    ShieldAlert,
-    ClipboardClock,
-    ListCheck,
-    ListTree,
-    Monitor,
-    Radius,
-    SquareActivity,
-    Activity,
-    TriangleAlert
-
+import { Calendar, FileText,  ShieldAlert, ClipboardClock, ListCheck, ListTree, Monitor, Radius,
+    SquareActivity, Activity, TriangleAlert
 } from "lucide-react";
-import { useState } from "react";
-import {
-    getThirdPartyCompletedApps,
-    getThirdPartyPendingApps,
-    getThirdPartyFailedApps
-} from "../../api/projectApi";
+
+
+import { getLinuxCompletedReport, getLinuxFailedReport, getLinuxPendingReport, getLinuxMissingReport } from "../../api/projectApi";
+
 import { ToastContainer, toast } from 'react-toastify';
 import { AsyncMotionValueAnimation } from 'framer-motion';
 import ReusableTable from '../../components/Table/ReusableTable.jsx';
@@ -105,10 +92,10 @@ const LinuxReportsPage = () => {
 
     const apiMapping = {
         Report: {
-            completed: getThirdPartyCompletedApps,
-            failed: getThirdPartyFailedApps,
-            pending: getThirdPartyPendingApps,
-            // patchProgressRep: getYearMonthReport,
+            completed: getLinuxCompletedReport,
+            failed: getLinuxFailedReport,
+            pending: getLinuxPendingReport,
+            missing: getLinuxMissingReport,
 
         }
 
@@ -128,20 +115,20 @@ const LinuxReportsPage = () => {
         // { id: "failed", name: "Failed Update Report", icons: TriangleAlert, iconcolor: "#EF4444" },
     ];
 
-    const filterConfig = {
-        patch: ["update", "type"],
-        missing: ["branchNames", "ipAddresses"],
-        category: ["year", "month", "category"],
-        device: ["branchNames", "ipAddresses"],
-        yearMonth: ["year", "month"],
-        status: ["branchNames", "ipAddresses"],
-        timeline: ["groupname"],
-        agent: [],
-        failed: [],
+    // const filterConfig = {
+    //     patch: ["update", "type"],
+    //     missing: ["branchNames", "ipAddresses"],
+    //     category: ["year", "month", "category"],
+    //     device: ["branchNames", "ipAddresses"],
+    //     yearMonth: ["year", "month"],
+    //     status: ["branchNames", "ipAddresses"],
+    //     timeline: ["groupname"],
+    //     agent: [],
+    //     failed: [],
 
-    };
+    // };
     const selectedModule = modules[activeIndex];
-    const activeFilters = filterConfig[selectedModule?.id] || [];
+    // const activeFilters = filterConfig[selectedModule?.id] || [];
 
     const inputClass =
         "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
@@ -152,53 +139,61 @@ const LinuxReportsPage = () => {
 
     const handleGenerateReportClick = async () => {
 
+    // ✅ Check report selection
+    if (activeIndex === null || !selectedModule) {
+        toast.error("Please select a report type");
+        return;
+    }
 
-        console.log("selected module", selectedModule?.id);
-        const result = {};
+    console.log("selected module", selectedModule.id);
 
+    const result = {};
 
-        if (customDate.from == "" || customDate.to == "") {
-            toast("Plz Fill The Date Range Field!! ");
-            return;
-        } else {
-            result["fromDate"] = customDate.from;
-            result["toDate"] = customDate.to;
-        }
+    // ✅ Date validation
+    if (customDate.from === "" || customDate.to === "") {
+        toast.error("Please Fill The Date Range Field!!");
+        return;
+    }
 
-
-
-        console.log("Final Payload:", result);
-        const emptyFields = Object.entries(result)
-            .filter(([key, value]) =>
-                value === null ||
-                value === undefined ||
-                value === ""
-            )
-            .map(([key]) => key);
-
-        if (emptyFields.length > 0) {
-            toast.error(`Please fill the following fields: ${emptyFields.join(", ")}`);
-            return;
-        }
-
-
-        setLoading(true);
-        try {
-            const data = await apiMapping['Report'][selectedModule?.id](result);
-            console.log("API Response:", data);
-            let MainData = data.data.data[0].data;
-            let ColumnData = data.data.data[0].column;
-            let obj = {};
-            obj.maindata = MainData;
-            obj.columndata = ColumnData;
-            console.log("obj ---> ", obj);
-            setdynamicReport(obj)
-
-        } catch (error) {
-            console.error("API Error:", error);
-        }
-        setLoading(false);
+    // ✅ Status mapping
+    const statusMapping = {
+        completed: "Success",
+        failed: "Failed",
+        pending: "Approved",
+        missingReport: "Declined"
     };
+
+    result["fromDate"] = customDate.from;
+    result["toDate"] = customDate.to;
+    result["status"] = statusMapping[selectedModule.id];
+
+    console.log("Final Payload:", result);
+
+    setLoading(true);
+
+    try {
+
+        const data = await apiMapping["Report"][selectedModule.id](result);
+        console.log("API Response:", data);
+        let MainData = data?.data?.data?.[0]?.data || [];
+        let ColumnData = data?.data?.data?.[0]?.column || [];
+
+        setdynamicReport({
+            maindata: MainData,
+            columndata: ColumnData
+        });
+
+    } catch (error) {
+
+        console.error("API Error:", error);
+        toast.error("Failed to fetch report");
+
+    } finally {
+
+        setLoading(false);
+
+    }
+};
 
     {/* MAIN CONTENT */ }
     return (
@@ -259,58 +254,13 @@ const LinuxReportsPage = () => {
                         </div>
                     </div>
 
-                    {/* 2. REPORT */}
-                    {/* <div className="bg-[#0F172A] rounded-xl p-4">
-                        <h3 className="mb-3 font-semibold text-xl">2. Report</h3>
-
-                        <div className="bg-[#141D2E] p-3 rounded-lg flex justify-between items-center cursor-pointer">
-                            <span>Prevented App</span>
-                            <span className="text-blue-400">✓</span>
-                        </div>
-                    </div> */}
-
-                    {/* 3. Filter*/}
-
-
-                    {/* 4. DATE RANGE */}
+                  
 
                     <div className="bg-[#0F172A] rounded-xl p-4">
 
-                        <h3 className="mb-3 font-semibold text-lg text-white">
-                            Select Date Range
-                        </h3>
+                        <h3 className="mb-3 font-semibold text-lg text-white"> Select Date Range </h3>
 
-                        <div className="grid grid-cols-2 gap-3">
-                            {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => { */}
-                            {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => {
-                                    const isActive = selectedRange === item;
-
-                                    return (
-                                        <button
-                                            key={i}
-                                            onClick={() => {
-                                                setSelectedRange(item);
-
-                                                if (item === "Custom") {
-                                                    setShowCustomDates(true);
-                                                } else {
-                                                    setShowCustomDates(false);
-                                                }
-                                            }}
-                                            className={` h-12 rounded-lg text-base font-medium transition-all border
-                                                    ${isActive ? "border border-[#7094ff]/40 bg-[#7094ff]/30 text-[#4f73e6] shadow-md"
-                                                    : "bg-[#141D2E] text-gray-300 border-[#2A3A55] hover:bg-[#1B2A44]"}
-                                                     `} >
-                                            {item}
-                                        </button>
-                                    );
-                                })}
-                            </div> */}
-                            {/* fromdate --> todate */}
-                            {/* {showCustomDates && (
-                                <div className="grid grid-cols-2 gap-3 mt-4"> */}
-
-                            {/* From Date */}
+                        <div className="grid grid-cols-2 gap-3">                            
                             <div>
                                 <label className="text-sm text-gray-300 mb-1 block"> From Date </label>
                                 <input

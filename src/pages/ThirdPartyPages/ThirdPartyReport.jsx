@@ -152,7 +152,6 @@ const ThirdPartyReport = () => {
 
     const handleGenerateReportClick = async () => {
 
-
         console.log("selected module", selectedModule?.id);
         const result = {};
 
