@@ -213,7 +213,7 @@ const OverviewDashboard = () => {
             setTopDevices(topDevicesRes.data.data);
             setOverallComplainceRate(
                 windowsComplainceDataDashboardRes.data.data[
-                windowsComplainceDataDashboardRes.data.data.length - 1
+                    windowsComplainceDataDashboardRes.data.data.length - 1
                 ].value
             );
             setComplianceData(windowsComplainceDataDashboardRes.data.data.slice(0, -1));
@@ -264,7 +264,7 @@ const OverviewDashboard = () => {
                     {/* Center Text */}
                     <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-sm md:text-lg font-semibold text-white">
-                            {percentage}%
+                            {percentage}
                         </span>
                     </div>
                 </div>
@@ -457,7 +457,7 @@ const OverviewDashboard = () => {
                                             {item.label}
                                         </span>
                                         <span className="text-gray-700 dark:text-white">
-                                            {item.value}%
+                                            {item.value}{item.label !== "totalEndpoint" && "/" + complianceData[0].value}
                                         </span>
                                     </div>
 
@@ -532,7 +532,7 @@ const OverviewDashboard = () => {
             <div className="grid grid-cols-12 gap-3 mt-3">
 
                 {/* OS Status */}
-                <div className="col-span-12 md:col-span-6 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
+                <div className="col-span-12 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
 
                     {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
         OS Status
@@ -544,14 +544,16 @@ const OverviewDashboard = () => {
                     <div className="w-full mt-4">
                         <div className="flex justify-between text-sm md:text-md">
                             <span className="text-white">Overall Distribution</span>
-                            <span className="text-white">{28}%</span>
+                            <span className="text-white">
+                                {complianceData?.[1]?.value ? `${complianceData[1].value}%` : 0}
+                            </span>
                         </div>
 
                         <div className="h-2 md:h-3 bg-gray-700 rounded">
                             <div
                                 className="h-2 md:h-3 rounded"
                                 style={{
-                                    width: `${28}%`,
+                                    width: `${complianceData?.[1]?.value ? `${complianceData[1].value}%` : 0}%`,
                                     backgroundColor: "#01A357",
                                 }}
                             />
@@ -677,12 +679,12 @@ const OverviewDashboard = () => {
                 </div>
 
                 {/* Device Info (Chart Placeholder) */}
-                <div className="col-span-4 bg-[#121A2B] rounded-xl p-4">
+                <div className="col-span-12 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
                     {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2> */}
 
                     <h2 className="card-header">IPWise Patch Status</h2>
                     {/* Fake Chart Line */}
-                    <div className="h-32  rounded-lg">
+                    <div className="h-50  rounded-lg">
                         <div className="w-full h-[280px]">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart
