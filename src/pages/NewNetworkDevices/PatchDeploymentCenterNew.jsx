@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState } from "react";
 import {  
     UploadCloud,
   Rocket,
@@ -20,10 +20,12 @@ const PatchDeploymentCenterNew = () => {
   { title: "Failed Deployments", count: 2, icon: XCircle, color: "text-red-400", bg: "bg-red-500/10" },
 ];
 
-// const iconStyle=[
-//   { icon: CalendarCheck, color: "text-blue-400", bg: "bg-blue-500/10"}
-//   { icon: Activity, color: "text-yellow-400", bg: "bg-yellow-500/10"}
-// ]
+const iconStyle=[
+  { title: "Scheduled Jobs", icon: CalendarCheck, color: "text-blue-400", bg: "bg-blue-500/10" },
+  { title: "Running Deployments",  icon: Activity, color: "text-yellow-400", bg: "bg-yellow-500/10" },
+  { title: "Completed Today", icon: Rocket, color: "text-green-400", bg: "bg-green-500/10" },
+  { title: "Failed Deployments",  icon: XCircle, color: "text-red-400", bg: "bg-red-500/10" },
+]
     const DeploymentJobsTable  = [
   { device: "FortiGate Firewall", vendor: "Fortinet", currentVersion: "7.0.8", targetVersion: "7.0.12", schedule: "26-May-2026 11:00 PM", progress: "0% Completed", status: "Scheduled", action: "View Logs" },
   { device: "Core Switch", vendor: "Cisco", currentVersion: "15.2", targetVersion: "15.2.7", schedule: "26-May-2026 10:30 PM", progress: "65% Completed", status: "In Progress", action: "View Logs" },
@@ -66,8 +68,38 @@ const logs = [
   "[INFO] Connecting to device 192.168.1.10",
   "[ERROR] Deployment failed due to insufficient storage",
 ];
+
+  // ===== SEARCH + PAGINATION STATE =====
+    const [search, setSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const rowsPerPage = 10;
+
+    // ===== FILTER DATA =====
+    const filteredData = useMemo(() => {
+        return DeploymentJobsTable.filter((item) =>
+            Object.values(item)
+                .join(" ")
+                .toLowerCase()
+                .includes(search.toLowerCase())
+        );
+    }, [search, DeploymentJobsTable]);
+
+    // reset page on search
+    React.useEffect(() => {
+        setCurrentPage(1);
+    }, [search]);
+
+    // ===== PAGINATION =====
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+    const paginatedData = useMemo(() => {
+        const start = (currentPage - 1) * rowsPerPage;
+        return filteredData.slice(start, start + rowsPerPage);
+    }, [filteredData, currentPage]);
+
+
   return (
-    <div className="p-6 bg-slate-950 min-h-screen text-white space-y-6">
+    <div className="p-6  min-h-screen text-white space-y-3">
 
       {/* TOP ACTION BAR */}
       <div className="flex justify-between items-center">
@@ -85,34 +117,86 @@ const logs = [
       </div>
 
       {/* SUMMARY CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {DeploymentCenterSummary.map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <div key={i}
-              className={`p-4 rounded-xl border border-slate-800 ${item.bg} hover:shadow-lg hover:border-cyan-500 transition`} >
-              <div className="flex items-center justify-between">
-                <Icon className={item.color} />
-                <span className="text-2xl font-bold">{item.count}</span>
-              </div>
-              <p className="text-sm text-slate-300 mt-2">{item.title}</p>
-            </div>
-          );
-        })}
-      </div>
+      {/* SUMMARY CARDS */}
+<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+  {DeploymentCenterSummary.map((item, i) => {
+    const Icon = item.icon;
+    const style = iconStyle[i];
+    const IconRight = style.icon;
 
-      {/* ROW 2 - TABLE + REPOSITORY */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    const shadowMap = {
+      "text-blue-400": "rgba(59,130,246,0.35)",
+      "text-yellow-400": "rgba(234,179,8,0.35)",
+      "text-green-400": "rgba(34,197,94,0.35)",
+      "text-red-400": "rgba(239,68,68,0.35)",
+    };
 
-        {/* LEFT - DEPLOYMENT JOBS TABLE */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl">
-          <div className="p-4 border-b border-slate-800 font-semibold flex items-center gap-2">
-            <Server size={18} /> Patch Deployment Jobs
+    return (
+      <div
+        key={i}
+        className={`group relative p-4 rounded-xl bg-[#0f172a] border border-slate-800 transition-all duration-300 hover:-translate-y-1`}
+        style={{
+          boxShadow: "0 0 0px transparent",
+        }}
+      >
+        {/* hover glow + border */}
+        <div
+          className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300`}
+          style={{
+            border: `1px solid ${style.color.replace("text-", "")}`,
+            boxShadow: `0 0 18px ${
+              shadowMap[style.color]
+            }`,
+          }}
+        />
+
+        <div className="relative flex items-center justify-between">
+          {/* LEFT CONTENT */}
+          <div>
+            <p className="text-xs text-slate-400 uppercase tracking-wide">
+              {item.title}
+            </p>
+            <p className="text-2xl font-bold text-white mt-1">
+              {item.count}
+            </p>
           </div>
 
-          <div className="overflow-auto">
+          {/* RIGHT ICON */}
+          <div
+            className={`p-3 rounded-full ${style.bg} flex items-center justify-center`}
+          >
+            <IconRight className={style.color} size={20} />
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+      {/* ROW 2 - TABLE + REPOSITORY */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+
+        {/* LEFT - DEPLOYMENT JOBS TABLE */}
+        <div className="lg:col-span-2 p-4 bg-[#0f172a]  border border-slate-800 rounded-xl">
+          {/* <div className="p-3 border-b border-slate-800 font-semibold flex items-center gap-2">
+            Patch Deployment Jobs
+          </div> */}
+          <h2 className="text-lg font-semibold mb-3 flex-shrink-0">  Patch Deployment Jobs </h2>
+
+           <div className="h-px bg-gray-800 my-2"></div>
+                    {/* SEARCH + COUNT ROW */}
+                    <div className="flex justify-between items-center mb-3 flex-shrink-0">
+                        {/* SEARCH */}
+                        <input type="text" placeholder="Search devices..." value={search} onChange={(e) => setSearch(e.target.value)}
+                            className=" w-[85%] px-3 py-2 text-sm rounded-lg bg-[#111827] text-white outline-none border border-gray-700" />
+
+                        {/* SHOWING TEXT */}
+                        <div className="text-sm text-gray-400 pr-4"> Showing {paginatedData.length} of {filteredData.length} </div>
+                    </div>
+
+          <div className="overflow-y-auto flex-1 rounded-lg border border-gray-700 hide-scrollbar">
             <table className="w-full text-sm">
-              <thead className="text-slate-400 border-b border-slate-800">
+              <thead className="bg-[#2a3a52] text-gray-300 border-b border-[#2a3a52]">
                 <tr>
                   <th className="p-3 text-left">Device</th>
                   <th>Vendor</th>
@@ -123,7 +207,7 @@ const logs = [
               </thead>
 
               <tbody>
-                {DeploymentJobsTable.map((job, i) => (
+                {paginatedData.map((job, i) => (
                   <tr key={i} className="border-b border-slate-800 hover:bg-slate-800/50">
                     <td className="p-3">{job.device}</td>
                     <td>{job.vendor}</td>
@@ -147,10 +231,22 @@ const logs = [
               </tbody>
             </table>
           </div>
+          {/* PAGINATION */}
+          <div className="flex justify-end gap-2 mt-3 flex-shrink-0">
+                        <button disabled={currentPage === 1} onClick={() => setCurrentPage((p) => p - 1)}
+                            className="px-3 py-1 text-sm bg-[#1e293b] rounded disabled:opacity-40" > Prev
+                        </button>
+
+                        <span className="text-sm px-2 py-1"> {currentPage} / {totalPages || 1} </span>
+
+                        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage((p) => p + 1)}
+                            className="px-3 py-1 text-sm bg-[#1e293b] rounded disabled:opacity-40" > Next
+                        </button>
+                    </div>
         </div>
 
         {/* RIGHT - FIRMWARE REPOSITORY */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl">
+        <div className="bg-[#0f172a]  border border-slate-800 rounded-xl">
           <div className="p-4 border-b border-slate-800 flex justify-between items-center">
             <h2 className="font-semibold flex items-center gap-2">
               <FileUp size={18} /> Firmware Repository
@@ -176,7 +272,7 @@ const logs = [
       </div>
 
       {/* ROW 3 - ACTIVITY LOGS (LIKE YOUR IMAGE) */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl">
+      <div className="bg-[#0f172a]  border border-slate-800 rounded-xl">
         <div className="p-4 border-b border-slate-800 flex items-center gap-2 font-semibold">
           <TerminalSquare size={18} /> Deployment Activity Logs
         </div>

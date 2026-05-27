@@ -331,13 +331,17 @@ export const sidebarData = [
         path: "/section/NeWNetworkMonitoringAlert",
         icon: AppWindowMac,
         roles: ["admin"],
-      },
-      
-        
+      },     
     
        {
         name: "Configuration Manager",
         path: "/section/NewConfigurationManagerDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Network Device Configuration",
+        path: "/section/NewNetworkDviceConfiguration",
         icon: AppWindowMac,
         roles: ["admin"],
       },

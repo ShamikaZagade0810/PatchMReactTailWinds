@@ -64,6 +64,7 @@ import PatchDeploymentCenterNew from "../pages/NewNetworkDevices/PatchDeployment
 import NewConfigurationManagerDashboard from "../pages/NewNetworkDevices/NewConfigurationManagerDashboard.jsx";
 import NewFirmwareInventoryDashboard from "../pages/NewNetworkDevices/NewFirmwareInventoryDashboard.jsx";
 import NewConfigurationBackupHistory from "../pages/NewNetworkDevices/NewConfigurationBackupHistory.jsx";
+import DeviceConfigurationForm from "../pages/NewNetworkDevices/DeviceConfigurationForm.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -478,6 +479,13 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <NewConfigurationBackupHistory />
+            </ProtectedRoute>} />
+
+              <Route path="/section/NewNetworkDviceConfiguration"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <DeviceConfigurationForm />
             </ProtectedRoute>} />
 
 

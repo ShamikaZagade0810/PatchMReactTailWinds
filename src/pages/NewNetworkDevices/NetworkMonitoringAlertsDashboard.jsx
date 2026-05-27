@@ -146,7 +146,7 @@ const NewNetworkMonitoringAlertsDashboard = () => {
     };
 
     return (
-        <div className="p-3 min-h-screen text-white space-y-4">
+        <div className="p-3 min-h-screen text-white space-y-4 text-sm" >
             {/* ===== TOP SUMMARY CARDS ===== */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                 {networkdevicecount.map((item, index) => {
@@ -165,7 +165,7 @@ const NewNetworkMonitoringAlertsDashboard = () => {
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="text-gray-400 text-sm">{item.title}</p>
-                                    <h2 className="text-3xl font-bold mt-2">{item.count}</h2>
+                                    <h2 className="text-2xl font-semibold mt-2">{item.count}</h2>
                                 </div>
 
                                 <div className="h-12 w-12 rounded-xl bg-[#1e293b] flex items-center justify-center text-cyan-400">
@@ -183,52 +183,31 @@ const NewNetworkMonitoringAlertsDashboard = () => {
                 <div className="xl:col-span-2 bg-[#0f172a] rounded-2xl border border-gray-800 p-4 flex flex-col h-[640px]">
                     <div className="flex justify-between items-center mb-4 flex-shrink-0">
                         <div>
-                            <h2 className="text-xl font-semibold">
-                                Real-Time Alerts
-                            </h2>
-                            <p className="text-gray-400 text-sm">
-                                Live monitoring alerts from network devices
-                            </p>
+                            <h2 className="text-xl font-semibold"> Real-Time Alerts </h2>
+                            <p className="text-gray-400 text-xs"> Live monitoring alerts from network devices </p>
                         </div>
 
                         <div className="flex items-center gap-2 text-green-400 text-sm">
-                            <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>
-                            Live
+                            <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse"></span>  Live
                         </div>
                     </div>
 
                     <div className="overflow-y-auto hide-scrollbar flex-1 space-y-4 pr-1">
                         {alerts.map((alert, index) => (
-                            <div
-                                key={index}
-                                className="bg-[#111c2d] border border-gray-800 rounded-xl p-4 hover:border-cyan-500/30 transition"
-                            >
+                            <div key={index} className="bg-[#111c2d] border border-gray-800 rounded-xl p-4 hover:border-cyan-500/30 transition" >
                                 <div className="flex items-start justify-between gap-3">
                                     <div className="flex items-start gap-3">
-                                        <div
-                                            className={`p-2 rounded-lg ${getSeverityColor(
-                                                alert.severity
-                                            )}`}
-                                        >
-                                            <AlertTriangle size={18} />
-                                        </div>
+                                        <div className={`p-2 rounded-lg ${getSeverityColor( alert.severity )}`} > <AlertTriangle size={18} /> </div>
 
                                         <div>
                                             <div className="flex items-center gap-2">
                                                 <h3 className="font-medium">{alert.device}</h3>
-
-                                                <span
-                                                    className={`text-xs px-2 py-1 rounded-full ${getSeverityColor(
-                                                        alert.severity
-                                                    )}`}
-                                                >
+                                                <span className={`text-xs px-2 py-1 rounded-full ${getSeverityColor( alert.severity )}`}  >
                                                     {alert.severity}
                                                 </span>
                                             </div>
 
-                                            <p className="text-gray-300 text-sm mt-1">
-                                                {alert.message}
-                                            </p>
+                                            <p className="text-gray-300 text-sm mt-1"> {alert.message} </p>
 
                                             <div className="flex gap-4 mt-3 text-xs text-gray-400">
                                                 <span>{alert.time}</span>
@@ -248,7 +227,7 @@ const NewNetworkMonitoringAlertsDashboard = () => {
                     <div className="bg-[#0f172a] rounded-2xl border border-gray-800 p-4 flex flex-col flex-1 min-h-0">
                         <div className="mb-4 flex-shrink-0">
                             <h2 className="text-lg font-semibold">Device Health</h2>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-gray-400 text-xs">
                                 Infrastructure performance overview
                             </p>
                         </div>
@@ -324,7 +303,7 @@ const NewNetworkMonitoringAlertsDashboard = () => {
                     <div className="bg-[#0f172a] rounded-2xl border border-gray-800 p-4 flex flex-col flex-1 min-h-0">
                         <div className="mb-4 flex-shrink-0">
                             <h2 className="text-lg font-semibold">Scheduled Tasks</h2>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-gray-400 text-xs">
                                 Automation & maintenance jobs
                             </p>
                         </div>
@@ -369,16 +348,13 @@ const NewNetworkMonitoringAlertsDashboard = () => {
                     </div>
 
                     <div className="flex items-center gap-2 text-cyan-400 text-sm">
-                        <CheckCircle2 size={16} />
-                        Streaming Active
+                        <CheckCircle2 size={16} /> Streaming Active
                     </div>
                 </div>
 
                 <div className="overflow-x-auto rounded-xl border border-gray-800">
                  
-                    <div className="bg-[#0f172a] rounded-2xl p-2 shadow-lg">
-
-                       
+                    <div className="bg-[#0f172a] rounded-2xl p-2 shadow-lg">                      
                        
                         {/* TERMINAL LOG BOX */}
                         <div className="bg-[#020c22] rounded-xl h-[280px] overflow-y-auto hide-scrollbar">

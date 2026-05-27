@@ -276,13 +276,10 @@ const NetworkDeviceDashboard = () => {
                 {/* RIGHT COLUMN */}
                 <div className="flex flex-col gap-3 h-[650px]">
                     {/* ===== Configuration History CARD ===== */}
-                    {/* ===== Configuration History CARD ===== */}
                     <div className="bg-[#0f172a] p-4 rounded-xl flex flex-col max-h-[300px]">
 
                         {/* FIXED TITLE */}
-                        <h2 className="text-lg font-semibold flex-shrink-0">
-                            Configuration Backup History
-                        </h2>
+                        <h2 className="text-lg font-semibold flex-shrink-0"> Configuration Backup History </h2>
 
                         {/* DIVIDER */}
                         <div className="h-px bg-gray-800 my-3"></div>
