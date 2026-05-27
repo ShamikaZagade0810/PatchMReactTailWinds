@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk3NjkyNzUsImV4cCI6MTc3OTg1NTY3NX0.rNZBN8NdNPX9OqnD-PJBzcX04RXfYcZ-KeinDxs9PqI';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3Nzk4NTYwODgsImV4cCI6MTc3OTk0MjQ4OH0.JvWEawlBHQ-cXUewnsV4enA9eo219A-IM8-wme03cXo';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
