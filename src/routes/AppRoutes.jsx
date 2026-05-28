@@ -65,6 +65,9 @@ import NewConfigurationManagerDashboard from "../pages/NewNetworkDevices/NewConf
 import NewFirmwareInventoryDashboard from "../pages/NewNetworkDevices/NewFirmwareInventoryDashboard.jsx";
 import NewConfigurationBackupHistory from "../pages/NewNetworkDevices/NewConfigurationBackupHistory.jsx";
 import DeviceConfigurationForm from "../pages/NewNetworkDevices/DeviceConfigurationForm.jsx";
+import FirmwareUpgradeUI from "../pages/NetworkDevices.jsx/FirmwareUpgradeUI.jsx";
+
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -454,7 +457,7 @@ export default function AppRoutes() {
               <NewNetworkMonitoringAlertsDashboard />
             </ProtectedRoute>} />
 
-            <Route path="/section/deplyment-center"
+        <Route path="/section/deplyment-center"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchDeploymentCenterNew />
@@ -481,13 +484,19 @@ export default function AppRoutes() {
               <NewConfigurationBackupHistory />
             </ProtectedRoute>} />
 
-              <Route path="/section/NewNetworkDviceConfiguration"
+        <Route path="/section/NewNetworkDviceConfiguration"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <DeviceConfigurationForm />
             </ProtectedRoute>} />
 
+        <Route path="/section/FirmwareUpgradeUI"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <FirmwareUpgradeUI />
+            </ProtectedRoute>} />
 
 
       </Route>

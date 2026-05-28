@@ -357,6 +357,12 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+       {
+        name: "FirmwareUpgradeUI",
+        path: "/section/FirmwareUpgradeUI",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
     ],
   },
 ];
