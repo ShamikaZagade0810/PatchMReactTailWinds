@@ -43,7 +43,7 @@ export default function FirmwareUpgradeUI() {
     let progressValue = 0;
 
     const interval = setInterval(() => {
-      progressValue += 15;
+      progressValue += 10;
 
       setProgress(progressValue);
 

@@ -137,50 +137,50 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-      {
-        name: "Network Devices",
-        path: "/section/NetDevice",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Network Devices New",
-        path: "/section/NeWNetworkDevice",
-        name: "PatchDeploymentCenter",
-        path: "/section/PatchDeploymentCenter",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "NetworkMonitoringAlertsDashboard",
-        path: "/section/NetworkMonitoringAlertsDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "ConfigurationManagerDashboard",
-        path: "/section/ConfigurationManagerDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "NetworkDeviceConfigurationForm",
-        path: "/section/NetworkDeviceConfigurationForm",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "FirmwareInventoryDashboard",
-        path: "/section/FirmwareInventoryDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "ConfigurationBackupHistory",
-        path: "/section/ConfigurationBackupHistory",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+      // {
+      //   name: "Network Devices",
+      //   path: "/section/NetDevice",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "Network Devices New",
+      //   path: "/section/NeWNetworkDevice",
+      //   name: "PatchDeploymentCenter",
+      //   path: "/section/PatchDeploymentCenter",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "NetworkMonitoringAlertsDashboard",
+      //   path: "/section/NetworkMonitoringAlertsDashboard",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "ConfigurationManagerDashboard",
+      //   path: "/section/ConfigurationManagerDashboard",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "NetworkDeviceConfigurationForm",
+      //   path: "/section/NetworkDeviceConfigurationForm",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "FirmwareInventoryDashboard",
+      //   path: "/section/FirmwareInventoryDashboard",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "ConfigurationBackupHistory",
+      //   path: "/section/ConfigurationBackupHistory",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
     ],
   },
 
@@ -377,6 +377,57 @@ export const sidebarData = [
       },
     ],
   },
+   {
+    name: "Update Network  Devices",
+    icon: Share2,
+    roles: ["admin"],
+    path: "network1",
+    children: [     
+       {
+        name: "Network Devices New",
+        path: "/section1/DeviceInventory",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+           {
+       name: "Patch Deploymnet Cycle",
+        path: "/section/deplyment-center",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+       {
+        name: "Network Monitoring Alert",
+        path: "/section1/NeWNetworkMonitoringAlert",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },     
+    
+       {
+        name: "Configuration Manager",
+        path: "/section/NewConfigurationManagerDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Network Device Configuration",
+        path: "/section/NewNetworkDviceConfiguration",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+       {
+        name: "Firmware Inventory",
+        path: "/section/NewFirmwareInventoryDashboard",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Config Backup",
+        path: "/section/NewConfigurationBackupHistory",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+    ],
+  },
 ];
 
 export const LinuxSidebarData = [
@@ -392,7 +443,14 @@ export const LinuxSidebarData = [
     path: "/Linux/Report",
     icon: LayoutDashboard,
     roles: ["admin"],
+  },
+   {
+    name: "Repository",
+    path: "/Linux/Repository",
+    icon: LayoutDashboard,
+    roles: ["admin"],
   }
+
 
 ];
 

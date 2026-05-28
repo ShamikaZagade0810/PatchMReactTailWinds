@@ -50,15 +50,15 @@ const DeviceConfigurationForm = () => {
     <>
       <form onSubmit={handleSubmit((data) => handleSetPolicySubmit(data))}>
         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
-          {/* <h2 className="text-lg font-semibold mb-6">Network Device Configuration</h2> */}
-          <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold mb-6">Network Device Configuration</h2>
+          {/* <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold"> Network Device Configuration </h2>
 
             <div className="flex items-center gap-3">
               <button className={btnClass} type="submit"> Submit </button>
               <button type="button" className={resetClass} onClick={handleReset} > Reset  </button>
             </div>
-          </div>
+          </div> */}
 
           {/* 1. Device Connection Settings */}
           <h3 className="text-md font-semibold text-blue-400 mb-3"> Device Connection Settings </h3>

@@ -112,7 +112,7 @@ export default function NewConfigurationManagerDashboard() {
           </p>
         </div> */}
 
-        <div className="flex gap-3">
+        <div className="flex  gap-3 xl:ml-auto justify-end">
           <button className="bg-cyan-600 hover:bg-cyan-700 px-5 py-2 rounded-xl text-sm font-medium flex items-center gap-2">
             <Download size={16} />
             Backup All Devices
@@ -285,7 +285,7 @@ export default function NewConfigurationManagerDashboard() {
               >
                 <div className="flex justify-between items-center">
                   <div>
-                    <h3 className="font-medium">
+                    <h3 className="font-medium text-sm">
                       {policy.policy}
                     </h3>
 

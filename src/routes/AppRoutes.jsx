@@ -65,9 +65,15 @@ import NewConfigurationManagerDashboard from "../pages/NewNetworkDevices/NewConf
 import NewFirmwareInventoryDashboard from "../pages/NewNetworkDevices/NewFirmwareInventoryDashboard.jsx";
 import NewConfigurationBackupHistory from "../pages/NewNetworkDevices/NewConfigurationBackupHistory.jsx";
 import DeviceConfigurationForm from "../pages/NewNetworkDevices/DeviceConfigurationForm.jsx";
+import LinuxRepository from "../pages/LinuxPages/LinuxRepository.jsx";
+import DeviceInventory from "../pages/NewNetworkDevices/DeviceInventory.jsx";
 import FirmwareUpgradeUI from "../pages/NetworkDevices.jsx/FirmwareUpgradeUI.jsx";
 import EnterpriseFirmwareRepository from "../pages/NetworkDevices.jsx/EnterpriseFirmwareRepository.jsx";
 import FirmwareInventory from "../pages/NewNetworkDevices/FirmwareInventory.jsx";
+import FirmwareUpgrade from "../pages/NewNetworkDevices/FirmwareUpgrade.jsx";
+import ConfigurationForm from "../pages/NewNetworkDevices/ConfigurationForm.jsx";
+import NewFirmwareUpgrade from "../pages/NewNetworkDevices/NewFirmwareUpgrade.jsx";
+import UpgradeResult from "../pages/NewNetworkDevices/UpgradeResult.jsx";
 
 export default function AppRoutes() {
   return (
@@ -393,6 +399,13 @@ export default function AppRoutes() {
               <LinuxReportsPage />
             </ProtectedRoute>} />
 
+        <Route path="/Linux/Repository"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <LinuxRepository />
+            </ProtectedRoute>} />
+
         <Route path="/section/NetDevice"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
@@ -492,6 +505,13 @@ export default function AppRoutes() {
               <DeviceConfigurationForm />
             </ProtectedRoute>} />
 
+        <Route path="/section1/DeviceInventory"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <DeviceInventory />
+            </ProtectedRoute>} />
+
         <Route path="/section/FirmwareUpgradeUI"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
@@ -511,6 +531,33 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <FirmwareInventory />
+               </ProtectedRoute>} />
+        <Route path="/section/NewFirmwareUpgrade"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <FirmwareUpgrade />
+            </ProtectedRoute>} />
+
+        <Route path="/section/NewConfigForm"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <ConfigurationForm />
+            </ProtectedRoute>} />
+
+        <Route path="/section/UgradeFirmware"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <NewFirmwareUpgrade />
+            </ProtectedRoute>} />
+
+              <Route path="/section/UpgradeResult"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <UpgradeResult />
             </ProtectedRoute>} />
 
 

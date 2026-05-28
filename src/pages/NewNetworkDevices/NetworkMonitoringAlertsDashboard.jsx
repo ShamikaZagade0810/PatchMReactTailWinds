@@ -359,7 +359,7 @@ const NewNetworkMonitoringAlertsDashboard = () => {
                         {/* TERMINAL LOG BOX */}
                         <div className="bg-[#020c22] rounded-xl h-[280px] overflow-y-auto hide-scrollbar">
 
-                            <div className="space-y-1 font-mono text-sm p-2 text-green-400">
+                            <div className="space-y-1 font-mono text-[14px] p-2 text-green-400">
 
                                 <p>[INFO] Device discovery completed successfully</p>
 
