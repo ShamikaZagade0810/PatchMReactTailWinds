@@ -174,7 +174,7 @@ const logs = [
 </div>
 
       {/* ROW 2 - TABLE + REPOSITORY */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-3">
 
         {/* LEFT - DEPLOYMENT JOBS TABLE */}
         <div className="lg:col-span-2 p-4 bg-[#0f172a]  border border-slate-800 rounded-xl">
@@ -246,7 +246,7 @@ const logs = [
         </div>
 
         {/* RIGHT - FIRMWARE REPOSITORY */}
-        <div className="bg-[#0f172a]  border border-slate-800 rounded-xl">
+        {/* <div className="bg-[#0f172a]  border border-slate-800 rounded-xl">
           <div className="p-4 border-b border-slate-800 flex justify-between items-center">
             <h2 className="font-semibold flex items-center gap-2">
               <FileUp size={18} /> Firmware Repository
@@ -268,11 +268,11 @@ const logs = [
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* ROW 3 - ACTIVITY LOGS (LIKE YOUR IMAGE) */}
-      <div className="bg-[#0f172a]  border border-slate-800 rounded-xl">
+      {/* <div className="bg-[#0f172a]  border border-slate-800 rounded-xl">
         <div className="p-4 border-b border-slate-800 flex items-center gap-2 font-semibold">
           <TerminalSquare size={18} /> Deployment Activity Logs
         </div>
@@ -284,7 +284,7 @@ const logs = [
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
     </div>
   )

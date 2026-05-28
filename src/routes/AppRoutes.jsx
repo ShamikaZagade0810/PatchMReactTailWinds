@@ -66,7 +66,8 @@ import NewFirmwareInventoryDashboard from "../pages/NewNetworkDevices/NewFirmwar
 import NewConfigurationBackupHistory from "../pages/NewNetworkDevices/NewConfigurationBackupHistory.jsx";
 import DeviceConfigurationForm from "../pages/NewNetworkDevices/DeviceConfigurationForm.jsx";
 import FirmwareUpgradeUI from "../pages/NetworkDevices.jsx/FirmwareUpgradeUI.jsx";
-
+import EnterpriseFirmwareRepository from "../pages/NetworkDevices.jsx/EnterpriseFirmwareRepository.jsx";
+import FirmwareInventory from "../pages/NewNetworkDevices/FirmwareInventory.jsx";
 
 export default function AppRoutes() {
   return (
@@ -496,6 +497,20 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <FirmwareUpgradeUI />
+            </ProtectedRoute>} />
+
+              <Route path="/section/EnterpriseFirmwareRepository"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <EnterpriseFirmwareRepository />
+            </ProtectedRoute>} />
+
+             <Route path="/section/FirmwareInvn"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <FirmwareInventory />
             </ProtectedRoute>} />
 
 

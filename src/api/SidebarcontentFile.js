@@ -363,6 +363,18 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+        {
+        name: "EnterpriseFirmwareRepository",
+        path: "/section/EnterpriseFirmwareRepository",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
+      {
+        name: "Firmware Inven",
+        path: "/section/FirmwareInvn",
+        icon: AppWindowMac,
+        roles: ["admin"],
+      },
     ],
   },
 ];
