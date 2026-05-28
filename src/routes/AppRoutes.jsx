@@ -65,6 +65,8 @@ import NewConfigurationManagerDashboard from "../pages/NewNetworkDevices/NewConf
 import NewFirmwareInventoryDashboard from "../pages/NewNetworkDevices/NewFirmwareInventoryDashboard.jsx";
 import NewConfigurationBackupHistory from "../pages/NewNetworkDevices/NewConfigurationBackupHistory.jsx";
 import DeviceConfigurationForm from "../pages/NewNetworkDevices/DeviceConfigurationForm.jsx";
+import LinuxRepository from "../pages/LinuxPages/LinuxRepository.jsx";
+import DeviceInventory from "../pages/NewNetworkDevices/DeviceInventory.jsx";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -389,6 +391,13 @@ export default function AppRoutes() {
               <LinuxReportsPage />
             </ProtectedRoute>} />
 
+              <Route path="/Linux/Repository"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <LinuxRepository />
+            </ProtectedRoute>} />
+
         <Route path="/section/NetDevice"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
@@ -486,6 +495,13 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <DeviceConfigurationForm />
+            </ProtectedRoute>} />
+
+                <Route path="/section1/DeviceInventory"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              {/* <DbMonitoringDashboard /> */}
+              <DeviceInventory />
             </ProtectedRoute>} />
 
 

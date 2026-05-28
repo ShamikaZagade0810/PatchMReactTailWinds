@@ -1875,4 +1875,9 @@ export const getLinuxCompletedReport = (inputData) =>
     }
   );
 
-  
+  export const getLinuxPatchRepo = () =>
+  axios.get(`${BASE_URL}/linux/LinuxRepolist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });

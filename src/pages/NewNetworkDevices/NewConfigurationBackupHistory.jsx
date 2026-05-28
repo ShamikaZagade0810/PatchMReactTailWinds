@@ -136,33 +136,22 @@ export default function NewConfigurationBackupHistory() {
             icon: <Clock3 size={22} />,
           },
         ].map((item, index) => (
-          <div
-            key={index}
-            className="bg-[#0f172a] border border-gray-800 rounded-2xl p-5"
-          >
+          <div key={index}  className="bg-[#0f172a] border border-gray-800 rounded-2xl p-4" >
             <div className="flex justify-between items-center">
-
               <div>
-                <p className="text-gray-400 text-sm">
-                  {item.title}
-                </p>
-
-                <h2 className={`text-3xl font-bold mt-3 ${item.color}`}>
-                  {item.count}
-                </h2>
+                <p className="text-gray-400 text-sm"> {item.title} </p>
+                <h2 className={`text-2xl font-semibold mt-3 ${item.color}`}> {item.count} </h2>
               </div>
 
-              <div className="w-12 h-12 rounded-xl bg-[#1e293b] flex items-center justify-center text-cyan-400">
-                {item.icon}
+              <div className="w-12 h-12 rounded-xl bg-[#1e293b] flex items-center justify-center text-cyan-400"> {item.icon}
               </div>
-
             </div>
           </div>
         ))}
       </div>
 
       {/* ===== SEARCH BAR ===== */}
-      <div className="bg-[#0f172a] border border-gray-800 rounded-2xl p-4">
+      {/* <div className="bg-[#0f172a] border border-gray-800 rounded-2xl p-4">
 
         <div className="flex items-center gap-3 bg-[#1e293b] border border-gray-700 rounded-xl px-4 py-3">
 
@@ -177,12 +166,12 @@ export default function NewConfigurationBackupHistory() {
           />
 
         </div>
-      </div>
+      </div> */}
 
       {/* ===== TABLE ===== */}
       <div className="bg-[#0f172a] border border-gray-800 rounded-2xl p-4 flex flex-col h-[620px]">
 
-        <div className="flex items-center justify-between mb-4">
+        {/* <div className="flex items-center justify-between mb-4">
 
           <div>
             <h2 className="text-xl font-semibold">
@@ -197,7 +186,34 @@ export default function NewConfigurationBackupHistory() {
           <div className="text-sm text-gray-400">
             Showing {filteredData.length} Records
           </div>
-        </div>
+        </div> */}
+
+        <div className="mb-4">
+
+  <div>
+    <h2 className="text-xl font-semibold"> Backup Repository </h2>
+
+    <p className="text-gray-400 text-sm mt-1"> Historical configuration backup records </p>
+  </div>
+
+    {/* DIVIDER */}
+  <div className="my-4 border-t border-gray-800" />
+
+  {/* SEARCH + RECORD COUNT */}
+  <div className="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+
+    <div className="flex items-center gap-3 bg-[#1e293b] border border-gray-700 rounded-xl px-4 py-2 md:w-[600px]">
+      <Search className="text-gray-400" size={18} />
+      <input type="text" placeholder="Search device, vendor or IP..." className="bg-transparent w-full outline-none text-sm" value={search}
+        onChange={(e) => setSearch(e.target.value)} />
+    </div>
+    <div className="text-sm text-gray-400">
+      Showing {filteredData.length} Records
+    </div>
+
+  </div>
+
+</div>
 
         {/* ===== TABLE WRAPPER ===== */}
         <div className="overflow-auto hide-scrollbar rounded-xl border border-gray-800 flex-1">
@@ -314,9 +330,9 @@ export default function NewConfigurationBackupHistory() {
       </div>
 
       {/* ===== FOOTER ===== */}
-      <div className="text-center text-sm text-gray-500 py-2">
+      {/* <div className="text-center text-sm text-gray-500 py-2">
         Network Configuration Backup & Restore Management Dashboard
-      </div>
+      </div> */}
 
     </div>
   );

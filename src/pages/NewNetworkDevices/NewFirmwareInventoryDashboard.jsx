@@ -308,18 +308,18 @@ export default function NewFirmwareInventoryDashboard() {
                                         <div className="flex items-center gap-2">
                                             <FileArchive size={16} className="text-cyan-400" />
 
-                                            <h3 className="font-medium">
+                                            <h3 className="font-medium text-md">
                                                 {file.fileName}
                                             </h3>
                                         </div>
 
-                                        <p className="text-sm text-gray-400 mt-2">
+                                        <p className="text-xs text-gray-400 mt-2">
                                             {file.vendor} • Uploaded on {file.uploadDate}
                                         </p>
                                     </div>
 
                                     <div className="text-right">
-                                        <p className="font-medium">{file.size}</p>
+                                        <p className="font-normal">{file.size}</p>
 
                                         <p className="text-xs text-gray-500 mt-1">
                                             {file.checksum}
