@@ -644,7 +644,7 @@ const SendMultiplePatches = () => {
 
     // MAIN CONTENT
     return (
-        <div className="min-h-screen text-white p-2">
+        <div className="min-h-screen  bg-gray-100 dark:bg-[#000000] text-white p-2">
 
             {/* Toast Container */}
 

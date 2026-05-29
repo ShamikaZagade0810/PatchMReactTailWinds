@@ -317,7 +317,7 @@ const MultipleRunForm = () => {
                 <p className="text-gray-400">
                     Configure the filters above and click Generate Report.
                 </p> */}
-                <ReusableTable data={dynamicReport.maindata} columns={dynamicReport.columndata} pageSize={10} />
+                <ReusableTable data={dynamicReport.maindata} columns={dynamicReport.columndata} pageSize={10} showExport={true}/>
 
 
             </div>
