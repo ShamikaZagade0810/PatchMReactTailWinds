@@ -328,7 +328,7 @@ const NewFirmwareUpgrade = () => {
                         </div>
 
                         {/* CANCEL BUTTON */}
-                        <button className="shrink-0 px-3 py-2 text-xs bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 rounded-lg" onClick={() => navigate('/section1/DeviceInventory')}>
+                        <button className="shrink-0 px-3 py-2 text-xs bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 rounded-lg" onClick={() => navigate('/section/DeviceInventory')}>
                             Cancel Upgrade
                         </button>
                     </div>

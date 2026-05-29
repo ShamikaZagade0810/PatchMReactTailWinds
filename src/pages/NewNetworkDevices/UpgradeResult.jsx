@@ -108,8 +108,7 @@ const UpgradeResult = () => {
             Download Report
           </button>
 
-          <button
-            onClick={() => navigate("/section1/DeviceInventory")}
+          <button onClick={() => navigate("/section/DeviceInventory")}
             className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-medium text-sm transition"
           >
             Back to Inventory
@@ -170,25 +169,17 @@ const UpgradeResult = () => {
             </div>
 
             <div>
-              <p className="text-[10px] uppercase text-gray-500 mb-2">
-                To
-              </p>
-              <p className="text-lg font-semibold text-cyan-400">
-                {device?.latestVersion || "17.12.3"}
-              </p>
+              <p className="text-[10px] uppercase text-gray-500 mb-2"> To </p>
+              <p className="text-lg font-semibold text-cyan-400"> {device?.latestVersion || "17.12.3"} </p>
             </div>
 
             <div>
-              <p className="text-[10px] uppercase text-gray-500 mb-2">
-                CVEs Resolved
-              </p>
+              <p className="text-[10px] uppercase text-gray-500 mb-2"> CVEs Resolved </p>
               <p className="text-lg font-semibold text-green-400">3</p>
             </div>
 
             <div>
-              <p className="text-[10px] uppercase text-gray-500 mb-2">
-                Rollback Required
-              </p>
+              <p className="text-[10px] uppercase text-gray-500 mb-2"> Rollback Required </p>
               <p className="text-lg font-semibold text-green-400">No</p>
             </div>
           </div>
@@ -199,9 +190,7 @@ const UpgradeResult = () => {
 
           <div className="flex items-center gap-2 mb-5">
             <ClipboardList size={18} className="text-cyan-400" />
-            <h2 className="text-sm font-semibold">
-              Next Recommended Actions
-            </h2>
+            <h2 className="text-sm font-semibold"> Next Recommended Actions </h2>
           </div>
 
           <div className="space-y-4 text-sm">
@@ -212,10 +201,7 @@ const UpgradeResult = () => {
               "Snapshot configuration backup",
               "Notify NOC channel of completion",
             ].map((item, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 text-gray-300"
-              >
+              <div key={i} className="flex items-start gap-3 text-gray-300" >
                 <div className="w-2 h-2 rounded-full bg-cyan-400 mt-2" />
                 <p>{item}</p>
               </div>
@@ -223,8 +209,7 @@ const UpgradeResult = () => {
           </div>
 
           <button className="mt-6 w-full rounded-xl border border-gray-700 bg-[#101b2d] hover:bg-[#16243a] py-3 text-sm flex items-center justify-center gap-2 transition">
-            <ChevronRight size={15} />
-            View Full Logs
+            <ChevronRight size={15} />  View Full Logs
           </button>
         </div>
       </div>

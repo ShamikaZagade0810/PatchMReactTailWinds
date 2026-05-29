@@ -308,15 +308,79 @@ export const sidebarData = [
     icon: ClipboardMinus,
     roles: ["admin"],
   },
-  {
-    name: "Network  Devices",
+  // {
+  //   name: "Network  Devices",
+  //   icon: Share2,
+  //   roles: ["admin"],
+  //   path: "network",
+  //   children: [     
+  //      {
+  //       name: "Network Devices New",
+  //       path: "/section/NeWNetworkDevice",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //          {
+  //      name: "Patch Deploymnet Cycle",
+  //       path: "/section/deplyment-center",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //      {
+  //       name: "Network Monitoring Alert",
+  //       path: "/section/NeWNetworkMonitoringAlert",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },     
+    
+  //      {
+  //       name: "Configuration Manager",
+  //       path: "/section/NewConfigurationManagerDashboard",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "Network Device Configuration",
+  //       path: "/section/NewNetworkDviceConfiguration",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //      {
+  //       name: "Firmware Inventory",
+  //       path: "/section/NewFirmwareInventoryDashboard",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "Config Backup",
+  //       path: "/section/NewConfigurationBackupHistory",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //      {
+  //       name: "FirmwareUpgradeUI",
+  //       path: "/section/FirmwareUpgradeUI",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //       {
+  //       name: "EnterpriseFirmwareRepository",
+  //       path: "/section/EnterpriseFirmwareRepository",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+      
+  //   ],
+  // },
+   {
+    name: "Network Devices",
     icon: Share2,
     roles: ["admin"],
     path: "network",
     children: [     
        {
         name: "Network Devices New",
-        path: "/section/NeWNetworkDevice",
+        path: "/section/DeviceInventory",
         icon: AppWindowMac,
         roles: ["admin"],
       },
@@ -326,103 +390,39 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
-       {
-        name: "Network Monitoring Alert",
-        path: "/section/NeWNetworkMonitoringAlert",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },     
-    
-       {
-        name: "Configuration Manager",
-        path: "/section/NewConfigurationManagerDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Network Device Configuration",
-        path: "/section/NewNetworkDviceConfiguration",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-       {
-        name: "Firmware Inventory",
-        path: "/section/NewFirmwareInventoryDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+      //  {
+      //   name: "Network Monitoring Alert",
+      //   path: "/section1/NeWNetworkMonitoringAlert",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },        
+      //  {
+      //   name: "Configuration Manager",
+      //   path: "/section/NewConfigurationManagerDashboard",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      // {
+      //   name: "Network Device Configuration",
+      //   path: "/section/NewNetworkDviceConfiguration",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+      //  {
+      //   name: "Firmware Inventory",
+      //   path: "/section/NewFirmwareInventoryDashboard",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
       {
         name: "Config Backup",
         path: "/section/NewConfigurationBackupHistory",
         icon: AppWindowMac,
         roles: ["admin"],
       },
-       {
-        name: "FirmwareUpgradeUI",
-        path: "/section/FirmwareUpgradeUI",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-        {
-        name: "EnterpriseFirmwareRepository",
-        path: "/section/EnterpriseFirmwareRepository",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
       {
-        name: "Firmware Inven",
+        name: "Firmware Inventory",
         path: "/section/FirmwareInvn",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-    ],
-  },
-   {
-    name: "Update Network  Devices",
-    icon: Share2,
-    roles: ["admin"],
-    path: "network1",
-    children: [     
-       {
-        name: "Network Devices New",
-        path: "/section1/DeviceInventory",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-           {
-       name: "Patch Deploymnet Cycle",
-        path: "/section/deplyment-center",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-       {
-        name: "Network Monitoring Alert",
-        path: "/section1/NeWNetworkMonitoringAlert",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },     
-    
-       {
-        name: "Configuration Manager",
-        path: "/section/NewConfigurationManagerDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Network Device Configuration",
-        path: "/section/NewNetworkDviceConfiguration",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-       {
-        name: "Firmware Inventory",
-        path: "/section/NewFirmwareInventoryDashboard",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Config Backup",
-        path: "/section/NewConfigurationBackupHistory",
         icon: AppWindowMac,
         roles: ["admin"],
       },

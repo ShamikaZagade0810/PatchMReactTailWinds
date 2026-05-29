@@ -505,7 +505,7 @@ export default function AppRoutes() {
               <DeviceConfigurationForm />
             </ProtectedRoute>} />
 
-        <Route path="/section1/DeviceInventory"
+        <Route path="/section/DeviceInventory"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
@@ -532,6 +532,7 @@ export default function AppRoutes() {
               {/* <DbMonitoringDashboard /> */}
               <FirmwareInventory />
                </ProtectedRoute>} />
+
         <Route path="/section/NewFirmwareUpgrade"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>

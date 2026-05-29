@@ -18,21 +18,21 @@ const DeviceInventory = () => {
     ];
 
     const getRandomFutureTime = () => {
-    const now = new Date();
+        const now = new Date();
 
-    // random 1 to 6 hours in future
-    const randomHours = Math.floor(Math.random() * 6) + 1;
-    const randomMinutes = Math.floor(Math.random() * 60);
+        // random 1 to 6 hours in future
+        const randomHours = Math.floor(Math.random() * 6) + 1;
+        const randomMinutes = Math.floor(Math.random() * 60);
 
-    const future = new Date(
-        now.getTime() + randomHours * 60 * 60 * 1000 + randomMinutes * 60 * 1000
-    );
+        const future = new Date(
+            now.getTime() + randomHours * 60 * 60 * 1000 + randomMinutes * 60 * 1000
+        );
 
-    return future.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-    });
-};
+        return future.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+    };
 
 
 
@@ -781,8 +781,8 @@ const DeviceInventory = () => {
 
                                                 {/* label */}
                                                 <div>
-                                                  
-                                                  <p>{getRandomFutureTime()}</p>
+
+                                                    <p>{getRandomFutureTime()}</p>
                                                 </div>
 
                                             </div>

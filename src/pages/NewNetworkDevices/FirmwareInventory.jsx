@@ -273,23 +273,23 @@ const FirmwareInventory = () => {
     const [search, setSearch] = useState("");
     const [expandedRow, setExpandedRow] = useState(null);
 
-    
 
-    const [currentPage, setCurrentPage] = useState(1); 
+
+    const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-const filteredData = useMemo(() => {
-  return getFirmwareRows(selectedCategory, selectedOEM).filter((item) =>
-    item.firmwareName.toLowerCase().includes(search.toLowerCase())
-  );
-}, [selectedCategory, selectedOEM, search]);
+    const filteredData = useMemo(() => {
+        return getFirmwareRows(selectedCategory, selectedOEM).filter((item) =>
+            item.firmwareName.toLowerCase().includes(search.toLowerCase())
+        );
+    }, [selectedCategory, selectedOEM, search]);
 
-const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-const tableData = useMemo(() => {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  return filteredData.slice(startIndex, startIndex + itemsPerPage);
-}, [filteredData, currentPage]);
+    const tableData = useMemo(() => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        return filteredData.slice(startIndex, startIndex + itemsPerPage);
+    }, [filteredData, currentPage]);
 
     // const tableData = useMemo(() => {
     //     return getFirmwareRows(selectedCategory, selectedOEM).filter((item) =>
@@ -341,7 +341,8 @@ const tableData = useMemo(() => {
                                                 animate={{ opacity: 1, height: "auto" }}
                                                 exit={{ opacity: 0, height: 0 }}
                                                 className="px-2 pb-2"  >
-                                                {cat.oems.map((oem) => { const isActive = selectedCategory === cat.name && selectedOEM === oem;
+                                                {cat.oems.map((oem) => {
+                                                    const isActive = selectedCategory === cat.name && selectedOEM === oem;
 
                                                     return (
                                                         <motion.button
@@ -349,9 +350,10 @@ const tableData = useMemo(() => {
                                                             key={oem}
                                                             onClick={() => {
                                                                 setSelectedCategory(cat.name);
-                                                                setSelectedOEM(oem); setCurrentPage(1); setExpandedRow(null);}}
+                                                                setSelectedOEM(oem); setCurrentPage(1); setExpandedRow(null);
+                                                            }}
                                                             className={`w-full mt-1 rounded-lg px-3 py-3 flex items-center justify-between transition-all ${isActive ? "bg-cyan-400/50 shadow-md shadow-cyan-500/20"
-                                                                : "bg-white/[0.03] hover:bg-white/[0.07]"  }`}  >
+                                                                : "bg-white/[0.03] hover:bg-white/[0.07]"}`}  >
                                                             <div className="flex items-center gap-2">
                                                                 <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold">
                                                                     {oem.charAt(0)}
@@ -401,25 +403,25 @@ const tableData = useMemo(() => {
                     <div class="h-px bg-gray-800 my-2"></div>
 
 
-<div className="flex justify-between items-center my-3 flex-shrink-0 px-3">
-  {/* SEARCH BAR */}
-  <div className="relative">    
-    <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <div className="flex justify-between items-center my-3 flex-shrink-0 px-3">
+                        {/* SEARCH BAR */}
+                        <div className="relative">
+                            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
 
-    <input type="text" placeholder="Search firmware package..." value={search} onChange={(e) => setSearch(e.target.value)}
-      className="pl-11 pr-4 py-3 rounded-2xl bg-[#0d1722] border border-white/10 focus:outline-none focus:border-cyan-500 w-[800px] text-sm" />
-  </div>
+                            <input type="text" placeholder="Search firmware package..." value={search} onChange={(e) => setSearch(e.target.value)}
+                                className="pl-11 pr-4 py-3 rounded-2xl bg-[#0d1722] border border-white/10 focus:outline-none focus:border-cyan-500 w-[800px] text-sm" />
+                        </div>
 
-  {/* PACKAGE COUNT */}
-  {/* <div className="text-sm text-gray-400 pr-4">
+                        {/* PACKAGE COUNT */}
+                        {/* <div className="text-sm text-gray-400 pr-4">
     Showing {tableData.length} of{" "}
     {getFirmwareRows(selectedCategory, selectedOEM).length}
   </div> */}
-  <div className="text-[12px] text-slate-400">
-    Showing{" "}  {tableData.length} {" "} of{" "}
-    {filteredData.length} {" "} packages
-  </div>
-</div>
+                        <div className="text-[12px] text-slate-400">
+                            Showing{" "}  {tableData.length} {" "} of{" "}
+                            {filteredData.length} {" "} packages
+                        </div>
+                    </div>
 
                     {/* TABLE */}
                     <div className="flex-1 overflow-auto p-2">
@@ -662,12 +664,12 @@ const tableData = useMemo(() => {
                         </div>
 
                         {/* PAGINATION */}
-                      
-{/* PAGINATION */}
-<div className="flex justify-end items-center mt-3 px-2 flex-shrink-0">
 
-  {/* LEFT INFO */}
-  {/* <div className="text-[12px] text-slate-400">
+                        {/* PAGINATION */}
+                        <div className="flex justify-end items-center mt-3 px-2 flex-shrink-0">
+
+                            {/* LEFT INFO */}
+                            {/* <div className="text-[12px] text-slate-400">
     Showing{" "}
     <span className="text-cyan-400 font-medium">
       {tableData.length}
@@ -679,39 +681,39 @@ const tableData = useMemo(() => {
     packages
   </div> */}
 
-  {/* RIGHT PAGINATION */}
-  <div className="flex justify-end gap-2">
-    
-    <button
-      disabled={currentPage === 1}
-      onClick={() => {
-        setCurrentPage((p) => p - 1);
-        setExpandedRow(null);
-      }}
-      className="px-3 py-1 text-sm bg-[#1e293b] rounded-lg disabled:opacity-40 hover:bg-[#334155] transition"
-    >
-      Prev
-    </button>
+                            {/* RIGHT PAGINATION */}
+                            <div className="flex justify-end gap-2">
 
-    <span className="text-sm px-2 py-1 text-slate-300">
-      {currentPage} / {totalPages || 1}
-    </span>
+                                <button
+                                    disabled={currentPage === 1}
+                                    onClick={() => {
+                                        setCurrentPage((p) => p - 1);
+                                        setExpandedRow(null);
+                                    }}
+                                    className="px-3 py-1 text-sm bg-[#1e293b] rounded-lg disabled:opacity-40 hover:bg-[#334155] transition"
+                                >
+                                    Prev
+                                </button>
 
-    <button
-      disabled={currentPage === totalPages || totalPages === 0}
-      onClick={() => {
-        setCurrentPage((p) => p + 1);
-        setExpandedRow(null);
-      }}
-      className="px-3 py-1 text-sm bg-[#1e293b] rounded-lg disabled:opacity-40 hover:bg-[#334155] transition"
-    >
-      Next
-    </button>
-  </div>
-</div>
+                                <span className="text-sm px-2 py-1 text-slate-300">
+                                    {currentPage} / {totalPages || 1}
+                                </span>
+
+                                <button
+                                    disabled={currentPage === totalPages || totalPages === 0}
+                                    onClick={() => {
+                                        setCurrentPage((p) => p + 1);
+                                        setExpandedRow(null);
+                                    }}
+                                    className="px-3 py-1 text-sm bg-[#1e293b] rounded-lg disabled:opacity-40 hover:bg-[#334155] transition"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
 
                     </div>
-                    
+
 
                 </div>
             </div>

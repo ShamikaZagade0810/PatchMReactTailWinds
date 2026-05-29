@@ -11,11 +11,8 @@ const ConfigurationForm = () => {
   // fallback safety
   if (!device) {
     return (
-      <div className="p-6 text-white">
-        No device selected
-        <button onClick={() => navigate(-1)} className="ml-3 text-cyan-400">
-          Go Back
-        </button>
+      <div className="p-6 text-white"> No device selected
+        <button onClick={() => navigate(-1)} className="ml-3 text-cyan-400"> Go Back  </button>
       </div>
     );
   }
@@ -28,7 +25,7 @@ const ConfigurationForm = () => {
 
   const authDefaults = {
     username: "admin",
-    password: "••••••••",
+    password: "Pass@123",
   };
 
   const firmware = device?.firmwareInformation;
@@ -222,123 +219,134 @@ const ConfigurationForm = () => {
         </div>
 
         {/* RIGHT FORMS */}
-        <div className="col-span-2 space-y-4">
+        <div className="col-span-2">
 
-          {/* CONNECTION SETTINGS */}
-          <div className="bg-[#0f172a] p-4 rounded-xl border border-gray-800">
-            <h2 className="text-sm font-semibold mb-3">Connection Settings</h2>
+  {/* SINGLE CONFIG CARD */}
+  <div className="bg-[#0f172a] p-5 rounded-xl border border-gray-800 space-y-6">
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
+    {/* CONNECTION SETTINGS */}
+    <div>
+      <h2 className="text-sm font-semibold mb-3 text-cyan-400">
+        Connection Settings
+      </h2>
 
-            <div>
-  <label className="text-gray-400">Transfer Protocol</label>
+      <div className="grid grid-cols-2 gap-3 text-xs">
 
-  <select
-    defaultValue={connectionDefaults.protocol}
-    className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700 text-white outline-none"
-  >
-    <option value="SCP">SCP</option>
-    <option value="SFTP">SFTP</option>
-    <option value="FTP">FTP</option>
-    <option value="TFTP">TFTP</option>
-  </select>
+        <div>
+          <label className="text-gray-400">Transfer Protocol</label>
+
+          <select
+            defaultValue={connectionDefaults.protocol}
+            className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700 text-white outline-none"
+          >
+            <option value="SCP">SCP</option>
+            <option value="SFTP">SFTP</option>
+            <option value="FTP">FTP</option>
+            <option value="TFTP">TFTP</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="text-gray-400">Repository IP</label>
+          <input
+            defaultValue={connectionDefaults.repoIp}
+            className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
+          />
+        </div>
+
+        <div className="col-span-2">
+          <label className="text-gray-400">Repository Path</label>
+          <input
+            defaultValue={connectionDefaults.repoPath}
+            className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* DIVIDER */}
+    <div className="border-t border-gray-800" />
+
+    {/* AUTHENTICATION */}
+    <div>
+      <h2 className="text-sm font-semibold mb-3 text-cyan-400">
+        Authentication
+      </h2>
+
+      <div className="grid grid-cols-2 gap-3 text-xs">
+
+        <div>
+          <label className="text-gray-400">Username</label>
+          <input
+            defaultValue={authDefaults.username}
+            className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
+          />
+        </div>
+
+        <div>
+          <label className="text-gray-400">Password</label>
+          <input
+            type="password"
+            defaultValue={authDefaults.password}
+            className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* DIVIDER */}
+    <div className="border-t border-gray-800" />
+
+    {/* UPGRADE PARAMETERS */}
+    <div>
+      <h2 className="text-sm font-semibold mb-3 text-cyan-400">
+        Upgrade Parameters
+      </h2>
+
+      <div className="grid grid-cols-2 gap-3 text-xs">
+
+        <div>
+          <label className="text-gray-400">Firmware File</label>
+          <input
+            defaultValue={firmware?.fileName}
+            className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
+          />
+        </div>
+
+        <div>
+          <label className="text-gray-400">Maintenance Window</label>
+          <input defaultValue="Tonight 02:00 - 05:00 IST" className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
+          />
+        </div>
+
+        <div className="col-span-2 flex gap-4 mt-2 text-xs">
+          <label> <input type="checkbox" defaultChecked /> Verify Integrity   </label>
+
+          <label>  <input type="checkbox" defaultChecked /> Auto Reboot </label>
+
+          <label>  <input type="checkbox" /> Rollback on Failure    </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {/* ACTIONS */}
+  <div className="flex justify-between items-center mt-5">
+
+  {/* LEFT SIDE */}
+  <button onClick={() => navigate(-1)}  className="px-4 py-2 bg-gray-800 rounded text-xs" > Back </button>
+  {/* RIGHT SIDE */}
+  <div className="flex gap-3">
+    <button className="px-4 py-2 bg-cyan-600 rounded text-xs">Test Configuration </button>
+    <button onClick={() => navigate("/section/UgradeFirmware", { state: { device }, }) } className="px-4 py-2 bg-cyan-600 rounded text-xs" >
+      Save Configuration
+    </button>
+
+  </div>
 </div>
 
-              <div>
-                <label className="text-gray-400">Repository IP</label>
-                <input
-                  defaultValue={connectionDefaults.repoIp}
-                  className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <label className="text-gray-400">Repository Path</label>
-                <input
-                  defaultValue={connectionDefaults.repoPath}
-                  className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* AUTH */}
-          <div className="bg-[#0f172a] p-4 rounded-xl border border-gray-800">
-            <h2 className="text-sm font-semibold mb-3">Authentication</h2>
-
-            <div className="grid grid-cols-2 gap-3 text-xs">
-
-              <div>
-                <label className="text-gray-400">Username</label>
-                <input
-                  defaultValue={authDefaults.username}
-                  className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
-                />
-              </div>
-
-              <div>
-                <label className="text-gray-400">Password</label>
-                <input
-                  type="password"
-                  defaultValue={authDefaults.password}
-                  className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* UPGRADE PARAMS */}
-          <div className="bg-[#0f172a] p-4 rounded-xl border border-gray-800">
-            <h2 className="text-sm font-semibold mb-3">Upgrade Parameters</h2>
-
-            <div className="grid grid-cols-2 gap-3 text-xs">
-
-              <div>
-                <label className="text-gray-400">Firmware File</label>
-                <input
-                  defaultValue={firmware?.fileName}
-                  className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
-                />
-              </div>
-
-              <div>
-                <label className="text-gray-400">Maintenance Window</label>
-                <input
-                  defaultValue="Tonight 02:00 - 05:00 IST"
-                  className="w-full mt-1 p-2 bg-[#111827] rounded border border-gray-700"
-                />
-              </div>
-
-              <div className="col-span-2 flex gap-4 mt-2 text-xs">
-                <label><input type="checkbox" defaultChecked /> Verify Integrity</label>
-                <label><input type="checkbox" defaultChecked /> Auto Reboot</label>
-                <label><input type="checkbox" /> Rollback on Failure</label>
-              </div>
-            </div>
-          </div>
-
-          {/* ACTIONS */}
-          <div className="flex justify-between">
-            <button
-              onClick={() => navigate(-1)}
-              className="px-4 py-2 bg-gray-800 rounded text-xs"
-            >
-              Back
-            </button>
-            <button className="px-4 py-2 bg-cyan-600 rounded text-xs">
-              Test Configuartion
-            </button>
-
-            <button onClick={() =>
-              navigate("/section/UgradeFirmware", {
-                state: { device },
-              })
-            } className="px-4 py-2 bg-cyan-600 rounded text-xs">
-              Save Configuration
-            </button>
-          </div>
-
-        </div>
+</div>
       </div>
     </div>
   );

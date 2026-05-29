@@ -13,33 +13,268 @@ import {
 export default function NewConfigurationManagerDashboard() {
   const configurations = [
     {
-      device: "FortiGate Firewall",
+      backupId: "CFG-10001",
+
+      deviceId: "DEV-FW-22019",
+
+      device: "PUNE-FW-CORE-01",
+
+      hostname: "PUNE-FW-CORE-01",
+
       vendor: "Fortinet",
-      lastBackup: "26-May-2026 10:20 PM",
+
+      deviceType: "Firewall",
+
+      model: "FortiGate 200F",
+
+      ipAddress: "10.40.2.254",
+
+      location: "Pune HQ",
+
+      currentVersion: "7.0.9",
+
       configVersion: "v12",
+
+      backupType: "Automatic Scheduled Backup",
+
+      lastBackup: "29-May-2026 09:20 PM",
+
+      backupSize: "48 MB",
+
+      backupStorage:
+        "Primary Config Repository",
+
+      encryption: "AES-256 Enabled",
+
+      checksumStatus: "Verified",
+
       status: "Protected",
+
+      initiatedBy: "Backup Automation Engine",
+
+      restorePoint: true
     },
+
     {
-      device: "Core Switch",
+      backupId: "CFG-10002",
+
+      deviceId: "DEV-RT-11021",
+
+      device: "MUM-EDGE-RTR-01",
+
+      hostname: "MUM-EDGE-RTR-01",
+
       vendor: "Cisco",
-      lastBackup: "26-May-2026 09:10 PM",
+
+      deviceType: "Router",
+
+      model: "ISR4451-X/K9",
+
+      ipAddress: "10.10.14.1",
+
+      location: "Mumbai Data Center",
+
+      currentVersion: "17.6.4",
+
       configVersion: "v8",
+
+      backupType: "Pre-Upgrade Backup",
+
+      lastBackup: "29-May-2026 08:45 PM",
+
+      backupSize: "36 MB",
+
+      backupStorage:
+        "Disaster Recovery Vault",
+
+      encryption: "AES-256 Enabled",
+
+      checksumStatus: "Verified",
+
       status: "Changed",
+
+      initiatedBy: "SOC Automation",
+
+      restorePoint: true
     },
+
     {
-      device: "Branch Router",
-      vendor: "Juniper",
-      lastBackup: "25-May-2026 11:45 PM",
+      backupId: "CFG-10003",
+
+      deviceId: "DEV-WLC-44011",
+
+      device: "DEL-WLC-CORE-01",
+
+      hostname: "DEL-WLC-CORE-01",
+
+      vendor: "Cisco",
+
+      deviceType:
+        "Wireless Controller",
+
+      model: "Catalyst 9800-L",
+
+      ipAddress: "10.80.1.20",
+
+      location:
+        "Delhi Corporate Office",
+
+      currentVersion: "17.9.2",
+
       configVersion: "v5",
+
+      backupType:
+        "Wireless Policy Snapshot",
+
+      lastBackup: "29-May-2026 07:10 PM",
+
+      backupSize: "64 MB",
+
+      backupStorage:
+        "Central Configuration Manager",
+
+      encryption: "AES-256 Enabled",
+
+      checksumStatus: "Verified",
+
       status: "Protected",
+
+      initiatedBy: "Wireless Operations",
+
+      restorePoint: true
     },
+
     {
-      device: "Wireless Controller",
+      backupId: "CFG-10004",
+
+      deviceId: "DEV-SW-33012",
+
+      device: "BLR-ACCESS-SW-12",
+
+      hostname: "BLR-ACCESS-SW-12",
+
       vendor: "Aruba",
-      lastBackup: "24-May-2026 08:00 PM",
+
+      deviceType: "Switch",
+
+      model: "Aruba CX 6300M",
+
+      ipAddress: "10.60.8.22",
+
+      location: "Bangalore Branch",
+
+      currentVersion: "10.10.1010",
+
       configVersion: "v4",
+
+      backupType:
+        "Manual Admin Backup",
+
+      lastBackup: "29-May-2026 06:00 PM",
+
+      backupSize: "28 MB",
+
+      backupStorage:
+        "Branch Backup Repository",
+
+      encryption: "AES-256 Enabled",
+
+      checksumStatus: "Failed",
+
       status: "Backup Failed",
+
+      initiatedBy: "Branch IT Team",
+
+      restorePoint: false
     },
+
+    {
+      backupId: "CFG-10005",
+
+      deviceId: "DEV-LB-55002",
+
+      device: "HYD-LB-ADC-01",
+
+      hostname: "HYD-LB-ADC-01",
+
+      vendor: "F5",
+
+      deviceType: "Load Balancer",
+
+      model: "BIG-IP i5800",
+
+      ipAddress: "10.90.4.15",
+
+      location: "Hyderabad DR Site",
+
+      currentVersion: "16.1.2",
+
+      configVersion: "v11",
+
+      backupType:
+        "Pre-Patch Snapshot",
+
+      lastBackup: "29-May-2026 10:05 PM",
+
+      backupSize: "72 MB",
+
+      backupStorage:
+        "Enterprise DR Vault",
+
+      encryption: "AES-256 Enabled",
+
+      checksumStatus: "Verified",
+
+      status: "Protected",
+
+      initiatedBy: "Patch Automation",
+
+      restorePoint: true
+    },
+
+    {
+      backupId: "CFG-10006",
+
+      deviceId: "DEV-FW-99008",
+
+      device: "BLR-FW-EDGE-02",
+
+      hostname: "BLR-FW-EDGE-02",
+
+      vendor: "Palo Alto Networks",
+
+      deviceType: "Firewall",
+
+      model: "PA-3220",
+
+      ipAddress: "10.45.0.2",
+
+      location: "Bangalore Edge DC",
+
+      currentVersion: "11.1.2",
+
+      configVersion: "v9",
+
+      backupType:
+        "Compliance Snapshot",
+
+      lastBackup: "29-May-2026 08:30 PM",
+
+      backupSize: "51 MB",
+
+      backupStorage:
+        "Security Compliance Vault",
+
+      encryption: "AES-256 Enabled",
+
+      checksumStatus: "Verified",
+
+      status: "Protected",
+
+      initiatedBy: "Compliance Engine",
+
+      restorePoint: true
+    }
   ];
 
   const compliancePolicies = [
@@ -318,7 +553,7 @@ export default function NewConfigurationManagerDashboard() {
 
           <div className="bg-[#020c22] rounded-b-2xl p-5 h-[320px] overflow-auto hide-scrollbar border-t border-[#112240]">
             <pre className="text-green-400 font-mono text-sm leading-7">
-{`- telnet enable
+              {`- telnet enable
 + ssh enable
 
 - snmp-server community public
@@ -390,7 +625,7 @@ export default function NewConfigurationManagerDashboard() {
       </div>
 
       {/* ===== AUTOMATED WORKFLOW ===== */}
-    
+
     </div>
   );
 }
