@@ -41,26 +41,58 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
     onChange(newValue);
   };
 
+const allSelected =
+  options.length > 0 && value.length === options.length;
+
+const toggleSelectAll = () => {
+  let newValue = [];
+
+  if (allSelected) {
+    newValue = [];
+  } else {
+    newValue = [...options];
+  }
+
+  const onlyvalue = newValue.map((obj) => obj.value);
+
+  setValue(id, onlyvalue, { shouldValidate: true });
+  onChange(newValue);
+};
+
   return (
     <div className="relative" ref={dropdownRef}>
 
       {/* Input Box */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full min-h-[38px] bg-[#1E293B] border border-[#2A3A55] rounded-lg px-3 flex flex-wrap items-center gap-2 cursor-pointer"
+        className="w-full min-h-[38px] overflow-y-auto bg-[#1E293B] border border-[#2A3A55] rounded-lg px-1 flex flex-wrap items-center gap-1 cursor-pointer scrollbar-thin scrollbar-thumb-slate-600"
       >
-        {value.length === 0 && (
+        {/* {value.length === 0 && (
           <span className="text-gray-400 text-sm">{placeholder}</span>
-        )}
+        )} */}
 
-        {value.map((item) => (
-          <span
-            key={item.value}
-            className="bg-blue-600/40 text-white px-2 py-1 rounded text-sm font-medium"
-          >
-            {item.label}
-          </span>
-        ))}
+        {value.length > 0 ? (
+  <>
+    {value.slice(0, 2).map((item) => (
+      <span
+        key={item.value}
+        className="bg-blue-600/40 text-white px-1 py-1 rounded text-sm"
+      >
+        {item.label}
+      </span>
+    ))}
+
+    {value.length > 2 && (
+      <span className="bg-slate-700 text-white px-2 py-1 rounded text-sm">
+        +{value.length - 2} more
+      </span>
+    )}
+  </>
+) : (
+  <span className="text-gray-400 text-sm">
+    {placeholder}
+  </span>
+)}
         {error && (
           <p className="text-red-500 text-xs mt-1">
             {error.message || "This field is required"}
@@ -86,6 +118,27 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
 
           {/* Options */}
           <div className="max-h-48 overflow-y-auto">
+            <div
+  onClick={toggleSelectAll}
+  className="
+    flex items-center gap-2
+    px-3 py-2
+    cursor-pointer
+    bg-[#162033]
+    border-b border-[#2A3A55]
+    hover:bg-[#1B2A44]
+    sticky top-0 z-10
+  "
+>
+  <input
+    type="checkbox"
+    checked={allSelected}
+    readOnly
+  />
+  <span className="text-cyan-400 font-medium text-sm">
+    Select All
+  </span>
+</div>
             {filteredOptions.map((option) => {
               const isSelected = value.some(
                 (v) => v.value === option.value

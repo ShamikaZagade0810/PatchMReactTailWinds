@@ -73,9 +73,7 @@ const renderActiveShape = (props,) => {
             {/* <circle cx={ex} cy={ey} r={3} fill={fill} /> */}
 
             {/* Value */}
-            <text x={ex} y={ey} textAnchor={textAnchor} fill="#333">
-                {value}
-            </text>
+            <text x={ex} y={ey} textAnchor={textAnchor} fill="#333"> {value} </text>
 
             {/* Percentage */}
             {/* <text x={ex} y={ey + 15} textAnchor={textAnchor} fill="#999">
@@ -102,9 +100,9 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                     <Pie
                         data={data}
                         dataKey={"value"}
-
                         cx="50%"
                         cy="50%"
+                        stroke="none"
                         innerRadius={60}
                         outerRadius={75}
                         activeShape={renderActiveShape}
@@ -147,14 +145,9 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                                 }
                                 onSliceClick('patch_wise', 'patch', reqdata);
                             }
-
-
-
-
                         }}
                         cornerRadius={3}
-                        paddingAngle={4}
-                    >
+                        paddingAngle={4} >
                         {data.map((entry, index) => (
                             <Cell
                                 key={`cell-${index}`}
@@ -174,8 +167,7 @@ const SinglePieCharts = ({ data, onSliceClick, datakey }) => {
                         textAnchor="middle"
                         dominantBaseline="middle"
                         fontSize={23}
-                        fill="#ffffff"
-                    >
+                        fill="#ffffff" >
                         {centerValue}
                     </text>
                     <text

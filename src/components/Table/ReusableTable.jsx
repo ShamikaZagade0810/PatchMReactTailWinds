@@ -1,12 +1,18 @@
-import React, { useState,useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Search, Filter, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { FileSpreadsheet, FileText } from "lucide-react";
 
-const ReusableTable = ({ 
-  data, 
-  columns, 
+const ReusableTable = ({
+  data,
+  columns,
   pageSize = 10,
   showSearch = true,
   showFilters = true,
+  showExport = false,
   filters = []
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +23,7 @@ const ReusableTable = ({
   // const filteredData = data.filter(item => {
   //   // Search filter
   //   if (searchTerm) {
-     
+
   //     const searchable = columns
   //       // .filter(col => col.searchable !== false)
   //       .some(col => {
@@ -37,40 +43,88 @@ const ReusableTable = ({
   // });
 
   const filteredData = useMemo(() => {
-  const search = searchTerm?.toLowerCase();
+    const search = searchTerm?.toLowerCase();
 
-  return data.filter(item => {
+    return data.filter(item => {
 
-    // 🔍 Search filter
-    if (search) {
-      const searchable = columns.some(col => {
-        const value = item[col.name];
-        
-        return (
-          value &&
-          value.toString().toLowerCase().includes(search)
-        );
-      });
+      // 🔍 Search filter
+      if (search) {
+        const searchable = columns.some(col => {
+          const value = item[col.name];
 
-      if (!searchable) return false;
-    }
+          return (
+            value &&
+            value.toString().toLowerCase().includes(search)
+          );
+        });
 
-    // 🎯 Column filters
-    for (const [key, value] of Object.entries(activeFilters)) {
-      if (value && item[key] !== value) return false;
-    }
+        if (!searchable) return false;
+      }
 
-    return true;
+      // 🎯 Column filters
+      for (const [key, value] of Object.entries(activeFilters)) {
+        if (value && item[key] !== value) return false;
+      }
 
-  });
+      return true;
 
-}, [data, columns, searchTerm, activeFilters]);
+    });
+
+  }, [data, columns, searchTerm, activeFilters]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
 
+
+  const exportToExcel = () => {
+    const exportData = filteredData.map((row) => {
+      const obj = {};
+
+      columns.forEach((col) => {
+        obj[col.label] = row[col.name];
+      });
+
+      return obj;
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+
+    const fileData = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(fileData, "Report.xlsx");
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    const tableColumn = columns.map((col) => col.label);
+
+    const tableRows = filteredData.map((row) =>
+      columns.map((col) => row[col.name] ?? "")
+    );
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      styles: {
+        fontSize: 8,
+      },
+    });
+
+    doc.save("Report.pdf");
+  };
   return (
     <div className="w-full">
       {/* Search and Filters */}
@@ -91,7 +145,7 @@ const ReusableTable = ({
               />
             </div>
           )}
-          
+
           {showFilters && filters.length > 0 && (
             <div className="flex items-center gap-2 flex-wrap">
               <Filter className="w-4 h-4 text-gray-400 dark:text-gray-500" />
@@ -118,6 +172,27 @@ const ReusableTable = ({
         </div>
       )}
 
+      {/* Export Buttons */}
+      {showExport && filteredData.length > 0 && (
+        <div className="flex justify-end gap-2 mb-3">
+          <button
+            onClick={exportToExcel}
+            className="flex items-center gap-2 px-3 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            <FileSpreadsheet size={16} />
+            Excel
+          </button>
+
+          <button
+            onClick={exportToPDF}
+            className="flex items-center gap-2 px-3 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700"
+          >
+            <FileText size={16} />
+            PDF
+          </button>
+        </div>
+      )}
+
       {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -134,15 +209,27 @@ const ReusableTable = ({
             </tr>
           </thead>
           <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
-            {paginatedData.map((row, index) => (
-              <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                {columns.map((column) => (
-                  <td key={column.name} className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                    {column.render ? column.render(row[column.name], row) : row[column.name]}
+            {paginatedData.length > 0 ? (
+                paginatedData.map((row, index) => (
+                  <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    {columns.map((column) => (
+                      <td key={column.name} className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                        {column.render ? column.render(row[column.name], row) : row[column.name]}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    No Data Available
                   </td>
-                ))}
-              </tr>
-            ))}
+                </tr>
+              )
+            }
           </tbody>
         </table>
       </div>

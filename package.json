@@ -15,7 +15,10 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.2",
+    "file-saver": "^2.0.5",
     "framer-motion": "^12.38.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "lucide-react": "^0.562.0",
     "node-sql-parser": "^5.3.13",
     "primeflex": "^4.0.0",
@@ -31,7 +34,8 @@
     "react-select": "^5.10.2",
     "react-toastify": "^11.1.0",
     "recharts": "^3.8.1",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

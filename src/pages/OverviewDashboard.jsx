@@ -228,28 +228,87 @@ const OverviewDashboard = () => {
 
 
 
-    const CircularProgress = ({ percentage, label, size = 110, color = "#3b82f6", }) => {
+    // const CircularProgress = ({ percentage, label, size = 110, color = "#3b82f6", }) => {
+    //     const radius = size / 2 - 10;
+    //     const circumference = 2 * Math.PI * radius;
+    //     const offset = circumference - (percentage / 100) * circumference;
+
+    //     return (
+    //         <div className="flex flex-col items-center w-full max-w-[120px]">
+    //             {/* Circle Wrapper */}
+    //             <div className="relative w-full aspect-square">
+    //                 <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full -rotate-90" >
+    //                     {/* Background */}
+    //                     <circle cx={size / 2}
+    //                         cy={size / 2}
+    //                         r={radius}
+    //                         fill="none"
+    //                         stroke="currentColor"
+    //                         className="text-gray-300 dark:text-gray-600"
+    //                         strokeWidth="10"
+    //                     />
+
+    //                     {/* Progress */}
+    //                     <circle cx={size / 2}
+    //                         cy={size / 2}
+    //                         r={radius}
+    //                         fill="none"
+    //                         stroke={color}
+    //                         strokeWidth="10"
+    //                         strokeDasharray={circumference}
+    //                         strokeDashoffset={offset}
+    //                         strokeLinecap="round"
+    //                     />
+    //                 </svg>
+
+    //                 {/* Center Text */}
+    //                 <div className="absolute inset-0 flex items-center justify-center">
+    //                     <span className="text-sm md:text-lg font-semibold text-white">
+    //                         {percentage}
+    //                     </span>
+    //                 </div>
+    //             </div>
+
+    //             {/* Label */}
+    //             <span className="text-xs md:text-sm text-gray-300 mt-2 text-center">
+    //                 {label}
+    //             </span>
+    //         </div>
+    //     );
+    // };
+
+    const CircularProgress = ({
+        count,
+        percentage,
+        label,
+        size = 110,
+        color = "#3b82f6",
+    }) => {
         const radius = size / 2 - 10;
         const circumference = 2 * Math.PI * radius;
-        const offset = circumference - (percentage / 100) * circumference;
+        const offset =
+            circumference - (percentage / 100) * circumference;
 
         return (
             <div className="flex flex-col items-center w-full max-w-[120px]">
-                {/* Circle Wrapper */}
                 <div className="relative w-full aspect-square">
-                    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full -rotate-90" >
+                    <svg
+                        viewBox={`0 0 ${size} ${size}`}
+                        className="w-full h-full -rotate-90"
+                    >
                         {/* Background */}
-                        <circle cx={size / 2}
+                        <circle
+                            cx={size / 2}
                             cy={size / 2}
                             r={radius}
                             fill="none"
-                            stroke="currentColor"
-                            className="text-gray-300 dark:text-gray-600"
+                            stroke="#374151"
                             strokeWidth="10"
                         />
 
                         {/* Progress */}
-                        <circle cx={size / 2}
+                        <circle
+                            cx={size / 2}
                             cy={size / 2}
                             r={radius}
                             fill="none"
@@ -261,15 +320,18 @@ const OverviewDashboard = () => {
                         />
                     </svg>
 
-                    {/* Center Text */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-sm md:text-lg font-semibold text-white">
-                            {percentage}
+                    {/* Show COUNT in center */}
+                    <div className="absolute inset-0 flex items-center justify-center flex-col">
+                        <span className="text-lg font-bold text-white">
+                            {count}
+                        </span>
+
+                        <span className="text-[10px] text-gray-400">
+                            {percentage}%
                         </span>
                     </div>
                 </div>
 
-                {/* Label */}
                 <span className="text-xs md:text-sm text-gray-300 mt-2 text-center">
                     {label}
                 </span>
@@ -320,6 +382,12 @@ const OverviewDashboard = () => {
     };
 
     const severity = getSeverity(overallComplainceRate);
+
+    const totalEndpoints = complianceData.find(
+        item => item.label === "totalEndpoint"
+    )?.value || 0;
+
+    const totalOsCount = (osCount?.windows || 0) + (osCount?.linux || 0) + (osCount?.mac || 0) + (osCount?.server || 0);
 
     return (
         <div className="mb-1 bg-gray-100 dark:bg-[#0B1220] ">
@@ -449,25 +517,33 @@ const OverviewDashboard = () => {
                         </div>
 
                         {/* Bars */}
+
+
                         <div className="flex-1 w-full space-y-3">
                             {complianceData.map((item, i) => (
-                                <div key={i}>
-                                    <div className="flex justify-between text-xs">
-                                        <span className="text-gray-700 dark:text-white">
-                                            {item.label}
-                                        </span>
-                                        <span className="text-gray-700 dark:text-white">
-                                            {item.value}{item.label !== "totalEndpoint" && "/" + complianceData[0].value}
-                                        </span>
-                                    </div>
+                                item.label !== "totalEndpoint" && (
+                                    <div key={i}>
+                                        <div className="flex justify-between text-xs">
+                                            <span className="text-gray-700 dark:text-white">
+                                                {item.label}
+                                            </span>
+                                            <span className="text-gray-700 dark:text-white">
+                                                {item.value}/{totalEndpoints}
+                                            </span>
+                                        </div>
 
-                                    <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded">
-                                        <div
-                                            className="h-2 bg-blue-500 rounded"
-                                            style={{ width: `${item.value}%` }}
-                                        />
+                                        <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded">
+                                            <div
+                                                className="h-2 bg-blue-500 rounded"
+                                                style={{
+                                                    width: `${totalEndpoints > 0
+                                                        ? (item.value / totalEndpoints) * 100
+                                                        : 0}%`,
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
+                                )
                             ))}
                         </div>
                     </div>
@@ -481,22 +557,16 @@ const OverviewDashboard = () => {
                     <h2 className="card-header"> Patches </h2>
 
 
-                    <div className="text-gray-400 text-sm md:text-ms">
-                        Nike's "Just Do It", Apple's "Think Different", and De Beers' "A Diamond is Forever
-                    </div>
-                    <div className="text-gray-400 text-sm md:text-ms mb-4">
-                        A strong slogan is usually short, memorable, and differentiates the brand
-                    </div>
 
                     {/* Cards Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-auto">
-                        {[
-                            { label: "Critical", color: "#6B3EFF33", icon: TriangleAlert, iconcolor: "#3E6FFF" },
-                            { label: "Missing", color: "#6B3EFF33", icon: Computer, iconcolor: "#3E6FFF" },
-                            { label: "Failed", color: "#FF3E5433", icon: X, iconcolor: "#FF3E41" },
-                            { label: "Reboot", color: "#FFCB3E33", icon: RotateCw, iconcolor: "#FFBF3E" },
-                            { label: "Total", color: "#75FF3E33", icon: MoveUp, iconcolor: "#58FF3E" },
-                            { label: "Approved", color: "#6B3EFF33", icon: Check, iconcolor: "#3E6FFF" },
+                        {[{ label: "Total", color: "#75FF3E33", icon: MoveUp, iconcolor: "#58FF3E" },
+                        { label: "Approved", color: "#6B3EFF33", icon: Check, iconcolor: "#3E6FFF" },
+                        { label: "Critical", color: "#6B3EFF33", icon: TriangleAlert, iconcolor: "#3E6FFF" },
+                        { label: "Missing", color: "#6B3EFF33", icon: Computer, iconcolor: "#3E6FFF" },
+                        { label: "Failed", color: "#FF3E5433", icon: X, iconcolor: "#FF3E41" },
+                        { label: "Reboot", color: "#FFCB3E33", icon: RotateCw, iconcolor: "#FFBF3E" },
+
                         ].map((item, i) => {
                             const Icon = item.icon;
 
@@ -535,8 +605,8 @@ const OverviewDashboard = () => {
                 <div className="col-span-12 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
 
                     {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
-        OS Status
-    </h2> */}
+                        OS Status
+                    </h2> */}
 
                     <h2 className="card-header">OS Status</h2>
 
@@ -561,36 +631,41 @@ const OverviewDashboard = () => {
                     </div>
 
                     {/* OS Cards */}
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-8   ">
-                        {[
-                            { os: "Windows", color: "#3E6FFF" },
-                            { os: "Linux", color: "#01A355" },
-                            { os: "Mac", color: "#E8CF12E3" },
-                            { os: "Server", color: "#E83134D6" },
-                        ].map((item, i) => (
-                            <div
-                                key={i}
-                                onClick={() => handleClickModal('os_status', item.os.toLowerCase())}
-                                className="bg-[#1E273A] border border-[#234779]/70 
-                       p-2 sm:p-3 
-                       rounded-lg 
-                       flex flex-col items-center justify-center 
-                       cursor-pointer 
-                       hover:bg-[#26324A] hover:scale-105 
-                       transition 
-                       min-h-[120px] sm:min-h-[140px]"
-                            >
-                                {/* Control size from parent */}
-                                <div className="w-14 sm:w-16 md:w-20">
-                                    <CircularProgress
-                                        percentage={osCount?.[item.os.toLowerCase()] ?? 0}
-                                        label={item.os}
-                                        color={item.color}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-8">
+  {[
+    { os: "Windows", color: "#3E6FFF" },
+    { os: "Linux", color: "#01A355" },
+    { os: "Mac", color: "#E8CF12E3" },
+    { os: "Server", color: "#E83134D6" },
+  ].map((item, i) => {
+    const count = osCount?.[item.os.toLowerCase()] || 0;
+    const percentage =
+      totalOsCount > 0 ? (count / totalOsCount) * 100 : 0;
+
+    return (
+      <div
+        key={i}
+        onClick={() =>
+          handleClickModal("os_status", item.os.toLowerCase())
+        }
+        className="bg-[#1E273A] border border-[#234779]/70
+                   p-2 sm:p-3 rounded-lg
+                   flex flex-col items-center justify-center
+                   cursor-pointer hover:bg-[#26324A]
+                   hover:scale-105 transition"
+      >
+        <div className="w-14 sm:w-16 md:w-20">
+          <CircularProgress
+            count={count}
+            percentage={percentage}
+            label={item.os}
+            color={item.color}
+          />
+        </div>
+      </div>
+    );
+  })}
+</div>
                 </div>
 
                 {/* Security Posture */}
@@ -776,7 +851,7 @@ const OverviewDashboard = () => {
                         </div>
 
                         {/* Table */}
-                        <div className="flex-1 h-50 overflow-x-auto">
+                        <div className="flex-1 h-50 overflow-x-auto hide-scrollbar ">
                             {/* <div className="text-md text-gray-400 grid grid-cols-4 mb-2"> */}
                             <div className="table-header">
                                 <span>Software</span>
@@ -840,7 +915,7 @@ const OverviewDashboard = () => {
                         </div>
 
                         {/* Table */}
-                        <div className="flex-1 h-50 overflow-x-auto">
+                        <div className="flex-1 h-50 overflow-x-auto hide-scrollbar ">
                             {/* <div className="text-md text-gray-400 grid grid-cols-4 mb-2"> */}
                             <div className="table-header">
                                 <span>Update</span>

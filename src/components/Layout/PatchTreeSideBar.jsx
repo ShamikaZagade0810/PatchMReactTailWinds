@@ -25,7 +25,8 @@ import {
     ClipboardMinus,
     SquareTerminal,
     Search,
-    ChevronDown
+    ChevronDown,
+     ArrowLeft
 } from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
 import logo from "../../assets/planet-gurard.png";
@@ -321,7 +322,7 @@ export const PatchTreeSideBar = ({
             <div className="px-4 py-4 border-b border-[#132238]">
                 <div className="flex items-center justify-between">
                     {/* Logo Section */}
-                    <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="flex items-center gap-3 overflow-hidden ">
                         <div className="min-w-[42px] min-h-[42px] rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
                             <Shield className="w-5 h-5 text-cyan-400" />
                         </div>
@@ -353,67 +354,29 @@ export const PatchTreeSideBar = ({
                     <div className="relative">
                         <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
 
-                        <input
-                            type="text"
-                            placeholder="Search nodes..."
-                            className="
-                w-full
-                bg-[#0d1b2d]
-                border border-[#1d314d]
-                rounded-lg
-                pl-10
-                pr-3
-                py-2
-                text-sm
-                text-white
-                placeholder:text-slate-500
-                outline-none
-                focus:border-cyan-500
-              "
-                        />
+                        <input type="text" placeholder="Search nodes..." className=" w-full bg-[#0d1b2d] border border-[#1d314d] 
+                        rounded-lg pl-10 pr-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-cyan-500 " />
                     </div>
                 </div>
             )}
 
 
 
-            <div className="flex-1 overflow-y-auto px-2 py-3">
+            <div className="flex-1 overflow-y-auto px-2 py-3 hide-scrollbar">
                 {isOpen && (
-                    <p className="text-[10px] text-slate-500 px-3 mb-3 tracking-[2px] uppercase">
-                        System Tree
-                    </p>
+                    <p className="text-[10px] text-slate-500 px-3 mb-3 tracking-[2px] uppercase"> System Tree </p>
                 )}
 
                 {/* Server */}
                 <div className="space-y-2">
-                    <button
-                        onClick={() => setExpandServer(!expandServer)}
-                        className="
-              w-full
-              flex
-              items-center
-              justify-between
-              px-3
-              py-2
-              rounded-lg
-              bg-[#0c2137]
-              hover:bg-[#102946]
-              transition-all
-            "
-                    >
+                    <button onClick={() => setExpandServer(!expandServer)}
+                        className=" w-full flex items-center justify-between px-3 py-2 rounded-lg bg-[#0c2137] hover:bg-[#102946] transition-all " >
                         <div className="flex items-center gap-2 overflow-hidden">
-                            {expandServer ? (
-                                <ChevronDown className="w-4 h-4 text-slate-400" />
-                            ) : (
-                                <ChevronRight className="w-4 h-4 text-slate-400" />
-                            )}
+                            {expandServer ? (<ChevronDown className="w-4 h-4 text-slate-400" />)
+                                : (<ChevronRight className="w-4 h-4 text-slate-400" />)}
 
                             <Server className="w-4 h-4 text-cyan-400" />
-                            {isOpen && (
-                                <span className="text-sm text-white truncate">
-                                    Upstream — WIN-14TISP122I
-                                </span>
-                            )}
+                            {isOpen && (<span className="text-sm text-white truncate"> Upstream — WIN-14TISP122I </span>)}
                         </div>
                     </button>
 
@@ -423,18 +386,7 @@ export const PatchTreeSideBar = ({
                             {/* Updates */}
                             <button
                                 onClick={() => setExpandUpdates(!expandUpdates)}
-                                className="
-                  w-full
-                  flex
-                  items-center
-                  justify-between
-                  px-2
-                  py-2
-                  rounded-md
-                  hover:bg-[#0e1f33]
-                  transition-all
-                "
-                            >
+                                className=" w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all" >
                                 <div className="flex items-center gap-2">
                                     {expandUpdates ? (
                                         <ChevronDown className="w-4 h-4 text-slate-400" />
@@ -446,8 +398,7 @@ export const PatchTreeSideBar = ({
 
                                     {isOpen && (
                                         <span className="text-sm text-slate-300 cursor-pointer hover:text-white"
-                                            onClick={() => navigate("/patchTree/updates")} >
-                                            Updates
+                                            onClick={() => navigate("/patchTree/updates")} > Updates
                                         </span>
                                     )}
                                 </div>
@@ -470,9 +421,7 @@ export const PatchTreeSideBar = ({
                                         </div>
 
                                         {isOpen && (
-                                            <span className="text-[10px] bg-slate-700 text-white px-2 py-[2px] rounded-md">
-                                                105k
-                                            </span>
+                                            <span className="text-[10px] bg-slate-700 text-white px-2 py-[2px] rounded-md"> 105k </span>
                                         )}
                                     </button>
 
@@ -596,6 +545,18 @@ export const PatchTreeSideBar = ({
                     )}
                 </div>
             </div>
+             <div className="px-3 py-2  dark:border-gray-800">
+    <button
+        onClick={() => navigate("/dashboard/mainDashboard")}
+        className=" w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg  bg-[#0c2137] hover:bg-[#12304f] 
+        text-cyan-400 hover:text-cyan-300 transition-all duration-200 border border-[#1d314d] " >
+        <ArrowLeft className="w-4 h-4" />
+
+        {isOpen && (
+            <span className="text-sm font-medium"> Back to Dashboard </span>
+        )}
+    </button>
+</div>
 
             <div className="p-3 border-t border-gray-200 dark:border-gray-800">
                 {isOpen ? (

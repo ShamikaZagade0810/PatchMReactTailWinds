@@ -315,18 +315,24 @@ const ReportsPage = () => {
 
         const inputData = filterConfig[selectedModule?.id];
         console.log("input data", inputData);
-        if (selectedModule?.id === 'category') {
-            if (selectedCategory === "deployment") {
-                inputData.push('ipAddresses');
-                inputData.push('patchList');
-            }
-            if (selectedCategory === "endpoint") {
-                inputData.push('ipAddresses');
-            }
-            if (selectedCategory === "patch") {
-                inputData.push('patchList');
-            }
-        }
+        if (selectedModule?.id === "category") {
+    if (
+        (selectedCategory === "deployment" ||
+         selectedCategory === "endpoint") &&
+        selectedIPs.length === 0
+    ) {
+        toast.error("Please select at least one IP Address");
+        return;
+    }
+    if (
+        (selectedCategory === "deployment" ||
+         selectedCategory === "patch") &&
+        selectedPatches.length === 0
+    ) {
+        toast.error("Please select at least one Patch");
+        return;
+    }
+}
         console.log("customDate",customDate.from,customDate.to);
         const result = inputData.reduce((acc, element) => {
             acc[element] = watch(element);
@@ -356,8 +362,20 @@ const ReportsPage = () => {
             return;
         }
 
+        // Validate IP Address
+if (
+    (selectedModule?.id === "missing" ||
+     selectedModule?.id === "device" ||
+     selectedModule?.id === "status") &&
+    selectedIPs.length === 0
+) {
+    toast.error("Please select at least one IP Address");
+    return;
+}
+
     
         setLoading(true);
+
         try {
             const data = await apiMapping['Report'][selectedModule?.id](result);
             console.log("API Response:", data);
@@ -374,6 +392,23 @@ const ReportsPage = () => {
         }
         setLoading(false);
     };
+
+const resetFilters = () => {
+    setSelectedBranches([]); setSelectedIPs([]); setSelectedPatches([]); setSelectedCategory("");
+    setSelectedGroup("");  setIpAddressList([]);
+    setCustomDate({ from: "", to: "" }); setdynamicReport({ columndata: [], maindata: []  });
+    
+    // React Hook Form fields
+    setValue("branchNames", []);
+    setValue("ipAddresses", []);
+    setValue("patchList", []);
+    setValue("category", "");
+    setValue("update", "");
+    setValue("type", "");
+    setValue("year", "");
+    setValue("month", "");
+    setValue("groupname", "");
+};
 
     {/* MAIN CONTENT */ }
     return (
@@ -486,9 +521,7 @@ const ReportsPage = () => {
                         && selectedModule?.id !== "device" && selectedModule?.id !== "status" && (
                             <div className="bg-[#0F172A] rounded-xl p-4">
 
-                                <h3 className="mb-3 font-semibold text-lg text-white">
-                                    Select Date Range
-                                </h3>
+                                <h3 className="mb-3 font-semibold text-lg text-white"> Select Date Range     </h3>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     {/* {["This Week", "Last Month", "Last 6 Months", "Custom"].map((item, i) => { */}
@@ -572,7 +605,7 @@ const ReportsPage = () => {
                 <p className="text-gray-400">
                     Configure the filters above and click Generate Report.
                 </p> */}
-                <ReusableTable data={dynamicReport.maindata} columns={dynamicReport.columndata} pageSize={10} />
+                <ReusableTable data={dynamicReport.maindata} columns={dynamicReport.columndata} pageSize={10} showExport={true} />
 
 
             </div>
