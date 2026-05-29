@@ -19,189 +19,443 @@ import {
     HardDrive,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+const firmwareVersions = {
+    Switches: {
+        Cisco: {
+            "Catalyst 9200": [
+                "16.9.1", "16.9.4", "16.12.4", "17.3.3", "17.3.5",
+                "17.6.3", "17.6.5", "17.9.4", "17.12.4", "17.15.1"
+            ],
+            "Catalyst 9300": [
+                "16.9.1", "16.9.5", "16.12.5", "17.3.4", "17.3.6",
+                "17.6.4", "17.6.5", "17.9.5", "17.12.4", "17.15.2"
+            ],
+            "Catalyst 9500": [
+                "16.12.3", "16.12.5", "17.3.4", "17.6.4", "17.6.5",
+                "17.9.3", "17.9.5", "17.12.3", "17.12.4", "17.15.1"
+            ],
+            "Nexus 9000": [
+                "9.3.1", "9.3.5", "9.3.8", "9.3.10", "10.1.1",
+                "10.2.1", "10.2.4", "10.3.1", "10.3.3", "10.4.1"
+            ]
+        },
 
-const firmwareData = [
-    {
-        Switches: [
-            {
-                Cisco: [
-                    {
-                        firmwareName: "Catalyst 9300 Enterprise Firmware",
-                        model: "Catalyst 9300-48P",
-                        currentVersion: "17.6.3",
-                        latestVersion: "17.12.4",
-                        releaseDate: "2026-03-18",
-                        type: "Security Patch",
-                        severity: "Critical",
-                        cve: "CVE-2026-1021",
-                        repoStatus: "Outdated",
-                        size: "1.8 GB",
-                        uploadedBy: "Admin",
-                        lastUpdated: "2 hrs ago",
-                    },
-                    {
-                        firmwareName: "Catalyst Core Switch Package",
-                        model: "Catalyst 9500",
-                        currentVersion: "17.9.1",
-                        latestVersion: "17.9.5",
-                        releaseDate: "2026-04-09",
-                        type: "Feature Update",
-                        severity: "Medium",
-                        cve: "No CVE",
-                        repoStatus: "Testing",
-                        size: "2.1 GB",
-                        uploadedBy: "Firmware Team",
-                        lastUpdated: "Yesterday",
-                    },
-                ],
+        Juniper: {
+            "EX2300": [
+                "20.4R3", "21.2R1", "21.2R3", "21.4R2", "21.4R3",
+                "22.1R1", "22.2R1", "22.2R3", "22.4R1", "23.2R1"
+            ],
+            "EX3400": [
+                "20.4R3", "21.2R1", "21.4R1", "21.4R3", "22.1R1",
+                "22.2R1", "22.4R1", "22.4R2", "23.2R1", "23.4R1"
+            ],
+            "EX4400": [
+                "21.2R3", "21.4R3", "22.1R1", "22.2R1", "22.4R1",
+                "22.4R2", "23.2R1", "23.2R2", "23.4R1", "23.4R2"
+            ]
+        },
 
-                Juniper: [
-                    {
-                        firmwareName: "EX4400 Secure OS",
-                        model: "EX4400-24T",
-                        currentVersion: "21.2R3",
-                        latestVersion: "22.1R1",
-                        releaseDate: "2026-02-11",
-                        type: "Hotfix",
-                        severity: "High",
-                        cve: "CVE-2026-4567",
-                        repoStatus: "Vulnerable",
-                        size: "950 MB",
-                        uploadedBy: "Security Ops",
-                        lastUpdated: "5 hrs ago",
-                    },
-                ],
+        Aruba: {
+            "CX 6100": [
+                "10.08.1010", "10.09.1020", "10.10.1040", "10.11.0010",
+                "10.12.0010", "10.12.1020", "10.13.0010", "10.13.1040",
+                "10.14.0010", "10.14.1020"
+            ]
+        },
+        HPE: {
+            "5130 EI": [
+                "7.1.045", "7.1.059", "7.1.070", "7.1.075", "7.1.080",
+                "7.1.090", "7.1.099", "7.1.100", "7.1.110", "7.1.120"
+            ],
 
-                Aruba: [
-                    {
-                        firmwareName: "Aruba CX Access Firmware",
-                        model: "CX 6300",
-                        currentVersion: "10.12.001",
-                        latestVersion: "10.13.004",
-                        releaseDate: "2026-01-29",
-                        type: "Maintenance",
-                        severity: "Low",
-                        cve: "No CVE",
-                        repoStatus: "Up-to-date",
-                        size: "670 MB",
-                        uploadedBy: "Infra Team",
-                        lastUpdated: "3 days ago",
-                    },
-                ],
-            },
-        ],
+            "5140 EI": [
+                "7.1.045", "7.1.060", "7.1.070", "7.1.080", "7.1.090",
+                "7.1.100", "7.1.110", "7.1.120", "7.1.130", "7.1.140"
+            ],
 
-        Routers: [
-            {
-                Cisco: [
-                    {
-                        firmwareName: "ISR WAN Edge Firmware",
-                        model: "ISR 4451-X",
-                        currentVersion: "16.12.5",
-                        latestVersion: "17.3.7",
-                        releaseDate: "2026-05-01",
-                        type: "Security Patch",
-                        severity: "Critical",
-                        cve: "CVE-2026-9001",
-                        repoStatus: "EOS/EOL",
-                        size: "1.4 GB",
-                        uploadedBy: "Network Team",
-                        lastUpdated: "1 hr ago",
-                    },
-                ],
+            "5510 HI": [
+                "7.1.059", "7.1.070", "7.1.080", "7.1.090", "7.1.100",
+                "7.1.110", "7.1.120", "7.1.130", "7.1.140", "7.1.150"
+            ]
+        },
 
-                Juniper: [
-                    {
-                        firmwareName: "MX Edge Routing Package",
-                        model: "MX480",
-                        currentVersion: "20.1R2",
-                        latestVersion: "22.4R1",
-                        releaseDate: "2026-02-17",
-                        type: "Feature Update",
-                        severity: "Medium",
-                        cve: "No CVE",
-                        repoStatus: "Testing",
-                        size: "1.1 GB",
-                        uploadedBy: "Ops Team",
-                        lastUpdated: "Today",
-                    },
-                ],
+        Dell: {
+            "N1548": [
+                "6.5.1.1", "6.5.2.2", "6.6.0.1", "6.6.1.2", "6.6.2.3",
+                "6.7.0.1", "6.7.1.1", "6.7.1.2", "6.7.2.1", "6.7.3.1"
+            ],
 
-                Huawei: [
-                    {
-                        firmwareName: "NetEngine Secure Firmware",
-                        model: "NE40E-X8",
-                        currentVersion: "V8R11",
-                        latestVersion: "V8R13",
-                        releaseDate: "2026-03-10",
-                        type: "Security Patch",
-                        severity: "High",
-                        cve: "CVE-2026-7123",
-                        repoStatus: "Outdated",
-                        size: "2.6 GB",
-                        uploadedBy: "SOC Team",
-                        lastUpdated: "4 hrs ago",
-                    },
-                ],
-            },
-        ],
+            "N2048": [
+                "6.5.0.3", "6.5.1.1", "6.5.2.2", "6.6.0.1", "6.6.1.2",
+                "6.6.2.3", "6.7.0.1", "6.7.1.1", "6.7.2.1", "6.7.3.1"
+            ],
 
-        Firewalls: [
-            {
-                Fortinet: [
-                    {
-                        firmwareName: "FortiOS Enterprise Security",
-                        model: "FortiGate 200F",
-                        currentVersion: "7.0.4",
-                        latestVersion: "7.4.1",
-                        releaseDate: "2026-04-14",
-                        type: "Critical Patch",
-                        severity: "Critical",
-                        cve: "CVE-2026-8888",
-                        repoStatus: "Vulnerable",
-                        size: "4.2 GB",
-                        uploadedBy: "Cyber Defense",
-                        lastUpdated: "30 mins ago",
-                    },
-                ],
+            "S4148F": [
+                "10.4.0.1", "10.4.1.1", "10.5.0.1", "10.5.1.2", "10.5.2.3",
+                "10.5.3.1", "10.5.4.0", "10.5.5.1", "10.5.6.2", "10.5.7.0"
+            ]
+        },
 
-                "Palo Alto": [
-                    {
-                        firmwareName: "PAN-OS Secure Release",
-                        model: "PA-5220",
-                        currentVersion: "10.1.3",
-                        latestVersion: "11.0.2",
-                        releaseDate: "2026-03-27",
-                        type: "Feature Update",
-                        severity: "High",
-                        cve: "CVE-2026-7890",
-                        repoStatus: "Testing",
-                        size: "3.7 GB",
-                        uploadedBy: "Security Admin",
-                        lastUpdated: "Today",
-                    },
-                ],
+        "Extreme Networks": {
+            "X440-G2": [
+                "30.2.1.8", "30.3.1.4", "30.4.1.1", "30.5.1.3", "31.1.1.2",
+                "31.2.1.1", "31.3.1.1", "31.4.1.2", "32.1.1.4", "32.2.1.1"
+            ],
 
-                Sophos: [
-                    {
-                        firmwareName: "Sophos XGS Firmware",
-                        model: "XGS 4300",
-                        currentVersion: "19.0",
-                        latestVersion: "20.0",
-                        releaseDate: "2026-02-21",
-                        type: "Security Patch",
-                        severity: "Medium",
-                        cve: "No CVE",
-                        repoStatus: "Up-to-date",
-                        size: "2.9 GB",
-                        uploadedBy: "Infra Admin",
-                        lastUpdated: "2 days ago",
-                    },
-                ],
-            },
-        ],
+            "X460-G2": [
+                "30.2.1.8", "30.3.1.4", "30.4.1.1", "30.5.1.3", "31.1.1.2",
+                "31.2.1.1", "31.3.1.1", "31.4.1.2", "32.1.1.4", "32.2.1.1"
+            ],
+
+            "X670-G2": [
+                "30.3.1.4", "30.4.1.1", "30.5.1.3", "31.1.1.2", "31.2.1.1",
+                "31.3.1.1", "31.4.1.2", "32.1.1.4", "32.2.1.1", "32.3.1.2"
+            ]
+        }
     },
-];
+
+    Routers: {
+        Cisco: {
+            "ISR4321": [
+                "16.12.5", "17.3.3", "17.3.5", "17.6.2", "17.6.4",
+                "17.9.1", "17.9.4", "17.12.1", "17.12.4", "17.15.1"
+            ]
+        },
+
+        Huawei: {
+            "NE40E-X8": [
+                "V8R10", "V8R11", "V8R12", "V8R13", "V8R15",
+                "V8R16", "V8R18", "V8R20", "V8R21", "V8R22"
+            ]
+        },
+
+        MikroTik: {
+            "CCR2004": [
+                "6.49.6", "7.1", "7.2", "7.4", "7.6",
+                "7.8", "7.10", "7.12", "7.15", "7.18"
+            ]
+        },
+        Juniper: {
+            "MX204": [
+                "20.4R3", "21.2R1", "21.2R3", "21.4R2", "21.4R3",
+                "22.1R1", "22.2R1", "22.2R3", "22.4R1", "23.2R1"
+            ],
+
+            "MX480": [
+                "20.4R3", "21.2R1", "21.4R1", "21.4R3", "22.1R1",
+                "22.2R1", "22.4R1", "22.4R2", "23.2R1", "23.4R1"
+            ],
+
+            "MX960": [
+                "20.4R3", "21.2R3", "21.4R3", "22.1R1", "22.2R3",
+                "22.4R1", "22.4R2", "23.2R1", "23.4R1", "23.4R2"
+            ]
+        },
+
+        Fortinet: {
+            "FortiGate 60F": [
+                "6.4.8", "6.4.10", "6.4.12", "7.0.1", "7.0.4",
+                "7.0.8", "7.0.12", "7.2.4", "7.2.8", "7.4.5"
+            ],
+
+            "FortiGate 100F": [
+                "6.4.8", "6.4.11", "6.4.12", "7.0.4", "7.0.8",
+                "7.0.12", "7.2.4", "7.2.8", "7.4.3", "7.4.5"
+            ]
+        }
+    },
+
+    Firewalls: {
+        Fortinet: {
+            "FortiGate 100F": [
+                "6.4.8", "6.4.10", "6.4.12", "7.0.1", "7.0.4",
+                "7.0.8", "7.0.12", "7.2.4", "7.2.8", "7.4.5"
+            ]
+        },
+
+        "Palo Alto": {
+            "PA-850": [
+                "10.1.3", "10.1.8", "10.1.14", "10.2.1", "10.2.6",
+                "10.2.8", "11.0.2", "11.0.6", "11.1.3", "11.2.3"
+            ]
+        },
+        Sophos: {
+            "XGS 116": [
+                "18.5", "18.5 MR1", "18.5 MR2", "19.0", "19.0 MR1",
+                "19.5", "19.5 MR1", "20.0", "20.0 MR1", "20.0 MR2"
+            ],
+
+            "XGS 2300": [
+                "18.5", "18.5 MR1", "18.5 MR2", "19.0", "19.0 MR1",
+                "19.5", "19.5 MR1", "20.0", "20.0 MR1", "20.0 MR2"
+            ],
+
+            "XGS 4300": [
+                "18.5", "18.5 MR1", "18.5 MR2", "19.0", "19.0 MR1",
+                "19.5", "19.5 MR1", "20.0", "20.0 MR1", "20.0 MR2"
+            ]
+        },
+
+        "Check Point": {
+            "Quantum 6200": [
+                "R80.40", "R81", "R81.10", "R81.10 JHF 55", "R81.10 JHF 78",
+                "R81.20", "R81.20 JHF 26", "R82 EA", "R82", "R82 JHF 10"
+            ],
+
+            "Quantum 6600": [
+                "R80.40", "R81", "R81.10", "R81.10 JHF 55", "R81.10 JHF 78",
+                "R81.20", "R81.20 JHF 26", "R82 EA", "R82", "R82 JHF 10"
+            ]
+        },
+
+        SonicWall: {
+            "NSA 2700": [
+                "6.5.4.7", "6.5.4.8", "6.5.4.10", "7.0.0", "7.0.1",
+                "7.0.1.1", "7.0.1.2", "7.0.1.3", "7.1.0", "7.1.1"
+            ],
+
+            "NSA 4700": [
+                "6.5.4.7", "6.5.4.8", "6.5.4.10", "7.0.0", "7.0.1",
+                "7.0.1.1", "7.0.1.2", "7.0.1.3", "7.1.0", "7.1.1"
+            ],
+
+            "NSa 5700": [
+                "6.5.4.7", "6.5.4.8", "6.5.4.10", "7.0.0", "7.0.1",
+                "7.0.1.1", "7.0.1.2", "7.0.1.3", "7.1.0", "7.1.1"
+            ]
+        }
+    },
+    "Wireless Controllers": {
+        Cisco: {
+            "9800-L": [
+                "17.3.4", "17.3.5", "17.6.3", "17.6.5", "17.9.3",
+                "17.9.4", "17.12.1", "17.12.3", "17.12.4", "17.15.1"
+            ],
+
+            "9800-40": [
+                "17.3.4", "17.3.5", "17.6.3", "17.6.5", "17.9.3",
+                "17.9.4", "17.12.1", "17.12.3", "17.12.4", "17.15.1"
+            ],
+
+            "9800-80": [
+                "17.3.4", "17.3.5", "17.6.3", "17.6.5", "17.9.3",
+                "17.9.4", "17.12.1", "17.12.3", "17.12.4", "17.15.1"
+            ]
+        },
+
+        Aruba: {
+            "7205": [
+                "8.7.1", "8.8.0", "8.8.1", "8.9.0", "8.10.0",
+                "8.10.1", "8.11.0", "8.11.1", "8.12.0", "8.12.1"
+            ],
+
+            "7210": [
+                "8.7.1", "8.8.0", "8.8.1", "8.9.0", "8.10.0",
+                "8.10.1", "8.11.0", "8.11.1", "8.12.0", "8.12.1"
+            ],
+
+            "7240": [
+                "8.7.1", "8.8.0", "8.8.1", "8.9.0", "8.10.0",
+                "8.10.1", "8.11.0", "8.11.1", "8.12.0", "8.12.1"
+            ]
+        },
+
+        Juniper: {
+            "Mist Edge": [
+                "1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.4.0",
+                "2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"
+            ],
+
+            "WLC-100": [
+                "1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.4.0",
+                "2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"
+            ]
+        }
+    },
+    "Access Points": {
+        Cisco: {
+            "C9120": [
+                "17.3.4", "17.3.5", "17.6.3", "17.6.5", "17.9.3",
+                "17.9.4", "17.12.1", "17.12.3", "17.12.4", "17.15.1"
+            ],
+
+            "C9130": [
+                "17.3.4", "17.3.5", "17.6.3", "17.6.5", "17.9.3",
+                "17.9.4", "17.12.1", "17.12.3", "17.12.4", "17.15.1"
+            ],
+
+            "C9166": [
+                "17.6.3", "17.6.5", "17.9.3", "17.9.4", "17.12.1",
+                "17.12.3", "17.12.4", "17.15.1", "17.15.2", "17.15.3"
+            ]
+        },
+
+        Ubiquiti: {
+            "U6 Lite": [
+                "6.0.14", "6.2.26", "6.5.28", "6.5.54", "6.6.55",
+                "6.6.65", "7.0.23", "7.1.24", "7.2.94", "7.3.76"
+            ],
+
+            "U6 Pro": [
+                "6.0.14", "6.2.26", "6.5.28", "6.5.54", "6.6.55",
+                "6.6.65", "7.0.23", "7.1.24", "7.2.94", "7.3.76"
+            ],
+
+            "U7 Pro": [
+                "7.0.23", "7.1.24", "7.2.94", "7.3.76", "7.4.12",
+                "7.5.18", "7.6.10", "7.7.15", "7.8.20", "7.9.5"
+            ]
+        },
+
+        Aruba: {
+            "AP-515": [
+                "8.7.1", "8.8.0", "8.9.0", "8.10.0", "8.10.1",
+                "8.11.0", "8.11.1", "8.12.0", "8.12.1", "8.13.0"
+            ],
+
+            "AP-535": [
+                "8.7.1", "8.8.0", "8.9.0", "8.10.0", "8.10.1",
+                "8.11.0", "8.11.1", "8.12.0", "8.12.1", "8.13.0"
+            ],
+
+            "AP-635": [
+                "8.10.0", "8.10.1", "8.11.0", "8.11.1", "8.12.0",
+                "8.12.1", "8.13.0", "8.13.1", "8.14.0", "8.14.1"
+            ]
+        }
+    },
+    "Load Balancers": {
+        F5: {
+            "BIG-IP i2600": [
+                "15.1.5", "15.1.8", "16.1.2", "16.1.3", "16.1.4",
+                "17.0.0", "17.1.0", "17.1.1", "17.1.2", "17.1.3"
+            ],
+
+            "BIG-IP i5800": [
+                "15.1.5", "15.1.8", "16.1.2", "16.1.3", "16.1.4",
+                "17.0.0", "17.1.0", "17.1.1", "17.1.2", "17.1.3"
+            ]
+        },
+
+        Citrix: {
+            "ADC VPX": [
+                "13.0-82", "13.0-88", "13.0-91", "13.1-24", "13.1-33",
+                "13.1-37", "13.1-42", "14.1-8", "14.1-12", "14.1-17"
+            ],
+
+            "ADC MPX": [
+                "13.0-82", "13.0-88", "13.0-91", "13.1-24", "13.1-33",
+                "13.1-37", "13.1-42", "14.1-8", "14.1-12", "14.1-17"
+            ]
+        },
+
+        A10: {
+            "Thunder 4435": [
+                "4.1.4", "4.1.4-P3", "4.1.4-P5", "5.0.0", "5.1.0",
+                "5.1.1", "5.2.0", "5.2.1", "5.2.2", "5.2.3"
+            ],
+
+            "Thunder 7445": [
+                "4.1.4", "4.1.4-P3", "4.1.4-P5", "5.0.0", "5.1.0",
+                "5.1.1", "5.2.0", "5.2.1", "5.2.2", "5.2.3"
+            ]
+        }
+    },
+    "SD-WAN Devices": {
+        Cisco: {
+            "vEdge 1000": [
+                "17.3.4", "17.6.3", "17.6.5", "17.9.4", "17.12.1",
+                "17.12.4", "17.15.1", "17.15.2", "17.15.3", "17.16.1"
+            ],
+
+            "Catalyst 8500": [
+                "17.3.4", "17.6.3", "17.6.5", "17.9.4", "17.12.1",
+                "17.12.4", "17.15.1", "17.15.2", "17.15.3", "17.16.1"
+            ]
+        },
+
+        VMware: {
+            "Edge 510": [
+                "4.3.0", "4.3.1", "4.4.0", "4.5.0", "5.0.0",
+                "5.1.0", "5.2.0", "5.2.1", "5.3.0", "5.4.0"
+            ],
+
+            "Edge 610": [
+                "4.3.0", "4.3.1", "4.4.0", "4.5.0", "5.0.0",
+                "5.1.0", "5.2.0", "5.2.1", "5.3.0", "5.4.0"
+            ]
+        },
+
+        Fortinet: {
+            "FortiGate SD-WAN 100F": [
+                "6.4.12", "7.0.4", "7.0.8", "7.0.12", "7.2.4",
+                "7.2.8", "7.2.10", "7.4.1", "7.4.3", "7.4.5"
+            ],
+
+            "FortiGate SD-WAN 200F": [
+                "6.4.12", "7.0.4", "7.0.8", "7.0.12", "7.2.4",
+                "7.2.8", "7.2.10", "7.4.1", "7.4.3", "7.4.5"
+            ]
+        }
+    }
+};
+const buildFirmwareRecords = (oem, model, versions) => {
+    return versions.map((version, index) => ({
+        firmwareName: `${oem} ${model} Firmware`,
+        model,
+        currentVersion: index === 0 ? version : versions[index - 1],
+        latestVersion: version,
+        releaseDate: `2025-${String((index % 12) + 1).padStart(2, "0")}-15`,
+        type: [
+            "Security Patch",
+            "Feature Update",
+            "Hotfix",
+            "Maintenance"
+        ][index % 4],
+        severity: [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+        ][index % 4],
+        cve: `CVE-2025-${5000 + index}`,
+        repoStatus: [
+            "Available",
+            "Testing",
+            "Outdated",
+            "Up-to-date"
+        ][index % 4],
+        size: `${700 + (index * 100)} MB`,
+        uploadedBy: "Firmware Team",
+        lastUpdated: `${index + 1} days ago`
+    }));
+};
+
+const firmwareData = [];
+
+Object.entries(firmwareVersions).forEach(([category, oems]) => {
+    const categoryObj = {};
+
+    Object.entries(oems).forEach(([oem, models]) => {
+        categoryObj[oem] = [];
+
+        Object.entries(models).forEach(([model, versions]) => {
+            categoryObj[oem].push(
+                ...buildFirmwareRecords(
+                    oem,
+                    model,
+                    versions
+                )
+            );
+        });
+    });
+
+    firmwareData.push({
+        [category]: [categoryObj]
+    });
+});
+
+console.log(firmwareData);
 
 const categories = [
     {
@@ -255,27 +509,27 @@ const severityColors = {
     Medium: "text-yellow-400",
     Low: "text-green-400",
 };
-
 const getFirmwareRows = (category, oem) => {
-    const dataRoot = firmwareData[0];
+    const categoryEntry = firmwareData.find(
+        item => item[category]
+    );
 
-    const categoryData = dataRoot[category]?.[0];
+    if (!categoryEntry) {
+        return [];
+    }
 
-    if (!categoryData) return [];
+    const categoryData = categoryEntry[category]?.[0];
 
-    return categoryData[oem] || [];
+    return categoryData?.[oem] || [];
 };
-
 const FirmwareInventory = () => {
     const [selectedCategory, setSelectedCategory] = useState("Switches");
     const [selectedOEM, setSelectedOEM] = useState("Cisco");
     const [expandedCategory, setExpandedCategory] = useState("Switches");
     const [search, setSearch] = useState("");
     const [expandedRow, setExpandedRow] = useState(null);
-
-
-
     const [currentPage, setCurrentPage] = useState(1);
+    const [showUploadModal, setShowUploadModal] = useState(false);
     const itemsPerPage = 10;
 
     const filteredData = useMemo(() => {
@@ -396,7 +650,7 @@ const FirmwareInventory = () => {
                                     className="pl-10 pr-4 py-3 rounded-2xl bg-[#0d1722] border border-white/10 focus:outline-none focus:border-cyan-500 w-[280px]" />
                             </div> */}
 
-                            <button className="px-3 py-2 rounded-2xl bg-cyan-500 hover:opacity-90 transition font-medium"> Upload Package    </button>
+                            <button className="px-3 py-2 rounded-2xl bg-cyan-500 hover:opacity-90 transition font-medium" onClick={() => setShowUploadModal(true)}> Upload Package    </button>
                         </div>
                     </div>
 
@@ -436,8 +690,8 @@ const FirmwareInventory = () => {
                                         <th className="px-4 py-3 font-medium">OEM</th>
                                         <th className="px-4 py-3 font-medium">Device</th>
                                         <th className="px-4 py-3 font-medium">Model</th>
-                                        <th className="px-4 py-3 font-medium">Current</th>
-                                        <th className="px-4 py-3 font-medium">Latest</th>
+                                        {/* <th className="px-4 py-3 font-medium">Current</th> */}
+                                        <th className="px-4 py-3 font-medium">Version</th>
                                         <th className="px-4 py-3 font-medium">Release Date</th>
                                         <th className="px-4 py-3 font-medium">Type</th>
                                         <th className="px-4 py-3 font-medium text-center">
@@ -496,9 +750,9 @@ const FirmwareInventory = () => {
                                                     </td>
 
                                                     {/* Current */}
-                                                    <td className="px-4 py-3 text-slate-300">
+                                                    {/* <td className="px-4 py-3 text-slate-300">
                                                         {item.currentVersion}
-                                                    </td>
+                                                    </td> */}
 
                                                     {/* Latest */}
                                                     <td className="px-4 py-3 text-cyan-400 font-semibold">
@@ -717,6 +971,204 @@ const FirmwareInventory = () => {
 
                 </div>
             </div>
+            <AnimatePresence>
+                {showUploadModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="w-[1000px] max-h-[90vh] overflow-y-auto rounded-3xl bg-[#071018] border border-white/10 shadow-2xl"
+                        >
+                            {/* HEADER */}
+                            <div className="flex items-center justify-between p-5 border-b border-white/10">
+                                <div>
+                                    <h2 className="text-xl font-bold text-cyan-400">
+                                        Upload Firmware Package
+                                    </h2>
+
+                                    <p className="text-sm text-slate-400 mt-1">
+                                        Add a new firmware package to repository
+                                    </p>
+                                </div>
+
+                                <button
+                                    onClick={() => setShowUploadModal(false)}
+                                    className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            {/* BODY */}
+                            <div className="p-6">
+
+                                <div className="grid grid-cols-2 gap-4">
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Category
+                                        </label>
+
+                                        <select className="w-full  bg-[#0d1722] border border-white/10 rounded-xl p-2">
+                                            <option>Switches</option>
+                                            <option>Routers</option>
+                                            <option>Firewalls</option>
+                                            <option>Wireless Controllers</option>
+                                            <option>Access Points</option>
+                                            <option>Load Balancers</option>
+                                            <option>SD-WAN Devices</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            OEM
+                                        </label>
+
+                                        <input
+                                            className="w-full  bg-[#0d1722] border border-white/10 rounded-xl p-2"
+                                            placeholder="Cisco"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Model
+                                        </label>
+
+                                        <input
+                                            className="w-full  bg-[#0d1722] border border-white/10 rounded-xl p-2"
+                                            placeholder="Catalyst 9300"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Firmware Name
+                                        </label>
+
+                                        <input
+                                            className="w-full  bg-[#0d1722] border border-white/10 rounded-xl p-2"
+                                            placeholder="Cisco Catalyst Security Release"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Current Version
+                                        </label>
+
+                                        <input
+                                            className="w-full  bg-[#0d1722] border border-white/10 rounded-xl p-2"
+                                            placeholder="17.9.4"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Latest Version
+                                        </label>
+
+                                        <input
+                                            className="w-full bg-[#0d1722] border border-white/10 rounded-xl p-2"
+                                            placeholder="17.12.4"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Severity
+                                        </label>
+
+                                        <select className="w-full  bg-[#0d1722] border border-white/10 rounded-xl p-2">
+                                            <option>Critical</option>
+                                            <option>High</option>
+                                            <option>Medium</option>
+                                            <option>Low</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm text-slate-300">
+                                            Firmware Type
+                                        </label>
+
+                                        <select className="w-full bg-[#0d1722] border border-white/10 rounded-xl p-2">
+                                            <option>Security Patch</option>
+                                            <option>Feature Update</option>
+                                            <option>Maintenance</option>
+                                            <option>Hotfix</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                {/* Upload Section */}
+
+                                <div className="mt-6">
+
+                                    <label className="block text-sm text-slate-300 ">
+                                        Firmware Package
+                                    </label>
+
+                                    <input
+                                        type="file"
+                                        className="w-full rounded-xl border border-dashed border-cyan-500/30 bg-[#0d1722] p-3"
+                                    />
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <label className="block text-sm text-slate-300">
+                                        Release Notes
+                                    </label>
+
+                                    <input
+                                        type="file"
+                                        className="w-full rounded-xl border border-dashed border-cyan-500/30 bg-[#0d1722] p-3"
+                                    />
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <label className="block text-sm text-slate-300 mb-2">
+                                        Description
+                                    </label>
+
+                                    <textarea
+                                        rows="4"
+                                        className="w-full rounded-xl border border-white/10 bg-[#0d1722] p-3"
+                                        placeholder="Enter firmware details..."
+                                    />
+                                </div>
+                            </div>
+
+                            {/* FOOTER */}
+
+                            <div className="flex justify-end gap-3 p-5 border-t border-white/10">
+
+                                <button
+                                    onClick={() => setShowUploadModal(false)}
+                                    className="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button className="px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-600">
+                                    Upload Firmware
+                                </button>
+
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
