@@ -275,44 +275,90 @@ const LinuxDashboard = () => {
  
 
     return (
-      <div key={key}
-        onClick={() => { console.log(onClickId); handleClickModalParameter('Patches', onClickId.toLowerCase(), reqData) }}
-        className="dark:bg-[#121A2B] border border-gray-700 rounded-lg p-3 text-white shadow-md">
+      <div
+  key={key}
+  onClick={() =>
+    handleClickModalParameter(
+      "Patches",
+      onClickId.toLowerCase(),
+      reqData
+    )
+  }
+  className="
+    group
+    relative
+    overflow-hidden
+    cursor-pointer
+    rounded-xl
+    border border-slate-700/50
+    bg-gradient-to-br from-[#121A2B] to-[#1A2438]
+    p-2
+    transition-all duration-300
+    hover:border-cyan-500/50
+    hover:shadow-lg hover:shadow-cyan-500/10
+    hover:-translate-y-1
+  "
+>
+  {/* Glow Effect */}
+  {/* <div
+    className="
+      absolute inset-0 opacity-0
+      group-hover:opacity-100
+      transition-opacity duration-300
+      bg-gradient-to-r from-transparent via-white/5 to-transparent
+    "
+  /> */}
 
-        {/* Top */}
-        <div className="flex justify-between items-center mb-2">
-          <div className={`w-6 h-6 flex items-center justify-center border rounded ${colorMap[color].split(" ")[1]}`}>
-            <span className={`text-xs ${colorMap[color].split(" ")[0]}`}>≡</span>
-          </div>
+  {/* First Row */}
+  <div className="flex items-center justify-between">
+    {/* Icon */}
+    <div
+      className={`
+        h-10 w-10
+        rounded-lg
+        flex items-center justify-center
+        border
+        backdrop-blur-sm
+        ${colorMap[color].split(" ")[1]}
+      `}
+    >
+      <span
+        className={`
+          text-lg font-bold
+          ${colorMap[color].split(" ")[0]}
+        `}
+      >
+        ≡
+      </span>
+    </div>
 
-          <div className="bg-green-600/20 text-green-400 text-[10px] px-2 py-[2px] rounded">
-            ↗ +2 today
-          </div>
-        </div>
+    {/* Count */}
+    <div
+      className={`
+        text-3xl font-bold tracking-tight
+        ${colorMap[color].split(" ")[0]}
+      `}
+    >
+      {value}
+    </div>
+  </div>
 
-        {/* Value */}
-        <div className={`text-lg font-semibold ${colorMap[color].split(" ")[0]}`}>
-          {value}
-        </div>
+  {/* Second Row */}
+  <div className="mt-4">
+    <h3 className="text-sm font-medium text-slate-300 tracking-wide">
+      {title}
+    </h3>
+  </div>
 
-        {/* Title */}
-        <div className="text-sm text-gray-300">{title}</div>
-
-        {/* Progress */}
-        <div className="mt-2">
-          <div className="w-full h-[3px] bg-gray-700 rounded">
-            <div
-              className={`h-full rounded ${colorMap[color].split(" ")[2]} transition-all duration-500`}
-              style={{ width: `${percent}%` }}
-            ></div>
-          </div>
-
-          <div className="flex justify-between text-[10px] text-gray-400 mt-1">
-            <span>Status</span>
-            <span>{value}/{total}</span>
-          </div>
-        </div>
-      </div>
+  {/* Bottom Accent Line */}
+  <div
+    className={`
+      mt-3 h-1 rounded-full
+      ${colorMap[color].split(" ")[2]}
+      opacity-70
+    `}
+  />
+</div>
     );
   }
 
@@ -580,8 +626,8 @@ const LinuxDashboard = () => {
           {/* <h2 className="text-lg text-white mb-3 border-l-4 border-indigo-500 px-2">Endpoint Installed Package</h2> */}
           <h2 className="card-header"> Endpoint Installed Package </h2>
           {/* Fake Chart Line */}
-          <div className="  rounded-lg">
-            <div className="w-full h-[400px] overflow-auto">
+          <div className="  rounded-lg ">
+            <div className="w-full h-[400px] overflow-auto hide-scrollbar ">
               <div
                 className="grid text-xs font-semibold text-gray-400 bg-[#1e293b] p-3 rounded-t-lg sticky top-0 z-10"
                 style={{
