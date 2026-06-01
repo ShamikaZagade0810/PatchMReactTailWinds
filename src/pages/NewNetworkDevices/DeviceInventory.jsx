@@ -41,7 +41,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-RT-11021",
-                hostname: "MUM-EDGE-RTR-01",
+                hostname: "HQ-FLR01-GW-RTR01",
                 ipAddress: "10.10.14.1",
                 macAddress: "3C:8D:20:7A:91:EF",
                 vendor: "Cisco",
@@ -109,7 +109,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-FW-99008",
-                hostname: "BLR-FW-EDGE-02",
+                 hostname: "HQ-DC-FW01",
                 ipAddress: "10.45.0.2",
                 macAddress: "18:E7:28:FA:44:91",
                 vendor: "Palo Alto Networks",
@@ -219,7 +219,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-SW-33012",
-                hostname: "BLR-ACCESS-SW-12",
+                hostname: "HQ-FLR01-CORE-SW01",
                 ipAddress: "10.60.8.22",
                 macAddress: "94:B4:0F:2C:AA:19",
                 vendor: "Aruba",
@@ -274,7 +274,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-WLC-44011",
-                hostname: "DEL-WLC-CORE-01",
+                hostname: "HQ-WLC01",
                 ipAddress: "10.80.1.20",
                 macAddress: "40:55:39:9D:AB:44",
                 vendor: "Cisco",
@@ -350,7 +350,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-LB-55002",
-                hostname: "HYD-LB-ADC-01",
+                hostname: "HQ-ADC01",
                 ipAddress: "10.90.4.15",
                 macAddress: "A4:5E:60:9C:22:1A",
                 vendor: "F5",
@@ -411,7 +411,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-SW-77101",
-                hostname: "CHN-ACCESS-SW-01",
+                hostname: "HQ-FLR01-ACC-SW01",
                 ipAddress: "10.55.1.12",
                 macAddress: "D8:9C:67:2F:11:AB",
                 vendor: "Cisco",
@@ -457,7 +457,7 @@ const DeviceInventory = () => {
         {
             deviceData: {
                 deviceId: "DEV-AP-88021",
-                hostname: "MUM-WIFI-AP-21",
+                hostname: "HQ-FLR03-AP01",
                 ipAddress: "10.70.12.44",
                 macAddress: "84:3D:C6:AA:92:10",
                 vendor: "Aruba",

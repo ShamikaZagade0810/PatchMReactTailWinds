@@ -208,7 +208,7 @@ const SendMultiplePatches = () => {
         <>
             <form onSubmit={handleSubmit(handleUpload)}>
 
-                <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
+                <div className="bg-white-200 dark:bg-[#0B1220] rounded-2xl p-6 border border-gray-600/10  dark:border-white/10 shadow-xl">
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -644,11 +644,11 @@ const SendMultiplePatches = () => {
 
     // MAIN CONTENT
     return (
-        <div className="min-h-screen  bg-gray-100 dark:bg-[#000000] text-white p-2">
+        <div className="min-h-screen  bg-gray-10 dark:bg-[#000000] text-white p-2">
 
             {/* Toast Container */}
 
-            <div className=" bg-[#0B1220] rounded-xl p-2 border border-white/10">
+            <div className=" bg-white dark:bg-[#0B1220] rounded-xl p-2 border border-white/10">
                 <ToastContainer />
                 <div className="flex gap-2 mb-4">
                     {tabs.map((tab, index) => (
@@ -658,7 +658,7 @@ const SendMultiplePatches = () => {
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all duration-300 
                              ${activeTab === index
                                     ? "bg-blue-500/20 text-blue-400 border border-blue-500/40 "
-                                    : "text-gray-400 hover:text-blue-400 hover:bg-[#1E293B] "
+                                    : "text-gray-800 dark:text-gray-400 hover:text-blue-400 hover:bg-[#1E293B] "
                                 }`}
                         >
                             {tab.icon}

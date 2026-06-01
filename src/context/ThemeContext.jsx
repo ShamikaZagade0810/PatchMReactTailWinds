@@ -16,7 +16,7 @@ export function ThemeProvider({ children }) {
 
     return "light";
   });
-
+// const [theme, setTheme] = useState("light ");
   useEffect(() => {
     const root = document.documentElement;
 

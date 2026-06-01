@@ -15,7 +15,7 @@ import {
 const backupData = [
   {
     id: 1,
-    device:"MUM-EDGE-RTR-01",
+    device:"HQ-FLR01-GW-RTR01",
     ip: "10.10.14.1",
     vendor: "Cisco",
     version: "CFG-101",
@@ -27,7 +27,7 @@ const backupData = [
   },
   {
     id: 2,
-    device: "BLR-FW-EDGE-02",
+    device: "HQ-DC-FW01",
     ip: "10.45.0.2",
     vendor: "Palo Alto Networks",
     version: "CFG-98",
@@ -51,7 +51,7 @@ const backupData = [
   },
   {
     id: 4,
-    device: "BLR-ACCESS-SW-12",
+    device: "HQ-FLR01-CORE-SW01",
     ip: "10.60.8.22",
     vendor: "Aruba",
     version: "CFG-52",

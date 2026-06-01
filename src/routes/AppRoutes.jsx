@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import Login from "../pages/Login";
+// import Login from "../pages/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 
@@ -74,6 +74,7 @@ import FirmwareUpgrade from "../pages/NewNetworkDevices/FirmwareUpgrade.jsx";
 import ConfigurationForm from "../pages/NewNetworkDevices/ConfigurationForm.jsx";
 import NewFirmwareUpgrade from "../pages/NewNetworkDevices/NewFirmwareUpgrade.jsx";
 import UpgradeResult from "../pages/NewNetworkDevices/UpgradeResult.jsx";
+import Login from "../pages/Login.jsx";
 import NewWindowDashboard from "../pages/NewWindowDashboard.jsx";
 import SecurityUpdates from "../pages/PatchTree/SecurityUpdates.jsx";
 import ApproveDecline from "../pages/PatchTree/ApproveDecline.jsx";
@@ -324,7 +325,7 @@ export default function AppRoutes() {
               <PMOverviewDashboard />
             </ProtectedRoute>} />
 
-        <Route path="/patchTree/patchDetails/:srNo"
+        <Route path="/patchTree/patchDetails/:title"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchDetails />
@@ -579,6 +580,14 @@ export default function AppRoutes() {
               {/* <DbMonitoringDashboard /> */}
               <UpgradeResult />
             </ProtectedRoute>} />
+
+
+
+             {/* <Route path="/section/Login23"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <Login1 />
+            </ProtectedRoute>} /> */}
 
 
       </Route>

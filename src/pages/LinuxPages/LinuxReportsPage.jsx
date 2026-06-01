@@ -95,8 +95,7 @@ const LinuxReportsPage = () => {
             completed: getLinuxCompletedReport,
             failed: getLinuxFailedReport,
             pending: getLinuxPendingReport,
-            missing: getLinuxMissingReport,
-
+            missingReport: getLinuxMissingReport,
         }
 
     };

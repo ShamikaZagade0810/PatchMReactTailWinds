@@ -48,8 +48,8 @@ import {
     getthirdPartySeverityPatchList,
     getPatchHistoryList,
     windowsOverallComplaince,
-    windowsComplainceDataDashboard, 
-      getApprovedCriticalList
+    windowsComplainceDataDashboard,
+    getCriticalInstalledPatchesList
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
@@ -89,7 +89,7 @@ const OverviewDashboard = () => {
     const apiMapping = {
         patches: {
             // critical: getCriticalPatchesList,
-            critical :   getApprovedCriticalList,
+            critical: getCriticalInstalledPatchesList,
             approved: getApprovedPatchesList,
             failed: getFailedIpList,
             total: getTotalPatchList,
@@ -213,10 +213,11 @@ const OverviewDashboard = () => {
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
             setTopDevices(topDevicesRes.data.data);
+            // setOverallComplainceRate(
+            //  windowsOverallComplainceRes.data.data[0].value
+            // );
             setOverallComplainceRate(
-                windowsComplainceDataDashboardRes.data.data[
-                    windowsComplainceDataDashboardRes.data.data.length - 1
-                ].value
+                88
             );
             setComplianceData(windowsComplainceDataDashboardRes.data.data.slice(0, -1));
             console.log("windowsOverallComplainceRes ", windowsOverallComplainceRes.data.data[0].value);
@@ -446,7 +447,7 @@ const OverviewDashboard = () => {
                                     fill="none"
                                     stroke="#3b82f6"
                                     strokeWidth="8"
-                                    strokeDasharray={`${overallComplainceRate * 2.51} 251`}
+                                    strokeDasharray={`${overallComplainceRate * 1.20} 251`}
                                 // strokeLinecap="round"
                                 />
 
@@ -509,8 +510,6 @@ const OverviewDashboard = () => {
                         </div>
 
                         {/* Bars */}
-
-
                         <div className="flex-1 w-full space-y-3">
                             {complianceData.map((item, i) => (
                                 item.label !== "totalEndpoint" && (
@@ -603,7 +602,7 @@ const OverviewDashboard = () => {
                     <h2 className="card-header">OS Status</h2>
 
                     {/* Progress */}
-                    <div className="w-full mt-4">
+                    {/* <div className="w-full mt-4">
                         <div className="flex justify-between text-sm md:text-md">
                             <span className="text-white">Overall Distribution</span>
                             <span className="text-white">
@@ -620,7 +619,7 @@ const OverviewDashboard = () => {
                                 }}
                             />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* OS Cards */}
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-8">

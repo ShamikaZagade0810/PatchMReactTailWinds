@@ -764,15 +764,15 @@ const NewWindowDashboard = () => {
                                     <Bar
                                         dataKey="InstalledCount"
                                         stackId="a"
-                                        fill="#22c55e"         // normal bar color
+                                        fill="#16a34a"         // normal bar color
                                         name="Installed"
                                         radius={[0, 4, 4, 0]}
                                         // custom hover color
                                         onMouseEnter={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#16a34a"); // darker green on hover
+                                            e.target.setAttribute("fill", "#15803d"); // darker green on hover
                                         }}
                                         onMouseLeave={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#22c55e"); // back to normal
+                                            e.target.setAttribute("fill", "#16a34a"); // back to normal
                                         }}
                                         onClick={(data, index) => {
                                             console.log("Clicked:", data);
@@ -788,15 +788,15 @@ const NewWindowDashboard = () => {
                                     <Bar
                                         dataKey="NeededCount"
                                         stackId="a"
-                                        fill="#ef4444"
+                                        fill="#b91c1c"
                                         name="Needed"
                                         radius={[0, 4, 4, 0]}
                                         onMouseEnter={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#b91c1c"); // darker red on hover
+                                            e.target.setAttribute("fill", "#991b1b"); // darker red on hover
 
                                         }}
                                         onMouseLeave={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#ef4444"); // back to normal
+                                            e.target.setAttribute("fill", "#b91c1c"); // back to normal
                                         }}
                                         onClick={(data, index) => {
                                             console.log("Clicked:", data);
