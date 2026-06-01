@@ -458,7 +458,7 @@ export const PatchTreeSideBar = ({
                                             <Shield className="w-4 h-4 text-yellow-300" />
 
                                             {isOpen && (
-                                                <span className="text-sm text-yellow-300">
+                                                <span className="text-sm text-yellow-300 " onClick={() => navigate("patchTree/SecurityUpdates")} >
                                                     Security Updates
                                                 </span>
                                             )}
