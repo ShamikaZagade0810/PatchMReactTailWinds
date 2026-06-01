@@ -316,7 +316,7 @@ export default function AppRoutes() {
               <PMOverviewDashboard />
             </ProtectedRoute>} />
 
-        <Route path="/patchTree/patchDetails/:srNo"
+        <Route path="/patchTree/patchDetails/:title"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchDetails />

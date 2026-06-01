@@ -13,8 +13,8 @@ import {
 
 const CriticalUpdates = () => {
   const navigate = useNavigate();
-const handleOpen = (srNo) => {
-  navigate(`/patchTree/patchDetails/${srNo}`);
+const handleOpen = (title) => {
+  navigate(`/patchTree/patchDetails/${title}`);
 };
 
   const criticalupdateslist = [
@@ -85,6 +85,7 @@ useEffect(() => {
 }, [filteredData, currentPage]);
 
   return (
+    <>
         <div className="bg-[#050B18] rounded-xl p-2 border border-white/10 min-h-screen text-white text-sm">
 
       {/* <div className="bg-[#0F172A] rounded-xl border border-white/10 p-4"> */}
@@ -214,7 +215,7 @@ useEffect(() => {
 
                     <td className="px-4 py-3">
                       <div>
-                        <p className="font-medium text-white" onClick={() => handleOpen(item.srNo)}> {item.title} </p>
+                        <p className="font-medium text-white" onClick={() => handleOpen(item.title)}> {item.title} </p>
                         <p className="text-[10px] text-gray-500 mt-1"> {item.legacyName} </p>
                       </div>
                     </td>
@@ -297,6 +298,7 @@ useEffect(() => {
      
 
     </div>
+    </>
   )
 }
 
