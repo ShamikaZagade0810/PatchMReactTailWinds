@@ -49,13 +49,13 @@ import {
     getPatchHistoryList,
     windowsOverallComplaince,
     windowsComplainceDataDashboard,
-    getCriticalInstalledPatchesList
+    getApprovedCriticalList
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
 import '../layouts/Css/Mainstyle.css';
 
-const OverviewDashboard = () => {
+const NewWindowDashboard = () => {
     const [patches, setPatches] = useState(null);
     const [osCount, setOsCount] = useState(null);
     const [securityPosture, setSecurityPosture] = useState(null);
@@ -72,6 +72,32 @@ const OverviewDashboard = () => {
     const [overallComplainceRate, setOverallComplainceRate] = useState(0);
     const [complianceData, setComplianceData] = useState([]);
 
+    const osData = [
+        {
+            name: "Windows",
+            value: 68,
+            color: "#10B981",
+            percentage: "13%",
+        },
+        {
+            name: "Linux",
+            value: 30,
+            color: "#EAB308",
+            percentage: "13%",
+        },
+        {
+            name: "Mac",
+            value: 12,
+            color: "#EF4444",
+            percentage: "13%",
+        },
+        {
+            name: "Server",
+            value: 68,
+            color: "#3B82F6",
+            percentage: "13%",
+        },
+    ];
 
     // const columns = [
     //     { label: "Name", key: "name" },
@@ -89,7 +115,7 @@ const OverviewDashboard = () => {
     const apiMapping = {
         patches: {
             // critical: getCriticalPatchesList,
-            critical: getCriticalInstalledPatchesList,
+            critical: getApprovedCriticalList,
             approved: getApprovedPatchesList,
             failed: getFailedIpList,
             total: getTotalPatchList,
@@ -195,7 +221,7 @@ const OverviewDashboard = () => {
                 getOsUpdatesList(),
                 getTopRiskyDevices(),
                 windowsOverallComplaince(),
-                windowsComplainceDataDashboard(),
+                windowsComplainceDataDashboard()
             ]);
 
 
@@ -213,11 +239,10 @@ const OverviewDashboard = () => {
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
             setTopDevices(topDevicesRes.data.data);
-            // setOverallComplainceRate(
-            //  windowsOverallComplainceRes.data.data[0].value
-            // );
             setOverallComplainceRate(
-                88
+                windowsComplainceDataDashboardRes.data.data[
+                    windowsComplainceDataDashboardRes.data.data.length - 1
+                ].value
             );
             setComplianceData(windowsComplainceDataDashboardRes.data.data.slice(0, -1));
             console.log("windowsOverallComplainceRes ", windowsOverallComplainceRes.data.data[0].value);
@@ -295,9 +320,19 @@ const OverviewDashboard = () => {
         return (
             <div className="flex flex-col items-center w-full max-w-[120px]">
                 <div className="relative w-full aspect-square">
-                    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full -rotate-90"   >
+                    <svg
+                        viewBox={`0 0 ${size} ${size}`}
+                        className="w-full h-full -rotate-90"
+                    >
                         {/* Background */}
-                        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#374151" strokeWidth="10" />
+                        <circle
+                            cx={size / 2}
+                            cy={size / 2}
+                            r={radius}
+                            fill="none"
+                            stroke="#374151"
+                            strokeWidth="10"
+                        />
 
                         {/* Progress */}
                         <circle
@@ -404,27 +439,102 @@ const OverviewDashboard = () => {
                     </div>
                 </div>
             )}
-            <div className="grid grid-cols-12 gap-3">
-                <div className="col-span-5">
 
-                </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 px-1 ">
+                {[
+                    {
+                        label: "Total",
+                        color: "#75FF3E33",
+                        icon: MoveUp,
+                        iconcolor: "#58FF3E",
+                        progress: "#58FF3E",
+                    },
+                    {
+                        label: "Approved",
+                        color: "#3E6FFF33",
+                        icon: Check,
+                        iconcolor: "#3E6FFF",
+                        progress: "#3E6FFF",
+                    },
+                    {
+                        label: "Critical",
+                        color: "#6B3EFF33",
+                        icon: TriangleAlert,
+                        iconcolor: "#8B5CF6",
+                        progress: "#8B5CF6",
+                    },
+                    {
+                        label: "Missing",
+                        color: "#3E6FFF33",
+                        icon: Computer,
+                        iconcolor: "#3E6FFF",
+                        progress: "#3E6FFF",
+                    },
+                    {
+                        label: "Failed",
+                        color: "#FF3E5433",
+                        icon: X,
+                        iconcolor: "#FF3E41",
+                        progress: "#FF3E41",
+                    },
+                    {
+                        label: "Reboot",
+                        color: "#FFCB3E33",
+                        icon: RotateCw,
+                        iconcolor: "#FFBF3E",
+                        progress: "#FFBF3E",
+                    },
+                ].map((item, i) => {
+                    const Icon = item.icon;
+
+                    return (
+                        <div
+                            key={i}
+                            onClick={() =>
+                                handleClickModal("Patches", item.label.toLowerCase())
+                            }
+                            className="relative bg-[#0F172A] rounded-lg p-4 cursor-pointer hover:bg-[#182235] transition-all shadow-md"
+                        >
+                            {/* Top Section */}
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h2 className="text-2xl font-semibold text-gray-400">
+                                        {patches?.[item.label.toLowerCase()] ?? 0}
+                                    </h2>
+
+                                    <p className="text-gray-400 text-sm">
+                                        {item.label}
+                                    </p>
+                                </div>
+
+                                {/* Icon */}
+                                <div
+                                    className="w-12 h-12 rounded-full flex items-center justify-center"
+                                    style={{
+                                        backgroundColor: item.color,
+                                    }}
+                                >
+                                    <Icon
+                                        size={22}
+                                        style={{
+                                            color: item.iconcolor,
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+
+                        </div>
+                    );
+                })}
             </div>
-            <div className="grid grid-cols-12 ">
-
-                <div className="col-span-12 ">
 
 
-
-
-                </div>
-
-            </div>
-
-
-            <div className="grid grid-cols-12 gap-3">
+            <div className="grid grid-cols-12 gap-3 mt-2 px-1">
 
                 {/* Compliance Circle */}
-                <div className="col-span-12 lg:col-span-5 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
+                <div className="col-span-12 lg:col-span-4 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
                     <h2 className="card-header"> Compliance </h2>
 
                     <div className="flex flex-col lg:flex-row items-center gap-6">
@@ -447,7 +557,7 @@ const OverviewDashboard = () => {
                                     fill="none"
                                     stroke="#3b82f6"
                                     strokeWidth="8"
-                                    strokeDasharray={`${overallComplainceRate * 1.20} 251`}
+                                    strokeDasharray={`${overallComplainceRate * 2.51} 251`}
                                 // strokeLinecap="round"
                                 />
 
@@ -510,7 +620,9 @@ const OverviewDashboard = () => {
                         </div>
 
                         {/* Bars */}
-                        <div className="flex-1 w-full space-y-3">
+
+
+                        <div className="flex-1 w-full space-y-6">
                             {complianceData.map((item, i) => (
                                 item.label !== "totalEndpoint" && (
                                     <div key={i}>
@@ -541,125 +653,6 @@ const OverviewDashboard = () => {
                 </div>
 
                 {/* Compliance Stats */}
-                <div className="col-span-12 lg:col-span-7 bg-[#121A2B] rounded-xl p-4 shadow-lg flex flex-col">
-                    {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
-        Patches
-    </h2> */}
-                    <h2 className="card-header"> Patches </h2>
-
-
-
-                    {/* Cards Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-auto">
-                        {[{ label: "Total", color: "#75FF3E33", icon: MoveUp, iconcolor: "#58FF3E" },
-                        { label: "Approved", color: "#6B3EFF33", icon: Check, iconcolor: "#3E6FFF" },
-                        { label: "Critical", color: "#6B3EFF33", icon: TriangleAlert, iconcolor: "#3E6FFF" },
-                        { label: "Missing", color: "#6B3EFF33", icon: Computer, iconcolor: "#3E6FFF" },
-                        { label: "Failed", color: "#FF3E5433", icon: X, iconcolor: "#FF3E41" },
-                        { label: "Reboot", color: "#FFCB3E33", icon: RotateCw, iconcolor: "#FFBF3E" },
-
-                        ].map((item, i) => {
-                            const Icon = item.icon;
-
-                            return (
-                                <div
-                                    key={i}
-                                    onClick={() => handleClickModal('Patches', item.label.toLowerCase())}
-                                    className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-[#26324A] transition"
-                                >
-                                    <p className="text-sm md:text-md font-semibold text-gray-400 mb-2 text-center">
-                                        {item.label}
-                                    </p>
-
-                                    {/* Icon Circle */}
-                                    <div
-                                        className="w-12 h-12 md:w-13 md:h-13 rounded-full flex items-center justify-center mb-2"
-                                        style={{ backgroundColor: item.color }}
-                                    >
-                                        <Icon size={18} className="md:w-6 md:h-6" style={{ color: item.iconcolor }} />
-                                    </div>
-
-                                    <p className="text-sm md:text-md font-medium text-white">
-                                        {patches?.[item.label.toLowerCase()] ?? 0}
-                                    </p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </div>
-
-
-            <div className="grid grid-cols-12 gap-3 mt-3">
-
-                {/* OS Status */}
-                <div className="col-span-12 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
-
-                    {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
-                        OS Status
-                    </h2> */}
-
-                    <h2 className="card-header">OS Status</h2>
-
-                    {/* Progress */}
-                    {/* <div className="w-full mt-4">
-                        <div className="flex justify-between text-sm md:text-md">
-                            <span className="text-white">Overall Distribution</span>
-                            <span className="text-white">
-                                {complianceData?.[1]?.value ? `${complianceData[1].value}%` : 0}
-                            </span>
-                        </div>
-
-                        <div className="h-2 md:h-3 bg-gray-700 rounded">
-                            <div
-                                className="h-2 md:h-3 rounded"
-                                style={{
-                                    width: `${complianceData?.[1]?.value ? `${complianceData[1].value}%` : 0}%`,
-                                    backgroundColor: "#01A357",
-                                }}
-                            />
-                        </div>
-                    </div> */}
-
-                    {/* OS Cards */}
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-8">
-                        {[
-                            { os: "Windows", color: "#3E6FFF" },
-                            { os: "Linux", color: "#01A355" },
-                            { os: "Mac", color: "#E8CF12E3" },
-                            { os: "Server", color: "#E83134D6" },
-                        ].map((item, i) => {
-                            const count = osCount?.[item.os.toLowerCase()] || 0;
-                            const percentage =
-                                totalOsCount > 0 ? (count / totalOsCount) * 100 : 0;
-
-                            return (
-                                <div
-                                    key={i}
-                                    onClick={() =>
-                                        handleClickModal("os_status", item.os.toLowerCase())
-                                    }
-                                    className="bg-[#1E273A] border border-[#234779]/70
-                   p-2 sm:p-3 rounded-lg
-                   flex flex-col items-center justify-center
-                   cursor-pointer hover:bg-[#26324A]
-                   hover:scale-105 transition"
-                                >
-                                    <div className="w-14 sm:w-16 md:w-20">
-                                        <CircularProgress
-                                            count={count}
-                                            percentage={percentage}
-                                            label={item.os}
-                                            color={item.color}
-                                        />
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* Security Posture */}
                 <div className="col-span-12 lg:col-span-4 bg-white dark:bg-[#121A2B] rounded-xl p-4 shadow-lg">
 
                     {/* <h2 className="text-lg md:text-xl text-black dark:text-white mb-3 border-l-4 border-indigo-500 px-2">
@@ -744,7 +737,6 @@ const OverviewDashboard = () => {
 
                 </div>
 
-                {/* Device Info (Chart Placeholder) */}
                 <div className="col-span-12 lg:col-span-4 bg-[#121A2B] rounded-xl p-4">
                     {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">IPWise Patch Status</h2> */}
 
@@ -772,15 +764,15 @@ const OverviewDashboard = () => {
                                     <Bar
                                         dataKey="InstalledCount"
                                         stackId="a"
-                                        fill="#16a34a"         // normal bar color
+                                        fill="#22c55e"         // normal bar color
                                         name="Installed"
                                         radius={[0, 4, 4, 0]}
                                         // custom hover color
                                         onMouseEnter={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#15803d"); // darker green on hover
+                                            e.target.setAttribute("fill", "#16a34a"); // darker green on hover
                                         }}
                                         onMouseLeave={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#16a34a"); // back to normal
+                                            e.target.setAttribute("fill", "#22c55e"); // back to normal
                                         }}
                                         onClick={(data, index) => {
                                             console.log("Clicked:", data);
@@ -796,15 +788,15 @@ const OverviewDashboard = () => {
                                     <Bar
                                         dataKey="NeededCount"
                                         stackId="a"
-                                        fill="#b91c1c"
+                                        fill="#ef4444"
                                         name="Needed"
                                         radius={[0, 4, 4, 0]}
                                         onMouseEnter={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#991b1b"); // darker red on hover
+                                            e.target.setAttribute("fill", "#b91c1c"); // darker red on hover
 
                                         }}
                                         onMouseLeave={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#b91c1c"); // back to normal
+                                            e.target.setAttribute("fill", "#ef4444"); // back to normal
                                         }}
                                         onClick={(data, index) => {
                                             console.log("Clicked:", data);
@@ -826,7 +818,138 @@ const OverviewDashboard = () => {
                 </div>
 
             </div>
+
+
             <div className="grid grid-cols-12 gap-3 mt-3">
+
+                {/* OS Status */}
+
+                <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
+
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2> */}
+                    <h2 className="card-header">Operating Systems Update</h2>
+                    <div className="flex gap-4">
+
+                        {/* Donut */}
+                        <div className="w-50 h-50 relative">
+                            <SinglePieCharts
+                                data={osPie}
+                                onSliceClick={handleClickModalParameter}
+                                datakey={"ospie"}
+                            />
+
+                        </div>
+
+                        {/* Table */}
+                        <div className="flex-1 h-50 overflow-x-auto hide-scrollbar ">
+                            {/* <div className="text-md text-gray-400 grid grid-cols-4 mb-2"> */}
+                            <div className="table-header">
+                                <span>Update</span>
+                                <span>Installed</span>
+                                <span>Needed</span>
+                                <span>Severity</span>
+                            </div>
+
+                            {osList.map((item, i) => (
+                                // <div key={i} className="grid grid-cols-4 text-sm bg-[#141D2E] p-2 rounded mb-1 items-center">
+                                <div key={i} className="table-row">
+                                    <span className="break-words pr-5">{item.PatchTitle}</span>
+                                    <span>{item.InstalledCount}</span>
+                                    <span>{item.NeededCount}</span>
+                                    <span className="text-yellow-400">{item.classification}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-span-12 lg:col-span-6 bg-[#121A2B] rounded-xl p-4">
+
+                    {/* <h2 className="text-lg md:text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">
+                        OS Status
+                    </h2> */}
+
+                    <h2 className="card-header">OS Status</h2>
+
+
+                    {/* OS Cards */}
+                    <div className="space-y-7">
+                        {[
+                            { os: "Windows", color: "#3E6FFF" },
+                            { os: "Linux", color: "#01A355" },
+                            { os: "Mac", color: "#E8CF12E3" },
+                            { os: "Server", color: "#E83134D6" },
+                        ].map((item, index) => {
+                            const count = osCount?.[item.os.toLowerCase()] || 0;
+                           
+                            // const total = osCount.reduce((sum, item) => sum + item.count, 0);
+
+
+                            return (
+                                <div key={index}>
+                                    <div className="flex justify-between mb-1">
+                                        <span className="text-white text-sm">
+                                            {item.os}
+                                        </span>
+
+                                        <span className="text-gray-400 text-sm">
+                                            {count}
+                                        </span>
+                                    </div>
+
+                                    <div className="h-[7px] bg-[#4A4F59] rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full rounded-full transition-all duration-500"
+                                            style={{
+                                                width: `${count}%`,
+                                                backgroundColor: item.color,
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        })}
+
+                        <div className="pt-1 border-t border-[#1D2B45]">
+                            <span className="text-gray-400 text-lg">
+                                Total :{totalOsCount}
+                                <span className="text-white font-medium">
+                                    {/* {total} */}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Security Posture */}
+
+
+                {/* Device Info (Chart Placeholder) */}
+
+            </div>
+            <div className="grid grid-cols-12 gap-3 mt-3">
+
+                <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
+
+                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2> */}
+                    <h2 className="card-header">Top Risk Devices</h2>
+                    {/* <div className="text-lg text-gray-400 grid grid-cols-4 mb-2"> */}
+                    <div className="table-header">
+                        <span>Device</span>
+                        <span>Patches</span>
+                        <span>Last Scan</span>
+                        <span>Severity</span>
+                    </div>
+
+                    {topDevices.map((item, i) => (
+                        // <div key={i} className="grid grid-cols-4 text-md bg-[#141D2E] p-2 rounded mb-1">
+                        <div key={i} className="table-row">
+                            <span>{item.IPAddress}</span>
+                            <span>{item.MissingCount}</span>
+                            <span>{item.LastScan}</span>
+                            <span className="text-red-400">{item.Severity}</span>
+                        </div>
+                    ))}
+                </div>
 
                 {/* LEFT TOP */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
@@ -889,68 +1012,10 @@ const OverviewDashboard = () => {
                 </div>
 
                 {/* RIGHT TOP */}
-                <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2> */}
-                    <h2 className="card-header">Operating Systems Update</h2>
-                    <div className="flex gap-4">
-
-                        {/* Donut */}
-                        <div className="w-50 h-50 relative">
-                            <SinglePieCharts
-                                data={osPie}
-                                onSliceClick={handleClickModalParameter}
-                                datakey={"ospie"}
-                            />
-
-                        </div>
-
-                        {/* Table */}
-                        <div className="flex-1 h-50 overflow-x-auto hide-scrollbar ">
-                            {/* <div className="text-md text-gray-400 grid grid-cols-4 mb-2"> */}
-                            <div className="table-header">
-                                <span>Update</span>
-                                <span>Installed</span>
-                                <span>Needed</span>
-                                <span>Severity</span>
-                            </div>
-
-                            {osList.map((item, i) => (
-                                // <div key={i} className="grid grid-cols-4 text-sm bg-[#141D2E] p-2 rounded mb-1 items-center">
-                                <div key={i} className="table-row">
-                                    <span className="break-words pr-5">{item.PatchTitle}</span>
-                                    <span>{item.InstalledCount}</span>
-                                    <span>{item.NeededCount}</span>
-                                    <span className="text-yellow-400">{item.classification}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
 
                 {/* BOTTOM LEFT */}
-                <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
-                    {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2> */}
-                    <h2 className="card-header">Top Risk Devices</h2>
-                    {/* <div className="text-lg text-gray-400 grid grid-cols-4 mb-2"> */}
-                    <div className="table-header">
-                        <span>Device</span>
-                        <span>Patches</span>
-                        <span>Last Scan</span>
-                        <span>Severity</span>
-                    </div>
-
-                    {topDevices.map((item, i) => (
-                        // <div key={i} className="grid grid-cols-4 text-md bg-[#141D2E] p-2 rounded mb-1">
-                        <div key={i} className="table-row">
-                            <span>{item.IPAddress}</span>
-                            <span>{item.MissingCount}</span>
-                            <span>{item.LastScan}</span>
-                            <span className="text-red-400">{item.Severity}</span>
-                        </div>
-                    ))}
-                </div>
 
                 {/* BOTTOM RIGHT (Bar Chart Placeholder) */}
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
@@ -967,4 +1032,4 @@ const OverviewDashboard = () => {
     )
 }
 
-export default OverviewDashboard
+export default NewWindowDashboard

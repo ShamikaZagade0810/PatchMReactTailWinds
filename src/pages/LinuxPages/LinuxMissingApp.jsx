@@ -101,7 +101,19 @@ const LinuxMissingApp = () => {
     //     );
     // };
 
-    const handleRowSelect = (item) => {
+    // const handleRowSelect = (item) => {
+    //     setSelectedRows((prev) => {
+    //         const alreadyExists = prev.some(
+    //             (row) => row.srNo === item.srNo
+    //         );
+
+    //         return alreadyExists
+    //             ? prev.filter((row) => row.srNo !== item.srNo)
+    //             : [...prev, item];
+    //     });
+    // };
+
+        const handleRowSelect = (item) => {
         setSelectedRows((prev) => {
             const alreadyExists = prev.some(
                 (row) => row.srNo === item.srNo
@@ -112,6 +124,14 @@ const LinuxMissingApp = () => {
                 : [...prev, item];
         });
     };
+
+//     const handleRowSelect = (srNo) => {
+//     setSelectedRows(prev =>
+//         prev.includes(srNo)
+//             ? prev.filter(id => id !== srNo)
+//             : [...prev, srNo]
+//     );
+// };
 
     const handleClickApprove = async () => {
         try {
@@ -273,13 +293,7 @@ const LinuxMissingApp = () => {
                                 <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
                                     <td className="px-4 py-3">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedRows.some(
-                                                (row) => row.srNo === item.srNo
-                                            )}
-                                            onChange={() => handleRowSelect(item)}
-                                        />
+                                        <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)}  />
                                     </td>
                                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.hostName} </td>
                                     <td className="px-4 py-3"> {item.appName} </td>

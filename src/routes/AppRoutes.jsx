@@ -75,6 +75,8 @@ import ConfigurationForm from "../pages/NewNetworkDevices/ConfigurationForm.jsx"
 import NewFirmwareUpgrade from "../pages/NewNetworkDevices/NewFirmwareUpgrade.jsx";
 import UpgradeResult from "../pages/NewNetworkDevices/UpgradeResult.jsx";
 import Login from "../pages/Login.jsx";
+import NewWindowDashboard from "../pages/NewWindowDashboard.jsx";
+import SecurityUpdates from "../pages/PatchTree/SecurityUpdates.jsx";
 
 export default function AppRoutes() {
   return (
@@ -94,7 +96,9 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
-              <PMOverviewDashboard />
+              {/* <PMOverviewDashboard /> */}
+               <NewWindowDashboard />
+              
             </ProtectedRoute>} />
 
         <Route path="/devices/:username/:ipaddress"
@@ -297,6 +301,12 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <CriticalUpdates />
+            </ProtectedRoute>} />
+
+         <Route path="/patchTree/SecurityUpdates"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <SecurityUpdates />
             </ProtectedRoute>} />
 
         <Route path="/section/Thirdparty"

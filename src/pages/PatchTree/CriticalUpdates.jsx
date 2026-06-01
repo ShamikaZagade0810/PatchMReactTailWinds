@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect  } from 'react';
 import { useParams, useNavigate  } from "react-router-dom"
 import {
   Search,
@@ -6,7 +6,9 @@ import {
   Download,
   CheckCircle2,
   ShieldAlert,
-  AlertTriangle
+  AlertTriangle,
+    ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 const CriticalUpdates = () => {
@@ -31,9 +33,22 @@ const handleOpen = (srNo) => {
   const [severityFilter, setSeverityFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
+    
+    const [currentPage, setCurrentPage] = useState(1);
+const rowsPerPage = 10;
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [search, severityFilter, statusFilter]);
+
+
+
   const severityOptions = [
     ...new Set( criticalupdateslist.map(item => item.updateClassificationTitle) )
   ];
+
+
+
 
   const filteredData = useMemo(() => {
     return criticalupdateslist.filter(item => {
@@ -61,6 +76,13 @@ const handleOpen = (srNo) => {
   const approvedCritical = criticalupdateslist.filter( item => item.approved === true ).length;
 
   const severityCritical = criticalupdateslist.filter( item => item.updateClassificationTitle === 'Critical Updates' ).length;
+
+  
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const paginatedData = useMemo(() => {
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  return filteredData.slice(startIndex, startIndex + rowsPerPage);
+}, [filteredData, currentPage]);
 
   return (
         <div className="bg-[#050B18] rounded-xl p-2 border border-white/10 min-h-screen text-white text-sm">
@@ -160,7 +182,7 @@ const handleOpen = (srNo) => {
 
     {/* Showing Count */}
     <div className="text-[11px] text-gray-400 whitespace-nowrap ml-auto">
-      Showing {filteredData.length} of {criticalupdateslist.length}
+      Showing {paginatedData.length} of {filteredData.length}
     </div>
 
   </div>
@@ -186,7 +208,7 @@ const handleOpen = (srNo) => {
 
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData.map((item) => (
+                paginatedData.map((item) => (
                   <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
                     {/* <td className="px-4 py-3"> {item.srNo} </td> */}
 
@@ -246,6 +268,29 @@ const handleOpen = (srNo) => {
             </tbody>
 
           </table>
+          <div className="flex items-center justify-between mt-4">
+  <div className="text-xs text-gray-400">
+    Page {currentPage} of {totalPages || 1}
+  </div>
+
+  <div className="flex items-center gap-2">
+    <button
+      disabled={currentPage === 1}
+      onClick={() => setCurrentPage(prev => prev - 1)}
+      className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
+    >
+      <ChevronLeft size={15} />
+    </button>
+
+    <button
+      disabled={currentPage >= totalPages}
+      onClick={() => setCurrentPage(prev => prev + 1)}
+      className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
+    >
+      <ChevronRight size={15} />
+    </button>
+  </div>
+</div>
 
         </div>
 

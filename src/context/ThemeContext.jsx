@@ -4,6 +4,7 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
+    
     // Check localStorage first, then system preference
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme) return storedTheme;

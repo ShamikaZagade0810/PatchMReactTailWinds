@@ -313,6 +313,13 @@ export const getTopRiskyDevices = () =>
   });
 
 
+  export const getApprovedCriticalList = () =>
+  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
 export const getCriticalPatchesList = () =>
   axios.get(`${BASE_URL}/dashboard/MissingCriticalList`, {
     headers: {

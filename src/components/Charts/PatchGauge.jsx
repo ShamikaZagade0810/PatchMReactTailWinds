@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function PatchGauge() {
-    const score = 741;
-    const max = 1000;
+    const score = 70;
+    const max = 100;
 
     const percent = score / max; // 0 → 1
 
@@ -11,11 +11,12 @@ export default function PatchGauge() {
 
     const circumference = 2 * Math.PI * radius;
 
-
-
-
     const gap = 30; // gap size
     const progress = 80;
+
+
+    const arcLength = 420; // visible arc
+const gapLength = 82;  // hidden gap
 
     const offset = circumference - (progress / 100) * circumference;
     return (
@@ -30,8 +31,8 @@ export default function PatchGauge() {
             </div>
 
             {/* Gauge */}
-            <div className="relative flex justify-center">
-                <svg width="200" height="200" viewBox="0 0 200 200">
+            <div className="relative flex justify-center translate-x-4" >
+               <svg width="200" height="240" viewBox="5 0 220 250">
 
                     {/* Background Circle (full ring base) */}
                     <circle
@@ -41,7 +42,7 @@ export default function PatchGauge() {
                         fill="none"
                         stroke="#1e293b"
                         strokeWidth={18}
-                        strokeLinecap="round"
+                        strokeLinecap="butt"
                         strokeDasharray="420.2 502.4"
                         transform="rotate(-238 100 100)"
                     />
@@ -52,18 +53,62 @@ export default function PatchGauge() {
                         cy="100"
                         r={radius}
                         fill="none"
-                        stroke="#8b9cfb"
+                        stroke="#3B82F6"
                         strokeWidth={18}
-                        strokeLinecap="round"
+                        strokeLinecap="butt"
                         strokeDasharray={circumference}
                         strokeDashoffset={offset}
                         transform="rotate(-238 100 100)"
                         style={{ transition: "stroke-dashoffset 0.8s ease" }}
                     />
+
+                    <circle
+                        cx="100"
+                        cy="100"
+                        r={radius-18}
+                        fill="none"
+                        stroke="#2563EB"
+                        strokeWidth={1}
+                        strokeLinecap="butt"
+                        strokeDasharray={circumference-80}
+                        strokeDashoffset={offset}
+                        transform="rotate(-238 100 100)"
+                        style={{ transition: "stroke-dashoffset 0.8s ease" }}
+                    />
+
+                   {[0, 25, 50, 75, 100].map((val, i) => {
+    const angles = [230, 170, 90, 10, -50];
+
+    const outerR = 100;
+    const cx = 100;
+    const cy = 100;
+
+    const rad = (angles[i] * Math.PI) / 180;
+
+    const x = cx + outerR * Math.cos(rad);
+    const y = cy - outerR * Math.sin(rad);
+
+    return (
+        <text
+            key={i}
+            x={x}
+            y={y}
+            fontSize="11"
+            fill="#94A3B8"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className="font-medium"
+        >
+            {val}
+        </text>
+    );
+})}
+
+
                 </svg>
 
                 {/* Center Text */}
-                <div className="absolute top-10 flex flex-col items-center">
+                <div className="absolute top-17 flex flex-col items-center">
                     <span className="text-xs text-gray-400">score</span>
                     <span className="text-2xl font-semibold">{score}</span>
                     <span className="text-[10px] bg-red-600/20 text-red-400 px-2 rounded">
