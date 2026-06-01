@@ -77,12 +77,12 @@ export const ThirdPartySidebarData = [
     icon: List,
     roles: ["admin"],
   },
-  {
-    name: "Patch Repository",
-    path: "/Thirdparty/patch-repository",
-    icon: FolderOpen,
-    roles: ["admin"],
-  },
+  // {
+  //   name: "Patch Repository",
+  //   path: "/Thirdparty/patch-repository",
+  //   icon: FolderOpen,
+  //   roles: ["admin"],
+  // },
   {
     name: "Patch Repository New",
     path: "/Thirdparty/patch-repo",
@@ -426,6 +426,15 @@ export const sidebarData = [
         icon: AppWindowMac,
         roles: ["admin"],
       },
+
+      // {
+      //   name: "New login Page",
+      //   path: "/section/Login1",
+      //   icon: AppWindowMac,
+      //   roles: ["admin"],
+      // },
+
+
     ],
   },
 ];

@@ -60,30 +60,17 @@ const PatchDeploymentCenterNew = () => {
   const DeploymentJobsTable = [
     {
       deploymentId: "DEP-10001",
-
       deviceId: "DEV-RT-11021",
-
-      device: "MUM-EDGE-RTR-01",
-
+      device:  "HQ-FLR01-GW-RTR01",
       vendor: "Cisco",
-
       deviceType: "Router",
-
       location: "Mumbai Data Center",
-
       currentVersion: "17.6.4",
-
       targetVersion: "17.12.3",
-
-      firmwareFile:
-        "isr4400-universalk9.17.12.03.SPA.bin",
-
+      firmwareFile:  "isr4400-universalk9.17.12.03.SPA.bin",
       schedule: formatScheduleTime(),
-
       progress: "68% Completed",
-
       progressValue: 68,
-
       status: "In Progress",
 
       deploymentPhase:
@@ -107,7 +94,7 @@ const PatchDeploymentCenterNew = () => {
 
       deviceId: "DEV-FW-22019",
 
-      device: "PUNE-FW-CORE-01",
+      device:"PUNE-FW-CORE-01",
 
       vendor: "Fortinet",
 
@@ -151,7 +138,7 @@ const PatchDeploymentCenterNew = () => {
 
       deviceId: "DEV-WLC-44011",
 
-      device: "DEL-WLC-CORE-01",
+      device: "HQ-WLC01",
 
       vendor: "Cisco",
 
@@ -197,7 +184,7 @@ const PatchDeploymentCenterNew = () => {
 
       deviceId: "DEV-LB-55002",
 
-      device: "HYD-LB-ADC-01",
+      device: "HQ-ADC01",
 
       vendor: "F5",
 
@@ -241,7 +228,7 @@ const PatchDeploymentCenterNew = () => {
 
       deviceId: "DEV-SW-33012",
 
-      device: "BLR-ACCESS-SW-12",
+      device: "HQ-FLR01-CORE-SW01",
 
       vendor: "Aruba",
 
@@ -285,7 +272,7 @@ const PatchDeploymentCenterNew = () => {
 
       deviceId: "DEV-FW-99008",
 
-      device: "BLR-FW-EDGE-02",
+      device: "HQ-DC-FW01",
 
       vendor: "Palo Alto Networks",
 
@@ -372,7 +359,7 @@ const PatchDeploymentCenterNew = () => {
 
       deviceId: "DEV-AP-88021",
 
-      device: "MUM-WIFI-AP-21",
+      device: "WIFI-AP-21",
 
       vendor: "Aruba",
 

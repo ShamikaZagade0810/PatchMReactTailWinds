@@ -48,7 +48,8 @@ import {
     getthirdPartySeverityPatchList,
     getPatchHistoryList,
     windowsOverallComplaince,
-    windowsComplainceDataDashboard
+    windowsComplainceDataDashboard,
+    getCriticalInstalledPatchesList
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
@@ -87,7 +88,8 @@ const OverviewDashboard = () => {
 
     const apiMapping = {
         patches: {
-            critical: getCriticalPatchesList,
+            // critical: getCriticalPatchesList,
+            critical: getCriticalInstalledPatchesList,
             approved: getApprovedPatchesList,
             failed: getFailedIpList,
             total: getTotalPatchList,
@@ -211,10 +213,11 @@ const OverviewDashboard = () => {
             setOsPie(osPieRes.data.data);
             setOsList(osListRes.data.data);
             setTopDevices(topDevicesRes.data.data);
+            // setOverallComplainceRate(
+            //  windowsOverallComplainceRes.data.data[0].value
+            // );
             setOverallComplainceRate(
-                windowsComplainceDataDashboardRes.data.data[
-                    windowsComplainceDataDashboardRes.data.data.length - 1
-                ].value
+                88
             );
             setComplianceData(windowsComplainceDataDashboardRes.data.data.slice(0, -1));
             console.log("windowsOverallComplainceRes ", windowsOverallComplainceRes.data.data[0].value);
@@ -444,7 +447,7 @@ const OverviewDashboard = () => {
                                     fill="none"
                                     stroke="#3b82f6"
                                     strokeWidth="8"
-                                    strokeDasharray={`${overallComplainceRate * 2.51} 251`}
+                                    strokeDasharray={`${overallComplainceRate * 1.20} 251`}
                                 // strokeLinecap="round"
                                 />
 
@@ -507,8 +510,6 @@ const OverviewDashboard = () => {
                         </div>
 
                         {/* Bars */}
-
-
                         <div className="flex-1 w-full space-y-3">
                             {complianceData.map((item, i) => (
                                 item.label !== "totalEndpoint" && (
@@ -601,7 +602,7 @@ const OverviewDashboard = () => {
                     <h2 className="card-header">OS Status</h2>
 
                     {/* Progress */}
-                    <div className="w-full mt-4">
+                    {/* <div className="w-full mt-4">
                         <div className="flex justify-between text-sm md:text-md">
                             <span className="text-white">Overall Distribution</span>
                             <span className="text-white">
@@ -618,44 +619,44 @@ const OverviewDashboard = () => {
                                 }}
                             />
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* OS Cards */}
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-8">
-  {[
-    { os: "Windows", color: "#3E6FFF" },
-    { os: "Linux", color: "#01A355" },
-    { os: "Mac", color: "#E8CF12E3" },
-    { os: "Server", color: "#E83134D6" },
-  ].map((item, i) => {
-    const count = osCount?.[item.os.toLowerCase()] || 0;
-    const percentage =
-      totalOsCount > 0 ? (count / totalOsCount) * 100 : 0;
+                        {[
+                            { os: "Windows", color: "#3E6FFF" },
+                            { os: "Linux", color: "#01A355" },
+                            { os: "Mac", color: "#E8CF12E3" },
+                            { os: "Server", color: "#E83134D6" },
+                        ].map((item, i) => {
+                            const count = osCount?.[item.os.toLowerCase()] || 0;
+                            const percentage =
+                                totalOsCount > 0 ? (count / totalOsCount) * 100 : 0;
 
-    return (
-      <div
-        key={i}
-        onClick={() =>
-          handleClickModal("os_status", item.os.toLowerCase())
-        }
-        className="bg-[#1E273A] border border-[#234779]/70
+                            return (
+                                <div
+                                    key={i}
+                                    onClick={() =>
+                                        handleClickModal("os_status", item.os.toLowerCase())
+                                    }
+                                    className="bg-[#1E273A] border border-[#234779]/70
                    p-2 sm:p-3 rounded-lg
                    flex flex-col items-center justify-center
                    cursor-pointer hover:bg-[#26324A]
                    hover:scale-105 transition"
-      >
-        <div className="w-14 sm:w-16 md:w-20">
-          <CircularProgress
-            count={count}
-            percentage={percentage}
-            label={item.os}
-            color={item.color}
-          />
-        </div>
-      </div>
-    );
-  })}
-</div>
+                                >
+                                    <div className="w-14 sm:w-16 md:w-20">
+                                        <CircularProgress
+                                            count={count}
+                                            percentage={percentage}
+                                            label={item.os}
+                                            color={item.color}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
 
                 {/* Security Posture */}

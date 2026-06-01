@@ -15,7 +15,7 @@ const PatchRepositoryNew = () => {
     // ✅ Filters
     const filteredData = useMemo(() => {
         return patchRepositoryList.filter((item) =>
-            `${item.appName} ${item.hostName} ${item.ipAddress}`
+            `${item.appName} ${item.hostName} ${item.ipAddress}  ${item.latestVersion}`
                 .toLowerCase()
                 .includes(search.toLowerCase())
         );

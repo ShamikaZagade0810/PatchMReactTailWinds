@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODAwMjgzMjUsImV4cCI6MTc4MDExNDcyNX0.RPgMtoj73aUQkKxx_5-WmlzUKa9bpZQ59qsfMKz4O_k';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODAxMTEzMTAsImV4cCI6MTc4MDE5NzcxMH0.vCdzRdnB6s_txhRVOftspF5prZggi0SyPL0CSBZH8UY';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -319,6 +319,18 @@ export const getCriticalPatchesList = () =>
       Authorization: `Bearer ${token}`
     }
   });
+
+  
+export const getCriticalInstalledPatchesList = () =>
+  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+
+
 
 export const getApprovedPatchesList = () =>
   axios.get(`${BASE_URL}/dashboard/ApprovedPatchList`, {

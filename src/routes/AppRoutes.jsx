@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-import Login from "../pages/Login";
+// import Login from "../pages/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 
@@ -74,6 +74,7 @@ import FirmwareUpgrade from "../pages/NewNetworkDevices/FirmwareUpgrade.jsx";
 import ConfigurationForm from "../pages/NewNetworkDevices/ConfigurationForm.jsx";
 import NewFirmwareUpgrade from "../pages/NewNetworkDevices/NewFirmwareUpgrade.jsx";
 import UpgradeResult from "../pages/NewNetworkDevices/UpgradeResult.jsx";
+import Login from "../pages/Login.jsx";
 
 export default function AppRoutes() {
   return (
@@ -560,6 +561,14 @@ export default function AppRoutes() {
               {/* <DbMonitoringDashboard /> */}
               <UpgradeResult />
             </ProtectedRoute>} />
+
+
+
+             {/* <Route path="/section/Login23"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <Login1 />
+            </ProtectedRoute>} /> */}
 
 
       </Route>
