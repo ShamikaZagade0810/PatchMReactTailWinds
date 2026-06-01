@@ -168,7 +168,7 @@ function PatchTreeThirdDashboard() {
                 {/* LEFT SMALL CARDS SECTION */}
                 <div className="col-span-12 xl:col-span-3">
                     <div className="col-span-12 xl:col-span-3">
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 gap-2">
 
                             {patchCards.map((card, index) => {
                                 const Icon = card.icon;
@@ -182,7 +182,7 @@ function PatchTreeThirdDashboard() {
                     p-2.5 transition-all duration-300
                     hover:scale-[1.02]
                     hover:shadow-lg ${card.glow}
-                    h-[105px] group`}
+                    h-[57px] group`}
                                     >
 
                                         {/* Glow */}

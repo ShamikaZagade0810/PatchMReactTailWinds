@@ -43,19 +43,19 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Missing Apps",
-    path: "/thirdparty/Missing-Apps",
+    path: "/Thirdparty/Missing-Apps",
     icon: AlertTriangle,
     roles: ["admin"],
   },
   {
     name: "Installed Apps",
-    path: "/thirdparty/Installed-Apps",
+    path: "/Thirdparty/Installed-Apps",
     icon: PackageCheck,
     roles: ["admin"],
   },
   {
     name: "Patch Status",
-    path: "/thirdparty/Patch_Status",
+    path: "/Thirdparty/Patch_Status",
     icon: BadgeInfo,
     roles: ["admin"],
   },
@@ -73,7 +73,7 @@ export const ThirdPartySidebarData = [
   },
   {
     name: "Patch Progress",
-    path: "/thirdparty/patch-progress",
+    path: "/Thirdparty/patch-progress",
     icon: List,
     roles: ["admin"],
   },

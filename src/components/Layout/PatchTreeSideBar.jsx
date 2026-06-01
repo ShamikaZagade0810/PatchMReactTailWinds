@@ -298,7 +298,8 @@ export const PatchTreeSideBar = ({
 }) => {
     const [openAccordion, setOpenAccordion] = useState(null);
     const [expandServer, setExpandServer] = useState(true);
-    const [expandUpdates, setExpandUpdates] = useState(true);
+    const [expandUpdates, setExpandUpdates] = useState(false);
+    const [expandComputers, setExpandComputers] = useState(false);
     const navigate = useNavigate();
     const activeItemData = useMemo(() => {
         return sidebarData.find((item) => item?.path === activeItem);
@@ -443,16 +444,16 @@ export const PatchTreeSideBar = ({
                                     {/* Security Updates */}
                                     <button
                                         className="
-                      w-full
-                      flex
-                      items-center
-                      justify-between
-                      px-2
-                      py-2
-                      rounded-md
-                      hover:bg-[#0e1f33]
-                      transition-all
-                    "
+                                        w-full
+                                        flex
+                                        items-center
+                                        justify-between
+                                        px-2
+                                        py-2
+                                        rounded-md
+                                        hover:bg-[#0e1f33]
+                                        transition-all
+                                        "
                                     >
                                         <div className="flex items-center gap-2">
                                             <Shield className="w-4 h-4 text-yellow-300" />
@@ -474,21 +475,21 @@ export const PatchTreeSideBar = ({
                                     {/* Approve / Decline */}
                                     <button
                                         className="
-                      w-full
-                      flex
-                      items-left
-                      gap-2
-                      px-1
-                      py-2
-                      rounded-md
-                      hover:bg-[#0e1f33]
-                      transition-all
-                    "
+                                        w-full
+                                        flex
+                                        items-left
+                                        gap-2
+                                        px-1
+                                        py-2
+                                        rounded-md
+                                        hover:bg-[#0e1f33]
+                                        transition-all
+                                        "
                                     >
                                         <CheckCircle className="w-4 h-4 text-slate-300" />
 
                                         {isOpen && (
-                                            <span className="text-sm text-slate-300">
+                                            <span className="text-sm text-slate-300"  onClick={() => navigate("patchTree/Apprv_Declined")}>
                                                 NPCIL — Approve / Decline
                                             </span>
                                         )}
@@ -497,41 +498,94 @@ export const PatchTreeSideBar = ({
                             )}
 
                             {/* Computers */}
-                            <button
-                                className="
-                  w-full
-                  flex
-                  items-center
-                  gap-2
-                  px-2
-                  py-2
-                  rounded-md
-                  hover:bg-[#0e1f33]
-                  transition-all
-                "
-                            >
+                            <button onClick={() => setExpandComputers(!expandComputers)}
+                            className=" w-full flex items-center  gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all " >
+                                <div className="flex items-center gap-2">
+                                    {expandComputers ? (
+                                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                                    ) : (
+                                        <ChevronRight className="w-4 h-4 text-slate-400" />
+                                    )}
                                 <Users className="w-4 h-4 text-slate-300" />
-
                                 {isOpen && (
                                     <span className="text-sm text-slate-300">
                                         Computers (412)
                                     </span>
                                 )}
+                                </div>
                             </button>
+
+                            {expandComputers && (
+                                <div className="ml-5 space-y-1">
+                                    {/* All Updates */}
+                                    <button
+                                        className=" w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all ">
+                                        <div className="flex items-center gap-2">
+                                            <FileText className="w-4 h-4 text-slate-300" />
+
+                                            {isOpen && (
+                                                <span className="text-sm text-slate-300" onClick={() => navigate("/patchTree/ThirdUpdate")}>
+                                                    All Computers
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {isOpen && (
+                                            <span className="text-[10px] bg-slate-700 text-white px-2 py-[2px] rounded-md"> 105k </span>
+                                        )}
+                                    </button>
+
+                                    {/* Critical Updates */}
+                                    <button
+                                        className=" w-full flex items-center justify-between px-2 py-2 rounded-md bg-[#111827]  hover:bg-[#172033] transition-all " >
+                                        <div className="flex items-center gap-2">
+                                            <AlertTriangle className="w-4 h-4 text-red-400" />
+                                            {isOpen && (
+                                                <span className="text-sm text-red-400" onClick={() => navigate("/patchTree/CriticalUpdate")} > UnAssigned </span>
+                                            )}
+                                        </div>
+
+                                        {isOpen && (
+                                            <span className="text-[10px] bg-red-500/20 border border-red-500/30 text-red-400 px-2 py-[2px] rounded-md"> 11.2k </span>
+                                        )}
+                                    </button>
+
+                                    {/* Security Updates */}
+                                    <button className=" w-full flex items-center justify-between px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all " >
+                                        <div className="flex items-center gap-2">
+                                            <Shield className="w-4 h-4 text-yellow-300" />
+
+                                            {isOpen && (
+                                                <span className="text-sm text-yellow-300 " onClick={() => navigate("patchTree/SecurityUpdates")} >
+                                                    Security Updates
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {isOpen && (
+                                            <span className="text-[10px] bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 px-2 py-[2px] rounded-md">
+                                                93.9k
+                                            </span>
+                                        )}
+                                    </button>
+
+                                    
+                                </div>
+                            )}
 
                             {/* Synchronization */}
                             <button
                                 className="
-                  w-full
-                  flex
-                  items-center
-                  gap-2
-                  px-2
-                  py-2
-                  rounded-md
-                  hover:bg-[#0e1f33]
-                  transition-all
-                "
+                                w-full
+                                flex
+                                items-center
+                                gap-2
+                                px-2
+                                py-2
+                                rounded-md
+                                hover:bg-[#0e1f33]
+                                transition-all
+                                "
                             >
                                 <Activity className="w-4 h-4 text-slate-300" />
 

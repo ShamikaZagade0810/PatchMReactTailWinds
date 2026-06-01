@@ -76,6 +76,7 @@ import NewFirmwareUpgrade from "../pages/NewNetworkDevices/NewFirmwareUpgrade.js
 import UpgradeResult from "../pages/NewNetworkDevices/UpgradeResult.jsx";
 import NewWindowDashboard from "../pages/NewWindowDashboard.jsx";
 import SecurityUpdates from "../pages/PatchTree/SecurityUpdates.jsx";
+import ApproveDecline from "../pages/PatchTree/ApproveDecline.jsx";
 
 export default function AppRoutes() {
   return (
@@ -96,8 +97,8 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               {/* <PMOverviewDashboard /> */}
-               <NewWindowDashboard />
-              
+              <NewWindowDashboard />
+
             </ProtectedRoute>} />
 
         <Route path="/devices/:username/:ipaddress"
@@ -280,7 +281,9 @@ export default function AppRoutes() {
         <Route path="/dashboard/patchTree"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
-              <PatchTree />
+              {/* <PatchTree /> */}
+              <PatchTreeThirdDashboard />
+
             </ProtectedRoute>} />
 
         <Route path="/patchTree/updates"
@@ -302,10 +305,16 @@ export default function AppRoutes() {
               <CriticalUpdates />
             </ProtectedRoute>} />
 
-         <Route path="/patchTree/SecurityUpdates"
+        <Route path="/patchTree/SecurityUpdates"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <SecurityUpdates />
+            </ProtectedRoute>} />
+
+        <Route path="/patchTree/Apprv_Declined"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <ApproveDecline />
             </ProtectedRoute>} />
 
         <Route path="/section/Thirdparty"
@@ -321,13 +330,13 @@ export default function AppRoutes() {
               <PatchDetails />
             </ProtectedRoute>} />
 
-        <Route path="/thirdparty/Missing-Apps"
+        <Route path="/Thirdparty/Missing-Apps"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <MissingApps />
             </ProtectedRoute>} />
 
-        <Route path="/thirdparty/Installed-Apps"
+        <Route path="/Thirdparty/Installed-Apps"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <InstalledApps />
@@ -368,14 +377,14 @@ export default function AppRoutes() {
               <LatestSoftware />
             </ProtectedRoute>} />
 
-        <Route path="/thirdparty/Patch_Status"
+        <Route path="/Thirdparty/Patch_Status"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchStatus />
             </ProtectedRoute>} />
 
 
-        <Route path="/thirdparty/patch-progress"
+        <Route path="/Thirdparty/patch-progress"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <PatchProgress />
@@ -529,19 +538,19 @@ export default function AppRoutes() {
               <FirmwareUpgradeUI />
             </ProtectedRoute>} />
 
-              <Route path="/section/EnterpriseFirmwareRepository"
+        <Route path="/section/EnterpriseFirmwareRepository"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <EnterpriseFirmwareRepository />
             </ProtectedRoute>} />
 
-             <Route path="/section/FirmwareInvn"
+        <Route path="/section/FirmwareInvn"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
               <FirmwareInventory />
-               </ProtectedRoute>} />
+            </ProtectedRoute>} />
 
         <Route path="/section/NewFirmwareUpgrade"
           element={
@@ -564,7 +573,7 @@ export default function AppRoutes() {
               <NewFirmwareUpgrade />
             </ProtectedRoute>} />
 
-              <Route path="/section/UpgradeResult"
+        <Route path="/section/UpgradeResult"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}

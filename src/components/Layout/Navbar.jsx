@@ -200,10 +200,11 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
   const location = useLocation();
 
   useEffect(() => {
-    console.log("Navigated to:",);
+    console.log("Navigated to:", location.pathname);
     switch (location.pathname) {
       case '/section/Thirdparty':
         setActive("ThirdParty");
+
         navigate('/dashboard/thirdpartyApp');
         break;
 
@@ -212,12 +213,28 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
         navigate('/dashboard/linuxDashboard');
         break;
 
+      case '/dashboard/thirdpartyApp':
+        setActive("ThirdParty");
+        break;
       case '/dashboard/linuxDashboard':
-    
+        setActive("Linux");
         break;
 
 
+
+
     }
+    console.log("splited location Path  --> ",location.pathname.split("/")[1]);
+    switch (location.pathname.split("/")[1].toLocaleLowerCase()) {
+      case 'thirdparty':
+        setActive("ThirdParty");
+        break;
+
+      case 'linux':
+        setActive("Linux");
+        break;
+    }
+
 
 
   }, [location]);

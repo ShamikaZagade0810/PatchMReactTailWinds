@@ -73,16 +73,19 @@ export default function MainLayout() {
   } = useSidebar();
 
   useEffect(() => {
-    console.log("active --- Item ", activeItem);
-    if (activeItem == '/dashboard/patchTree') {
+    console.log("active --- Item ", activeItem.split("/")[1]);
+   
+
+    if (activeItem == '/dashboard/patchTree' || activeItem.split("/")[1]?.toLowerCase() === 'patchtree' ) {
       setIsPatchTreeSidebarEnabled(true);
-    } else if (activeItem == '/section/Thirdparty' || activeItem == '/dashboard/thirdpartyApp') {
+    } else if (activeItem == '/section/Thirdparty' || activeItem == '/dashboard/thirdpartyApp' || activeItem.split("/")[1]?.toLowerCase() === 'thirdparty') {
+      console.log("hello hii hello");
       setSidebarContent(ThirdPartySidebarData);
-    } else if (activeItem == '/section/Linux' || activeItem == '/dashboard/linuxDashboard') {
+    } else if (activeItem == '/section/Linux' || activeItem == '/dashboard/linuxDashboard' ||  activeItem.split("/")[1]?.toLowerCase() === 'linux') {
       setSidebarContent(LinuxSidebarData);
     } else if (activeItem == '/dashboard/mainDashboard') {
       setSidebarContent(sidebarData);
-    }else {
+    } else {
       setIsPatchTreeSidebarEnabled(false);
     }
 
