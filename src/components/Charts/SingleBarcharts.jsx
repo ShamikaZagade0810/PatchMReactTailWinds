@@ -73,7 +73,7 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
                     {/* Bars */}
                     <Bar
                         dataKey="count"
-                        fill="#22C55E"
+                        fill="#16a34a"
                         radius={[4, 4, 0, 0]}
                         onClick={(data, index) => {
                             console.log("Clicked Bar:", data);
@@ -81,9 +81,7 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
                             const reqdata = {
                                 fromDate: startDate,
                                 toDate: endDate
-                            };
-                            
-
+                            };      
                           onSliceClick('patch_wise', 'histbarchart',reqdata);
                        
                         }}
