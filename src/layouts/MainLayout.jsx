@@ -45,7 +45,8 @@
 
 import { Navbar } from "../components/Layout/Navbar";
 import { Sidebar } from "../components/Layout/Sidebar";
-import { PatchTreeSideBar } from "../components/Layout/PatchTreeSideBar";
+// import { PatchTreeSideBar } from "../components/Layout/PatchTreeSideBar";
+import { PatchTreeOptions } from "../components/Layout/PatchTreeOptions" // replace PatchTreeOptions -->  PatchTreeSideBar
 import { Footer } from "../components/Layout/Footer";
 import { useSidebar } from "../hooks/useSidebar";
 import { Outlet } from "react-router-dom";
@@ -154,7 +155,7 @@ export default function MainLayout() {
           sidebarData={sidebarContent}
         />
         :
-        <PatchTreeSideBar
+        <PatchTreeOptions
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           activeItem={activeItem}
