@@ -121,7 +121,8 @@ const ComputerListing = () => {
                                     className="border-b border-white/10 last:border-b-0 hover:bg-[#172033] transition"
                                 >
                                     {/* <td className="p-3">{item.srNo}</td> */}
-                                    <td  onClick={() => navigate(`/patchTree/computer-details/${encodeURIComponent(item.name)}`) } className="p-3 font-medium hover:text-cyan-400  ">{item.name}</td>
+                                    <td  onClick={() => navigate(`/patchTree/computer-details/${encodeURIComponent(item.name)}`, { state: {  groupId,  groupName, }, }) } 
+                                        className="p-3 font-medium hover:text-cyan-400 hover:underline ">{item.name}</td>
                                     <td className="p-3">{item.ipAddress}</td>
                                     <td className="p-3">{item.model}</td>
                                     <td className="p-3">{item.make}</td>

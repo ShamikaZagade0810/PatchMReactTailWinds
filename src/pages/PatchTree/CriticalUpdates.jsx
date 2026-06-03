@@ -18,15 +18,15 @@ const handleOpen = (title) => {
 };
 
   const criticalupdateslist = [
-    {srNo:1,title:"Remote Assistance Connection",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 20:49:52.6",arrivalDate:"2025-12-30 06:27:55.633",approved:false,declined:false,state:"Published"},
-    {srNo:2,title:"Windows XP Update Package, October 25, 2001",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 21:28:13.757",arrivalDate:"2025-12-30 06:27:56.01",approved:false,declined:false,state:"Published"},
-    {srNo:3,title:"Critical Update, November 19, 2001",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-03-25 22:24:13.507",arrivalDate:"2025-12-30 06:27:56.083",approved:false,declined:false,state:"Published"},
-    {srNo:4,title:"System Recovered Error Message Update",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 19:56:08.78",arrivalDate:"2025-12-30 06:28:02.03",approved:false,declined:false,state:"Published"},
-    {srNo:5,title:"Critical Update, February 10, 2002",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-08-28 14:52:21.093",arrivalDate:"2025-12-30 06:28:02.213",approved:false,declined:false,state:"Published"},
-    {srNo:6,title:"Q320174: Critical Update",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-20 03:09:48.407",arrivalDate:"2025-12-30 06:28:09.903",approved:false,declined:false,state:"Published"},
-    {srNo:7,title:"Q329553: Critical Update (Windows 2000)",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-09-09 21:59:08.33",arrivalDate:"2025-12-30 06:28:40.593",approved:false,declined:false,state:"Published"},
-    {srNo:8,title:"810565: Critical Update",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-10-15 05:15:58.963",arrivalDate:"2025-12-30 06:28:46.98",approved:false,declined:false,state:"Published"},
-    {srNo:9,title:"810649: Critical Update",legacyName:"NA",updateClassificationTitle:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-25 18:41:10.857",arrivalDate:"2025-12-30 06:28:47.19",approved:false,declined:false,state:"Published"}
+    {srNo:1,title:"Remote Assistance Connection",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 20:49:52.6",arrivalDate:"2025-12-30 06:27:55.633",approved:false,declined:false,state:"Published"},
+    {srNo:2,title:"Windows XP Update Package, October 25, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 21:28:13.757",arrivalDate:"2025-12-30 06:27:56.01",approved:false,declined:false,state:"Published"},
+    {srNo:3,title:"Critical Update, November 19, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-03-25 22:24:13.507",arrivalDate:"2025-12-30 06:27:56.083",approved:false,declined:false,state:"Published"},
+    {srNo:4,title:"System Recovered Error Message Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 19:56:08.78",arrivalDate:"2025-12-30 06:28:02.03",approved:false,declined:false,state:"Published"},
+    {srNo:5,title:"Critical Update, February 10, 2002",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-08-28 14:52:21.093",arrivalDate:"2025-12-30 06:28:02.213",approved:false,declined:false,state:"Published"},
+    {srNo:6,title:"Q320174: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-20 03:09:48.407",arrivalDate:"2025-12-30 06:28:09.903",approved:false,declined:false,state:"Published"},
+    {srNo:7,title:"Q329553: Critical Update (Windows 2000)",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-09-09 21:59:08.33",arrivalDate:"2025-12-30 06:28:40.593",approved:false,declined:false,state:"Published"},
+    {srNo:8,title:"810565: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-10-15 05:15:58.963",arrivalDate:"2025-12-30 06:28:46.98",approved:false,declined:false,state:"Published"},
+    {srNo:9,title:"810649: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-25 18:41:10.857",arrivalDate:"2025-12-30 06:28:47.19",approved:false,declined:false,state:"Published"}
   ];
 
   const [search, setSearch] = useState('');
@@ -44,7 +44,7 @@ useEffect(() => {
 
 
   const severityOptions = [
-    ...new Set( criticalupdateslist.map(item => item.updateClassificationTitle) )
+    ...new Set( criticalupdateslist.map(item => item.classification) )
   ];
 
 
@@ -54,7 +54,7 @@ useEffect(() => {
     return criticalupdateslist.filter(item => {
       const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase());
 
-      const matchesSeverity = severityFilter === '' ? true : item.updateClassificationTitle === severityFilter;
+      const matchesSeverity = severityFilter === '' ? true : item.classification === severityFilter;
 
       let matchesStatus = true;
       if (statusFilter === 'approved') {
@@ -75,7 +75,7 @@ useEffect(() => {
 
   const approvedCritical = criticalupdateslist.filter( item => item.approved === true ).length;
 
-  const severityCritical = criticalupdateslist.filter( item => item.updateClassificationTitle === 'Critical Updates' ).length;
+  const severityCritical = criticalupdateslist.filter( item => item.classification === 'Critical Updates' ).length;
 
   
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
@@ -198,7 +198,7 @@ useEffect(() => {
                 {/* <th className="px-4 py-3 font-medium"> Sr No </th> */}
                 <th className="px-4 py-3 font-medium">Title</th>
                 <th className="px-4 py-3 font-medium"> Classification </th>
-                <th className="px-4 py-3 font-medium break-words whitespace-normal max-w-[120px]"> Installed / Not Applicable </th>
+                {/* <th className="px-4 py-3 font-medium break-words whitespace-normal max-w-[120px]"> Installed / Not Applicable </th> */}
                 <th className="px-4 py-3 font-medium"> Creation Date </th>
                 <th className="px-4 py-3 font-medium"> Arrival Date </th>
                 <th className="px-4 py-3 font-medium"> Approved </th>
@@ -222,13 +222,13 @@ useEffect(() => {
 
                     <td className="px-4 py-3">
                       <span className="px-2.5 py-1 rounded-full text-[10px] border bg-red-500/10 text-red-400 border-red-500/20">
-                        {item.updateClassificationTitle}
+                        {item.classification}
                       </span>
                     </td>
 
-                    <td className="px-4 py-3 text-gray-300">
+                    {/* <td className="px-4 py-3 text-gray-300">
                       {item.installedOrNotApplicable}
-                    </td>
+                    </td> */}
 
                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.creationDate} </td>
 
