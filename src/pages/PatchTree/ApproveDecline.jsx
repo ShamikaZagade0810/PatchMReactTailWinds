@@ -4,8 +4,9 @@ import {
     Search, RefreshCw, Download, CheckCircle2, ShieldAlert, AlertTriangle,
     ChevronLeft, ChevronRight
 } from 'lucide-react';
-import {  getThirdPartyMissingApps, thirdPartyMissingApprovePatches } from "../../api/projectApi";
+import { getPatchTreeMissingAppApprvDec, thirdPartyMissingApprovePatches, getGroupData,getWindowMissingPatchApprove } from "../../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
+import MultiSelect from '../../layouts/MultiSelect';
 
 const ApproveDecline = () => {
     const thirdmissingapps = [
@@ -42,30 +43,60 @@ const ApproveDecline = () => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [ThirdPartyMissingApp, setThirdPartyMissingApp] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [GroupList, setGroupList] = useState([]);
+    const [SelectedGroups, setSelectedGroups] = useState([]);
+    const [action, setAction] = useState("");
 
-
+    console.log("selectedRow--> ", selectedRows)
     useEffect(() => {
+        getGroupDatafunc();
+
         getData();
 
 
     }, []);
 
     const getData = async () => {
-        
+
         setLoading(true);
-        const Repodata = await getThirdPartyMissingApps();
-        console.log("Data --> ", Repodata.data.data);
-        setThirdPartyMissingApp(Repodata.data.data);
+        const Repodata = await getPatchTreeMissingAppApprvDec();
+        console.log("Data --> ", Repodata.data.data[0].data);
+        setThirdPartyMissingApp(Repodata.data.data[0].data);
         setLoading(false);
 
     }
 
+
+    //  const getGroupDatafunc = async () => {
+
+    //     console.log("Hii hello");
+    //     const Groupdata = await getGroupData();
+    //     console.log("Group Data --> ", Groupdata.data.data);
+    //     //  setGroupList(Groupdata.data.data.map(obj => obj.groupName));
+    //     // setLoading(false);
+
+    // }
+
+    const getGroupDatafunc = async () => {
+        try {
+            const Groupdata = await getGroupData();
+            console.log("Group Data --> ", Groupdata);
+            setGroupList(Groupdata.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const setValue = (value) => {
+        setSelectedGroups(value);
+    };
+
     // Filter Data
     const filteredData = useMemo(() => {
         return ThirdPartyMissingApp.filter((item) =>
-            item.app.toLowerCase().includes(search.toLowerCase()) ||
-            item.host.toLowerCase().includes(search.toLowerCase()) ||
-            item.ip.toLowerCase().includes(search.toLowerCase())
+            item.pc_name.toLowerCase().includes(search.toLowerCase()) ||
+            item.patch_name.toLowerCase().includes(search.toLowerCase()) ||
+            item.classification.toLowerCase().includes(search.toLowerCase())
         );
     }, [search, ThirdPartyMissingApp]);
 
@@ -107,39 +138,44 @@ const ApproveDecline = () => {
 
             return alreadyExists
                 ? prev.filter((row) => row.srNo !== item.srNo)
-                : [...prev, item];
+                : [...prev, item.srNo];
         });
     };
 
-    const handleClickApprove = async () => {
-        try {
-            const reqData = selectedRows.map(obj => ({
-                ip: obj.ip,
-                app: obj.app
-            }));
-            console.log("Hii ", reqData);
+const handleClickApprove = async () => {
+    const patchTitleString = filteredData
+        .filter(item => selectedRows.includes(item.srNo))
+        .map(item => item.patch_name)
+        .join("$");
 
-            const resdata = await thirdPartyMissingApprovePatches(reqData);
-            console.log("Approved response", resdata.data.message)
-            if (resdata.data.status === 200) {
-                toast.success("Successfully Approved")
-                // Clear selected rows
-                setSelectedRows([]);
-                await getData();
-            }
-            else {
-                toast.error("Something went Wrong !! ")
-            }
-        } catch (error) {
-            console.error(error);
-            toast.error("API Error");
-        }
+    const payload = {
+        title: patchTitleString,
+        status: action, // Approve or Decline
+        group: SelectedGroups[0]?.label,
+        classification: "Security Updates",
+        username: "admin"
+    };
+
+    console.log("Payload:", payload);
+
+    // API Call
+    try {
+        const response = await getWindowMissingPatchApprove(payload);
+
+        console.log("Response:", response.data);
+    } catch (error) {
+        console.error("Error:", error);
     }
+};
+
+    const GroupChange = (selected) => {
+        setSelectedGroups(selected);
+    };
 
     return (
-        
+
         <div className="bg-[#050B18] rounded-xl p-4 border border-white/10 min-h-screen text-white text-sm">
-<ToastContainer />
+            <ToastContainer />
             {/* Header */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
 
@@ -148,17 +184,52 @@ const ApproveDecline = () => {
                     <p className="text-xs text-gray-400 mt-1"> Applications pending updates across endpoints. </p>
                 </div>
 
-                <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
-                        <RefreshCw size={14} /> Refresh
+                <div className="flex flex-wrap items-end gap-4">
+
+                    {/* Action Dropdown */}
+                    <div className="flex flex-col">
+                        <label className="text-xs font-medium mb-1">
+                            Action
+                        </label>
+
+                        <select
+                            id="patchAction"
+                            value={action}
+                            onChange={(e) => setAction(e.target.value)}
+                            className="filter-input h-10 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="" disabled>
+                                -- Please select value --
+                            </option>
+                            <option value="Approve">Approve</option>
+                            <option value="Decline">Decline</option>
+                        </select>
+                    </div>
+
+                    {/* Group Dropdown */}
+                    <div className="flex flex-col min-w-[300px]">
+                        <label className="text-xs font-medium mb-1">
+                            Groups
+                        </label>
+                        <MultiSelect
+                            options={GroupList}
+                            value={SelectedGroups}
+                            onChange={GroupChange}
+                            placeholder="Select Branch Names"
+                            id="groupNames"
+                            setValue={setValue}
+                        />
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        className="h-10 flex items-center gap-2 px-4 rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300"
+                        onClick={() => handleClickApprove()}
+                    >
+                        <Download size={14} />
+                        Submit
                     </button>
 
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
-                        <Download size={14} /> Export
-                    </button>
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300" onClick={() => handleClickApprove()}>
-                        <Download size={14} /> Approve
-                    </button>
                 </div>
             </div>
 
@@ -252,12 +323,12 @@ const ApproveDecline = () => {
                                 <input type="checkbox" checked={paginatedData.length > 0 && paginatedData.every((item) => selectedRows.includes(item.srNo))}
                                     onChange={handleSelectAll} className="w-4 h-4 rounded border border-[#334155] bg-[#111827] accent-cyan-500 cursor-pointer" />
                             </th>
-                            <th className="px-4 py-3 font-medium">IP Address</th>
+                            <th className="px-4 py-3 font-medium">srno</th>
                             <th className="px-4 py-3 font-medium">Host Name</th>
-                            <th className="px-4 py-3 font-medium">Application</th>
-                            <th className="px-4 py-3 font-medium">Installed Version</th>
-                            <th className="px-4 py-3 font-medium">Latest Version</th>
-                            <th className="px-4 py-3 font-medium">Status</th>
+
+                            <th className="px-4 py-3 font-medium">Patch</th>
+                            <th className="px-4 py-3 font-medium">Classification</th>
+                            <th className="px-4 py-3 font-medium">Creation_Timestamp</th>
                         </tr>
                     </thead>
 
@@ -267,18 +338,13 @@ const ApproveDecline = () => {
                                 <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
                                     <td className="px-4 py-3">
-                                        <input type="checkbox"  checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)} />
+                                        <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)} />
                                     </td>
-                                    <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.ip} </td>
-                                    <td className="px-4 py-3"> {item.host} </td>
-                                    <td className="px-4 py-3 font-medium text-white"> {item.app} </td>
-                                    <td className="px-4 py-3 text-gray-300"> {item.installedVersion} </td>
-                                    <td className="px-4 py-3 text-cyan-400"> {item.latestVersion} </td>
-                                    <td className="px-4 py-3">
-                                        <span className="px-2.5 py-1 rounded-full text-[10px] border bg-red-500/10 text-red-400 border-red-500/20">
-                                            {item.status}
-                                        </span>
-                                    </td>
+                                    <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.srNo} </td>
+                                    <td className="px-4 py-3"> {item.pc_name} </td>
+                                    <td className="px-4 py-3 font-medium text-white"> {item.patch_name} </td>
+                                    <td className="px-4 py-3 text-gray-300"> {item.classification} </td>
+                                    <td className="px-4 py-3 text-gray-300"> {item.creation_Timestamp} </td>
                                 </tr>
                             ))
                         ) : (
@@ -309,7 +375,7 @@ const ApproveDecline = () => {
 
                 </div>
             </div>
-            
+
         </div>
     )
 }

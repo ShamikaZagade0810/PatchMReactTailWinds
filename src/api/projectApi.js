@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODAyODg0NzEsImV4cCI6MTc4MDM3NDg3MX0.g4tk84bI4DpWc5BN0dXhf63n6Ly7Hazf45rSM1aP4OY';
-const BASE_URL = "http://192.168.0.17:8081";
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODAzODA4NDEsImV4cCI6MTc4MDQ2NzI0MX0.yUYpA5pajpDOR2eShTtYmvADtAo9bnQ6QOUZ_shTnIU';
+const BASE_URL = "http://192.168.0.52:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -313,7 +313,7 @@ export const getTopRiskyDevices = () =>
   });
 
 
-  export const getApprovedCriticalList = () =>
+export const getApprovedCriticalList = () =>
   axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -327,7 +327,7 @@ export const getCriticalPatchesList = () =>
     }
   });
 
-  
+
 export const getCriticalInstalledPatchesList = () =>
   axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
     headers: {
@@ -1710,7 +1710,7 @@ export const getrecentActivity = () =>
   });
 
 
-  // ================================= Third Party  ================================// 
+// ================================= Third Party  ================================// 
 
 export const getThirdPartyPatchRepo = () =>
   axios.get(`${BASE_URL}/thirdparty/PatchRepository`, {
@@ -1792,7 +1792,7 @@ export const getThirdPartypatchprogress = () =>
     }
 
   });
-  
+
 export const getThirdPartyHostView = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/host-summary`, {
     headers: {
@@ -1801,7 +1801,7 @@ export const getThirdPartyHostView = (inputData) =>
     params: inputData
   });
 
-  export const getThirdPartyHostinfo = (ip) =>
+export const getThirdPartyHostinfo = (ip) =>
   axios.get(`${BASE_URL}/thirdparty/host-info`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1809,7 +1809,7 @@ export const getThirdPartyHostView = (inputData) =>
     params: { ip: ip }
   });
 
-export const getThirdPartyHostappsdetails = (hostname,ip) =>
+export const getThirdPartyHostappsdetails = (hostname, ip) =>
   axios.get(`${BASE_URL}/thirdparty/host-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1817,7 +1817,7 @@ export const getThirdPartyHostappsdetails = (hostname,ip) =>
     params: {
       hostname: hostname,
       ip: ip
-     }
+    }
   });
 
 export const getThirdPartylatestSoftware = () =>
@@ -1829,7 +1829,7 @@ export const getThirdPartylatestSoftware = () =>
   });
 
 // ================================= Linux  ================================// 
-  export const getLinuxMissingApps = () =>
+export const getLinuxMissingApps = () =>
   axios.get(`${BASE_URL}/linux/linux-missing-apps`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1861,7 +1861,7 @@ export const getLinuxCompletedReport = (inputData) =>
     }
   );
 
-  export const getLinuxFailedReport = (inputData) =>
+export const getLinuxFailedReport = (inputData) =>
   axios.post(
     `${BASE_URL}/linux-reports/linux-failed`,
     inputData,
@@ -1872,7 +1872,7 @@ export const getLinuxCompletedReport = (inputData) =>
     }
   );
 
-  export const getLinuxPendingReport = (inputData) =>
+export const getLinuxPendingReport = (inputData) =>
   axios.post(
     `${BASE_URL}/linux-reports/linux-pending`,
     inputData,
@@ -1883,7 +1883,7 @@ export const getLinuxCompletedReport = (inputData) =>
     }
   );
 
-  export const getLinuxMissingReport = (inputData) =>
+export const getLinuxMissingReport = (inputData) =>
   axios.post(
     `${BASE_URL}/linux-reports/linux-missing`,
     inputData,
@@ -1894,9 +1894,37 @@ export const getLinuxCompletedReport = (inputData) =>
     }
   );
 
-  export const getLinuxPatchRepo = () =>
+export const getLinuxPatchRepo = () =>
   axios.get(`${BASE_URL}/linux/LinuxRepolist`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
+
+
+export const getPatchTreeMissingAppApprvDec = () =>
+  axios.get(`${BASE_URL}/PatchTree/windowMissingPatches`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+  export const getGroupData = () =>
+  axios.get(`${BASE_URL}/PatchTree/allGroup`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+  export const getWindowMissingPatchApprove = (inputData) =>
+  axios.post(
+    `${BASE_URL}/PatchTree/approve-decline`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
