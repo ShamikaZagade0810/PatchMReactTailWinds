@@ -131,18 +131,32 @@ const ApproveDecline = () => {
     // };
 
     const handleRowSelect = (item) => {
+        console.log(selectedRows , item);
         setSelectedRows((prev) => {
-            const alreadyExists = prev.some(
-                (row) => row.srNo === item.srNo
+            const alreadyExists = prev.includes(
+                item.srNo
             );
-
+            console.log("Already exist ",alreadyExists ," sele ",prev.filter((row) => row.srNo !== item.srNo));
             return alreadyExists
                 ? prev.filter((row) => row.srNo !== item.srNo)
                 : [...prev, item.srNo];
         });
+
+        
     };
 
 const handleClickApprove = async () => {
+
+        if (selectedRows.length === 0) {
+        toast("Please select at least one patch!");
+        return;
+    }
+
+    // Group Validation
+    if (!SelectedGroups || SelectedGroups.length === 0) {
+        toast("Please select a group!");
+        return;
+    }
     const patchTitleString = filteredData
         .filter(item => selectedRows.includes(item.srNo))
         .map(item => item.patch_name)
@@ -162,6 +176,7 @@ const handleClickApprove = async () => {
     try {
         const response = await getWindowMissingPatchApprove(payload);
 
+        toast(response?.data?.data.message || "Patch action completed successfully!");
         console.log("Response:", response.data);
     } catch (error) {
         console.error("Error:", error);
@@ -201,7 +216,7 @@ const handleClickApprove = async () => {
                             <option value="" disabled>
                                 -- Please select value --
                             </option>
-                            <option value="Approve">Approve</option>
+                            <option value="Approved">Approve</option>
                             <option value="Decline">Decline</option>
                         </select>
                     </div>

@@ -4,7 +4,7 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef();
-  console.log("value --->", value,"options --->", options);
+  console.log("value --->", value, "options --->", options);
   // close on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -41,23 +41,23 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
     onChange(newValue);
   };
 
-const allSelected =
-  options.length > 0 && value.length === options.length;
+  const allSelected =
+    options.length > 0 && value.length === options.length;
 
-const toggleSelectAll = () => {
-  let newValue = [];
+  const toggleSelectAll = () => {
+    let newValue = [];
 
-  if (allSelected) {
-    newValue = [];
-  } else {
-    newValue = [...options];
-  }
+    if (allSelected) {
+      newValue = [];
+    } else {
+      newValue = [...options];
+    }
 
-  const onlyvalue = newValue.map((obj) => obj.value);
+    const onlyvalue = newValue.map((obj) => obj.value);
 
-  setValue(id, onlyvalue, { shouldValidate: true });
-  onChange(newValue);
-};
+    setValue(id, onlyvalue, { shouldValidate: true });
+    onChange(newValue);
+  };
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -72,27 +72,27 @@ const toggleSelectAll = () => {
         )} */}
 
         {value.length > 0 ? (
-  <>
-    {value.slice(0, 2).map((item) => (
-      <span
-        key={item.value}
-        className="bg-blue-600/40 text-white px-1 py-1 rounded text-sm"
-      >
-        {item.label}
-      </span>
-    ))}
+          <>
+            {value.slice(0, 2).map((item) => (
+              <span
+                key={item.value}
+                className="bg-blue-600/40 text-white px-1 py-1 rounded text-sm"
+              >
+                {item.label}
+              </span>
+            ))}
 
-    {value.length > 2 && (
-      <span className="bg-slate-700 text-white px-2 py-1 rounded text-sm">
-        +{value.length - 2} more
-      </span>
-    )}
-  </>
-) : (
-  <span className="text-gray-400 text-sm">
-    {placeholder}
-  </span>
-)}
+            {value.length > 2 && (
+              <span className="bg-slate-700 text-white px-2 py-1 rounded text-sm">
+                +{value.length - 2} more
+              </span>
+            )}
+          </>
+        ) : (
+          <span className="text-gray-400 text-sm">
+            {placeholder}
+          </span>
+        )}
         {error && (
           <p className="text-red-500 text-xs mt-1">
             {error.message || "This field is required"}
@@ -119,8 +119,8 @@ const toggleSelectAll = () => {
           {/* Options */}
           <div className="max-h-48 overflow-y-auto">
             <div
-  onClick={toggleSelectAll}
-  className="
+              onClick={toggleSelectAll}
+              className="
     flex items-center gap-2
     px-3 py-2
     cursor-pointer
@@ -129,16 +129,16 @@ const toggleSelectAll = () => {
     hover:bg-[#1B2A44]
     sticky top-0 z-10
   "
->
-  <input
-    type="checkbox"
-    checked={allSelected}
-    readOnly
-  />
-  <span className="text-cyan-400 font-medium text-sm">
-    Select All
-  </span>
-</div>
+            >
+              <input
+                type="checkbox"
+                checked={allSelected}
+                readOnly
+              />
+              <span className="text-cyan-400 font-medium text-sm">
+                Select All
+              </span>
+            </div>
             {filteredOptions.map((option) => {
               const isSelected = value.some(
                 (v) => v.value === option.value
