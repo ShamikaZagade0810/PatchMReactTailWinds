@@ -1,5 +1,5 @@
 // components/Layout/Sidebar.jsx
-import React, { useMemo, useState, useEffect ,useRef} from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     LayoutDashboard,
@@ -368,8 +368,6 @@ const closeModal = () => {
     // const [expandServer, setExpandServer] = useState(true);
     // const [expandUpdates, setExpandUpdates] = useState(false);
     // const [expandComputers, setExpandComputers] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
-    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
     const [selectedServer, setSelectedServer] = useState(null);
     const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, });
 
@@ -416,7 +414,6 @@ const handleRightClick = (e, server) => {
     }, [user?.role]);
 
 
-
     const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 
@@ -424,37 +421,6 @@ const handleRightClick = (e, server) => {
         const serverKey = server.serverName;
         const updatesKey = `${serverKey}-updates`;
         const computersKey = `${serverKey}-computers`;
-        const menuRef = useRef(null);
-
-        useEffect(() => {
-            const handleClickOutside = (event) => {
-                if (
-                    menuRef.current &&
-                    !menuRef.current.contains(event.target)
-                ) {
-                    setShowMenu(false);
-                }
-            };
-
-            document.addEventListener("mousedown", handleClickOutside);
-
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, []);
-
-        const handleRightClick = (e) => {
-            console.log("hii hello");
-            e.preventDefault(); // Prevent browser menu
-
-            setMenuPosition({
-                x: e.pageX,
-                y: e.pageY,
-            });
-
-            setShowMenu(true);
-        };
-
 
         return (
             <div key={server.serverName} className="space-y-1">
@@ -576,7 +542,6 @@ const handleRightClick = (e, server) => {
                                 {/* Approve / Decline */}
                                 <button
                                     onClick={() => navigate("/patchTree/Apprv_Declined")}
-
                                     className="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm
             text-slate-300 hover:bg-[#0e1f33] hover:text-green-200 transition-all duration-200 group" >
                                     <div className="flex items-center gap-2">
@@ -597,7 +562,6 @@ const handleRightClick = (e, server) => {
                         //  onContextMenu={handleRightClick}
                         onContextMenu={(e) => handleRightClick(e, server)}
                             // className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33]" 
-                            onContextMenu={handleRightClick}
                             className={`
                                     w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33]
                                     ${!isOpen ? "justify-center" : ""}
@@ -661,41 +625,6 @@ const handleRightClick = (e, server) => {
                                     </button>
                                 ))}
 
-                            </div>
-                        )}
-
-                        {showMenu && (
-                            <div
-                            ref={menuRef}
-                                className="fixed z-50 w-56 bg-white border border-gray-400 shadow-lg text-black"
-                                style={{
-                                    left: menuPosition.x,
-                                    top: menuPosition.y,
-                                }}
-                            >
-                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                    Discover Group
-                                </button>
-
-                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                    Discover Group Statistics
-                                </button>
-
-                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                    Discover Computers
-                                </button>
-
-                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                    Discover Computer Statistics
-                                </button>
-
-                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                    Delete Computers
-                                </button>
-
-                                <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                    Add Group
-                                </button>
                             </div>
                         )}
 
