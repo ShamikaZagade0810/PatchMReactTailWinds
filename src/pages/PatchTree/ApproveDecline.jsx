@@ -4,7 +4,7 @@ import {
     Search, RefreshCw, Download, CheckCircle2, ShieldAlert, AlertTriangle,
     ChevronLeft, ChevronRight
 } from 'lucide-react';
-import { getPatchTreeMissingAppApprvDec, thirdPartyMissingApprovePatches, getGroupData,getWindowMissingPatchApprove } from "../../api/projectApi";
+import { getPatchTreeMissingAppApprvDec, thirdPartyMissingApprovePatches, getGroupData, getWindowMissingPatchApprove } from "../../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect';
 
@@ -131,57 +131,57 @@ const ApproveDecline = () => {
     // };
 
     const handleRowSelect = (item) => {
-        console.log(selectedRows , item);
+        console.log(selectedRows, item);
         setSelectedRows((prev) => {
             const alreadyExists = prev.includes(
                 item.srNo
             );
-            console.log("Already exist ",alreadyExists ," sele ",prev.filter((row) => row.srNo !== item.srNo));
+            console.log("Already exist ", alreadyExists, " sele ", prev.filter((srNo) => srNo !== item.srNo));
             return alreadyExists
-                ? prev.filter((row) => row.srNo !== item.srNo)
+                ? prev.filter((srNo) => srNo !== item.srNo)
                 : [...prev, item.srNo];
         });
 
-        
+
     };
 
-const handleClickApprove = async () => {
+    const handleClickApprove = async () => {
 
         if (selectedRows.length === 0) {
-        toast("Please select at least one patch!");
-        return;
-    }
+            toast("Please select at least one patch!");
+            return;
+        }
 
-    // Group Validation
-    if (!SelectedGroups || SelectedGroups.length === 0) {
-        toast("Please select a group!");
-        return;
-    }
-    const patchTitleString = filteredData
-        .filter(item => selectedRows.includes(item.srNo))
-        .map(item => item.patch_name)
-        .join("$");
+        // Group Validation
+        if (!SelectedGroups || SelectedGroups.length === 0) {
+            toast("Please select a group!");
+            return;
+        } 
+        const patchTitleString = filteredData
+            .filter(item => selectedRows.includes(item.srNo))
+            .map(item => item.patch_name)
+            .join("$");
 
-    const payload = {
-        title: patchTitleString,
-        status: action, // Approve or Decline
-        group: SelectedGroups[0]?.label,
-        classification: "Security Updates",
-        username: "admin"
+        const payload = {
+            title: patchTitleString,
+            status: action, // Approve or Decline
+            group: SelectedGroups[0]?.label,
+            classification: "Security Updates",
+            username: "admin"
+        };
+
+        console.log("Payload:", payload);
+
+        // API Call
+        try {
+            const response = await getWindowMissingPatchApprove(payload);
+
+            toast(response?.data?.data.message || "Patch action completed successfully!");
+            console.log("Response:", response.data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
-
-    console.log("Payload:", payload);
-
-    // API Call
-    try {
-        const response = await getWindowMissingPatchApprove(payload);
-
-        toast(response?.data?.data.message || "Patch action completed successfully!");
-        console.log("Response:", response.data);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-};
 
     const GroupChange = (selected) => {
         setSelectedGroups(selected);
@@ -348,25 +348,56 @@ const handleClickApprove = async () => {
                     </thead>
 
                     <tbody>
-                        {paginatedData.length > 0 ? (
-                            paginatedData.map((item) => (
-                                <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
-                                    <td className="px-4 py-3">
-                                        <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)} />
+                        {
+                            loading ? (
+                                <tr>
+                                    <td colSpan="9" className="py-10">
+                                        <div className="flex flex-col items-center justify-center gap-3">
+                                            <RefreshCw size={24} className="animate-spin text-cyan-400" />
+                                            <span className="text-gray-400 text-xs">
+                                                Loading updates...
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.srNo} </td>
-                                    <td className="px-4 py-3"> {item.pc_name} </td>
-                                    <td className="px-4 py-3 font-medium text-white"> {item.patch_name} </td>
-                                    <td className="px-4 py-3 text-gray-300"> {item.classification} </td>
-                                    <td className="px-4 py-3 text-gray-300"> {item.creation_Timestamp} </td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="7" className="text-center py-8 text-gray-400 text-xs" > No Data Available </td>
-                            </tr>
-                        )}
+                            ) : paginatedData.length > 0 ? (
+                                paginatedData.map((item) => (
+                                    <tr
+                                        key={item.srNo}
+                                        className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300"
+                                    >
+                                        <td className="px-4 py-3">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedRows.includes(item.srNo)}
+                                                onChange={() => handleRowSelect(item)}
+                                            />
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300 whitespace-nowrap">
+                                            {item.srNo}
+                                        </td>
+                                        <td className="px-4 py-3">{item.pc_name}</td>
+                                        <td className="px-4 py-3 font-medium text-white">
+                                            {item.patch_name}
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">
+                                            {item.classification}
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">
+                                            {item.creation_Timestamp}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="9" className="text-center py-8 text-gray-400 text-xs">
+                                        No Data Available
+                                    </td>
+                                </tr>
+                            )
+                        }
+
                     </tbody>
 
                 </table>

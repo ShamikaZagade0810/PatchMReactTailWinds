@@ -662,7 +662,7 @@ function PatchTreeThirdDashboard() {
                                 {computerStatusPie.map((item, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-2 min-w-[420px]"
+                                        className="flex items-center gap-2 min-w-[40px]"
                                     >
 
                                         {/* Dot */}
@@ -680,7 +680,7 @@ function PatchTreeThirdDashboard() {
                                         </div>
 
                                         {/* Progress */}
-                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                        {/* <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
 
                                             <div
                                                 className="h-full rounded-full"
@@ -690,7 +690,7 @@ function PatchTreeThirdDashboard() {
                                                         COLORS[index % COLORS.length]
                                                 }}
                                             />
-                                        </div>
+                                        </div> */}
 
                                         {/* Percentage */}
                                         <div className="w-12 text-right text-[10px] text-slate-400">
@@ -751,7 +751,7 @@ function PatchTreeThirdDashboard() {
                                 {updateStatus.map((item, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-2 min-w-[420px]"
+                                        className="flex items-center gap-2 min-w-[40px]"
                                     >
 
                                         {/* Dot */}
@@ -769,7 +769,7 @@ function PatchTreeThirdDashboard() {
                                         </div>
 
                                         {/* Progress */}
-                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                        {/* <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
 
                                             <div
                                                 className="h-full rounded-full"
@@ -779,7 +779,7 @@ function PatchTreeThirdDashboard() {
                                                         COLORS[index % COLORS.length]
                                                 }}
                                             />
-                                        </div>
+                                        </div> */}
 
                                         {/* Percentage */}
                                         <div className="w-12 text-right text-[10px] text-slate-400">

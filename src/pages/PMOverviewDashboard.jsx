@@ -148,7 +148,7 @@ export const PMOverviewDashboard = () => {
                             onClick={() => setActiveTab(index)}
                             className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-all
                              ${activeTab === index
-                                    ? "text-md border-b-3 border-blue-500 text-blue-600"
+                                    ? "text-md border-b-3 border-blue-500/80 text-blue-500"
                                     : "text-gray-500 hover:text-blue-500"
                                 }`}
                         >

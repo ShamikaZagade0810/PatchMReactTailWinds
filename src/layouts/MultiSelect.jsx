@@ -15,7 +15,7 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+console.log("options", options);
   // filter
   const filteredOptions = options.filter((opt) =>
     opt.label.toLowerCase().includes(search.toLowerCase())
@@ -135,7 +135,7 @@ const MultiSelect = ({ options = [], value = [], onChange, placeholder = "Select
                 checked={allSelected}
                 readOnly
               />
-              <span className="text-cyan-400 font-medium text-sm">
+              <span className="text-blue-400 font-medium text-sm">
                 Select All
               </span>
             </div>

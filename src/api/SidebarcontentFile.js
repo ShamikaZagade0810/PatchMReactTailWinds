@@ -20,7 +20,7 @@ import {
   AppWindowMac,
   AppWindow,
   ClipboardMinus,
-  SquareTerminal
+  SquareTerminal, Send, Terminal , FileCog ,FileChartColumn,Router, PackageOpen 
 } from "lucide-react";
 
 import {
@@ -37,7 +37,7 @@ import {
 export const ThirdPartySidebarData = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/dashboard/thirdpartyApp",
     icon: LayoutDashboard,
     roles: ["admin"],
   },
@@ -122,19 +122,19 @@ export const sidebarData = [
       {
         name: "Patch Tree",
         path: "/dashboard/patchTree",
-        icon: AppWindowMac,
+        icon: GitBranch,
         roles: ["admin"],
       },
       {
         name: "Third Party",
         path: "/section/Thirdparty",
-        icon: AppWindowMac,
+        icon: Package,
         roles: ["admin"],
       },
       {
         name: "Linux",
         path: "/section/Linux",
-        icon: AppWindowMac,
+        icon: Terminal,
         roles: ["admin"],
       },
       // {
@@ -201,7 +201,7 @@ export const sidebarData = [
 
   {
     name: "Patch Setting",
-    icon: LayoutDashboard,
+    icon: FileCog,
     roles: ["admin"],
     path: "setting",
     children: [
@@ -234,7 +234,7 @@ export const sidebarData = [
 
   {
     name: "Master",
-    icon: LayoutDashboard,
+    icon: Database,
     roles: ["admin"],
     path: "master",
     children: [
@@ -305,7 +305,7 @@ export const sidebarData = [
   {
     name: "Reports",
     path: "/reports",
-    icon: ClipboardMinus,
+    icon: FileText,
     roles: ["admin"],
   },
   // {
@@ -374,7 +374,7 @@ export const sidebarData = [
   // },
    {
     name: "Network Devices",
-    icon: Share2,
+    icon: Router,
     roles: ["admin"],
     path: "network",
     children: [     
@@ -441,6 +441,12 @@ export const sidebarData = [
 
 export const LinuxSidebarData = [
 
+    {
+    name: "Dashboard",
+    path: "/dashboard/linuxDashboard",
+    icon: LayoutDashboard,
+    roles: ["admin"],
+  },
   {
     name: "Missing Apps",
     path: "/linux/Missing-Apps",
@@ -450,13 +456,13 @@ export const LinuxSidebarData = [
   {
     name: "Report",
     path: "/Linux/Report",
-    icon: LayoutDashboard,
+    icon: FileText,
     roles: ["admin"],
   },
    {
     name: "Repository",
     path: "/Linux/Repository",
-    icon: LayoutDashboard,
+    icon: FolderOpen ,
     roles: ["admin"],
   }
 

@@ -11,11 +11,16 @@ import {
   ChevronRight
 } from 'lucide-react';
 
+import { getAllUpdateData } from "../../api/projectApi";
 
 const SecurityUpdates = () => {
      const navigate = useNavigate();
     const handleOpen = (srNo) => {
-      navigate(`/patchTree/patchDetails/${srNo}`);
+      navigate(`/patchTree/patchDetails/${srNo}`, {
+    state: {
+      from: "/patchTree/SecurityUpdates"
+    }
+    });
     };
     
      const securityupdateslist = [

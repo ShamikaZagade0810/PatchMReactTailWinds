@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
-import { AddClientWiseSyncPolicy } from "../../api/projectApi";
+import { AddClientWiseSyncPolicy, getOSTypedropdown, getOSComputerdropdown } from "../../api/projectApi";
 
 const ClientWiseSyncPolicy = ({ editData, setEditData }) => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -24,17 +24,78 @@ const ClientWiseSyncPolicy = ({ editData, setEditData }) => {
     const selectedParam = watch("parameter");
     const [selectedip, setSelectedip] = useState([]);
 
-    const ostypeOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
+    const [ostypeOptions, setOstypeOptions] = useState([]);
+const [ipaddressOptions, setIpaddressOptions] = useState([]);
 
-    const ipaddress = [
-        { value: "192.168.0.15", label: "192.168.0.15" },
-        { value: "192.168.0.2", label: "192.168.0.2" },
-        { value: "192.168.0.4", label: "192.168.0.4" },
-        { value: "192.168.0.24", label: "192.168.0.24" },
-    ];
+    // const ostypeOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+
+    // const ipaddress = [
+    //     { value: "192.168.0.15", label: "192.168.0.15" },
+    //     { value: "192.168.0.2", label: "192.168.0.2" },
+    //     { value: "192.168.0.4", label: "192.168.0.4" },
+    //     { value: "192.168.0.24", label: "192.168.0.24" },
+    // ];
+
+    useEffect(() => {
+    const fetchOSTypes = async () => {
+        try {
+            const res = await getOSTypedropdown();
+
+            const formatted = res.data?.data?.map(item => ({
+                value: item.value,
+                label: item.label
+            })) || [];
+
+            setOstypeOptions(formatted);
+        } catch (err) {
+            console.error("OS Type API Error:", err);
+        }
+    };
+
+    fetchOSTypes();
+}, []);
+
+const selectedOs = watch("ostype");
+useEffect(() => {
+    const fetchComputers = async () => {
+        if (!selectedOs) {
+            setIpaddressOptions([]);
+            return;
+        }
+        
+
+        try {
+            const requestBody = Array.isArray(selectedOs)
+                ? selectedOs
+                : [selectedOs];
+
+            const res = await getOSComputerdropdown(requestBody);
+
+            const formatted = res.data?.data?.map(item => ({
+                value: item.value,
+                label: item.label
+            })) || [];
+
+            setIpaddressOptions(formatted);
+        } catch (err) {
+            console.error("Computer dropdown API Error:", err);
+        }
+    };
+
+    fetchComputers();
+}, [selectedOs]);
+
+useEffect(() => {
+    // clear selected IPs in UI state
+    setSelectedip([]);
+
+    // clear RHF field value too
+    setValue("ipaddress", []);
+
+}, [selectedOs, setValue]);
 
     useEffect(() => {
         register("ipaddress", { validate: (value) => value?.length > 0 || "At least 1 IP must be selected" });
@@ -169,7 +230,7 @@ const ClientWiseSyncPolicy = ({ editData, setEditData }) => {
 
 
                             <label className={labelClass}> IP Address </label>
-                            <MultiSelect options={ipaddress}
+                            <MultiSelect options={ipaddressOptions}
                                 value={selectedip}
                                 onChange={setSelectedip}
                                 placeholder="Select IP Address"

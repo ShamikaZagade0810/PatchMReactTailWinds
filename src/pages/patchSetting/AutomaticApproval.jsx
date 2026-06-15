@@ -5,7 +5,9 @@ import { Plus, List, Play, Pencil, Trash2, ClipboardList, SquareCheckBig, Ban } 
 
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 import { ToastContainer, toast } from 'react-toastify';
-import { AddAutoApprovalRule, getAutoApprovalRule, enableViewApprovalRule, disableViewApprovalRule, getAutoApprovalRuleById, UpdateAutoApprovalRule, deleteAutoApprovalRule } from "../../api/projectApi";
+import { AddAutoApprovalRule, getAutoApprovalRule, enableViewApprovalRule, disableViewApprovalRule, getAutoApprovalRuleById, UpdateAutoApprovalRule, deleteAutoApprovalRule,
+    getClassifficationdropdown, getproductdropdown, getGrouplistdropdown
+} from "../../api/projectApi";
 
 const AutomaticApproval = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -28,15 +30,20 @@ const AutomaticApproval = () => {
         initialApiReq();
     }, [register]);    
 
-    const initialApiReq = async () => {
-        // const data = await getActivityCmdList();
-        try {
-            console.log("inside initialApiReq--> ");
-        } catch (error) {
-            console.error("API Error:", error);
-        }
+   const initialApiReq = async () => {
+    try {
+        const [classificationRes, productRes, groupRes] = await Promise.all([ getClassifficationdropdown(), getproductdropdown(), getGrouplistdropdown()  ]);
 
+        setClassificationOptions( classificationRes?.data?.data || [] );
+        setProductOptions( productRes?.data?.data || [] );
+        setGroupOptions( groupRes?.data?.data || [] );
+
+    } catch (error) {
+        console.error("API Error:", error);
+        setClassificationOptions([]);
+        setProductOptions([]);
     }
+};
 
     const [activeTab, setActiveTab] = useState(0);
     const [listOfApproveRule, setListOfApproveRule] = useState([]);
@@ -70,22 +77,26 @@ const AutomaticApproval = () => {
         { srNo: 5, ruleName: "newrule", status: "Enable" }
     ];
 
-    const ClassificationOptions = [
-        { value: "Applications", label: "Applications" },
-        { value: "Critical Updates", label: "Critical Updates" },
-        { value: "Definition Updates", label: "Definition Updates" },
-    ];
+    // const ClassificationOptions = [
+    //     { value: "Applications", label: "Applications" },
+    //     { value: "Critical Updates", label: "Critical Updates" },
+    //     { value: "Definition Updates", label: "Definition Updates" },
+    // ];
 
-    const ProductOptions = [
-        { value: ".Net.1.0.1", label: ".Net.1.0.1" },
-        { value: ".Net Core 2.1", label: ".Net Core 2.1" },
-        { value: "Active Directory", label: "Active Directory" },
-    ];
-    const GroupOptions = [
-        { value: "UnKnown", label: "UnKnown" },
-        { value: "Windows 10", label: "Windows 10" },
-        { value: "Windows 8", label: "Windows 8" },
-    ];
+    // const ProductOptions = [
+    //     { value: ".Net.1.0.1", label: ".Net.1.0.1" },
+    //     { value: ".Net Core 2.1", label: ".Net Core 2.1" },
+    //     { value: "Active Directory", label: "Active Directory" },
+    // ];
+    const [ClassificationOptions, setClassificationOptions] = useState([]);
+const [ProductOptions, setProductOptions] = useState([]);
+const [GroupOptions, setGroupOptions] = useState([]);
+
+    // const GroupOptions = [
+    //     { value: "UnKnown", label: "UnKnown" },
+    //     { value: "Windows 10", label: "Windows 10" },
+    //     { value: "Windows 8", label: "Windows 8" },
+    // ];
     const [selectedClassification, setSelectedClassification] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [selectedGroup, setSelectedGroup] = useState([]);

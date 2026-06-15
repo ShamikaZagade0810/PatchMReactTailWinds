@@ -165,8 +165,7 @@ export default function MainLayout() {
         />
       }
       <main
-        className={`
-          pt-16 pb-12 transition-all 
+        className={` pt-16 pb-12 transition-all 
           ${!isSidebarOpen ? "ml-20" : isSidebarOpen && !isPatchTreeSidebarEnabled ? "ml-50" : "ml-70"}
         `}
       >

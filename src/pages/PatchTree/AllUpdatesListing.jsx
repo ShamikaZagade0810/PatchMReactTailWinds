@@ -1,0 +1,351 @@
+import React, { useMemo, useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom"
+import {
+  Search,
+  RefreshCw,
+  Download,
+  CheckCircle2,
+  ShieldAlert,
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
+
+import { getAllUpdateData } from "../../api/projectApi";
+
+const AllUpdatesListing = () => {
+  const navigate = useNavigate();
+  const handleOpen = (title) => {
+    navigate(`/patchTree/patchDetails/${title}`, {
+      state: {
+        from: "/patchTree/AllUpdates"
+      }
+    });
+  };
+
+  const [allupdateslist, setAllUpdatesList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAllUpdates = async () => {
+    try {
+      setLoading(true);
+
+      const response = await getAllUpdateData();
+      console.log("All updates Response: ", response);
+
+      setAllUpdatesList(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching updates:", error);
+      setAllUpdatesList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllUpdates();
+  }, []);
+  //     const allupdateslist = [
+  //       {srNo:1,title:"Remote Assistance Connection",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 20:49:52.6",arrivalDate:"2025-12-30 06:27:55.633",approved:false,declined:false,state:"Published"},
+  //       {srNo:2,title:"Windows XP Update Package, October 25, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 21:28:13.757",arrivalDate:"2025-12-30 06:27:56.01",approved:false,declined:false,state:"Published"},
+  //       {srNo:3,title:"Critical Update, November 19, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-03-25 22:24:13.507",arrivalDate:"2025-12-30 06:27:56.083",approved:false,declined:false,state:"Published"},
+  //       {srNo:4,title:"System Recovered Error Message Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 19:56:08.78",arrivalDate:"2025-12-30 06:28:02.03",approved:false,declined:false,state:"Published"},
+  //       {srNo:5,title:"Critical Update, February 10, 2002",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-08-28 14:52:21.093",arrivalDate:"2025-12-30 06:28:02.213",approved:false,declined:false,state:"Published"},
+  //       {srNo:6,title:"Q320174: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-20 03:09:48.407",arrivalDate:"2025-12-30 06:28:09.903",approved:false,declined:false,state:"Published"},
+  //       {srNo:7,title:"Q329553: Critical Update (Windows 2000)",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-09-09 21:59:08.33",arrivalDate:"2025-12-30 06:28:40.593",approved:false,declined:false,state:"Published"},
+  //       {srNo:8,title:"810565: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-10-15 05:15:58.963",arrivalDate:"2025-12-30 06:28:46.98",approved:false,declined:false,state:"Published"},
+  //       {srNo:9,title:"810649: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-25 18:41:10.857",arrivalDate:"2025-12-30 06:28:47.19",approved:false,declined:false,state:"Published"},
+  //     { srNo: 10, title: "Q326830: Security Update (Windows 2000)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-11-14 01:27:01.57", arrivalDate: "2025-12-30 06:28:19.123", approved: false, declined: false, state: "Published" },
+  // { srNo: 11, title: "Security Update (326886)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-10-21 18:33:24.47", arrivalDate: "2025-12-30 06:28:19.223", approved: false, declined: false, state: "Published" },
+  // { srNo: 12, title: "Q329414: Security Update (MDAC 2.5)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-06-24 16:20:02.02", arrivalDate: "2025-12-30 06:28:29.383", approved: false, declined: false, state: "Published" },
+  // { srNo: 13, title: "Security Update for Windows 2000 (329834)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-10-21 18:43:30.18", arrivalDate: "2025-12-30 06:28:30.053", approved: false, declined: false, state: "Published" },
+  // { srNo: 14, title: "Q324096: Security Update (Windows XP)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-11-14 01:24:54.46", arrivalDate: "2025-12-30 06:28:30.19", approved: false, declined: false, state: "Published" },
+  // { srNo: 15, title: "Q329414: Security Update (MDAC 2.6)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-10-21 18:48:20.95", arrivalDate: "2025-12-30 06:28:30.29", approved: false, declined: false, state: "Published" },
+  // { srNo: 16, title: "Security Update, February 13, 2002 (MSXML 2.6)", legacyName: "NA", updateClassificationTitle: "Security Updates", installedOrNotApplicable: "NA", creationDate: "2003-10-21 18:44:35.447", arrivalDate: "2025-12-30 06:28:40.267", approved: false, declined: false, state: "Published" },
+  //     ];
+
+
+
+  const [search, setSearch] = useState('');
+  const [severityFilter, setSeverityFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, severityFilter, statusFilter]);
+
+
+
+  const severityOptions = [
+    ...new Set(allupdateslist.map(item => item.classification))
+  ];
+
+
+  const filteredData = useMemo(() => {
+    return allupdateslist.filter(item => {
+      const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase());
+
+      const matchesSeverity = severityFilter === '' ? true : item.classification === severityFilter;
+
+      let matchesStatus = true;
+      if (statusFilter === 'approved') {
+        matchesStatus = item.approved === true && item.declined === false;
+      }
+      if (statusFilter === 'declined') {
+        matchesStatus = item.approved === false && item.declined === true;
+      }
+
+      if (statusFilter === 'unapproved') {
+        matchesStatus = item.approved === false && item.declined === false;
+      }
+      return matchesSearch && matchesSeverity && matchesStatus;
+    });
+  }, [allupdateslist, search, severityFilter, statusFilter]);
+
+  const totalallupdates = allupdateslist.length;
+
+  const securityallupdates = allupdateslist.filter(item => item.classification === 'Security Updates').length;
+
+  const criticalallupdates = allupdateslist.filter(item => item.classification === 'Critical Updates').length;
+
+
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    return filteredData.slice(startIndex, startIndex + rowsPerPage);
+  }, [filteredData, currentPage]);
+
+
+  return (
+    <>
+      <div className="bg-[#050B18] rounded-xl p-2 border border-white/10 min-h-screen text-white text-sm">
+
+        {/* <div className="bg-[#0F172A] rounded-xl border border-white/10 p-4"> */}
+
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+
+          <div>
+            <h1 className="text-xl font-bold">
+              All Updates Updates
+            </h1>
+
+            <p className="text-xs text-gray-400 mt-1">
+              Prioritized patches awaiting review and deployment.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+
+            <button onClick={fetchAllUpdates} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+              <RefreshCw size={14} /> Refresh
+            </button>
+
+            <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+              <Download size={14} /> Export
+            </button>
+
+          </div>
+
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+          {/* Total allupdates */}
+          <div className="bg-[#0B1220] rounded-xl p-4 border border-[#1e293b] hover:border-cyan-400 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-cyan-500 uppercase tracking-wide"> Total All Updates </p>
+                <h2 className="text-2xl font-bold mt-1"> {totalallupdates} </h2>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
+                <ShieldAlert size={18} className="text-cyan-400" />
+              </div>
+            </div>
+          </div>
+
+          {/* Approved allupdates */}
+          <div className="bg-[#0B1220] rounded-xl p-4 border border-[#1e293b] hover:border-emerald-400 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-green-500 uppercase tracking-wide">Critical Updates </p>
+                <h2 className="text-2xl font-bold mt-1"> {criticalallupdates} </h2>
+              </div>
+
+              <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                <CheckCircle2 size={18} className="text-emerald-400" />
+              </div>
+            </div>
+          </div>
+
+          {/* Severity */}
+          <div className="bg-[#0B1220] rounded-xl p-4 border border-[#1e293b] hover:border-red-400 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] text-red-500 uppercase tracking-wide"> Security Updates </p>
+                <h2 className="text-2xl font-bold mt-1"> {securityallupdates} </h2>
+              </div>
+
+              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+                <AlertTriangle size={18} className="text-red-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Search + Filters */}
+        <div className="bg-[#0B1220] rounded-xl p-3 border border-[#1e293b] mb-3">
+          <div className="flex flex-col lg:flex-row gap-3 items-center">
+
+            {/* Search */}
+            <div className="relative flex-1">
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="text" placeholder="Search by title..." value={search} onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-[#111827] border border-[#1e293b] focus:border-cyan-500 outline-none rounded-lg pl-9 pr-4 py-2.5 text-xs" />
+            </div>
+
+            {/* Status Dropdown */}
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
+              className="bg-[#111827] border border-[#1e293b] focus:border-cyan-500 outline-none rounded-lg px-3 py-2.5 text-xs min-w-[200px]" >
+              <option value="" disabled>-- Please Select Status --</option>
+              <option value="approved">Approved</option>
+              <option value="declined">Declined</option>
+              <option value="unapproved">UnApproved</option>
+            </select>
+
+            {/* Showing Count */}
+            <div className="text-[11px] text-gray-400 whitespace-nowrap ml-auto">
+              Showing {paginatedData.length} of {filteredData.length}
+            </div>
+
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto rounded-xl border b-1 border-[#1e293b] mt-4">
+          <table className="w-full min-w-[1100px] text-xs">
+            <thead className="bg-[#1e293b] border-b border-[#1e293b]">
+              <tr className="text-left text-gray-300">
+
+                {/* <th className="px-4 py-3 font-medium"> Sr No </th> */}
+                <th className="px-4 py-3 font-medium">Title</th>
+                <th className="px-4 py-3 font-medium"> Classification </th>
+                {/* <th className="px-4 py-3 font-medium break-words whitespace-normal max-w-[120px]"> Installed / Not Applicable </th> */}
+                <th className="px-4 py-3 font-medium"> Creation Date </th>
+                <th className="px-4 py-3 font-medium"> Arrival Date </th>
+                <th className="px-4 py-3 font-medium"> Approved </th>
+                <th className="px-4 py-3 font-medium"> Declined </th>
+                <th className="px-4 py-3 font-medium"> State </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="9" className="py-10">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                      <RefreshCw size={24} className="animate-spin text-cyan-400" />
+                      <span className="text-gray-400 text-xs">
+                        Loading updates...
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ) :
+                filteredData.length > 0 ? (
+                  paginatedData.map((item) => (
+                    <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
+                      {/* <td className="px-4 py-3"> {item.srNo} </td> */}
+
+                      <td className="px-4 py-3">
+                        <div>
+                          <p className="font-medium text-white hover:text-cyan-400" onClick={() => handleOpen(item.title)}> {item.title} </p>
+                          <p className="text-[10px] text-gray-500 mt-1"> {item.legacyName} </p>
+                        </div>
+                      </td>
+
+                      <td className="px-4 py-3">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] border bg-red-500/10 text-red-400 border-red-500/20">
+                          {item.classification}
+                        </span>
+                      </td>
+
+                      {/* <td className="px-4 py-3 text-gray-300">
+                         {item.installedOrNotApplicable}
+                       </td> */}
+
+                      <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.creationDate} </td>
+
+                      <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.arrivalDate} </td>
+
+                      <td className="px-4 py-3">
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] border ${item.approved ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                            : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                          }`} >
+                          {item.approved ? 'Approved' : 'No'}
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-3">
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] border ${item.declined ? 'bg-red-500/10 text-red-400 border-red-500/20'
+                            : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                          }`} >
+                          {item.declined ? 'Declined' : 'No'}
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-3">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] border bg-cyan-500/10 text-cyan-400 border-cyan-500/20">
+                          {item.state}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+
+                ) : (
+                  <tr>
+                    <td colSpan="9" className="text-center py-8 text-gray-400 text-xs" > No Data Available </td>
+                  </tr>
+                )}
+
+            </tbody>
+
+          </table>
+          <div className="flex items-center justify-between mt-4">
+            <div className="text-xs text-gray-400">
+              Page {currentPage} of {totalPages || 1}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(prev => prev - 1)}
+                className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
+              >
+                <ChevronLeft size={15} />
+              </button>
+
+              <button
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage(prev => prev + 1)}
+                className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
+              >
+                <ChevronRight size={15} />
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+    </>
+  )
+}
+
+export default AllUpdatesListing

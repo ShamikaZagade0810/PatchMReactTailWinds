@@ -2,6 +2,7 @@ import React, { useMemo, useState,useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import MultiSelect from '../../layouts/MultiSelect.jsx';
+import { getIpListdropdown } from "../../api/projectApi";
 
 const IPWiseReport = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -35,12 +36,29 @@ const IPWiseReport = () => {
         }
     ];
 
- const ipaddress = [
-        { value: "192.168.0.15", label: "192.168.0.15" },
-        { value: "192.168.0.2", label: "192.168.0.2" },
-        { value: "192.168.0.4", label: "192.168.0.4" },
-        { value: "192.168.0.24", label: "192.168.0.24" },
-    ];    
+//  const ipaddress = [
+//         { value: "192.168.0.15", label: "192.168.0.15" },
+//         { value: "192.168.0.2", label: "192.168.0.2" },
+//         { value: "192.168.0.4", label: "192.168.0.4" },
+//         { value: "192.168.0.24", label: "192.168.0.24" },
+//     ]; 
+const [ipaddress, setIpAddress] = useState([]);
+
+useEffect(() => {
+    loadIpAddresses();
+}, []);
+
+const loadIpAddresses = async () => {
+    try {
+        const response = await getIpListdropdown();
+        console.log("IP dropdown response", response)
+
+        setIpAddress(response?.data?.data || []);
+    } catch (error) {
+        console.error("Error loading IP Address list:", error);
+        setIpAddress([]);
+    }
+};
     const [selectedip, setSelectedip] = useState([]);
     useEffect(() => {
             register("ipaddress", { validate: (value) => value?.length > 0 || "At least 1 IP must be selected" });

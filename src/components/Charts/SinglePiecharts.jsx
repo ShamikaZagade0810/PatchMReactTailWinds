@@ -5,6 +5,19 @@ import { Cell } from "recharts";
 import { Legend } from "recharts";
 // Custom active shape
 const COLORS = ["#ff4d4f", "#fa8c16", "#fadb14", "#52c41a"];
+
+// const COLORS = [
+//   "#3b82f6cc", // blue (80%)
+//   "#60a5facc", // light blue
+//   "#6366f1cc", // indigo
+//   "#64748bcc", // slate
+// ];
+// const COLORS = [
+//   "#7094ff", // primary blue
+//   "#3b82f6", // blue-500
+//   "#60a5fa", // blue-400
+//   "#64748b", // slate-500
+// ];
 const renderActiveShape = (props,) => {
     const {
         cx,

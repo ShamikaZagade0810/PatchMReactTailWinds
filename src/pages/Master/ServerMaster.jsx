@@ -3,7 +3,9 @@
     import { Plus, List, Play, Pencil, Trash2 } from "lucide-react"
     import { ToastContainer, toast } from 'react-toastify';
 
-    import { AddServerMaster, getServerMasterList, getUpdateServerMaster, deleteServerMaster } from "../../api/projectApi";
+    import { AddServerMaster, getServerMasterList, getUpdateServerMaster, deleteServerMaster,
+        getMasterbranchNamedropdown, getMasterCustomerNamedropdown
+     } from "../../api/projectApi";
 
     const ServerMaster = () => {
         const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -58,14 +60,46 @@
         //     { serverName: "DESKTOP-5jk", ipAddress: "192.168.0.4", branchNames: "NHPC", CustNames: "NHPC", serverStatus: "Upstream" }
         // ];
 
-        const branchOptions = [
-            { value: "NPCIL", label: "NPCIL" },
-            { value: "NHPC", label: "NHPC" },
-        ];
-        const CustNameOptions = [
-            { value: "NPCIL", label: "NPCIL" },
-            { value: "NHPC", label: "NHPC" },
-        ];
+        // const branchOptions = [
+        //     { value: "NPCIL", label: "NPCIL" },
+        //     { value: "NHPC", label: "NHPC" },
+        // ];
+        // const CustNameOptions = [
+        //     { value: "NPCIL", label: "NPCIL" },
+        //     { value: "NHPC", label: "NHPC" },
+        // ];
+
+        const [CustNameOptions, setCustNameOptions] = useState([]);
+        const [branchOptions, setbranchNameOptions] = useState([]);
+          useEffect(() => {
+            loadDropdowns();
+        }, []);
+        
+        const loadDropdowns = async () => {
+            try {        
+        
+                // Customer List
+                const customerRes = await getMasterCustomerNamedropdown();        
+                if (customerRes?.data?.data) {
+                    setCustNameOptions(customerRes.data.data.map(item => ({
+                            label: item.label,
+                            value: item.value
+                        })));
+                }
+        
+                 const branchRes = await getMasterbranchNamedropdown();        
+                if (branchRes?.data?.data) {
+                    setbranchNameOptions(branchRes.data.data.map(item => ({
+                           label: item.label,
+                            value: item.value
+                        })));
+                }
+        
+        
+            } catch (error) {
+                console.error("Error loading dropdowns:", error);
+            }
+        };
 
     // ---------------- SUBMIT API ----------------
             const onSubmit = async (data) => {

@@ -376,9 +376,7 @@ const OverviewDashboard = () => {
 
     const severity = getSeverity(overallComplainceRate);
 
-    const totalEndpoints = complianceData.find(
-        item => item.label === "totalEndpoint"
-    )?.value || 0;
+    const totalEndpoints = complianceData.find( item => item.label === "totalEndpoint"  )?.value || 0;
 
     const totalOsCount = (osCount?.windows || 0) + (osCount?.linux || 0) + (osCount?.mac || 0) + (osCount?.server || 0);
 
@@ -497,12 +495,8 @@ const OverviewDashboard = () => {
                                 </span>
 
                                 <span
-                                    className={`text-xs ${severity === "High"
-                                        ? "text-red-500"
-                                        : severity === "Medium"
-                                            ? "text-yellow-400"
-                                            : "text-green-500"
-                                        }`}
+                                    className={`text-xs ${severity === "High" ? "text-red-500"
+                                        : severity === "Medium" ? "text-yellow-400" : "text-green-500" }`}
                                 >
                                     {severity}
                                 </span>
@@ -525,7 +519,7 @@ const OverviewDashboard = () => {
 
                                         <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded">
                                             <div
-                                                className="h-2 bg-blue-500 rounded"
+                                                className="h-2 bg-blue-500/80 rounded"
                                                 style={{
                                                     width: `${totalEndpoints > 0
                                                         ? (item.value / totalEndpoints) * 100
@@ -562,11 +556,10 @@ const OverviewDashboard = () => {
                             const Icon = item.icon;
 
                             return (
-                                <div
-                                    key={i}
-                                    onClick={() => handleClickModal('Patches', item.label.toLowerCase())}
-                                    className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-[#26324A] transition"
-                                >
+                                <div key={i} onClick={() => handleClickModal('Patches', item.label.toLowerCase())}
+                                    className="bg-[#1E273A] rounded-lg p-3 flex flex-col items-center justify-center cursor-pointer hover:bg-[#26324A] 
+                                    transition-all duration-300 ease-in-out
+                                    hover:bg-[#26324A]  hover:border-cyan-500/50  hover:-translate-y-1  hover:scale-105  hover:shadow-lg"  >
                                     <p className="text-sm md:text-md font-semibold text-gray-400 mb-2 text-center">
                                         {item.label}
                                     </p>
@@ -752,72 +745,56 @@ const OverviewDashboard = () => {
                     {/* Fake Chart Line */}
                     <div className="h-50  rounded-lg">
                         <div className="w-full h-[280px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart
-                                    data={ipStatus}
-                                    layout="vertical"
-                                // margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
-                                >
-                                    <XAxis type="number" stroke="#ccc" fontSize={12} />
-                                    <YAxis type="category" dataKey="IPAddress" stroke="#ccc" width={100} fontSize={14} />
-                                    <Tooltip
-                                        cursor={false}
-                                        contentStyle={{
-                                            backgroundColor: "#1f2937",
-                                            border: "none",
-                                        }}
-                                    />
-                                    <Legend />
+                          <ResponsiveContainer width="100%" height="100%">
+  <BarChart data={ipStatus} layout="vertical" barSize={25}>
+    <defs>
+      <linearGradient id="installedGradient" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stopColor="#22c55e" />
+        <stop offset="100%" stopColor="#4ade80" />
+      </linearGradient>
 
-                                    <Bar
-                                        dataKey="InstalledCount"
-                                        stackId="a"
-                                        fill="#16a34a"         // normal bar color
-                                        name="Installed"
-                                        radius={[0, 4, 4, 0]}
-                                        // custom hover color
-                                        onMouseEnter={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#15803d"); // darker green on hover
-                                        }}
-                                        onMouseLeave={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#16a34a"); // back to normal
-                                        }}
-                                        onClick={(data, index) => {
-                                            console.log("Clicked:", data);
-                                            const reqdata = {
-                                                ipaddress: data.IPAddress,
-                                                statusId: 4
-                                            }
-                                            handleClickModalParameter('ip_wise', 'patch', reqdata);
+      <linearGradient id="neededGradient" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stopColor="#ef4444" />
+        <stop offset="100%" stopColor="#f87171" />
+      </linearGradient>
+    </defs>
 
-                                        }}
-                                    />
+    <XAxis type="number" stroke="#ccc" fontSize={12} />
+    <YAxis
+      type="category"
+      dataKey="IPAddress"
+      stroke="#ccc"
+      width={100}
+      fontSize={14}
+    />
 
-                                    <Bar
-                                        dataKey="NeededCount"
-                                        stackId="a"
-                                        fill="#b91c1c"
-                                        name="Needed"
-                                        radius={[0, 4, 4, 0]}
-                                        onMouseEnter={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#991b1b"); // darker red on hover
+    <Tooltip
+      cursor={false}
+      contentStyle={{
+        backgroundColor: "#1f2937",
+        border: "none",
+      }}
+    />
 
-                                        }}
-                                        onMouseLeave={(data, index, e) => {
-                                            e.target.setAttribute("fill", "#b91c1c"); // back to normal
-                                        }}
-                                        onClick={(data, index) => {
-                                            console.log("Clicked:", data);
-                                            const reqdata = {
-                                                ipaddress: data.IPAddress,
-                                                statusId: 2
-                                            }
-                                            handleClickModalParameter('ip_wise', 'patch', reqdata);
-                                        }}
-                                    />
-                                </BarChart>
+    <Legend />
 
-                            </ResponsiveContainer>
+    <Bar
+  dataKey="InstalledCount"
+  stackId="a"
+  fill="#3b82f6"
+  name="Installed"
+  radius={[0, 4, 4, 0]}
+/>
+
+<Bar
+  dataKey="NeededCount"
+  stackId="a"
+  fill="#64748b"
+  name="Needed"
+  radius={[0, 6, 6, 0]}
+/>
+  </BarChart>
+</ResponsiveContainer>
                         </div>
                     </div>
 

@@ -19,17 +19,9 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import {
-    getPatchReport,
-    getmissingPatchReport,
-    getDeviceWiseReport,
-    getYearMonthReport,
-    getAllStatusReport,
-    getUpdateTimelineReport,
-    getdeviceAgentReport,
-    getFailedUpdateReport,
-    getCategoryWiseReport,
-    getAllBranchList,
-    getBranchWiseIpaddressList
+    getPatchReport, getmissingPatchReport, getDeviceWiseReport,  getYearMonthReport,  getAllStatusReport,
+    getUpdateTimelineReport, getdeviceAgentReport, getFailedUpdateReport, getCategoryWiseReport,
+    getAllBranchList, getBranchWiseIpaddressList, getIpListdropdown, getWindowsPatchdropdown, getGrouplistdropdown
 } from "../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
 import { AsyncMotionValueAnimation } from 'framer-motion';
@@ -48,13 +40,19 @@ const ReportsPage = () => {
     const [selectedRange, setSelectedRange] = useState(null);
     const [showCustomDates, setShowCustomDates] = useState(false);
     const [branchList, setBranchList] = useState([]);
-    const [ipAddressList, setIpAddressList] = useState([]);
+    const [BranchipAddressList, setBranchIpAddressList] = useState([]);
+
+     const [IpAddressList, setIpAddressList] = useState([]);
     const [dynamicReport, setdynamicReport] = useState({ columndata: [], maindata: [] });
     const [loading, setLoading] = useState(false);
     const [customDate, setCustomDate] = useState({
         from: "",
         to: ""
     });
+
+    const [patchOptions, setpatchOptions] = useState([]);
+     const [groupnameOptions, setgroupnameOptions] = useState([]);
+
 
     const branchOptions = [
         { value: "npcil", label: "NPCIL" },
@@ -69,18 +67,18 @@ const ReportsPage = () => {
         { value: "192.168.0.53", label: "192.168.0.53" },
     ];
 
-    const patchOptions = [
-        { value: "KB5072033", label: "KB5072033" },
-        { value: "KB5071547", label: "KB5071547" },
-        { value: "KB5071142", label: "KB5071142" },
-        { value: "KB5010475", label: "KB5010475" },
-    ];
-    const groupnameOptions = [
-        { value: "allcomputers", label: "All Computers" },
-        { value: "unassigned", label: "Unassigned Computers" },
-        { value: "windows 10", label: "Windows 10" },
+    // const patchOptions = [
+    //     { value: "KB5072033", label: "KB5072033" },
+    //     { value: "KB5071547", label: "KB5071547" },
+    //     { value: "KB5071142", label: "KB5071142" },
+    //     { value: "KB5010475", label: "KB5010475" },
+    // ];
+    // const groupnameOptions = [
+    //     { value: "allcomputers", label: "All Computers" },
+    //     { value: "unassigned", label: "Unassigned Computers" },
+    //     { value: "windows 10", label: "Windows 10" },
 
-    ]
+    // ]
 
     const [selectedBranches, setSelectedBranches] = useState([]);
     const [selectedIPs, setSelectedIPs] = useState([]);
@@ -91,38 +89,73 @@ const ReportsPage = () => {
     const DEFAULT_COLOR = "#3B82F6";
 
 
+
+
     useEffect(() => {
-
         initialApiReq();
-
-
     }, []);
 
 
     const branchChange = async (Data) => {
-
         setSelectedBranches(Data);
         const singleBranchlist = Data.map(obj => obj.label);
-
         const reqData = {
             "branch": singleBranchlist
         }
-
         const Iplist = await getBranchWiseIpaddressList(reqData);
-        setIpAddressList(Iplist.data.data);
-
+        setBranchIpAddressList(Iplist.data.data);
     }
-
-
 
     const initialApiReq = async () => {
         const data = await getAllBranchList();
         console.log("data --> ", data.data.data);
         setBranchList(data.data.data);
-
-
     }
 
+// load only ip , patch , group name dropdown
+    useEffect(() => {
+        loadDropdowns();
+    }, []);
+
+    const loadDropdowns = async () => {
+        try {
+            // only Ip Adddress List
+            const ipListRes = await getIpListdropdown();
+    
+            if (ipListRes?.data?.data) {
+                // setOEMOptions(vendorRes.data.data);
+                setIpAddressList(ipListRes.data.data.map(item => ({
+                        label: item.label,
+                        value: item.value
+                    }))
+                );    
+            }  
+            //Patch Dropdown
+            const patchRes = await getWindowsPatchdropdown();
+    
+            if (patchRes?.data?.data) {
+                // setOEMOptions(vendorRes.data.data);
+                setpatchOptions(patchRes.data.data.map(item => ({
+                        label: item.label,
+                        value: item.value
+                    }))
+                );    
+            }  
+
+            //Group Dropdown
+            const groupRes = await getGrouplistdropdown();    
+            if (groupRes?.data?.data) {
+                setgroupnameOptions(groupRes.data.data.map(item => ({
+                        label: item.label,
+                        value: item.value
+                    }))
+                );    
+            }  
+        } catch (error) {
+            console.error("Error loading dropdowns:", error);
+        }
+    };
+    
 
     const apiMapping = {
         Report: {
@@ -139,8 +172,6 @@ const ReportsPage = () => {
 
     };
 
-
-
     const modules = [
         { id: "patch", name: "Patch Report", icons: FileText, iconcolor: "#3B82F6" },
         { id: "missing", name: "Missing Patch Report", icons: ShieldAlert, iconcolor: "#F59E0B" },
@@ -155,11 +186,11 @@ const ReportsPage = () => {
 
     const filterConfig = {
         patch: ["update", "type"],
-        missing: ["branchNames", "ipAddresses"],
+        missing: ["branchNames", "branchipAddresses"],
         category: ["year", "month", "category"],
-        device: ["branchNames", "ipAddresses"],
+        device: ["branchNames", "branchipAddresses"],
         yearMonth: ["year", "month"],
-        status: ["branchNames", "ipAddresses"],
+        status: ["branchNames", "branchipAddresses"],
         timeline: ["groupname"],
         agent: [],
         failed: [],
@@ -168,8 +199,7 @@ const ReportsPage = () => {
     const selectedModule = modules[activeIndex];
     const activeFilters = filterConfig[selectedModule?.id] || [];
 
-    const inputClass =
-        "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
+    const inputClass = "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
 
     const labelClass = "text-base text-gray-300 mb-1 block ";
     const filterFields = {
@@ -210,11 +240,24 @@ const ReportsPage = () => {
                 />
             </div>
         ),
+        branchipAddresses: (
+            <div>
+                <label className={labelClass}>IP Address</label>
+                <MultiSelect
+                    options={BranchipAddressList}
+                    value={selectedIPs}
+                    onChange={setSelectedIPs}
+                    placeholder="Select IP Addresses"
+                    id={"branchipAddresses"}
+                    setValue={setValue}
+                />
+            </div>
+        ),
         ipAddresses: (
             <div>
                 <label className={labelClass}>IP Address</label>
                 <MultiSelect
-                    options={ipAddressList}
+                    options={IpAddressList}
                     value={selectedIPs}
                     onChange={setSelectedIPs}
                     placeholder="Select IP Addresses"
@@ -395,12 +438,12 @@ if (
 
 const resetFilters = () => {
     setSelectedBranches([]); setSelectedIPs([]); setSelectedPatches([]); setSelectedCategory("");
-    setSelectedGroup("");  setIpAddressList([]);
+    setSelectedGroup("");  setBranchIpAddressList([]);
     setCustomDate({ from: "", to: "" }); setdynamicReport({ columndata: [], maindata: []  });
     
     // React Hook Form fields
     setValue("branchNames", []);
-    setValue("ipAddresses", []);
+    setValue("branchipAddresses", []);
     setValue("patchList", []);
     setValue("category", "");
     setValue("update", "");
