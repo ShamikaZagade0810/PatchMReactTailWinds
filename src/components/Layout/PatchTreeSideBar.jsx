@@ -26,7 +26,7 @@ import {
     SquareTerminal,
     Search,
     ChevronDown,
-     ArrowLeft
+    ArrowLeft
 } from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
 import logo from "../../assets/planet-gurard.png";
@@ -300,6 +300,8 @@ export const PatchTreeSideBar = ({
     const [expandServer, setExpandServer] = useState(true);
     const [expandUpdates, setExpandUpdates] = useState(false);
     const [expandComputers, setExpandComputers] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
+    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
     const navigate = useNavigate();
     const activeItemData = useMemo(() => {
         return sidebarData.find((item) => item?.path === activeItem);
@@ -310,6 +312,19 @@ export const PatchTreeSideBar = ({
     const filteredSidebar = useMemo(() => {
         return sidebarData.filter((item) => item?.roles?.includes(user?.role));
     }, [user?.role]);
+
+
+    const handleRightClick = (e) => {
+        console.log("hii hello");
+        e.preventDefault(); // Prevent browser menu
+
+        setMenuPosition({
+            x: e.pageX,
+            y: e.pageY,
+        });
+
+        setShowMenu(true);
+    };
 
     return (
         <aside
@@ -489,7 +504,7 @@ export const PatchTreeSideBar = ({
                                         <CheckCircle className="w-4 h-4 text-slate-300" />
 
                                         {isOpen && (
-                                            <span className="text-sm text-slate-300"  onClick={() => navigate("patchTree/Apprv_Declined")}>
+                                            <span className="text-sm text-slate-300" onClick={() => navigate("patchTree/Apprv_Declined")}>
                                                 NPCIL — Approve / Decline
                                             </span>
                                         )}
@@ -498,20 +513,22 @@ export const PatchTreeSideBar = ({
                             )}
 
                             {/* Computers */}
-                            <button onClick={() => setExpandComputers(!expandComputers)}
-                            className=" w-full flex items-center  gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all " >
+                            <button
+                                onClick={() => { console.log("Hii hello"); setExpandComputers(!expandComputers) }}
+                                onContextMenu={handleRightClick}
+                                className=" w-full flex items-center  gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33] transition-all " >
                                 <div className="flex items-center gap-2">
                                     {expandComputers ? (
                                         <ChevronDown className="w-4 h-4 text-slate-400" />
                                     ) : (
                                         <ChevronRight className="w-4 h-4 text-slate-400" />
                                     )}
-                                <Users className="w-4 h-4 text-slate-300" />
-                                {isOpen && (
-                                    <span className="text-sm text-slate-300">
-                                        Computers (412)
-                                    </span>
-                                )}
+                                    <Users className="w-4 h-4 text-slate-300" />
+                                    {isOpen && (
+                                        <span className="text-sm text-slate-300">
+                                            Computers
+                                        </span>
+                                    )}
                                 </div>
                             </button>
 
@@ -569,7 +586,40 @@ export const PatchTreeSideBar = ({
                                         )}
                                     </button>
 
-                                    
+
+                                </div>
+                            )}
+                            {showMenu && (
+                                <div
+                                    className="fixed z-50 w-56 bg-white border border-gray-400 shadow-lg"
+                                    style={{
+                                        left: menuPosition.x,
+                                        top: menuPosition.y,
+                                    }}
+                                >
+                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Discover Group
+                                    </button>
+
+                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Discover Group Statistics
+                                    </button>
+
+                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Discover Computers
+                                    </button>
+
+                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Discover Computer Statistics
+                                    </button>
+
+                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Delete Computers
+                                    </button>
+
+                                    <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Add Group
+                                    </button>
                                 </div>
                             )}
 
@@ -599,18 +649,18 @@ export const PatchTreeSideBar = ({
                     )}
                 </div>
             </div>
-             <div className="px-3 py-2  dark:border-gray-800">
-    <button
-        onClick={() => navigate("/dashboard/mainDashboard")}
-        className=" w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg  bg-[#0c2137] hover:bg-[#12304f] 
+            <div className="px-3 py-2  dark:border-gray-800">
+                <button
+                    onClick={() => navigate("/dashboard/mainDashboard")}
+                    className=" w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg  bg-[#0c2137] hover:bg-[#12304f] 
         text-cyan-400 hover:text-cyan-300 transition-all duration-200 border border-[#1d314d] " >
-        <ArrowLeft className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4" />
 
-        {isOpen && (
-            <span className="text-sm font-medium"> Back to Dashboard </span>
-        )}
-    </button>
-</div>
+                    {isOpen && (
+                        <span className="text-sm font-medium"> Back to Dashboard </span>
+                    )}
+                </button>
+            </div>
 
             <div className="p-3 border-t border-gray-200 dark:border-gray-800">
                 {isOpen ? (

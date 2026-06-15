@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODA0NjE1MzEsImV4cCI6MTc4MDU0NzkzMX0.whwCVsSvG3GT2_9TV1cEA2KV2G-CdvEMrAFkkJs4hWs';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODEyMzk3MDcsImV4cCI6MTc4MTMyNjEwN30.Qd42znM0k2JSFdRWj4IGRg9B7zE8ihNJeNWOyBZaeJ4';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -1674,6 +1674,16 @@ export const getSyncPercent = () =>
   });
 
 
+export const stopSynchronisationProcess = () =>
+  axios.get(`${BASE_URL}/PatchTree/stopSynchronisationProcess`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+
 
 export const getServerStatisticData = () =>
   axios.get(`${BASE_URL}/PatchTree/getServerStatisticData`, {
@@ -1684,12 +1694,12 @@ export const getServerStatisticData = () =>
   });
 
 
-export const getComputerStatusPie = () =>
+export const getComputerStatusPie = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/getComputerStatusPie`, {
     headers: {
       Authorization: `Bearer ${token}`
-    }
-
+    },
+    params: inputData
   });
 
 
@@ -1910,7 +1920,7 @@ export const getPatchTreeMissingAppApprvDec = () =>
   });
 
 
-  export const getGroupData = () =>
+export const getGroupData = () =>
   axios.get(`${BASE_URL}/PatchTree/allGroup`, {
     headers: {
       Authorization: `Bearer ${token}`
@@ -1918,7 +1928,7 @@ export const getPatchTreeMissingAppApprvDec = () =>
   });
 
 
-  export const getWindowMissingPatchApprove = (inputData) =>
+export const getWindowMissingPatchApprove = (inputData) =>
   axios.post(
     `${BASE_URL}/PatchTree/approve-decline`,
     inputData,
@@ -1928,3 +1938,42 @@ export const getPatchTreeMissingAppApprvDec = () =>
       }
     }
   );
+
+
+export const getPatchTreeTotalPatchesData = (inputData) =>
+  axios.get(`${BASE_URL}/PatchTree/TotalPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getPatchTreePatcheStatusData = (inputData) =>
+  axios.get(`${BASE_URL}/PatchTree/PatchStatusList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: inputData
+  });
+
+
+export const getPatchTreeUnapprovedPatchList = (inputData) =>
+  axios.get(`${BASE_URL}/PatchTree/unapprovedPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getPatchTreeapprovedPatchList = (inputData) =>
+  axios.get(`${BASE_URL}/PatchTree/approvedPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getPatchTreeDeclinedPatchList = (inputData) =>
+  axios.get(`${BASE_URL}/PatchTree/declinedPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });

@@ -320,7 +320,7 @@ const OverviewDashboard = () => {
                         </span>
 
                         <span className="text-[10px] text-gray-400">
-                            {percentage}%
+                            {Number(percentage).toFixed(0)}%
                         </span>
                     </div>
                 </div>

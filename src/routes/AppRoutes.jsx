@@ -100,8 +100,8 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               {/* <DbMonitoringDashboard /> */}
-              {/* <PMOverviewDashboard /> */}
-              <NewWindowDashboard />
+              <PMOverviewDashboard />
+              {/* <NewWindowDashboard /> */}
 
             </ProtectedRoute>} />
 

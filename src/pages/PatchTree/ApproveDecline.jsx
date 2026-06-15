@@ -4,7 +4,7 @@ import {
     Search, RefreshCw, Download, CheckCircle2, ShieldAlert, AlertTriangle,
     ChevronLeft, ChevronRight
 } from 'lucide-react';
-import { getPatchTreeMissingAppApprvDec, thirdPartyMissingApprovePatches, getGroupData,getWindowMissingPatchApprove } from "../../api/projectApi";
+import { getPatchTreeMissingAppApprvDec, thirdPartyMissingApprovePatches, getGroupData, getWindowMissingPatchApprove } from "../../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect';
 
@@ -131,57 +131,57 @@ const ApproveDecline = () => {
     // };
 
     const handleRowSelect = (item) => {
-        console.log(selectedRows , item);
+        console.log(selectedRows, item);
         setSelectedRows((prev) => {
             const alreadyExists = prev.includes(
                 item.srNo
             );
-            console.log("Already exist ",alreadyExists ," sele ",prev.filter((row) => row.srNo !== item.srNo));
+            console.log("Already exist ", alreadyExists, " sele ", prev.filter((row) => row.srNo !== item.srNo));
             return alreadyExists
-                ? prev.filter((row) => row.srNo !== item.srNo)
+                ? prev.filter((srNo) => srNo !== item.srNo)
                 : [...prev, item.srNo];
         });
 
-        
+
     };
 
-const handleClickApprove = async () => {
+    const handleClickApprove = async () => {
 
         if (selectedRows.length === 0) {
-        toast("Please select at least one patch!");
-        return;
-    }
+            toast("Please select at least one patch!");
+            return;
+        }
 
-    // Group Validation
-    if (!SelectedGroups || SelectedGroups.length === 0) {
-        toast("Please select a group!");
-        return;
-    }
-    const patchTitleString = filteredData
-        .filter(item => selectedRows.includes(item.srNo))
-        .map(item => item.patch_name)
-        .join("$");
+        // Group Validation
+        if (!SelectedGroups || SelectedGroups.length === 0) {
+            toast("Please select a group!");
+            return;
+        }
+        const patchTitleString = filteredData
+            .filter(item => selectedRows.includes(item.srNo))
+            .map(item => item.patch_name)
+            .join("$");
 
-    const payload = {
-        title: patchTitleString,
-        status: action, // Approve or Decline
-        group: SelectedGroups[0]?.label,
-        classification: "Security Updates",
-        username: "admin"
+        const payload = {
+            title: patchTitleString,
+            status: action, // Approve or Decline
+            group: SelectedGroups[0]?.label,
+            classification: "Security Updates",
+            username: "admin"
+        };
+
+        console.log("Payload:", payload);
+
+        // API Call
+        try {
+            const response = await getWindowMissingPatchApprove(payload);
+
+            toast(response?.data?.data.message || "Patch action completed successfully!");
+            console.log("Response:", response.data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
-
-    console.log("Payload:", payload);
-
-    // API Call
-    try {
-        const response = await getWindowMissingPatchApprove(payload);
-
-        toast(response?.data?.data.message || "Patch action completed successfully!");
-        console.log("Response:", response.data);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-};
 
     const GroupChange = (selected) => {
         setSelectedGroups(selected);
@@ -236,7 +236,7 @@ const handleClickApprove = async () => {
                         />
                     </div>
 
-                    {/* Submit Button */}
+                   
                     <button
                         className="h-10 flex items-center gap-2 px-4 rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300"
                         onClick={() => handleClickApprove()}

@@ -5,6 +5,7 @@ import {
     XCircle,
     AlertTriangle,
     ArrowUpRight,
+    Pointer,
 } from "lucide-react";
 import SinglePieCharts from '../../components/Charts/SinglePiecharts';
 import {
@@ -14,12 +15,20 @@ import {
     getServerStatisticData,
     getComputerStatusPie,
     getupdateStatus,
-    getrecentActivity
+    getrecentActivity,
+    getGroupData,
+    getPatchTreeTotalPatchesData,
+    getPatchTreePatcheStatusData,
+    getPatchTreeUnapprovedPatchList,
+    getPatchTreeapprovedPatchList,
+    getPatchTreeDeclinedPatchList,
+    stopSynchronisationProcess
 } from "../../api/projectApi";
+import { Modal } from '../../components/Layout/Modal';
 
 const patchCards = [
     {
-        title: "Total Installed",
+        title: "Total Updates",
         value: "82,451",
         change: "+12.4%",
         icon: CheckCircle2,
@@ -29,7 +38,8 @@ const patchCards = [
         iconBg: "bg-cyan-500/15",
         iconColor: "text-cyan-400",
         line: "bg-cyan-400",
-        id: "totalPatches"
+        id: "totalpatches",
+        params: 0
     },
     {
         title: "Successful Updates",
@@ -42,7 +52,8 @@ const patchCards = [
         iconBg: "bg-emerald-500/15",
         iconColor: "text-emerald-400",
         line: "bg-emerald-400",
-        id: "successfullyInstalledPatches"
+        id: "successfullyinstalledpatches",
+        params: 4
     },
     {
         title: "Failed Updates",
@@ -55,7 +66,8 @@ const patchCards = [
         iconBg: "bg-red-500/15",
         iconColor: "text-red-400",
         line: "bg-red-400",
-        id: "failedUniquePatches"
+        id: "faileduniquepatches",
+        params: 5
     },
     {
         title: "Missing Patches",
@@ -68,7 +80,8 @@ const patchCards = [
         iconBg: "bg-yellow-500/15",
         iconColor: "text-yellow-400",
         line: "bg-yellow-400",
-        id: "missingUniquePatches"
+        id: "missinguniquepatches",
+        params: 2
     },
 ];
 
@@ -81,6 +94,12 @@ function PatchTreeThirdDashboard() {
     const [computerStatusPie, setComputerStatusPie] = useState([]);
     const [updateStatus, setUpdateStatus] = useState([]);
     const [recentActivity, setRecentActivity] = useState([]);
+    const [action, setAction] = useState("");
+    const [GroupList, setGroupList] = useState([]);
+    const [show, setShow] = useState(false);
+    const [modalData, setModalData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [syncLoading, setSyncLoading] = useState(false);
     const COLORS = ["#ff4d4f", "#fa8c16", "#fadb14", "#52c41a"];
 
 
@@ -93,26 +112,94 @@ function PatchTreeThirdDashboard() {
 
 
 
+    const apiMapping = {
+        patches: {
+
+            // critical: getCriticalInstalledPatchesList,
+            totalpatches: getPatchTreeTotalPatchesData,
+            successfullyinstalledpatches: getPatchTreePatcheStatusData,
+            faileduniquepatches: getPatchTreePatcheStatusData,
+            missinguniquepatches: getPatchTreePatcheStatusData,
+            unapprovedpatches: getPatchTreeUnapprovedPatchList,
+            approvedpatches: getPatchTreeapprovedPatchList,
+            declinedpatches: getPatchTreeDeclinedPatchList
+
+
+
+        }
+
+
+    };
+
+
+    const handleClickModalParameter = async (section, label, inputData) => {
+
+        console.log(section, label);
+        setLoading(true);
+        const data = await apiMapping[section.toLowerCase().trim()][label](inputData);
+        console.log("data --> ", data);
+        let MainData = data.data.data[0].data;
+        let ColumnData = data.data.data[0].column;
+        console.log("Maindata --> ", MainData);
+        console.log("ColumnData --> ", ColumnData);
+        let obj = {};
+        obj.maindata = MainData;
+        obj.columndata = ColumnData;
+        obj.modelHeading = label.toUpperCase();
+
+        setModalData(obj);
+
+
+
+        setShow(true);
+        setLoading(false);
+    }
+
+    const handleClickModal = async (section, label) => {
+
+        console.log(section, label, apiMapping[section.toLowerCase().trim()]["failedUniquePatches"]);
+        setLoading(true);
+        const data = await apiMapping[section.toLowerCase().trim()][label]();
+        console.log("data --> ", data);
+        let MainData = data.data.data[0].data;
+        let ColumnData = data.data.data[0].column;
+        console.log("Maindata --> ", MainData);
+        console.log("ColumnData --> ", ColumnData);
+        let obj = {};
+        obj.maindata = MainData;
+        obj.columndata = ColumnData;
+        obj.modelHeading = label.toUpperCase();
+
+        setModalData(obj);
+
+        setShow(true);
+        setLoading(false);
+    }
+
+
+
 
     const apiCalls = async () => {
         try {
             const [
                 PatchTreewsus_dashboard_statisticsRes,
                 getSynchronizeStatusRes,
-                getSyncPercentRes,
+                // getSyncPercentRes,
                 getServerStatisticDataRes,
                 getComputerStatusPieRes,
                 getupdateStatusRes,
-                getrecentActivityRes
+                getrecentActivityRes,
+                getGroupDrpRes,
 
             ] = await Promise.all([
                 PatchTreewsus_dashboard_statistics(),
                 getSynchronizeStatus(),
-                getSyncPercent(),
+                // getSyncPercent(),
                 getServerStatisticData(),
-                getComputerStatusPie(),
+                getComputerStatusPie({ groupName: "All Computers" }),
                 getupdateStatus(),
-                getrecentActivity()
+                getrecentActivity(),
+                getGroupData()
             ]);
             console.log("Computer Status ", getComputerStatusPieRes.data.data);
 
@@ -124,9 +211,9 @@ function PatchTreeThirdDashboard() {
                 getSynchronizeStatusRes.data.data[0] || {}
             );
 
-            setSyncPercent(
-                getSyncPercentRes.data.data
-            );
+            // setSyncPercent(
+            //     getSyncPercentRes.data.data
+            // );
 
             setServerStatisticData(
                 getServerStatisticDataRes.data.data
@@ -150,6 +237,8 @@ function PatchTreeThirdDashboard() {
                 mergedActivities
             );
 
+            setGroupList(getGroupDrpRes.data.data);
+
 
 
         } catch (error) {
@@ -157,12 +246,73 @@ function PatchTreeThirdDashboard() {
         }
     };
 
-    const handleClickModalParameter = () => {
+    const handleActionChange = async (e) => {
+        const value = e.target.value;
 
-    }
+        setAction(value);
+
+        try {
+            const response = await getComputerStatusPie({
+                groupName: value,
+            });
+
+            setComputerStatusPie(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    const handleSynchroniseNow = async () => {
+        setSyncLoading(true);
+        console.log(synchronizeStatus?.syncStatus?.toLowerCase());
+
+        if (synchronizeStatus?.syncStatus?.toLowerCase() === 'running') {
+            await stopSynchronisationProcess();
+        } else {
+            await getSyncPercent();
+        }
+        setSyncLoading(false)
+        // Initial call
+        let response = await getSynchronizeStatus();
+
+        setSynchronizeStatus(
+            response?.data?.data?.[0] || {}
+        );
+
+        // Poll every 20 seconds
+        setInterval(async () => {
+            const response = await getSynchronizeStatus();
+
+            setSynchronizeStatus(
+                response?.data?.data?.[0] || {}
+            );
+        }, 20000);
+    };
 
     return (
         <div className="mb-1 bg-gray-100 dark:bg-[#0B1220] p-3">
+
+
+            <Modal
+                show={show}
+                setShow={setShow}
+                data={modalData}
+
+            />
+            {loading && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
+                    <div className="flex flex-col items-center gap-3">
+
+                        {/* Spinner */}
+                        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                        {/* Text */}
+                        <p className="text-white text-sm">Loading data...</p>
+
+                    </div>
+                </div>
+            )}
             <div className="grid grid-cols-12 gap-4 bg-[#121A2B] p-2">
 
                 {/* LEFT SMALL CARDS SECTION */}
@@ -183,6 +333,8 @@ function PatchTreeThirdDashboard() {
                     hover:scale-[1.02]
                     hover:shadow-lg ${card.glow}
                     h-[57px] group`}
+                                        onClick={() => handleClickModalParameter('patches', card.id.toLowerCase(), { summaryStatus: card.params })}
+
                                     >
 
                                         {/* Glow */}
@@ -278,7 +430,7 @@ function PatchTreeThirdDashboard() {
 
                         {/* Header */}
                         <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center justify-between  gap-1">
 
                                 {/* Icon */}
                                 <div className="w-8 h-8 rounded-lg bg-[#141E33] flex items-center justify-center">
@@ -301,7 +453,43 @@ function PatchTreeThirdDashboard() {
                                 <h2 className="text-sm font-medium text-white">
                                     Synchronization status
                                 </h2>
+
+                             
                             </div>
+
+                               <div className="flex flex-col items-center gap-1">
+                                    <button
+                                        className="flex items-center gap-2
+            px-3 py-1.5
+            rounded-lg
+            bg-cyan-500/15
+            border border-cyan-400/20
+            text-cyan-300
+            text-[11px]
+            font-medium
+            hover:bg-cyan-500/25
+            hover:border-cyan-400/40
+            transition-all duration-300
+            active:scale-95
+           
+        "
+                                        onClick={() => handleSynchroniseNow()}
+                                    >
+                                        {synchronizeStatus?.syncStatus === "Running"
+                                            ? "Stop Sync"
+                                            : "Sync Now"}
+                                        {syncLoading && (<div className="w-3 h-3 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>)}
+                                    </button>
+                                    {/* 
+                                        {synchronizeStatus?.syncStatus === "Running" && (
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-3 h-3 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                                                <span className="text-[10px] text-cyan-300">
+                                                    Synchronizing...
+                                                </span>
+                                            </div>
+                                        )} */}
+                                </div>
 
                         </div>
 
@@ -349,10 +537,24 @@ function PatchTreeThirdDashboard() {
                                 </p>
 
                                 <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                                    <div
+                                        className={`w-2 h-2 rounded-full ${synchronizeStatus?.lastSyncResult?.toLowerCase() === "failed"
+                                            ? "bg-red-400"
+                                            : synchronizeStatus?.lastSyncResult?.toLowerCase() === "succeeded"
+                                                ? "bg-green-400"
+                                                : "bg-gray-400"
+                                            }`}
+                                    ></div>
 
-                                    <span className="text-green-400 text-sm font-semibold">
-                                        Succeeded
+                                    <span
+                                        className={`text-sm font-semibold ${synchronizeStatus?.lastSyncResult?.toLowerCase() === "failed"
+                                            ? "text-red-400"
+                                            : synchronizeStatus?.lastSyncResult?.toLowerCase() === "succeeded"
+                                                ? "text-green-400"
+                                                : "text-gray-400"
+                                            }`}
+                                    >
+                                        {synchronizeStatus?.lastSyncResult || "N/A"}
                                     </span>
                                 </div>
                             </div>
@@ -427,24 +629,7 @@ function PatchTreeThirdDashboard() {
                                     </div>
 
                                     {/* Sync Button */}
-                                    <button
-                                        className="
-                px-3 py-1.5
-                rounded-lg
-                bg-cyan-500/15
-                border border-cyan-400/20
-                text-cyan-300
-                text-[11px]
-                font-medium
-                hover:bg-cyan-500/25
-                hover:border-cyan-400/40
-                transition-all duration-300
-                active:scale-95
-            "
-                                      
-                                    >
-                                        Sync Now
-                                    </button>
+
 
                                 </div>
                             </div>
@@ -504,10 +689,10 @@ function PatchTreeThirdDashboard() {
                         <div className="space-y-5">
 
                             {/* Row 1 */}
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
+                            <div style={{ cursor: "pointer" }} onClick={() => handleClickModalParameter('patches', 'unapprovedpatches', {})}>
+                                <div className="flex items-center justify-between mb-2" >
 
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2"    >
                                         <div className="w-5 h-5 rounded-full bg-yellow-500/20 flex items-center justify-center">
                                             <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
                                         </div>
@@ -528,7 +713,7 @@ function PatchTreeThirdDashboard() {
                             </div>
 
                             {/* Row 2 */}
-                            <div>
+                            <div style={{ cursor: "pointer" }} onClick={() => handleClickModalParameter('patches', 'approvedpatches', {})}>
                                 <div className="flex items-center justify-between mb-2">
 
                                     <div className="flex items-center gap-2">
@@ -552,7 +737,7 @@ function PatchTreeThirdDashboard() {
                             </div>
 
                             {/* Row 3 */}
-                            <div>
+                            <div style={{ cursor: "pointer" }} onClick={() => handleClickModalParameter('patches', 'declinedpatches', {})}>
                                 <div className="flex items-center justify-between mb-2">
 
                                     <div className="flex items-center gap-2">
@@ -631,11 +816,33 @@ function PatchTreeThirdDashboard() {
                             <div>
                                 <h2 className="text-white text-lg font-semibold flex items-center gap-2">
                                     <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-                                    Computer Status
+                                    Patch  Status
                                 </h2>
-                                <p className="text-slate-400 text-sm mt-1">
-                                    Real-time fleet patching breakdown
-                                </p>
+
+                                <div className="flex flex-col">
+                                    <label className="text-xs font-medium mb-1">
+                                        Action
+                                    </label>
+
+                                    <select
+                                        id="patchAction"
+                                        value={action}
+                                        onChange={handleActionChange}
+                                        className="filter-input h-5 min-w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="" disabled>
+                                            -- Please select value --
+                                        </option>
+                                        {GroupList.map((item) => (
+                                            <option key={item.value} value={item.value}>
+                                                {item.label}
+                                            </option>
+                                        ))}
+
+
+                                    </select>
+                                </div>
+
                             </div>
 
                             <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-medium">
@@ -657,7 +864,7 @@ function PatchTreeThirdDashboard() {
                             </div>
 
                             {/* Stats */}
-                            <div className="flex-1 space-y-3 overflow-x-auto pr-2">
+                            <div className="flex-1 space-y-3 pr-2">
 
                                 {computerStatusPie.map((item, index) => (
                                     <div
@@ -680,22 +887,7 @@ function PatchTreeThirdDashboard() {
                                         </div>
 
                                         {/* Progress */}
-                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
 
-                                            <div
-                                                className="h-full rounded-full"
-                                                style={{
-                                                    width: "20%",
-                                                    backgroundColor:
-                                                        COLORS[index % COLORS.length]
-                                                }}
-                                            />
-                                        </div>
-
-                                        {/* Percentage */}
-                                        <div className="w-12 text-right text-[10px] text-slate-400">
-                                            20%
-                                        </div>
 
                                         {/* Value */}
                                         <div className="w-8 text-right text-[11px] font-semibold text-white">
@@ -713,7 +905,7 @@ function PatchTreeThirdDashboard() {
 
 
 
-                <div className="col-span-12 xl:col-span-4">
+                {/* <div className="col-span-12 xl:col-span-4">
                     <div className="rounded-2xl bg-[#0E1728] rounded-xl border border-white/10 shadow-xl p-3  h-full flex flex-col">
 
                         <div className="flex items-start justify-between mb-6">
@@ -732,10 +924,10 @@ function PatchTreeThirdDashboard() {
                             </span>
                         </div>
 
-                        {/* Content */}
+                       
                         <div className="flex items-center gap-8">
 
-                            {/* Donut Chart */}
+                           
                             <div className="relative w-48 h-48 flex items-center justify-center">
 
                                 <div className="w-50 h-50 relative">
@@ -745,7 +937,7 @@ function PatchTreeThirdDashboard() {
 
                             </div>
 
-                            {/* Stats */}
+                            
                             <div className="flex-1 space-y-3 overflow-x-auto pr-2">
 
                                 {updateStatus.map((item, index) => (
@@ -754,7 +946,7 @@ function PatchTreeThirdDashboard() {
                                         className="flex items-center gap-2 min-w-[420px]"
                                     >
 
-                                        {/* Dot */}
+                                     
                                         <div
                                             className="w-2.5 h-2.5 rounded-full shadow-lg"
                                             style={{
@@ -763,12 +955,12 @@ function PatchTreeThirdDashboard() {
                                             }}
                                         />
 
-                                        {/* Label */}
+                                       
                                         <div className="w-24 text-[11px] text-slate-200 truncate">
                                             {item.name}
                                         </div>
 
-                                        {/* Progress */}
+                                        
                                         <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
 
                                             <div
@@ -781,12 +973,12 @@ function PatchTreeThirdDashboard() {
                                             />
                                         </div>
 
-                                        {/* Percentage */}
+                                        
                                         <div className="w-12 text-right text-[10px] text-slate-400">
                                             20%
                                         </div>
 
-                                        {/* Value */}
+                                        
                                         <div className="w-8 text-right text-[11px] font-semibold text-white">
                                             {item.value}
                                         </div>
@@ -798,7 +990,7 @@ function PatchTreeThirdDashboard() {
 
 
                     </div>
-                </div>
+                </div> */}
 
 
                 <div className="col-span-12 xl:col-span-4">

@@ -74,8 +74,8 @@ export default function MainLayout() {
   } = useSidebar();
 
   useEffect(() => {
-    console.log("active --- Item ", activeItem.split("/")[1]);
-   
+      console.log("active --- Item ", activeItem.split("/")[1]);
+    
 
     if (activeItem == '/dashboard/patchTree' || activeItem.split("/")[1]?.toLowerCase() === 'patchtree' ) {
       setIsPatchTreeSidebarEnabled(true);
@@ -86,6 +86,7 @@ export default function MainLayout() {
       setSidebarContent(LinuxSidebarData);
     } else if (activeItem == '/dashboard/mainDashboard') {
       setSidebarContent(sidebarData);
+      setIsPatchTreeSidebarEnabled(false);
     } else {
       setIsPatchTreeSidebarEnabled(false);
     }
@@ -144,7 +145,7 @@ export default function MainLayout() {
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-[#000000] ">
       <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} isPatchTreeSidebarEnabled={isPatchTreeSidebarEnabled} />
-      {!isPatchTreeSidebarEnabled ?
+      {!isPatchTreeSidebarEnabled ? 
         <Sidebar
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}

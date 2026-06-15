@@ -414,6 +414,9 @@ export const Sidebar = ({
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0">
           {isOpen ? ( <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" /> ) 
           : ( <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" /> )}
+
+
+      
         </button>
       </div>
 
