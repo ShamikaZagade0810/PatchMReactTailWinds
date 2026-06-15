@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import {
-    requestToServerForRemoteAction,
-    requestIdForRemoteAction
+    requestToServerForRemoteAction, requestIdForRemoteAction, 
+     getAllBranchList,  getBranchWiseIpaddressList, getMasterCommanddropdown
 } from "../../api/projectApi";
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 import { useForm } from "react-hook-form";
@@ -99,26 +99,98 @@ const MultipleRunForm = () => {
     register("ipAddress", { validate: (value) => value?.length > 0 || "At least 1 IP must be selected" });
   }, [register]);
 
-  const branchOptions = [
-    { value: "npcil", label: "NPCIL" },
-    { value: "nhpc", label: "NHPC" },
-    { value: "mumbai", label: "Mumbai Branch" },
-  ];
-  const ipOptions = [
-    { value: "192.168.0.15", label: "192.168.0.15" },
-    { value: "192.168.0.54", label: "192.168.0.54" },
-    { value: "192.168.0.104", label: "192.168.0.104" },
-    { value: "192.168.0.53", label: "192.168.0.53" },
-  ];
-  const commandOptions = [
-    { value: "Restart System", label: "Restart System" },
-    { value: "Shutdown System", label: "Shutdown System" },
-    { value: "Disk Cleanup", label: "Disk Cleanup" },
-     { value: "Ping cmd2", label: "Ping cmd2" }
-  ];
-  const [selectedBranches, setSelectedBranches] = useState([]);
+  // const branchOptions = [
+  //   { value: "npcil", label: "NPCIL" },
+  //   { value: "nhpc", label: "NHPC" },
+  //   { value: "mumbai", label: "Mumbai Branch" },
+  // ];
+  // const ipOptions = [
+  //   { value: "192.168.0.15", label: "192.168.0.15" },
+  //   { value: "192.168.0.54", label: "192.168.0.54" },
+  //   { value: "192.168.0.104", label: "192.168.0.104" },
+  //   { value: "192.168.0.53", label: "192.168.0.53" },
+  // ];
+  //   const commandOptions = [
+  //   { value: "Restart System", label: "Restart System" },
+  //   { value: "Shutdown System", label: "Shutdown System" },
+  //   { value: "Disk Cleanup", label: "Disk Cleanup" },
+  //    { value: "Ping cmd2", label: "Ping cmd2" }
+  // ];
+  const [branchOptions, setBranchOptions] = useState([]);
+const [ipOptions, setIpOptions] = useState([]);
+  const [commandOptions, setcommandOptions] = useState([]);
+
+ const [selectedBranches, setSelectedBranches] = useState([]);
   const [selectedIPs, setSelectedIPs] = useState([]);
 
+
+useEffect(() => {
+    loadBranches();
+}, []);
+
+const loadBranches = async () => {
+    try {
+        const response = await getAllBranchList();
+        console.log("Branch: ",response.data.data);
+
+        if (response?.data?.data) {
+            setBranchOptions( response.data.data.map(item => ({
+                      label: item.label,
+                      value: item.value
+                  }))
+              );
+          }
+    } catch (error) {
+        console.error("Error loading branches:", error);
+    }
+};
+
+useEffect(() => {
+    if (selectedBranches.length > 0) {
+        loadIpAddresses(selectedBranches);
+    } else {
+        setIpOptions([]);
+    }
+}, [selectedBranches]);
+
+const loadIpAddresses = async (branches) => {
+    try {
+       const inputData = {
+        branch: selectedBranches.map(item => item.value)
+       };
+
+        const response = await getBranchWiseIpaddressList(inputData);
+        console.log("IP address",response.data.data);
+
+        if (response?.data?.data) {
+            setIpOptions( response.data.data.map(item => ({
+                       label: item.label,
+                      value: item.value
+                  }))
+                );
+        }
+    } catch (error) {
+        console.error("Error loading IP addresses:", error);
+    }
+};
+
+useEffect(() => {
+    loadActivity();
+}, []);
+
+const loadActivity = async () => {
+    try {
+        const response = await getMasterCommanddropdown();
+        console.log("Command: ",response.data.data);
+
+        if (response?.data?.data) {
+            setcommandOptions( response.data.data.map(item => ({  label: item.label, value: item.value })) );
+          }
+    } catch (error) {
+        console.error("Error loading branches:", error);
+    }
+};
+ 
   const detailsinfo = [
     { "ipaddress": "192.168.0.15", "pcName": "shamika", "status": "Failed", "branchName": "NPCIL" },
     { "ipaddress": "192.168.0.2", "pcName": "sumit", "status": "Success", "branchName": "NPCIL" },
@@ -165,7 +237,7 @@ const MultipleRunForm = () => {
               <MultiSelect
                 options={branchOptions}
                 value={selectedBranches}
-                onChange={setSelectedBranches}
+                 onChange={(selected) => { setSelectedBranches(selected); }}
                 placeholder="Select Branch Names"
                 id={"branchNames"}
                 setValue={setValue}
@@ -184,7 +256,7 @@ const MultipleRunForm = () => {
               <MultiSelect
                 options={ipOptions}
                 value={selectedIPs}
-                onChange={setSelectedIPs}
+                onChange={(selected) => { setSelectedIPs(selected); }}
                 placeholder="Select IP Address"
                 id={"ipAddress"}
                 setValue={setValue}

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
-import { AddAppUser } from "../../api/projectApi";
+import { AddAppUser, getMasterVendorNamedropdown, getMasterCustomerNamedropdown, getMasterbranchNamedropdown } from "../../api/projectApi";
 
 const AddUser = () => {
     const {
@@ -35,19 +35,67 @@ const AddUser = () => {
     const [patchValues, setPatchValues] = useState([]);
     const [rightClickValues, setRightClickValues] = useState([]);
 
+    const [OEMOptions, setOEMOptions] = useState([]);
+const [CustNameOptions, setCustNameOptions] = useState([]);
+const [branchOptions, setbranchNameOptions] = useState([]);
 
-    const OEMOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
-    const CustNameOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
-    const branchOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
+
+    // const OEMOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+    // const CustNameOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+    // const branchOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+
+    useEffect(() => {
+    loadDropdowns();
+}, []);
+
+const loadDropdowns = async () => {
+    try {
+        // Vendor List
+        const vendorRes = await getMasterVendorNamedropdown();
+
+        if (vendorRes?.data?.data) {
+            // setOEMOptions(vendorRes.data.data);
+            setOEMOptions(vendorRes.data.data.map(item => ({
+                    label: item.label,
+                    value: item.value
+                }))
+            );
+
+        }
+
+        // Customer List
+        const customerRes = await getMasterCustomerNamedropdown();
+
+        if (customerRes?.data?.data) {
+            setCustNameOptions(customerRes.data.data.map(item => ({
+                    label: item.label,
+                    value: item.value
+                })));
+        }
+
+         const branchRes = await getMasterbranchNamedropdown();
+
+        if (branchRes?.data?.data) {
+            setbranchNameOptions(branchRes.data.data.map(item => ({
+                   label: item.label,
+                    value: item.value
+                })));
+        }
+
+
+    } catch (error) {
+        console.error("Error loading dropdowns:", error);
+    }
+};
 
     useEffect(() => {
     register("branchNames", { validate: (value) => value?.length > 0 || "At least 1 branch must be selected" });
@@ -208,7 +256,7 @@ const AddUser = () => {
                     placeholder="Select OEM Names"  
                     id={"OEMNames"}
                     setValue={setValue} />
-                    {errors?.OEMNames && ( <p className="text-red-400 text-xs mt-1"> {errors.OEMNames.message} </p>  )}              
+                    {errors?.OEMNames && ( <p className="text-red-500 text-xs mt-1"> {errors.OEMNames.message} </p>  )}              
                 </div>
 
                 <div>

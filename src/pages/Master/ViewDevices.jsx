@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import { Pencil, Trash2, ShieldUser } from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 
-import { getViewDeviesList, UpdateViewDevices, deleteViewDevices } from "../../api/projectApi";
+import { getViewDeviesList, UpdateViewDevices, deleteViewDevices,
+     getMasterVendorNamedropdown, getMasterCustomerNamedropdown, getMasterbranchNamedropdown
+ } from "../../api/projectApi";
 
 const ViewDevices = () => {
     const {
@@ -52,18 +54,68 @@ const [loading, setLoading] = useState(false);
 
 
 
-    const OEMOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
-    const CustNameOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
-    const branchOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
+    // const OEMOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+    // const CustNameOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+    // const branchOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+
+     const [OEMOptions, setOEMOptions] = useState([]);
+        const [CustNameOptions, setCustNameOptions] = useState([]);
+        const [branchOptions, setbranchNameOptions] = useState([]);
+        
+           useEffect(() => {
+            loadDropdowns();
+        }, []);
+        
+        const loadDropdowns = async () => {
+            try {
+                // Vendor List
+                const vendorRes = await getMasterVendorNamedropdown();
+        
+                if (vendorRes?.data?.data) {
+                    // setOEMOptions(vendorRes.data.data);
+                    setOEMOptions(vendorRes.data.data.map(item => ({
+                            label: item.label,
+                            value: item.value
+                        }))
+                    );
+        
+                }
+        
+                // Customer List
+                const customerRes = await getMasterCustomerNamedropdown();
+        
+                if (customerRes?.data?.data) {
+                    setCustNameOptions(customerRes.data.data.map(item => ({
+                            label: item.label,
+                            value: item.value
+                        })));
+                }
+        
+                 const branchRes = await getMasterbranchNamedropdown();
+        
+                if (branchRes?.data?.data) {
+                    setbranchNameOptions(branchRes.data.data.map(item => ({
+                           label: item.label,
+                            value: item.value
+                        })));
+                }
+        
+        
+            } catch (error) {
+                console.error("Error loading dropdowns:", error);
+            }
+        };
+        
+
 
     const [iseditModalOpen, setIseditModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);

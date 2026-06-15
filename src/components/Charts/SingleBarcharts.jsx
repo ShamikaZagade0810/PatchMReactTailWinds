@@ -35,7 +35,7 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
     return (
         <div className="w-full h-60 bg-[#141D2E] rounded-lg p-3">
             <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data}>
+                <BarChart data={data} barSize={35}>
 
                     {/* Grid */}
                     <CartesianGrid stroke="#1E293B" strokeDasharray="3 3" />
@@ -56,6 +56,7 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
 
                     {/* Tooltip */}
                     <Tooltip    
+                     cursor={{ fill: "rgba(59, 130, 246, 0.08)" }}
                         contentStyle={{
                             backgroundColor: "#0F172A",
                             border: "1px solid #1E293B",
@@ -73,7 +74,7 @@ const getMonthDateRange = (monthName, year = new Date().getFullYear()) => {
                     {/* Bars */}
                     <Bar
                         dataKey="count"
-                        fill="#16a34a"
+                        fill="#3b82f6"
                         radius={[4, 4, 0, 0]}
                         onClick={(data, index) => {
                             console.log("Clicked Bar:", data);

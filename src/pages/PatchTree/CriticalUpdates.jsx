@@ -11,23 +11,55 @@ import {
   ChevronRight
 } from 'lucide-react';
 
+import { getClasssifiedUpdatesData } from "../../api/projectApi";
+
 const CriticalUpdates = () => {
   const navigate = useNavigate();
 const handleOpen = (title) => {
-  navigate(`/patchTree/patchDetails/${title}`);
+  navigate(`/patchTree/patchDetails/${title}`, {
+    state: {
+      from: "/patchTree/CriticalUpdate"
+    }
+    });
 };
 
-  const criticalupdateslist = [
-    {srNo:1,title:"Remote Assistance Connection",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 20:49:52.6",arrivalDate:"2025-12-30 06:27:55.633",approved:false,declined:false,state:"Published"},
-    {srNo:2,title:"Windows XP Update Package, October 25, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 21:28:13.757",arrivalDate:"2025-12-30 06:27:56.01",approved:false,declined:false,state:"Published"},
-    {srNo:3,title:"Critical Update, November 19, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-03-25 22:24:13.507",arrivalDate:"2025-12-30 06:27:56.083",approved:false,declined:false,state:"Published"},
-    {srNo:4,title:"System Recovered Error Message Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 19:56:08.78",arrivalDate:"2025-12-30 06:28:02.03",approved:false,declined:false,state:"Published"},
-    {srNo:5,title:"Critical Update, February 10, 2002",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-08-28 14:52:21.093",arrivalDate:"2025-12-30 06:28:02.213",approved:false,declined:false,state:"Published"},
-    {srNo:6,title:"Q320174: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-20 03:09:48.407",arrivalDate:"2025-12-30 06:28:09.903",approved:false,declined:false,state:"Published"},
-    {srNo:7,title:"Q329553: Critical Update (Windows 2000)",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-09-09 21:59:08.33",arrivalDate:"2025-12-30 06:28:40.593",approved:false,declined:false,state:"Published"},
-    {srNo:8,title:"810565: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-10-15 05:15:58.963",arrivalDate:"2025-12-30 06:28:46.98",approved:false,declined:false,state:"Published"},
-    {srNo:9,title:"810649: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-25 18:41:10.857",arrivalDate:"2025-12-30 06:28:47.19",approved:false,declined:false,state:"Published"}
-  ];
+  // const criticalupdateslist = [
+  //   {srNo:1,title:"Remote Assistance Connection",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 20:49:52.6",arrivalDate:"2025-12-30 06:27:55.633",approved:false,declined:false,state:"Published"},
+  //   {srNo:2,title:"Windows XP Update Package, October 25, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 21:28:13.757",arrivalDate:"2025-12-30 06:27:56.01",approved:false,declined:false,state:"Published"},
+  //   {srNo:3,title:"Critical Update, November 19, 2001",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-03-25 22:24:13.507",arrivalDate:"2025-12-30 06:27:56.083",approved:false,declined:false,state:"Published"},
+  //   {srNo:4,title:"System Recovered Error Message Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 19:56:08.78",arrivalDate:"2025-12-30 06:28:02.03",approved:false,declined:false,state:"Published"},
+  //   {srNo:5,title:"Critical Update, February 10, 2002",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-08-28 14:52:21.093",arrivalDate:"2025-12-30 06:28:02.213",approved:false,declined:false,state:"Published"},
+  //   {srNo:6,title:"Q320174: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-20 03:09:48.407",arrivalDate:"2025-12-30 06:28:09.903",approved:false,declined:false,state:"Published"},
+  //   {srNo:7,title:"Q329553: Critical Update (Windows 2000)",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-09-09 21:59:08.33",arrivalDate:"2025-12-30 06:28:40.593",approved:false,declined:false,state:"Published"},
+  //   {srNo:8,title:"810565: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-10-15 05:15:58.963",arrivalDate:"2025-12-30 06:28:46.98",approved:false,declined:false,state:"Published"},
+  //   {srNo:9,title:"810649: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-25 18:41:10.857",arrivalDate:"2025-12-30 06:28:47.19",approved:false,declined:false,state:"Published"}
+  // ];
+const [loading, setLoading] = useState(true);
+const [criticalupdateslist, setCriticalupdateslist] = useState([]);
+
+useEffect(() => {
+  fetchCriticalUpdates();
+}, []);
+
+const fetchCriticalUpdates = async () => {
+  try {
+    setLoading(true);
+
+    const data = {
+      classification: "Critical Updates",
+    }
+    const response = await getClasssifiedUpdatesData(data);
+
+    console.log("Crirtical Updates response: ", response)
+    if (response?.data?.status === 200) {
+      setCriticalupdateslist(response.data.data || []);
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const [search, setSearch] = useState('');
   const [severityFilter, setSeverityFilter] = useState('');
@@ -69,7 +101,8 @@ useEffect(() => {
       }
       return matchesSearch && matchesSeverity && matchesStatus;
     });
-  }, [search, severityFilter, statusFilter]);
+  }, [criticalupdateslist, search, severityFilter, statusFilter]);
+
 
   const totalCritical = criticalupdateslist.length;
 
@@ -94,18 +127,14 @@ useEffect(() => {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
 
           <div>
-            <h1 className="text-xl font-bold">
-              Critical Updates
-            </h1>
+            <h1 className="text-xl font-bold"> Critical Updates  </h1>
 
-            <p className="text-xs text-gray-400 mt-1">
-              Prioritized patches awaiting review and deployment.
-            </p>
+            <p className="text-xs text-gray-400 mt-1"> Prioritized patches awaiting review and deployment. </p>
           </div>
 
           <div className="flex items-center gap-2">
 
-            <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+            <button  onClick={fetchCriticalUpdates}  className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
               <RefreshCw size={14} /> Refresh
             </button>
 
@@ -208,14 +237,20 @@ useEffect(() => {
             </thead>
 
             <tbody>
-              {filteredData.length > 0 ? (
+              {loading ? (
+    <tr>
+      <td colSpan="9" className="text-center py-8">
+        Loading...
+      </td>
+    </tr>
+  ) : filteredData.length > 0 ? (
                 paginatedData.map((item) => (
                   <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
                     {/* <td className="px-4 py-3"> {item.srNo} </td> */}
 
                     <td className="px-4 py-3">
                       <div>
-                        <p className="font-medium text-white" onClick={() => handleOpen(item.title)}> {item.title} </p>
+                        <p className="font-medium text-white hover:text-cyan-400" onClick={() => handleOpen(item.title)}> {item.title} </p>
                         <p className="text-[10px] text-gray-500 mt-1"> {item.legacyName} </p>
                       </div>
                     </td>

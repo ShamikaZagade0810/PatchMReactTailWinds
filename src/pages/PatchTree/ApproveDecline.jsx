@@ -136,7 +136,7 @@ const ApproveDecline = () => {
             const alreadyExists = prev.includes(
                 item.srNo
             );
-            console.log("Already exist ", alreadyExists, " sele ", prev.filter((row) => row.srNo !== item.srNo));
+            console.log("Already exist ", alreadyExists, " sele ", prev.filter((srNo) => srNo !== item.srNo));
             return alreadyExists
                 ? prev.filter((srNo) => srNo !== item.srNo)
                 : [...prev, item.srNo];
@@ -156,7 +156,7 @@ const ApproveDecline = () => {
         if (!SelectedGroups || SelectedGroups.length === 0) {
             toast("Please select a group!");
             return;
-        }
+        } 
         const patchTitleString = filteredData
             .filter(item => selectedRows.includes(item.srNo))
             .map(item => item.patch_name)
@@ -348,25 +348,56 @@ const ApproveDecline = () => {
                     </thead>
 
                     <tbody>
-                        {paginatedData.length > 0 ? (
-                            paginatedData.map((item) => (
-                                <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
-                                    <td className="px-4 py-3">
-                                        <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)} />
+                        {
+                            loading ? (
+                                <tr>
+                                    <td colSpan="9" className="py-10">
+                                        <div className="flex flex-col items-center justify-center gap-3">
+                                            <RefreshCw size={24} className="animate-spin text-cyan-400" />
+                                            <span className="text-gray-400 text-xs">
+                                                Loading updates...
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.srNo} </td>
-                                    <td className="px-4 py-3"> {item.pc_name} </td>
-                                    <td className="px-4 py-3 font-medium text-white"> {item.patch_name} </td>
-                                    <td className="px-4 py-3 text-gray-300"> {item.classification} </td>
-                                    <td className="px-4 py-3 text-gray-300"> {item.creation_Timestamp} </td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="7" className="text-center py-8 text-gray-400 text-xs" > No Data Available </td>
-                            </tr>
-                        )}
+                            ) : paginatedData.length > 0 ? (
+                                paginatedData.map((item) => (
+                                    <tr
+                                        key={item.srNo}
+                                        className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300"
+                                    >
+                                        <td className="px-4 py-3">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedRows.includes(item.srNo)}
+                                                onChange={() => handleRowSelect(item)}
+                                            />
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300 whitespace-nowrap">
+                                            {item.srNo}
+                                        </td>
+                                        <td className="px-4 py-3">{item.pc_name}</td>
+                                        <td className="px-4 py-3 font-medium text-white">
+                                            {item.patch_name}
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">
+                                            {item.classification}
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">
+                                            {item.creation_Timestamp}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="9" className="text-center py-8 text-gray-400 text-xs">
+                                        No Data Available
+                                    </td>
+                                </tr>
+                            )
+                        }
+
                     </tbody>
 
                 </table>

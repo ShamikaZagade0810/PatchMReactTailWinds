@@ -1,38 +1,15 @@
 // components/Layout/Sidebar.jsx
 import React, { useMemo, useState } from "react";
 import {
-  LayoutDashboard,
-  ListTree,
-  Share2,
-  FolderGit2,
-  Server,
-  Package,
-  Shield,
-  Users,
-  FileText,
-  Activity,
-  PlayCircle,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Database,
-  GitBranch,
-  CheckCircle,
-  AlertTriangle,
-  AppWindowMac,
-  AppWindow,
-  ClipboardMinus,
-  SquareTerminal
+  Settings, ChevronLeft, ChevronRight,  X, TableOfContents, LogOut
 } from "lucide-react";
 
 import {
   PackageCheck,
   BadgeInfo,
-
   Monitor,
   List,
   FolderOpen,
-
   FileBarChart,
 } from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
@@ -372,7 +349,8 @@ export const Sidebar = ({
   }, [activeItem]);
 
   const { user } = useAuth();
-
+  console.log("isOpen -->",isOpen);
+   console.log("toggleSidebar -->",toggleSidebar);
   const filteredSidebar = useMemo(() => {
     return sidebarData.filter((item) => item?.roles?.includes(user?.role));
   }, [user?.role, sidebarData]);
@@ -381,85 +359,80 @@ export const Sidebar = ({
     <aside
       className={` fixed left-0 top-0 h-screen bg-white dark:bg-gray-900 
         border-r border-gray-200 dark:border-gray-800
-        transition-all duration-300 ease-in-out z-40
+        transition-all duration-300 ease-in-out z-50 mt-15 pb-13
         ${isOpen ? "w-50" : "w-20"}
         flex flex-col shadow-lg
       `}
     >
-      <div className="p-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between gap-2 ">
-        <div className="flex items-center gap-3 shrink-0">
-          <img
-            src={logo}
-            alt="Logo"
-            // className="h-8 w-8 shrink-0 rounded-lg transition-all"
-            className={`h-8 w-8 rounded-lg transition-all duration-300 
-    ${isOpen ? "scale-100" : "scale-110"}
-  `}
-          />
-          {/* {isOpen && (
-            <span className="font-bold text-gray-800 dark:text-white text-md truncate">
-              PM
-            </span>
-          )} */}
-          <span className={`font-bold transition-all duration-300 
-  ${isOpen ? "opacity-100 ml-0" : "opacity-0 -ml-2"}
-`}>
-            PM
-          </span>
-        </div>
-
-        <button
-          onClick={toggleSidebar}
-          aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0">
-          {isOpen ? ( <ChevronLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" /> ) 
-          : ( <ChevronRight className="w-4 h-4 text-gray-600 dark:text-gray-400" /> )}
-
-
+       <div className="p-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
       
-        </button>
-      </div>
+      {isOpen ? (
+        <>
+          <div className="flex flex-col leading-tight">
+            <span className="font-bold text-sm">Patch Management</span>
+            <span className="text-xs text-gray-500">Admin Console</span>
+          </div>
 
-      <div className="flex-1 overflow-y-auto py-3 px-2 hide-scrollbar">
+          <button onClick={toggleSidebar} aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"} > <X className="w-5 h-5" /> </button>
+        </>
+      ) : (
+        <button onClick={toggleSidebar} className="mx-auto"> <TableOfContents className="w-5 h-5" /> </button>
+      )}
+    </div>
 
+       <div className="flex-1 overflow-y-auto py-3 px-2 hide-scrollbar">
+      <nav className="space-y-1">
+        {filteredSidebar.map((item) => (
+          <AccordionItem
+            key={item.path}
+            item={item}
+            level={0}
+            isSidebarOpen={isOpen}
+            isExpanded={isItemExpanded(item.path)}
+            isActive={activeItem}
+            onAccordionClick={onAccordionClick}
+            onItemClick={onItemClick}
+            isItemExpanded={isItemExpanded}
+          />
+        ))}
+      </nav>
+    </div>
 
-        <nav className="space-y-1">
-          {filteredSidebar.map((item, id) => (
-            <AccordionItem
-              key={id}
-              item={item}
-              level={0}
-              isSidebarOpen={isOpen}
-              isExpanded={isItemExpanded(item.path)}
-              isActive={activeItem}
-              onAccordionClick={onAccordionClick}
-              onItemClick={onItemClick}
-              isItemExpanded={isItemExpanded}
-            />
-          ))}
-        </nav>
-      </div>
+     <div className="p-1 border-t border-gray-200 dark:border-gray-800 space-y-1">
 
-      <div className="p-3 border-t border-gray-200 dark:border-gray-800">
-        {isOpen ? (
-          <div className="text-lg">
-            <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
-              {activeItemData?.name || "Dashboard"}
-            </p>
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              {/* <div className="w-2 h-2 rounded-full bg-green-500"></div> */}
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
-              <div className="w-2 h-2 rounded-full bg-green-500 absolute"></div>
-              <span>Connected</span>
+      <button className="flex items-center gap-2 w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-3 rounded">
+        <Settings className="w-4 h-4" />
+        {isOpen && <span>Settings</span>}
+      </button>
+
+      <button className="flex items-center gap-2 w-full hover:bg-gray-100 dark:hover:bg-gray-800 py-1 px-3 rounded text-red-500">
+        <LogOut className="w-4 h-4" />
+        {isOpen && <span>Sign Out</span>}
+      </button>
+
+    </div>
+
+       <div className="p-3 pb-5 border-t border-gray-200 dark:border-gray-800">
+      {isOpen ? (
+        <div>
+          <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
+            {activeItemData?.name || "Dashboard"}
+          </p>
+
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <div className="relative w-2 h-2">
+              <div className="absolute w-2 h-2 bg-green-500 animate-ping rounded-full" />
+              <div className="w-2 h-2 bg-green-500 rounded-full" />
             </div>
+            <span>Connected</span>
           </div>
-
-        ) : (
-          <div className="flex justify-center">
-            <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-500 to-blue-600"></div>
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600" />
+        </div>
+      )}
+    </div>
     </aside>
   );
 };

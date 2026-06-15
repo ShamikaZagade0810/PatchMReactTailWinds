@@ -1,32 +1,89 @@
-import React, {useState } from 'react'
+import React, {useState, useEffect  } from 'react'
 
 import { ChevronLeft, ChevronRight, RefreshCw, Download  } from "lucide-react";
 
+import { getsyncHistoryData } from "../../api/projectApi";
+
 const Synchronization = () => {
-    const SynchronizationData = [
-    { srNo: 1, startDate: "2/19/2026 6:48:01 AM", finishDate: "2/19/2026 6:49:25 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 2, startDate: "2/18/2026 12:42:07 PM", finishDate: "2/18/2026 12:42:51 PM", type: "Manual", result: "Succeeded" },
-    { srNo: 3, startDate: "2/18/2026 6:48:01 AM", finishDate: "2/18/2026 6:50:26 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 4, startDate: "2/17/2026 6:48:04 AM", finishDate: "2/17/2026 6:50:48 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 5, startDate: "2/16/2026 6:48:00 AM", finishDate: "2/16/2026 6:51:08 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 6, startDate: "2/15/2026 7:33:09 AM", finishDate: "2/15/2026 7:33:09 AM", type: "Automatic", result: "Failed" },
-    { srNo: 7, startDate: "2/15/2026 7:18:07 AM", finishDate: "2/15/2026 7:18:07 AM", type: "Automatic", result: "Failed" },
-    { srNo: 8, startDate: "2/15/2026 7:03:04 AM", finishDate: "2/15/2026 7:03:04 AM", type: "Automatic", result: "Failed" },
-    { srNo: 9, startDate: "2/15/2026 6:48:02 AM", finishDate: "2/15/2026 6:48:02 AM", type: "Automatic", result: "Failed" },
-    { srNo: 10, startDate: "2/14/2026 6:48:01 AM", finishDate: "2/14/2026 6:50:54 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 11, startDate: "2/13/2026 6:48:04 AM", finishDate: "2/13/2026 7:03:42 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 12, startDate: "2/12/2026 6:48:00 AM", finishDate: "2/12/2026 6:50:25 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 13, startDate: "2/11/2026 6:48:03 AM", finishDate: "2/11/2026 6:53:27 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 14, startDate: "2/10/2026 6:48:04 AM", finishDate: "2/10/2026 6:49:40 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 15, startDate: "2/9/2026 6:48:01 AM", finishDate: "2/9/2026 6:50:45 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 16, startDate: "2/7/2026 6:48:00 AM", finishDate: "2/7/2026 6:49:39 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 17, startDate: "2/6/2026 6:48:04 AM", finishDate: "2/6/2026 6:50:47 AM", type: "Automatic", result: "Succeeded" },
-    { srNo: 18, startDate: "2/5/2026 7:33:09 AM", finishDate: "2/5/2026 7:33:09 AM", type: "Automatic", result: "Failed" },
-    { srNo: 19, startDate: "2/5/2026 7:18:06 AM", finishDate: "2/5/2026 7:18:06 AM", type: "Automatic", result: "Failed" },
-    { srNo: 20, startDate: "2/5/2026 7:03:04 AM", finishDate: "2/5/2026 7:03:04 AM", type: "Automatic", result: "Failed" }
-];
-//   const [SynchronizationData, setASynchronizationData] = useState([]);
+//     const SynchronizationData = [
+//     { srNo: 1, startDate: "2/19/2026 6:48:01 AM", finishDate: "2/19/2026 6:49:25 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 2, startDate: "2/18/2026 12:42:07 PM", finishDate: "2/18/2026 12:42:51 PM", type: "Manual", result: "Succeeded" },
+//     { srNo: 3, startDate: "2/18/2026 6:48:01 AM", finishDate: "2/18/2026 6:50:26 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 4, startDate: "2/17/2026 6:48:04 AM", finishDate: "2/17/2026 6:50:48 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 5, startDate: "2/16/2026 6:48:00 AM", finishDate: "2/16/2026 6:51:08 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 6, startDate: "2/15/2026 7:33:09 AM", finishDate: "2/15/2026 7:33:09 AM", type: "Automatic", result: "Failed" },
+//     { srNo: 7, startDate: "2/15/2026 7:18:07 AM", finishDate: "2/15/2026 7:18:07 AM", type: "Automatic", result: "Failed" },
+//     { srNo: 8, startDate: "2/15/2026 7:03:04 AM", finishDate: "2/15/2026 7:03:04 AM", type: "Automatic", result: "Failed" },
+//     { srNo: 9, startDate: "2/15/2026 6:48:02 AM", finishDate: "2/15/2026 6:48:02 AM", type: "Automatic", result: "Failed" },
+//     { srNo: 10, startDate: "2/14/2026 6:48:01 AM", finishDate: "2/14/2026 6:50:54 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 11, startDate: "2/13/2026 6:48:04 AM", finishDate: "2/13/2026 7:03:42 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 12, startDate: "2/12/2026 6:48:00 AM", finishDate: "2/12/2026 6:50:25 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 13, startDate: "2/11/2026 6:48:03 AM", finishDate: "2/11/2026 6:53:27 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 14, startDate: "2/10/2026 6:48:04 AM", finishDate: "2/10/2026 6:49:40 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 15, startDate: "2/9/2026 6:48:01 AM", finishDate: "2/9/2026 6:50:45 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 16, startDate: "2/7/2026 6:48:00 AM", finishDate: "2/7/2026 6:49:39 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 17, startDate: "2/6/2026 6:48:04 AM", finishDate: "2/6/2026 6:50:47 AM", type: "Automatic", result: "Succeeded" },
+//     { srNo: 18, startDate: "2/5/2026 7:33:09 AM", finishDate: "2/5/2026 7:33:09 AM", type: "Automatic", result: "Failed" },
+//     { srNo: 19, startDate: "2/5/2026 7:18:06 AM", finishDate: "2/5/2026 7:18:06 AM", type: "Automatic", result: "Failed" },
+//     { srNo: 20, startDate: "2/5/2026 7:03:04 AM", finishDate: "2/5/2026 7:03:04 AM", type: "Automatic", result: "Failed" }
+// ];
+  const [SynchronizationData, setSynchronizationData ] = useState([]);
      const [loading, setLoading] = useState(false);
+     const [showDiscoverModal, setShowDiscoverModal] = useState(false);
+const [discoverLoading, setDiscoverLoading] = useState(false);
+const [discoverMessage, setDiscoverMessage] = useState("");
+
+     useEffect(() => {
+    fetchSynchronizationHistory();
+}, []);
+
+const fetchSynchronizationHistory = async () => {
+    try {
+        setLoading(true);
+
+        const response = await getsyncHistoryData();
+
+        console.log("Sync History:", response.data);
+
+        // adjust according to your API response structure
+        const data = response?.data?.data || [];
+
+        // const formattedData = data.map((item, index) => ({
+        //     srNo: index + 1,
+        //     startDate: item.startDate,
+        //     finishDate: item.finishDate,
+        //     type: item.type,
+        //     result: item.result,
+        // }));
+
+        setSynchronizationData(data);
+    } catch (error) {
+        console.error("Error fetching synchronization history:", error);
+        setSynchronizationData([]);
+    } finally {
+        setLoading(false);
+    }
+};
+
+const handleDiscover = async () => {
+    try {
+        setShowDiscoverModal(true);
+        setDiscoverLoading(true);
+        setDiscoverMessage("");
+
+        // const response = await discoverSync(); // your discover API
+        // Wait 30 seconds
+        await new Promise((resolve) => setTimeout(resolve, 30000));
+
+        // setDiscoverMessage( response?.data?.message || "Synchronization completed successfully" );
+         setDiscoverMessage( "Synchronization completed successfully");
+    } catch (error) {
+        // setDiscoverMessage( error?.response?.data?.message || "Synchronization failed" );
+         setDiscoverMessage("Synchronization failed");
+    } finally {
+        setDiscoverLoading(false);
+    }
+};
 
      const PAGE_SIZE = 10;
       const [currentPage, setCurrentPage] = useState(1);
@@ -54,7 +111,7 @@ const Synchronization = () => {
     
 
   return (
-      <div className="bg-[#0B1220] rounded-2xl p-6">
+      <div className="min-h-screen bg-[#0B1220] rounded-2xl p-6">
             {/* <h2 className="text-lg font-semibold mb-4">
                 Synchronization History
             </h2> */}
@@ -64,7 +121,9 @@ const Synchronization = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] bg-gray-800 hover:bg-gray-700 hover:border-gray-800 transition-all duration-300">
+            <button  
+            onClick={handleDiscover}
+            className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] bg-gray-800 hover:bg-cyan-600 hover:border-gray-800 transition-all duration-300">
               <RefreshCw size={14} /> Discover
             </button>
             
@@ -72,6 +131,8 @@ const Synchronization = () => {
           </div>
 
         </div>
+
+         <div className="border-b border-white/15 my-4"></div>
 
             {/* Top Right Info */}
             <div className="flex justify-end mb-2 text-sm text-gray-400">
@@ -92,7 +153,15 @@ const Synchronization = () => {
                         </thead>
 
                         <tbody>
-                            {currentData.map((item, index) => (
+                            {/* {currentData.map((item, index) => ( */}
+                                {loading ? (
+        <tr>
+            <td colSpan="5" className="p-4 text-center text-gray-400">
+                Loading...
+            </td>
+        </tr>
+    ) : currentData.length > 0 ? (
+        currentData.map((item, index) => (
                                 <tr
                                     key={index}
                                     className="border-b border-white/10 last:border-b-0 hover:bg-[#172033] transition"
@@ -104,16 +173,22 @@ const Synchronization = () => {
                                     <td className="p-3">
                                         <span
                                             className={
-                                                item.result === "Succeeded"
+                                                item.result === "Automatic"
                                                     ? "text-emerald-400"
-                                                    : "text-red-400"
+                                                    : "text-amber-400"
                                             }
                                         >
                                             {item.result}
                                         </span>
                                     </td>
                                 </tr>
-                            ))}
+                            )) ) : (
+        <tr>
+            <td colSpan="5" className="p-4 text-center text-gray-400">
+                No records found
+            </td>
+        </tr>
+    )}
                         </tbody>
                     </table>
                 </div>
@@ -139,6 +214,39 @@ const Synchronization = () => {
         </button>
     </div>
 </div>
+{showDiscoverModal && (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div className="bg-[#0F172A] rounded-xl p-6 w-[400px] border border-white/10">
+            <h2 className="text-lg font-semibold mb-4"> Synchronization Discovery </h2>
+
+             <div className="border-b border-white/15 my-4"></div>
+
+            {discoverLoading ? (
+                <div className="flex flex-col items-center gap-3 py-6">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-400"></div>
+                    <p className="text-gray-300">
+                        Discovering synchronization...
+                    </p>
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    <p className="text-gray-300">
+                        {discoverMessage}
+                    </p>
+
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => setShowDiscoverModal(false)}
+                            className="px-4 py-2 bg-cyan-600 rounded-lg hover:bg-cyan-700"
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    </div>
+)}
         </div>
   )
 }

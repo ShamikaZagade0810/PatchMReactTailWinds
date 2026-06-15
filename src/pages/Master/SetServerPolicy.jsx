@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
 import { div } from 'framer-motion/client';
-import {
-    addSetServerPolicy,
-    viewAllServerPolicy,
-    editSetServerPolicy,
-    deleteSelectedPolicyServer 
+import { addSetServerPolicy,  viewAllServerPolicy, editSetServerPolicy, deleteSelectedPolicyServer , 
+    getMasterbranchNamedropdown
 } from "../../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -70,10 +67,33 @@ const SetServerPolicy = () => {
         { id: 2, policyName: "WIN-1J4TISP122I", serverIpAddress: "192.168.0.4", serverPort: 8530, parameter: "3", priorityServer: "primary", branchName: "NPCIL", serverStatus: "UpStream" },
         { id: 3, policyName: "abc", serverIpAddress: "192.168.0.1", serverPort: 8081, parameter: "Notify for download and notify for install", priorityServer: "secondary", branchName: "Vashi", serverStatus: "UpStream" }
     ];
-    const branchOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
+
+    //  const branchOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+
+      const [branchOptions, setbranchNameOptions] = useState([]);
+
+       useEffect(() => {
+                  loadDropdowns();
+              }, []);
+              
+              const loadDropdowns = async () => {
+                  try {     
+                       const branchRes = await getMasterbranchNamedropdown();        
+                      if (branchRes?.data?.data) {
+                          setbranchNameOptions(branchRes.data.data.map(item => ({
+                                 label: item.label,
+                                  value: item.value
+                              })));
+                      }
+                  } catch (error) {
+                      console.error("Error loading dropdowns:", error);
+                  }
+              };
+
+   
     const selectedParam = watch("parameter");
 
     const handleReset = () => { reset({ policyName: "", ipAddress: "", port: "", branchNames: "", parameter: "", priorityServer: false }); };

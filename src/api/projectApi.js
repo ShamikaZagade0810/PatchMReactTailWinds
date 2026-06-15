@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODEyMzk3MDcsImV4cCI6MTc4MTMyNjEwN30.Qd42znM0k2JSFdRWj4IGRg9B7zE8ihNJeNWOyBZaeJ4';
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE0OTg1MjEsImV4cCI6MTc4MTU4NDkyMX0.ANri9pfjETnTYYKHLVdQBOCrLJiPj-fquQ8zFA01quA';
 const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
@@ -860,25 +860,6 @@ export const requestIdForRemoteAction = (inputData) =>
   );
 
 
-export const getAllBranchList = () =>
-  axios.get(`${BASE_URL}/dropdown/BranchDropdown`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-
-  });
-
-
-export const getBranchWiseIpaddressList = (inputData) =>
-  axios.post(
-    `${BASE_URL}/dropdown/IpAddressDropdown`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
 
 export const AddActivityCmd = (inputData) =>
   axios.post(
@@ -1948,6 +1929,14 @@ export const getPatchTreeTotalPatchesData = (inputData) =>
   });
 
 
+export const getSidebarServerData = () =>
+  axios.get(`${BASE_URL}/PatchTree/getSidebarServer`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
 export const getPatchTreePatcheStatusData = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/PatchStatusList`, {
     headers: {
@@ -1964,8 +1953,162 @@ export const getPatchTreeUnapprovedPatchList = (inputData) =>
     }
   });
 
+export const getSidebarGroupsData = () =>
+  axios.get(`${BASE_URL}/PatchTree/getSidebarGroups`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getAllUpdateData = () =>
+  axios.get(`${BASE_URL}/PatchTree/getAllUpdates`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getClasssifiedUpdatesData = (data) =>
+  axios.post(`${BASE_URL}/PatchTree/getClassification`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getpatchDetailsData = (data) =>
+  axios.post(`${BASE_URL}/PatchTree/getPatchDetails`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getPatchgraphPieData = (data) =>
+  axios.post(`${BASE_URL}/PatchTree/getPatchgraphPie`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+
+export const getPatchgraphClickData = (data) =>
+  axios.post(`${BASE_URL}/PatchTree/getPatchgraphClick`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getPatchgroupDetailsData = (data) =>
+  axios.post(`${BASE_URL}/PatchTree/getPatchgroupDetails`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getGroupDataList = (data) =>
+  axios.post(`${BASE_URL}/PatchTree/getGroupDataList`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getgrpComputerDetails = (name) =>
+  axios.get(`${BASE_URL}/PatchTree/Computerdetails`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      name: name
+    }
+  });
+
+
+export const getComputerPiechart = (name) =>
+  axios.get(`${BASE_URL}/PatchTree/ComputerPiechart`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      computerName: name
+    }
+  });
+
+export const getComputerPieonclick = (name, status) =>
+  axios.get(`${BASE_URL}/PatchTree/ComputerPieonclick`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      computerName: name,
+      status: status
+    }
+  });
+
+export const getgrpComputerpolicy = (name) =>
+  axios.get(`${BASE_URL}/PatchTree/Computerpolicy`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      name: name
+    }
+  });
+
+export const getsyncHistoryData = () =>
+  axios.get(`${BASE_URL}/PatchTree/getSynchronizeList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
 export const getPatchTreeapprovedPatchList = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/approvedPatchList`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  
+export const getDiscoverGroup = (servername) =>
+  axios.get(`${BASE_URL}/PatchTreeClick/discoverGroup`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      UDstream: servername
+    }
+  });
+
+export const getDiscoverComputers = (servername) =>
+  axios.get(`${BASE_URL}/PatchTreeClick/discoverComputers`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      UDstream: servername
+    }
+  });
+
+export const getaddGroup = (groupname) =>
+  axios.get(`${BASE_URL}/PatchTreeClick/addGroup`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      addGroup: groupname
+    }
+  });
+
+export const editGroupDetails = (data) =>
+  axios.post(`${BASE_URL}/PatchTreeClick/editGroup`,
+    data, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -1977,3 +2120,172 @@ export const getPatchTreeDeclinedPatchList = (inputData) =>
       Authorization: `Bearer ${token}`
     }
   });
+export const deleteGroupDetails = (groupName) =>
+  axios.post(`${BASE_URL}/PatchTreeClick/deleteGroup`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      groupName: groupName
+    }
+  });
+
+export const addComputersDetails = (data) =>
+  axios.post(`${BASE_URL}/PatchTreeClick/addComputerGroup`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getdeleteComputerdetails = (inputData) =>
+  axios.delete(
+    `${BASE_URL}/PatchTreeClick/deleteSelectedComputers`,
+    {
+      data: inputData,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+
+// ------------------ DROPDOWN API ------------------------
+
+
+export const getAllBranchList = () =>
+  axios.get(`${BASE_URL}/dropdown/BranchDropdown`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+
+  });
+
+
+export const getBranchWiseIpaddressList = (inputData) =>
+  axios.post(
+    `${BASE_URL}/dropdown/IpAddressDropdown`,
+    inputData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+export const getOSTypedropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getOSNames`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+
+export const getOSComputerdropdown = (data) =>
+  axios.post(`${BASE_URL}/dropdown/allPCComputer`,
+    data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+export const getComputerdropdowm = (servername) =>
+  axios.get(`${BASE_URL}/dropdown/allPCComputerServer`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      sernm: servername
+    }
+  });
+
+export const getGrouplistdropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getgrouplist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+export const getIpListdropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getIpAddresslist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+export const getClassifficationdropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/classificationDropdown`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+
+export const getproductdropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/productDropdown`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+  export const getMasterVendorNamedropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getvendorlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+  export const getMasterCustomerNamedropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getcustomerlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+  export const getMasterbranchNamedropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getbranchlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+  export const getMasterCommanddropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getcommandlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+    export const getWindowsPatchdropdown = () =>
+  axios.get(`${BASE_URL}/dropdown/getpatchlist`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+
+
+
+
+// {
+//   "title": "2025-12 Cumulative Update for Windows 11, version 25H2 for x64-based Systems (KB5072033) (26200.7462)"
+// }
+
+
+// http://localhost:8081/PatchTree/getClassification
+
+// http://localhost:8081/PatchTree/getPatchDetails
+
+// http://localhost:8081/PatchTree/getPatchgroupDetails
+
+// http://localhost:8081/PatchTree/getPatchgraphPie  & getPatchgraphClick
+
+
+
+
+// // Side bar
+// http://localhost:8081/PatchTree/getSidebarServer
+
+
+// http://localhost:8081/PatchTree/getSidebarGroups

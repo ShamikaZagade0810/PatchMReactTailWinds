@@ -32,20 +32,26 @@ import { AccordionItem } from "../../components/UI/AccordionItem";
 import logo from "../../assets/planet-gurard.png";
 import { useAuth } from "../../context/AuthContext";
 
+import { getSidebarServerData, getSidebarGroupsData } from "../../api/projectApi";
+import PatchTreeModals from "../../pages/PatchTree/PatchTreeModals";
 
-const systemtreeData = [
-    { srNo: 1, serverName: "WIN-14JT5P1221-UPDATED", ipAddress: "192.168.0.105", branchName: "NPCIL", customer: "NPCIL", groupName: null, serverStatus: "Downstream" },
-    { srNo: 3, serverName: "WIN-14JT5P122111", ipAddress: "192.168.0.4", branchName: "NPCIL", customer: "NPCIL", groupName: null, serverStatus: "Upstream" }
-];
 
-const computergrpData = [
-    { groupId: "a0a08746-4dbe-4a37-9adf-9e7652c0b421", groupName: "All Computers" },
-    { groupId: "b73ca6ed-5727-47f3-84de-015e03f6a88a", groupName: "Unassigned Computers" },
-    { groupId: "4937a826-8b85-4615-b7ce-ff47a8cb8f42", groupName: "Unknown" },
-    { groupId: "2b3392d9-a98a-4cf7-b49f-aecfb40298bc", groupName: "Windows 10" },
-    { groupId: "f3650093-92a5-4246-b956-ae44d0e91083", groupName: "Windows 8" },
-    { groupId: "34b9b16b-9d44-463f-84c8-3725f468a5a3", groupName: "Windows Server 2019" }
-];
+
+// const systemtreeData = [
+//     { srNo: 1, serverName: "WIN-14JT5P1221-UPDATED", ipAddress: "192.168.0.105", branchName: "NPCIL", customer: "NPCIL", groupName: null, serverStatus: "Downstream" },
+//     { srNo: 3, serverName: "WIN-14JT5P122111", ipAddress: "192.168.0.4", branchName: "NPCIL", customer: "NPCIL", groupName: null, serverStatus: "Upstream" }
+// ];
+
+
+// const computergrpData = [
+//     { groupId: "a0a08746-4dbe-4a37-9adf-9e7652c0b421", groupName: "All Computers" },
+//     { groupId: "b73ca6ed-5727-47f3-84de-015e03f6a88a", groupName: "Unassigned Computers" },
+//     { groupId: "4937a826-8b85-4615-b7ce-ff47a8cb8f42", groupName: "Unknown" },
+//     { groupId: "2b3392d9-a98a-4cf7-b49f-aecfb40298bc", groupName: "Windows 10" },
+//     { groupId: "f3650093-92a5-4246-b956-ae44d0e91083", groupName: "Windows 8" },
+//     { groupId: "34b9b16b-9d44-463f-84c8-3725f468a5a3", groupName: "Windows Server 2019" }
+// ];
+
 const sidebarData = [
     // {
     //   name: "Dashboards",
@@ -310,12 +316,74 @@ export const PatchTreeOptions = ({
     onAccordionClick,
     isItemExpanded,
 }) => {
+
+    const [showDiscoverGroupModal, setShowDiscoverGroupModal] = useState(false);
+    const [modal, setModal] = useState({
+  type: null,
+  data: null,
+});
+
+const openModal = (type, data = null) => {
+  setModal({ type, data });
+};
+
+const closeModal = () => {
+  setModal({ type: null, data: null });
+};
+
+    const [systemtreeData, setSystemtreeData] = useState([]);
+
+    const [computergrpData, setcomputergrpData] = useState([]);
+    // getSidebarGroupsData
+
+    useEffect(() => {
+        fetchSidebarServers();
+        fetchSidebarGroups();
+    }, []);
+
+    const fetchSidebarServers = async () => {
+        try {
+            const response = await getSidebarServerData();
+
+            if (response?.data?.status === 200) {
+                setSystemtreeData(response.data.data || []);
+            }
+        } catch (error) {
+            console.error("Error fetching sidebar servers:", error);
+        }
+    };
+
+    const fetchSidebarGroups = async () => {
+        try {
+            const response = await getSidebarGroupsData();
+
+            if (response?.data?.status === 200) {
+                setcomputergrpData(response.data.data || []);
+            }
+        } catch (error) {
+            console.error("Error fetching sidebar computer grp:", error);
+        }
+    };
     const [openAccordion, setOpenAccordion] = useState(null);
     // const [expandServer, setExpandServer] = useState(true);
     // const [expandUpdates, setExpandUpdates] = useState(false);
     // const [expandComputers, setExpandComputers] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+    const [selectedServer, setSelectedServer] = useState(null);
+    const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, });
+
+const handleRightClick = (e, server) => {
+  e.preventDefault();
+
+  setSelectedServer(server);
+
+  setContextMenu({
+    visible: true,
+    x: e.clientX,
+    y: e.clientY,
+  });
+};
     const [expandedNodes, setExpandedNodes] = useState({
         upstream: true,
         downstream: true,
@@ -334,8 +402,6 @@ export const PatchTreeOptions = ({
     const downstreamServers = systemtreeData.filter(
         (item) => item.serverStatus === "Downstream"
     );
-
-
 
 
     const navigate = useNavigate();
@@ -468,7 +534,7 @@ export const PatchTreeOptions = ({
 
                             {/* <span className="text-sm text-slate-300">  Updates </span> */}
                             {isOpen && (
-                                <span className="text-sm text-slate-300">
+                                <span className="text-sm text-slate-300 " onClick={() => navigate("/patchTree/ThirdUpdate")}>
                                     Updates
                                 </span>
                             )}
@@ -479,7 +545,7 @@ export const PatchTreeOptions = ({
 
                                 {/* All Updates */}
                                 <button
-                                    onClick={() => navigate("/patchTree/ThirdUpdate")}
+                                    onClick={() => navigate("/patchTree/AllUpdates")}
                                     className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm text-slate-300
             hover:bg-[#0e1f33] hover:text-cyan-200 transition-all duration-200 group"
                                 >
@@ -528,13 +594,14 @@ export const PatchTreeOptions = ({
 
                         {/* Computers */}
                         <button onClick={() => toggleNode(computersKey)}
+                        //  onContextMenu={handleRightClick}
+                        onContextMenu={(e) => handleRightClick(e, server)}
                             // className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33]" 
                             onContextMenu={handleRightClick}
                             className={`
-    w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33]
-    ${!isOpen ? "justify-center" : ""}
-`}
-                        >
+                                    w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-[#0e1f33]
+                                    ${!isOpen ? "justify-center" : ""}
+                                `} >
                             {/* {expandedNodes[computersKey] ? (
                                 <ChevronDown className="w-4 h-4 text-slate-400" />
                             ) : (
@@ -563,9 +630,20 @@ export const PatchTreeOptions = ({
                                 {computergrpData.map((group) => (
                                     <button
                                         key={group.groupId}
+                                        //                                        onClick={() =>
+                                        //     navigate(
+                                        //         `/patchTree/computers/${group.groupId}?name=${encodeURIComponent(group.groupName)}`
+                                        //     )
+                                        // }
                                         onClick={() =>
                                             navigate(
-                                                `/patchTree/computers/${group.groupId}?name=${encodeURIComponent(group.groupName)}`
+                                                `/patchTree/computers/${encodeURIComponent(group.groupName)}`,
+                                                {
+                                                    state: {
+                                                        serverName: server.serverName,
+                                                        groupId: group.groupId,
+                                                    },
+                                                }
                                             )
                                         }
                                         className="  w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm
@@ -817,6 +895,85 @@ export const PatchTreeOptions = ({
                     </div>
                 )}
             </div>
+
+            {contextMenu.visible && (
+  <div className="fixed z-50 bg-[#0B1220] border border-white/10 rounded-md shadow-lg py-1 w-48" style={{ top: contextMenu.y, left: contextMenu.x }}
+    onMouseLeave={() =>
+      setContextMenu({ ...contextMenu, visible: false })
+    } >
+    <button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Discover Group");
+        // setShowDiscoverGroupModal(true);
+   openModal("discoverGroup", { serverName: selectedServer.serverName, });
+      }} >
+      Discover Group
+    </button>
+
+    <button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Discover Computers");
+      openModal("discoverComputers", { serverName: selectedServer.serverName, });
+      }} >
+      Discover Computers
+    </button>
+
+<div className="border-b border-white/15 my-0 mx-2"></div>
+
+    <button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Add Group");
+        // setContextMenu({ ...contextMenu, visible: false });
+        openModal("addGroup");
+      }} >
+      Add Group
+    </button>
+
+    <button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Edit Group");
+        // setContextMenu({ ...contextMenu, visible: false });
+        openModal("editGroup");
+      }} >
+      Edit Group
+    </button>
+
+<button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Delete Group");
+        // setContextMenu({ ...contextMenu, visible: false });
+        openModal("deleteGroup");
+      }} >
+
+      Delete Group
+    </button>
+    <div className="border-b border-white/15 my-0 mx-2"></div>
+
+       <button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Add Computers");
+        // setContextMenu({ ...contextMenu, visible: false });
+        openModal("addComputers");
+      }} >
+      Add Computers
+    </button>
+
+    <button className="w-full text-left px-3 py-2 text-sm text-slate-200 hover:bg-slate-800/50"
+      onClick={() => {
+        console.log("Delete Computers");
+        // setContextMenu({ ...contextMenu, visible: false });
+        // openModal("deleteComputers");
+        openModal("deleteComputers", { serverName: selectedServer.serverName, });
+      }} >
+
+      Delete Computers
+    </button>
+
+  </div>
+)}
+
+
+<PatchTreeModals modal={modal} onClose={closeModal} />
         </aside>
     );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import MultiSelect from "../../layouts/MultiSelect";
 import axios from "axios";
-import { ToastContainer, toast} from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import IPWiseReport from "./IPWiseReport";
 import FileWiseReport from "./FileWiseReport";
@@ -32,27 +32,37 @@ const SendMultiplePatches = () => {
 
 
     useEffect(() => {
-
-
         initialApiReq();
-
     }, []);
-
 
     const initialApiReq = async () => {
         const data = await getAllBranchList();
         console.log("data --> ", data.data.data);
         setBranchList(data.data.data);
 
-
     }
 
+    useEffect(() => {
+        register("ipAddress", { validate: (value) => value?.length > 0 || "Please select at least one IP Address" });
+          register("fileUpload", {  validate: (value) => value || "Please select a file" });
+    }, [register]);
+
+const fileInputRef = React.useRef(null);
+const handleReset = () => {
+  reset();
+
+  setSelectedHostName([]);
+  setFile(null);
+
+  setValue("ipAddress", []);
+  setValue("fileUpload", null);
+};
 
     const tabs = [
         { label: "IP's To Send Patches", icon: <Plus size={16} /> },
         { label: "View Sending Patches", icon: <List size={16} /> },
         { label: "Ip Wise Patch Patches", icon: <List size={16} /> },
-         { label: "File Wise Patch Patches", icon: <List size={16} /> }     
+        { label: "File Wise Patch Patches", icon: <List size={16} /> }
     ];
 
     const rumtable = [
@@ -64,6 +74,7 @@ const SendMultiplePatches = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
     const inputClass = "w-full h-[34px] px-2 text-[12px] bg-[#1E293B] text-white rounded-md border border-[#2A3A55] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500";
     const btnClass = "px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
+const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.03] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-blue-400/60";
     
     const branchOptions = [
         { value: "npcil", label: "NPCIL" },
@@ -73,21 +84,22 @@ const SendMultiplePatches = () => {
     ];
 
     const handleBranchChange = async (branch) => {
-
         console.log("Hello Branch", branch);
         let singleBranchlist = [];
         singleBranchlist.push(branch)
         const reqData = {
             "branch": singleBranchlist
         }
-
         const Iplist = await getBranchWiseIpaddressList(reqData);
         setHostNameList(Iplist.data.data);
     }
 
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        // setFile(e.target.files[0]);
+         const selectedFile = e.target.files?.[0];
+    setFile(selectedFile);
+    setValue("fileUpload", selectedFile, { shouldValidate: true, shouldDirty: true, });
     };
 
     const handleNextClick = () => {
@@ -216,38 +228,19 @@ const SendMultiplePatches = () => {
                         <div>
                             <label className={labelClass}>Branch Name</label>
 
-                            <select
-                                className={inputClass}
-                                {...register("branchName", {
-                                    required: "Please select branch",
-                                    onChange: (e) =>
-                                        handleBranchChange(e.target.value)
-                                })}
-
-                            >
-                                <option value="">Select Branch</option>
-
+                            <select className={inputClass}  {...register("branchName", { required: "Please select branch", onChange: (e) => handleBranchChange(e.target.value) })}  >
+                                <option value="" disabled>--Select Branch--</option>
                                 {branchList.map((branch) => (
-                                    <option
-                                        key={branch.label}
-                                        value={branch.label}
-                                    >
-                                        {branch.label}
-                                    </option>
+                                    <option key={branch.label} value={branch.label} >  {branch.label} </option>
                                 ))}
                             </select>
-
-                            {errors.branchName && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {errors.branchName.message}
-                                </p>
+                            {errors.branchName && (<p className="text-red-500 text-sm mt-1"> {errors.branchName.message} </p>
                             )}
                         </div>
 
                         {/* IP Address */}
                         <div>
                             <label className={labelClass}>ipAddress</label>
-
                             <MultiSelect
                                 options={hostNameList}
                                 value={selectedHostName}
@@ -255,14 +248,15 @@ const SendMultiplePatches = () => {
                                 placeholder="Select Host Names"
                                 id={"ipAddress"}
                                 setValue={setValue}
-                            />
+                                 error={errors.ipAddress} />
+                            {errors?.ipAddress && (<p className="text-red-500 text-sm mt-1"> {errors.ipAddress.message} </p>)}
                         </div>
 
                         {/* File */}
                         <div>
                             <label className={labelClass}> Browse File </label>
                             <div style={{ display: "flex", gap: "5px", alignItems: "center" }} >
-                                <input id="fileUpload" type="file" onChange={handleFileChange} style={{ display: "none" }} />
+                                <input  ref={fileInputRef} id="fileUpload" type="file" onChange={handleFileChange} style={{ display: "none" }} />
 
                                 {/* Custom button */}
                                 <label htmlFor="fileUpload" style={{
@@ -281,7 +275,10 @@ const SendMultiplePatches = () => {
                                     Choose File </label>
                                 <input type="text" value={file ? file.name : ""} placeholder="No file selected" readOnly
                                     className={inputClass} style={{ width: "300px" }} />
+                                   
                             </div>
+                             {errors.fileUpload && ( <p className="text-red-500 text-sm mt-1"> {errors.fileUpload.message} </p> )}
+
                         </div>
                         {/* Destination Path */}
                         <div>
@@ -297,117 +294,41 @@ const SendMultiplePatches = () => {
                             {/* Packet Size */}
                             <div>
 
-                                <label className={labelClass}>
-                                    Packet Size
-                                </label>
+                                <label className={labelClass}> Packet Size </label>
 
-                                <input
-                                    className={inputClass}
-                                    placeholder="204800 is 200KB"
-                                    {...register("packetsize", {
-                                        required:
-                                            "Packet Size is required",
-                                        pattern: {
-                                            value: /^[0-9]+$/,
-                                            message:
-                                                "Only numeric value allowed"
-                                        }
-                                    })}
-                                />
-
-                                {errors.packetsize && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        {errors.packetsize.message}
-                                    </p>
-                                )}
-
+                                <input className={inputClass} placeholder="204800 is 200KB" {...register("packetsize", { required: "Packet Size is required",
+                                        pattern: { value: /^[0-9]+$/, message: "Only numeric value allowed" } })}  />
+                                {errors.packetsize && ( <p className="text-red-500 text-sm mt-1"> {errors.packetsize.message} </p> )}
                             </div>
 
                             {/* Interval */}
                             <div>
-
-                                <label className={labelClass}>
-                                    Interval
-                                </label>
-
-                                <input
-                                    className={inputClass}
-                                    placeholder="Example : 100"
-                                    {...register("intervaltime", {
-                                        required:
-                                            "Interval is required",
-                                        pattern: {
-                                            value: /^[0-9]+$/,
-                                            message:
-                                                "Only numeric value allowed"
-                                        }
-                                    })}
-                                />
-
-                                {errors.intervaltime && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        {errors.intervaltime.message}
-                                    </p>
-                                )}
-
+                                <label className={labelClass}> Interval </label>
+                                <input className={inputClass} placeholder="Example : 100" {...register("intervaltime", { required: "Interval is required",
+                                        pattern: { value: /^[0-9]+$/, message: "Only numeric value allowed" } })} />
+                                {errors.intervaltime && ( <p className="text-red-500 text-sm mt-1"> {errors.intervaltime.message} </p> )}
                             </div>
 
                             {/* Timeout */}
                             <div>
-
-                                <label className={labelClass}>
-                                    TimeOut
-                                </label>
-
-                                <input
-                                    className={inputClass}
-                                    placeholder="Example : 100"
-                                    {...register("timeout", {
-                                        required:
-                                            "Timeout is required",
-                                        pattern: {
-                                            value: /^[0-9]+$/,
-                                            message:
-                                                "Only numeric value allowed"
-                                        }
-                                    })}
-                                />
-
-                                {errors.timeout && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        {errors.timeout.message}
-                                    </p>
-                                )}
-
+                                <label className={labelClass}> TimeOut  </label>
+                                <input className={inputClass} placeholder="Example : 100" {...register("timeout", { required: "Timeout is required", 
+                                        pattern: { value: /^[0-9]+$/, message:  "Only numeric value allowed"  } })} />
+                                {errors.timeout && (  <p className="text-red-500 text-sm mt-1"> {errors.timeout.message} </p> )}
                             </div>
                         </div>
 
                         {/* Execute Checkbox */}
                         <div className="flex items-center gap-2 mt-6">
-
-                            <input
-                                type="checkbox"
-                                {...register("executevalue")}
-                            />
-
-                            <label className={labelClass}>
-                                Execute
-                            </label>
-
+                            <input type="checkbox" {...register("executevalue")} />
+                            <label className={labelClass}> Execute </label>
                         </div>
-
                     </div>
 
                     {/* Submit */}
-                    <div className="flex justify-end mt-8">
-
-                        <button
-                            type="submit"
-                            className={btnClass}
-                        >
-                            Submit
-                        </button>
-
+                    <div className="flex justify-end mt-8 gap-2" >
+                        <button type="submit" className={btnClass} >  Submit  </button>
+                         <button type="button"  onClick={handleReset} className={resetClass} >  Reset  </button>
                     </div>
                 </div>
             </form>
@@ -415,7 +336,7 @@ const SendMultiplePatches = () => {
 
     );
 
-       // 🔹 TAB 2 → Activity List
+    // 🔹 TAB 2 → Activity List
     const ViewMultiplePatch = () => {
         const data = [
             {
@@ -514,28 +435,28 @@ const SendMultiplePatches = () => {
     };
 
 
-      const contentDisatributiondata = [          
-            {
-            srNo: 1, ipAddress : "192.168.0.15", appName: "spdownloader", currentPacket: "0", currentStatus: "Downloading", destinationPath : "D:\\patch",
+    const contentDisatributiondata = [
+        {
+            srNo: 1, ipAddress: "192.168.0.15", appName: "spdownloader", currentPacket: "0", currentStatus: "Downloading", destinationPath: "D:\\patch",
             packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-04-20 16:20:13.0"
-            },
-            {
-            srNo: 2, ipAddress : "192.168.0.24", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloaded", destinationPath : "D:\\patch",
+        },
+        {
+            srNo: 2, ipAddress: "192.168.0.24", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloaded", destinationPath: "D:\\patch",
             packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-05-1 16:20:13.0"
-            },
-             {
-            srNo: 3, ipAddress : "192.168.0.54", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloading", destinationPath : "D:\\patch",
+        },
+        {
+            srNo: 3, ipAddress: "192.168.0.54", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloading", destinationPath: "D:\\patch",
             packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-05-20 16:20:13.0"
-            },
-            {
-            srNo: 4, ipAddress : "192.168.0.15", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloading", destinationPath : "D:\\patch",
+        },
+        {
+            srNo: 4, ipAddress: "192.168.0.15", appName: "Patch_Desc", currentPacket: "0", currentStatus: "Downloading", destinationPath: "D:\\patch",
             packetSize: "100Kb", intervalTime: "100", timeout: "60", createdAt: "2026-05-20 16:20:13.0"
-            }
-        ];    
+        }
+    ];
 
-     // 🔹 TAB 3 → IP Wise Patch Report
+    // 🔹 TAB 3 → IP Wise Patch Report
     // const IpWiseReport = () => {      
-      
+
     //     return (
     //         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
 
@@ -575,9 +496,9 @@ const SendMultiplePatches = () => {
     //     );
     // };
 
-      // 🔹 TAB 4 → IP Wise Patch Report
+    // 🔹 TAB 4 → IP Wise Patch Report
     // const FileWiseReport = () => {      
-      
+
     //     return (
     //         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl overflow-x-auto">
 
@@ -614,7 +535,7 @@ const SendMultiplePatches = () => {
     //         </div>
     //     );
     // };
-    
+
     // 🔹 Render based on tab
     const renderContent = () => {
         switch (activeTab) {

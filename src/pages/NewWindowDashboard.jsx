@@ -418,7 +418,7 @@ const NewWindowDashboard = () => {
     const totalOsCount = (osCount?.windows || 0) + (osCount?.linux || 0) + (osCount?.mac || 0) + (osCount?.server || 0);
 
     return (
-        <div className="mb-1 bg-gray-100 dark:bg-[#0B1220] ">
+        <div className="mb-1  ">
 
             <Modal
                 show={show}
@@ -555,7 +555,7 @@ const NewWindowDashboard = () => {
                                 <path
                                     d="M20 55 A40 40 0 0 1 100 55"
                                     fill="none"
-                                    stroke="#3b82f6"
+                                    stroke="#7094ff"
                                     strokeWidth="8"
                                     strokeDasharray={`${overallComplainceRate * 2.51} 251`}
                                 // strokeLinecap="round"
@@ -637,11 +637,9 @@ const NewWindowDashboard = () => {
 
                                         <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded">
                                             <div
-                                                className="h-2 bg-blue-500 rounded"
+                                                className="h-2 bg-[#7094ff] rounded"
                                                 style={{
-                                                    width: `${totalEndpoints > 0
-                                                        ? (item.value / totalEndpoints) * 100
-                                                        : 0}%`,
+                                                    width: `${totalEndpoints > 0 ? (item.value / totalEndpoints) * 100 : 0}%`,
                                                 }}
                                             />
                                         </div>

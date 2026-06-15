@@ -81,6 +81,7 @@ import ApproveDecline from "../pages/PatchTree/ApproveDecline.jsx";
 import ComputerListing from "../pages/PatchTree/ComputerListing.jsx";
 import Synchronization from "../pages/PatchTree/Synchronization.jsx";
 import ComputerDetails from "../pages/PatchTree/ComputerDetails.jsx";
+import AllUpdatesListing from "../pages/PatchTree/AllUpdatesListing.jsx";
 
 export default function AppRoutes() {
   return (
@@ -303,6 +304,12 @@ export default function AppRoutes() {
               <PatchTreeThirdDashboard />
             </ProtectedRoute>} />
 
+   <Route path="/patchTree/AllUpdates"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "DBA"]}>
+              <AllUpdatesListing />
+            </ProtectedRoute>} />
+
         <Route path="/patchTree/CriticalUpdate"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
@@ -321,7 +328,7 @@ export default function AppRoutes() {
               <ApproveDecline />
             </ProtectedRoute>} />
 
-            <Route path="/patchTree/computers/:groupId"
+            <Route path="/patchTree/computers/:groupName"
           element={
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <ComputerListing />
@@ -338,6 +345,10 @@ export default function AppRoutes() {
             <ProtectedRoute allowedRoles={["admin", "DBA"]}>
               <Synchronization />
             </ProtectedRoute>} />
+
+           
+
+            
 
         <Route path="/section/Thirdparty"
           element={

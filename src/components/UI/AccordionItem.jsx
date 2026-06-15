@@ -75,8 +75,7 @@ export const AccordionItem = ({
           overflow-hidden transition-all duration-200 ease-in-out
           ${isSelected
                       ? `
-              bg-cyan-500 text-white dark:bg-cyan-900/90
-              scale-[1.02]
+              bg-blue-500 text-white dark:text-blue-300 dark:bg-blue-600/20 scale-[1.02]
             `
                       : `
               text-gray-700 dark:text-gray-300
@@ -92,7 +91,7 @@ export const AccordionItem = ({
         {/* LEFT BORDER (ONLY THIS ITEM) */}
         <span
           className={`absolute left-0 top-0 h-full w-[3px] overflow-hidden
-  bg-cyan-400 transition-all duration-300 ease-in-out z-20
+  bg-blue-400 transition-all duration-300 ease-in-out z-20
 
   ${isSelected
               ? "opacity-100"
@@ -116,13 +115,13 @@ export const AccordionItem = ({
           {/* 🌊 HOVER LIGHT FLOW (subtle) */}
           {isHovered && !isSelected && (
             <span
-              className="absolute inset-0 bg-cyan-400/20"
+              className="absolute inset-0 bg-blue-400/20"
             />
           )}
 
         </span>
         {isHovered && !isSelected && (
-          <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10
+          <span className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10
                 animate-[swipeRight_0.25s_ease-out_forwards]"  />
         )}
         <div className="relative flex items-center gap-3">

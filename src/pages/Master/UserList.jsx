@@ -4,7 +4,9 @@ import { Pencil, Trash2, ShieldUser } from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
-import { getViewAppUserList, getUpdateAppUser, getdeleteAppUser } from "../../api/projectApi";
+import { getViewAppUserList, getUpdateAppUser, getdeleteAppUser,
+  getMasterVendorNamedropdown, getMasterCustomerNamedropdown, getMasterbranchNamedropdown
+ } from "../../api/projectApi";
 
 const UserList = () => {
   const {
@@ -48,18 +50,67 @@ const UserList = () => {
      const [loading, setLoading] = useState(false);
     
      
-    const OEMOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
-    const CustNameOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
-    const branchOptions = [
-        { value: "NPCIL", label: "NPCIL" },
-        { value: "NHPC", label: "NHPC" },
-    ];
+    // const OEMOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+    // const CustNameOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+    // const branchOptions = [
+    //     { value: "NPCIL", label: "NPCIL" },
+    //     { value: "NHPC", label: "NHPC" },
+    // ];
+
+        const [OEMOptions, setOEMOptions] = useState([]);
+    const [CustNameOptions, setCustNameOptions] = useState([]);
+    const [branchOptions, setbranchNameOptions] = useState([]);
+    
+       useEffect(() => {
+        loadDropdowns();
+    }, []);
+    
+    const loadDropdowns = async () => {
+        try {
+            // Vendor List
+            const vendorRes = await getMasterVendorNamedropdown();
+    
+            if (vendorRes?.data?.data) {
+                // setOEMOptions(vendorRes.data.data);
+                setOEMOptions(vendorRes.data.data.map(item => ({
+                        label: item.label,
+                        value: item.value
+                    }))
+                );
+    
+            }
+    
+            // Customer List
+            const customerRes = await getMasterCustomerNamedropdown();
+    
+            if (customerRes?.data?.data) {
+                setCustNameOptions(customerRes.data.data.map(item => ({
+                        label: item.label,
+                        value: item.value
+                    })));
+            }
+    
+             const branchRes = await getMasterbranchNamedropdown();
+    
+            if (branchRes?.data?.data) {
+                setbranchNameOptions(branchRes.data.data.map(item => ({
+                       label: item.label,
+                        value: item.value
+                    })));
+            }
+    
+    
+        } catch (error) {
+            console.error("Error loading dropdowns:", error);
+        }
+    };
+    
 
   const users = [
   { username: "Demotest", type: "admin", contactNo: "8431368984", emailId: "admintest12@gmail.com", firstName: "Demo", lastName: "Test" , OEMNames : [  { label: "NPCIL", value: "NPCIL" }]   },  
