@@ -151,12 +151,18 @@ const PatchTreeModals = ({ modal, onClose }) => {
     useEffect(() => {
         const loadGroups = async () => {
             try {
-                if (type !== "addComputers") return;
+                if (type !== "addComputers" && type !== "deleteGroup") return;
 
                 const res = await getGrouplistdropdown();
 
-                const options =
-                    res?.data?.data?.map((item) => ({
+                // const options = res?.data?.data?.map((item) => ({
+                //         value: item.value,
+                //         label: item.label,
+                //     })) || [];
+                const options = res?.data?.data?.filter((item) =>
+                            item.label !== "All Computers" &&
+                            item.label !== "Unassigned Computers"
+                    )?.map((item) => ({
                         value: item.value,
                         label: item.label,
                     })) || [];
@@ -223,10 +229,13 @@ const PatchTreeModals = ({ modal, onClose }) => {
                     const res = await getDiscoverGroup(data.serverName);
                     console.log("discovr group res", res.data.data);
                     console.log("discovr group status", res.data.status);
-                    setStatus(res?.data?.status);
-
+                    // setStatus(res?.data?.data);
+                    const value = res.data.data;
+                    const status = value === "true"; // convert string -> boolean
+                    setStatus(status);
                     if (res.data.data === "true") {
                         setMessage(res?.data?.message || "Group discovery completed successfully");
+                        window.location.reload(); // Refresh 
                     }
                     else {
                         setMessage("Error while Group discovery ");
@@ -257,10 +266,15 @@ const PatchTreeModals = ({ modal, onClose }) => {
                     const res = await getDiscoverComputers(data.serverName);
                     console.log("discovr Computers res", res.data.data);
                     console.log("discovr Computers status", res.data.status);
-                    setStatus(res?.data?.status);
+                    // setStatus(res?.data?.status);
+                    const value = res.data.data;
+                    const status = value === "true"; // convert string -> boolean
+                    setStatus(status);
 
                     if (res.data.data === "true") {
                         setMessage(res?.data?.message || "Discovery Computers completed successfully");
+                        window.location.reload(); // Refresh 
+
                     }
                     else {
                         setMessage("Error while discovering computers ");
@@ -290,11 +304,15 @@ const PatchTreeModals = ({ modal, onClose }) => {
 
             const res = await getaddGroup(groupName);
             console.log("Add Group Response:", res);
-            setStatus(res?.data?.status);
+            // setStatus(res?.data?.status);
+            const value = res.data.data;
+                    const status = value === "true"; // convert string -> boolean
+                    setStatus(status);
 
             if (res?.data?.data === "true") {
                 setMessage(res?.data?.message || "Group added successfully");
                 reset();
+                window.location.reload(); // Refresh 
             } else {
                 setMessage("Failed to add group");
             }
@@ -323,12 +341,15 @@ const PatchTreeModals = ({ modal, onClose }) => {
 
             console.log("Edit Group Response:", res);
 
-            setStatus(res?.data?.status);
+            // setStatus(res?.data?.status);
+            const value = res.data.data;
+                    const status = value === "true"; // convert string -> boolean
+                    setStatus(status);
 
             if (res?.data?.data === "true") {
                 setMessage(res?.data?.message || "Group updated successfully");
-
                 resetFormState();
+                window.location.reload(); // Refresh 
             } else {
                 setMessage("Failed to update group");
             }
@@ -357,13 +378,15 @@ const PatchTreeModals = ({ modal, onClose }) => {
 
             const res = await deleteGroupDetails(groupName);
             console.log("Delete Group Response:", res);
+            // setStatus(res?.data?.status);
 
-            setStatus(res?.data?.status);
+            const result = res?.data?.data; // "success" or "fail"            
+            const status = result === "success"; // convert to boolean
+            setStatus(status);            
 
             if (res?.data?.data === "success") {
-                setMessage(
-                    res?.data?.message || "Group deleted successfully"
-                );
+                setMessage( res?.data?.message || "Group deleted successfully" );               
+            window.location.reload();   // ✅ refresh page after success
             } else {
                 setMessage("Failed to delete group");
             }
@@ -390,12 +413,16 @@ const PatchTreeModals = ({ modal, onClose }) => {
             };
 
             const res = await addComputersDetails(payload);
+            // setStatus(res?.data?.status);
 
-            setStatus(res?.data?.status);
+            const result = res?.data?.data; // "success" or "fail"            
+            const status = result === "success"; // convert to boolean
+            setStatus(status);                      
 
             if (res?.data?.data === "success") {
                 setMessage(res?.data?.message || "Computers added successfully");
                 resetFormState();
+                window.location.reload(); // Refresh 
             }
             else if (res?.data?.data === "empty") {
                 setMessage(res?.data?.message || "Field is empty");
@@ -423,13 +450,17 @@ const PatchTreeModals = ({ modal, onClose }) => {
             };
 
             const res = await getdeleteComputerdetails(payload);
+            // setStatus(res?.data?.status);
 
-            setStatus(res?.data?.status);
+            const result = res?.data?.data; // "success" or "fail"            
+            const status = result === "success"; // convert to boolean
+            setStatus(status);            
+
 
             if (res?.data?.data === "success") {
-                setMessage(res?.data?.message || "Computers deleted successfully"
-                );
+                setMessage(res?.data?.message || "Computers deleted successfully" );
                 resetFormState();
+                window.location.reload(); // Refresh 
             } else if (res?.data?.data === "empty") {
                 setMessage(res?.data?.message || "Field is empty");
             } else {
@@ -474,33 +505,18 @@ const PatchTreeModals = ({ modal, onClose }) => {
                         </div>
 
                         {/* Message */}
-                        <p className="mt-4 text-slate-300 text-sm font-medium">
-                            Discovering groups...
-                        </p>
+                        <p className="mt-4 text-slate-300 text-sm font-medium">  Discovering groups... </p>
 
-                        <p className="mt-1 text-slate-500 text-xs">
-                            Please wait while we fetch the latest group details.
-                        </p>
+                        <p className="mt-1 text-slate-500 text-xs"> Please wait while we fetch the latest group details. </p>
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center py-6">
                         {status === true ? (
-                            <CheckCircle2
-                                size={48}
-                                className="text-green-500 mb-3"
-                                strokeWidth={2.5}
-                            />
+                            <CheckCircle2 size={48} className="text-green-600 mb-3" strokeWidth={2.5} />
                         ) : (
-                            <AlertCircle
-                                size={48}
-                                className="text-red-500 mb-3"
-                                strokeWidth={2.5}
-                            />
+                            <AlertCircle size={48} className="text-red-600 mb-3" strokeWidth={2.5}  />
                         )}
-
-                        <p
-                            className={`text-center text-sm font-medium ${status === true ? "text-green-400" : "text-red-400"
-                                }`}
+                        <p className={`text-center text-sm font-medium ${status === true ? "text-green-500" : "text-red-500" }`}
                         >
                             {message}
                         </p>
@@ -523,26 +539,20 @@ const PatchTreeModals = ({ modal, onClose }) => {
                         </div>
 
                         {/* Message */}
-                        <p className="mt-4 text-slate-300 text-sm font-medium">
-                            Discovering conmputers...
-                        </p>
+                        <p className="mt-4 text-slate-300 text-sm font-medium"> Discovering conmputers... </p>
 
-                        <p className="mt-1 text-slate-500 text-xs">
-                            Please wait while we fetch the latest computer details.
-                        </p>
+                        <p className="mt-1 text-slate-500 text-xs">  Please wait while we fetch the latest computer details.  </p>
                     </div>
                 ) : (
                     <div className="flex flex-col items-center justify-center py-6">
                         {status === true ? (
-                            <CheckCircle2 size={55} className="text-green-500 mb-3" strokeWidth={2.5}
-                            />
+                            <CheckCircle2 size={55} className="text-green-600 mb-3"/>
                         ) : (
-                            <AlertCircle size={55} className="text-red-500 mb-3" strokeWidth={2.5}
-                            />
+                            <AlertCircle size={55} className="text-red-600 mb-3"  />
                         )}
 
                         <p
-                            className={`text-center text-sm font-medium ${status === true ? "text-green-400" : "text-red-400"
+                            className={`text-center text-sm font-medium ${status === true ? "text-green-500" : "text-red-500"
                                 }`}
                         >
                             {message}
@@ -567,7 +577,7 @@ const PatchTreeModals = ({ modal, onClose }) => {
                 <div className=" my-4 mx-2">
                     <label className={labelClass}> Group Name </label>
                     <input className={inputClass} placeholder="Enter Group Name" {...register("groupName", { required: "Group name required" })} />
-                    {errors.groupName && (<p className="text-red-500 text-xs mt-1">{errors.groupName.message} </p>)}
+                    {errors.groupName && (<p className="text-red-600 text-xs mt-1">{errors.groupName.message} </p>)}
                 </div>
 
                 {/* <button className="mt-3 px-3 py-1 bg-cyan-600 text-white rounded-md w-full"
@@ -585,13 +595,13 @@ const PatchTreeModals = ({ modal, onClose }) => {
 
                 {message && (
                     <div
-                        className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-400" : "text-red-400"
+                        className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-500" : "text-red-500"
                             }`}
                     >
                         {status === true ? (
                             <CheckCircle2 size={18} className="text-green-500 flex-shrink-0" />
                         ) : (
-                            <AlertCircle size={18} className="text-red-500 flex-shrink-0" />
+                            <AlertCircle size={18} className="text-red-600 flex-shrink-0" />
                         )}
 
                         <span>{message}</span>
@@ -621,12 +631,12 @@ const PatchTreeModals = ({ modal, onClose }) => {
                             <option key={group.value} value={group.value}> {group.label} </option>
                         ))}
                     </select>
-                    {errors.groupName && (<p className="text-red-500 text-xs mt-1"> {errors.groupName.message} </p>)}
+                    {errors.groupName && (<p className="text-red-600 text-xs mt-1"> {errors.groupName.message} </p>)}
                 </div>
                 <div className=" my-4 mx-2">
                     <label className={labelClass}> New Group Name </label>
                     <input className={inputClass} placeholder="Enter New Group Name" {...register("newGroupName", { required: "New Group Name required" })} />
-                    {errors.newGroupName && (<p className="text-red-500 text-xs mt-1">{errors.newGroupName.message} </p>)}
+                    {errors.newGroupName && (<p className="text-red-600 text-xs mt-1">{errors.newGroupName.message} </p>)}
                 </div>
 
 
@@ -642,8 +652,8 @@ const PatchTreeModals = ({ modal, onClose }) => {
                     <button type="button" className={resetClass} onClick={handleReset}  > Reset </button>
                 </div>
                 {message && (
-                    <div className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-400" : "text-red-400"}`} >
-                        {status === true ? (<CheckCircle2 size={18} className="text-green-500" />) : (<AlertCircle size={18} className="text-red-500" />)}
+                    <div className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-500" : "text-red-500"}`} >
+                        {status === true ? ( <CheckCircle2 size={55} className="text-green-500 mb-3" /> ) : (<AlertCircle size={18} className="text-red-600" />)}
 
                         <span>{message}</span>
                     </div>
@@ -678,7 +688,7 @@ const PatchTreeModals = ({ modal, onClose }) => {
                             <option key={group.value} value={group.value}> {group.label} </option>
                         ))}
                     </select>
-                    {errors.groupName && (<p className="text-red-500 text-xs mt-1"> {errors.groupName.message} </p>)}
+                    {errors.groupName && (<p className="text-red-600 text-xs mt-1"> {errors.groupName.message} </p>)}
                 </div>
                 <div className="flex justify-end gap-3">
                     <button className={resetClass} onClick={handleReset}  > Reset </button>
@@ -688,13 +698,13 @@ const PatchTreeModals = ({ modal, onClose }) => {
                 </div>
                 {message && (
                     <div
-                        className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-400" : "text-red-400"
+                        className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-500" : "text-red-500"
                             }`}
                     >
                         {status === true ? (
-                            <CheckCircle2 size={18} className="text-green-500" />
+                             <CheckCircle2 size={55} className="text-green-500 mb-3" /> 
                         ) : (
-                            <AlertCircle size={18} className="text-red-500" />
+                            <AlertCircle size={18} className="text-red-600  mb-3" />
                         )}
 
                         <span>{message}</span>
@@ -749,7 +759,7 @@ const PatchTreeModals = ({ modal, onClose }) => {
                             <option key={group.value} value={group.value}> {group.label} </option>
                         ))}
                     </select>
-                    {errors.groupName && (<p className="text-red-500 text-xs mt-1"> {errors.groupName.message} </p>)}
+                    {errors.groupName && (<p className="text-red-600 text-xs mt-1"> {errors.groupName.message} </p>)}
                 </div>
 
 
@@ -765,7 +775,7 @@ const PatchTreeModals = ({ modal, onClose }) => {
                             setValue("selectedComputers", [], { shouldValidate: true });
                             setOsComputerOptions([]);
                         }} placeholder="Select selected OS Type" id={"selectedOS"} setValue={setValue} />
-                    {errors.selectedOS && (<p className="text-red-500 text-xs mt-1"> {errors.selectedOS.message} </p>)}
+                    {errors.selectedOS && (<p className="text-red-600 text-xs mt-1"> {errors.selectedOS.message} </p>)}
                 </div>
                 <div className=" my-4 mx-2">
                     <label className={labelClass}>Computers</label>
@@ -774,7 +784,7 @@ const PatchTreeModals = ({ modal, onClose }) => {
                             // setEditData({ ...editData, selectedComputers: val });
                             setValue("selectedComputers", val, { shouldValidate: true, shouldDirty: true, });
                         }} placeholder="Select selected Computers" id={"selectedComputers"} setValue={setValue} />
-                    {errors.selectedComputers && (<p className="text-red-500 text-xs mt-1"> {errors.selectedComputers.message} </p>)}
+                    {errors.selectedComputers && (<p className="text-red-600 text-xs mt-1"> {errors.selectedComputers.message} </p>)}
                 </div>
 
                 <div className="flex justify-end mt-8 gap-2">
@@ -785,11 +795,11 @@ const PatchTreeModals = ({ modal, onClose }) => {
                     <button type="button" className={resetClass} onClick={handleReset} > Reset </button>
                 </div>
                 {message && (
-                    <div className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-400" : "text-red-400"}`} >
+                    <div className={`mt-4 flex items-center justify-center gap-2 text-sm ${status === true ? "text-green-500" : "text-red-500"}`} >
                         {status === true ? (
-                            <CheckCircle2 size={18} className="text-green-500" />
+                             <CheckCircle2 size={55} className="text-green-500 mb-3" /> 
                         ) : (
-                            <AlertCircle size={18} className="text-red-500" />
+                            <AlertCircle size={18} className="text-red-600" />
                         )}
 
                         <span>{message}</span>
@@ -824,7 +834,7 @@ const PatchTreeModals = ({ modal, onClose }) => {
                         }}
                         placeholder="Select selected Computers" id={"selectedComputers"} setValue={setValue}
                     />
-                    {errors.selectedComputers && (<p className="text-red-500 text-xs mt-1"> {errors.selectedComputers.message}  </p>)}
+                    {errors.selectedComputers && (<p className="text-red-600 text-xs mt-1"> {errors.selectedComputers.message}  </p>)}
                 </div>
                 <div className="flex justify-end gap-3">
                     <button className={resetClass} onClick={handleReset} > Reset </button>

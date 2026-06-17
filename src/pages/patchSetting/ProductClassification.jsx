@@ -17,6 +17,8 @@ import {
     Sparkles,
     BadgeAlert,
     CircleDot,
+    Compass,
+    RefreshCw,
 } from 'lucide-react';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -217,10 +219,7 @@ const handleUpdate = async () => {
                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4 border-b border-white/10">
                     <div>   
                         <h1 className="text-xl font-semibold"> Product & Classification </h1>
-                        <p className="text-sm text-gray-400 mt-1">
-                            Curate the products and update categories to sync
-                            from Microsoft Update.
-                        </p>
+                        <p className="text-sm text-gray-400 mt-1"> Curate the products and update categories to sync from Microsoft Update. </p>
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -272,19 +271,23 @@ const handleUpdate = async () => {
                         {/* Header */}
                         <div className="border-b border-white/10 p-4">
                             <div className="flex items-start gap-3">
-                                <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
                                     <Boxes size={18} />
                                 </div>
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <h2 className="font-semibold"> Products </h2>
 
-                                        <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 text-[10px] border border-blue-500/20">
+                                        <span className="px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 text-[10px] border border-cyan-500/20">
                                             {selectedProducts.length} active
                                         </span>
                                     </div>
                                     <p className="text-xs text-gray-400 mt-1"> Tap a product to add it. Click the × on  a chip to remove. </p>
                                 </div>
+                                 {/* Right Section */}
+        <button type="button"  className="ml-auto flex items-center gap-2 px-2 py-2 rounded-xl  hover:bg-cyan-500/30 text-white text-sm font-medium transition-colors" >
+             <RefreshCw size={16} />
+        </button>
                             </div>
                         </div>
 
@@ -294,7 +297,7 @@ const handleUpdate = async () => {
 
                             <div className="flex flex-wrap gap-2">
                                 {selectedProducts.map((item) => (
-                                    <div key={item} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-cyan-500/10 border border-cyan-500/30 text-sm text-cyan-300" >
+                                    <div key={item} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-blue-500/10 border border-blue-500/30 text-sm text-blue-300" >
                                         <span>{item}</span>
                                         <button onClick={() => toggleProduct(item) } className="hover:text-red-400" >
                                             <X size={14} />
@@ -326,8 +329,8 @@ const handleUpdate = async () => {
                                         <button key={item.value} onClick={() => toggleProduct(item.value) }
                                             className={`px-2.5 py-1.5 rounded-full border text-xs transition-all duration-200
                                                 ${ active
-                                                        ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300'
-                                                        : 'bg-white/[0.03] border-white/10 text-gray-300 hover:border-cyan-500/40 hover:text-cyan-300'
+                                                        ? 'bg-blue-500/15 border-blue-500/40 text-blue-300'
+                                                        : 'bg-white/[0.03] border-white/10 text-gray-300 hover:border-blue-500/40 hover:text-blue-300'
                                                 }
                                             `} >
                                             + {item.label}
@@ -359,6 +362,9 @@ const handleUpdate = async () => {
 
                                     <p className="text-xs text-gray-400 mt-1"> Toggle update categories on or off. </p>
                                 </div>
+                                <button type="button"  className="ml-auto flex items-center gap-2 px-2 py-2 rounded-xl  hover:bg-green-500/20 text-white text-sm font-medium transition-colors" >
+             <RefreshCw size={16} />
+        </button>
                             </div>
                         </div>
 
@@ -375,20 +381,14 @@ const handleUpdate = async () => {
                                     <div
                                         key={item.value}
                                         className={`rounded-xl border p-4 transition-all
-                                            ${
-                                                enabled
-                                                    ? 'border-cyan-500/40 bg-cyan-500/10'
-                                                    : 'border-white/10 bg-white/[0.02]'
-                                            }
-                                        `}
-                                    >
+                                            ${ enabled ? 'border-blue-500/40 bg-blue-500/10' : 'border-white/10 bg-white/[0.02]' }  `} >
                                         <div className="flex items-start justify-between gap-3">
                                             <div className="flex gap-3">
                                                 <div
                                                     className={`w-10 h-10 rounded-lg flex items-center justify-center
                                                         ${
                                                             enabled
-                                                                ? 'bg-cyan-500/10 text-cyan-400'
+                                                                ? 'bg-blue-500/10 text-blue-400'
                                                                 : 'bg-white/5 text-gray-400'
                                                         }
                                                     `}
@@ -435,7 +435,7 @@ const handleUpdate = async () => {
         className="peer hidden"
     />
 
-    <div className="w-5 h-5 rounded-md border border-white/20 bg-[#111827] flex items-center justify-center peer-checked:bg-cyan-500 peer-checked:border-cyan-500 transition-all">
+    <div className="w-5 h-5 rounded-md border border-white/20 bg-[#111827] flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-all">
         {enabled && (
             <svg
                 xmlns="http://www.w3.org/2000/svg"

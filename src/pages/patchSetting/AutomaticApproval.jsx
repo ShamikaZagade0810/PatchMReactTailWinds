@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import { Plus, List, Play, Pencil, Trash2, ClipboardList, SquareCheckBig, Ban } from "lucide-react";
+import { Plus, List, Play, Pencil, Trash2, ClipboardList, SquareCheckBig, Ban, CirclePlay } from "lucide-react";
 
 
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 import { ToastContainer, toast } from 'react-toastify';
-import { AddAutoApprovalRule, getAutoApprovalRule, enableViewApprovalRule, disableViewApprovalRule, getAutoApprovalRuleById, UpdateAutoApprovalRule, deleteAutoApprovalRule,
+import { AddAutoApprovalRule, getAutoApprovalRule, getAutoApprovalRuleById, UpdateAutoApprovalRule, deleteAutoApprovalRule,
+     enableViewApprovalRule, disableViewApprovalRule,RunPolicyRule,
     getClassifficationdropdown, getproductdropdown, getGrouplistdropdown
 } from "../../api/projectApi";
 
@@ -322,13 +323,12 @@ const [GroupOptions, setGroupOptions] = useState([]);
                                             <button className="px-2 py-1 text-xs  text-red-400 hover:text-red-500 rounded-md hover:bg-red-500/30 transition"
                                                 onClick={() => handleDelete(item)}><Trash2 size={20} /> </button>
                                         </td>
+                                       
                                         <td className="p-3">{item.ruleName}</td> {/* Rule Name */}
                                         {/* Status */}
                                         <td className="p-3">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium  ${item.status === "Enable"
-                                                ? "bg-green-500/20 text-green-400"
-                                                : "bg-red-500/20 text-red-400"
-                                                }`} > {item.status}  </span>
+                                                ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400" }`} > {item.status}  </span>
                                         </td>
 
                                         {/* View Rule */}

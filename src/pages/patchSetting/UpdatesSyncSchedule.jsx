@@ -105,6 +105,7 @@ const fetchScheduleList = async () => {
 
     return (
         <>
+         <ToastContainer />
             <div className="min-h-screen text-white p-2">
                 {/* Main Wrapper */}
                 <div className="bg-[#0B1220] rounded-xl p-2 border border-white/10">
@@ -365,10 +366,10 @@ const fetchScheduleList = async () => {
 
                             {/* Footer */}
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-6 py-4">
-                                <p className="text-sm text-gray-500"> Showing 1 to 1 of 1 entries </p>
+                                <p className="text-sm text-gray-500"></p>
                                 <div className="flex items-center gap-2">
                                     <button className="h-9 px-3 rounded-lg border border-white/10 bg-[#101A2C] text-sm text-gray-400"> Previous </button>
-                                    <button className="h-9 w-9 rounded-lg bg-cyan-600 text-sm font-medium"> 1 </button>
+                                    <button className="h-9 w-9 rounded-lg bg-cyan-600/30 border border-cyan-600/70 text-sm font-medium"> 1 </button>
                                     <button className="h-9 px-3 rounded-lg border border-white/10 bg-[#101A2C] text-sm text-gray-400"> Next </button>
                                 </div>
                             </div>

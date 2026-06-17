@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form";
-import { Plus, List, Play, Pencil, Trash2, ClipboardList, SquareCheckBig, Ban } from "lucide-react";
+import { Pencil, Trash2,  CirclePlay  } from "lucide-react";
 import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect.jsx';
 
-import { getAllViewClientWiseSyncPolicy, updateViewClientWiseSyncPolicy, deleteViewClientWiseSyncPolicy } from "../../api/projectApi";
+import { getAllViewClientWiseSyncPolicy, updateViewClientWiseSyncPolicy, deleteViewClientWiseSyncPolicy, RunPolicyRule } from "../../api/projectApi";
 
 const ViewClientWiseSyncPolicy = () => {
     const labelClass = "text-[15px] text-[#d1d5db] mb-1 block";
@@ -159,8 +159,41 @@ const ViewClientWiseSyncPolicy = () => {
         }
     };
 
+    const handleRunPolicy = async (item) => {
+    try {
+        const inputData = {
+            srNo: item.srNo,
+            policyName: item.policyName,
+            serverIp: item.serverIp,
+            port: String(item.port),
+            patchUpdateParameter: String(item.parameter),
+            osType: item.osType,
+            scheduleDay: item.parameter == 4 ? item.scheduleDay || "NA" : "NA",
+            scheduleTime: item.parameter == 4 ? (item.scheduleTime ? item.scheduleTime.substring(0, 5) : "00:00") : "00:00",
+            ipAddress: item.ipAddress?.[0] ?.split(",").map(ip => ip.trim()) || []
+        };
+
+        console.log("Run Policy Payload:", inputData);
+        const response = await RunPolicyRule(inputData);
+        console.log("Run Policy Response:", response);
+
+        if (response?.data?.status === 200) {
+            toast.success(response.data.message || "Policy executed successfully");
+        } else if (response?.data?.status === 409) {
+            toast.warning(response.data.message);
+        } else {
+            toast.error(response?.data?.message || "Failed to run policy");
+        }
+    } catch (error) {
+        console.error("Run Policy Error:", error);
+        toast.error("Failed to run policy");
+    }
+};
+
     // MAIN CONTENT
     return (
+        <>
+        <ToastContainer/>
         <div className="bg-[#0B1220] rounded-2xl p-6 border border-white/10 shadow-xl">
             <h2 className="text-lg font-semibold mb-4"> View Client Wise Synchronization Policy </h2>
             <div className="overflow-x-auto">
@@ -216,10 +249,10 @@ const ViewClientWiseSyncPolicy = () => {
                                     </td>
                                     <td className="p-3">{item.scheduleDay || "NA"}</td> {/* day */}
                                     <td className="p-3 ">{item.scheduleTime}</td> {/* time */}
-                                    <td className="p-3 text-center">
-                                        {/* Run Policy Button */}
-                                        <button className="px-2 py-1 text-xs  text-cyan-400 hover:text-cyan-500 rounded-md hover:bg-cyan-500/30 transition">
-                                            < Play size={20} /> </button>
+                                    {/* Run Policy Button */}
+                                    <td className="p-3 text-center">                                        
+                                        <button className="px-2 py-1 text-xs  text-green-400 hover:text-green-500 rounded-md hover:bg-green-500/30 transition"
+                                        onClick={() => handleRunPolicy(item)}> <CirclePlay size={20} /> </button>
                                     </td>
 
                                     {/* Status */}
@@ -365,6 +398,7 @@ const ViewClientWiseSyncPolicy = () => {
 
             </div>
         </div>
+        </>
     )
 }
 

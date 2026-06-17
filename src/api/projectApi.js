@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE0OTg1MjEsImV4cCI6MTc4MTU4NDkyMX0.ANri9pfjETnTYYKHLVdQBOCrLJiPj-fquQ8zFA01quA';
-const BASE_URL = "http://192.168.0.17:8081";
+const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE2NzA1MTQsImV4cCI6MTc4MTc1NjkxNH0.g0PYx7cxxzu7yiZM78H8CF3Q8fhSwcALPj4UrM3-Qfc';
+const BASE_URL = "http://192.168.0.89:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -1476,6 +1476,14 @@ export const deleteAutoApprovalRule = (inputData, id) =>
       }
     }
   );
+
+export const RunPolicyRule = async (inputData) => {
+  return await axios.post(
+    `${BASE_URL}/client-sync/run-policy`,
+    inputData
+  );
+};
+
 
 
 export const windowsOverallComplaince = () =>
