@@ -26,7 +26,7 @@
 
 //   const login = async (username, password) => {
 //     try {
-      
+
 //         console.log("user before passing to login in function: ", username,password);
 //       const response = await authApi.login({ username, password });
 //     console.log("user after passing to login in function: ", response);
@@ -62,7 +62,7 @@
 //   //   localStorage.removeItem("user");
 //   // };
 
-  
+
 //   const logout = async () => {
 //     const refreshToken = localStorage.getItem("refreshToken");
 
@@ -118,6 +118,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [token, setToken] = useState(
+    localStorage.getItem("accessToken")
+  );
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -132,7 +135,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-          console.log("user before passing to login in function: ", username,password);
+      console.log("user before passing to login in function: ", username, password);
       const response = await authApi.login({ username, password });
 
       if (response.data.status !== 200) return null;
@@ -143,23 +146,24 @@ export const AuthProvider = ({ children }) => {
         // user.role = "developer";
         user.permissions = ["create_sbom"];
       }
-      
+
       // Store tokens4
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("authenticated", "true");
       localStorage.setItem("role", user.role);
       // Store user
-      localStorage.setItem("user", JSON.stringify(user));        
-       console.log("Login ---> ",user);
-      setUser(user);            
-      setIsAuthenticated(true);                     
+      localStorage.setItem("user", JSON.stringify(user));
+      console.log("Login ---> ", user);
+      setUser(user);
+      setIsAuthenticated(true);
+      setToken(accessToken);
 
       return user;
     } catch (error) {
-       console.log("Error Login ",error);
+      console.log("Error Login ", error);
       return null;
-     
+
     }
   };
 
@@ -169,7 +173,7 @@ export const AuthProvider = ({ children }) => {
   //   localStorage.removeItem("user");
   // };
 
-  
+
   const logout = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
 
@@ -194,6 +198,7 @@ export const AuthProvider = ({ children }) => {
         isAuthLoading,
         login,
         logout,
+        token
       }}
     >
       {children}

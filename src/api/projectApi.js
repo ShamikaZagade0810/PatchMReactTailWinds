@@ -1,6 +1,16 @@
 import axios from "axios";
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE2NzA1MTQsImV4cCI6MTc4MTc1NjkxNH0.g0PYx7cxxzu7yiZM78H8CF3Q8fhSwcALPj4UrM3-Qfc';
+
+//const getToken() = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE1MDY4MDQsImV4cCI6MTc4MTU5MzIwNH0.9sTTgcQN78QWSubxZE5krXbssCLKysm_ohjkQsv5mao';
+ const Token11 = null;
+const getToken = () =>{
+   const Token = localStorage.getItem("accessToken");
+   if(Token != null){
+         return Token;
+   }
+}
+
+
 const BASE_URL = "http://192.168.0.89:8081";
 
 export const getProjects = () =>
@@ -122,7 +132,7 @@ export const previewDriftScripts = async ({
   preQuery,
   postQuery,
 }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken");
   return axios.post(
     `${API_BASE_URL}/projects/${projectId}/drifts/preview`,
     {
@@ -132,7 +142,7 @@ export const previewDriftScripts = async ({
     },
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         "Content-Type": "application/json",
       },
     },
@@ -245,14 +255,14 @@ export const getRollbackScript = async (data) => {
 export const getPatches = () =>
   axios.get(`${BASE_URL}/dashboard/dashboardCount`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getOSCount = () =>
   axios.get(`${BASE_URL}/dashboard/getOScount`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -260,47 +270,47 @@ export const getOSCount = () =>
 export const getSecurityPostureData = () =>
   axios.get(`${BASE_URL}/dashboard/securityPosture`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getThirdPartySeverity = () =>
   axios.get(`${BASE_URL}/dashboard/thirdpartyseverity`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 export const getThirdPartyApplisting = () =>
   axios.get(`${BASE_URL}/dashboard/thirdpartyseveritylist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 export const getHistBarChart = () =>
   axios.get(`${BASE_URL}/dashboard/PatchHistoryBar`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getIpWiseStatusData = () =>
   axios.get(`${BASE_URL}/dashboard/IPPatchStatusBar`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getOsUpdatesPie = () =>
   axios.get(`${BASE_URL}/dashboard/OsPatchStatus`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getOsUpdatesList = () =>
   axios.get(`${BASE_URL}/dashboard/OsPatchStatusList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -308,7 +318,7 @@ export const getOsUpdatesList = () =>
 export const getTopRiskyDevices = () =>
   axios.get(`${BASE_URL}/dashboard/TopRiskDevices`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -316,14 +326,14 @@ export const getTopRiskyDevices = () =>
 export const getApprovedCriticalList = () =>
   axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getCriticalPatchesList = () =>
   axios.get(`${BASE_URL}/dashboard/MissingCriticalList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -331,7 +341,7 @@ export const getCriticalPatchesList = () =>
 export const getCriticalInstalledPatchesList = () =>
   axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -342,14 +352,14 @@ export const getCriticalInstalledPatchesList = () =>
 export const getApprovedPatchesList = () =>
   axios.get(`${BASE_URL}/dashboard/ApprovedPatchList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getFailedIpList = () =>
   axios.get(`${BASE_URL}/dashboard/FailedList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -357,7 +367,7 @@ export const getTotalPatchList = () =>
   axios.get(`${BASE_URL}/dashboard/TotalPatchList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -366,7 +376,7 @@ export const getMissingPatchList = () =>
   axios.get(`${BASE_URL}/dashboard/MissingPatchList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -376,7 +386,7 @@ export const getWindowList = () =>
   axios.get(`${BASE_URL}/dashboard/WindowsList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -384,7 +394,7 @@ export const getServerList = () =>
   axios.get(`${BASE_URL}/dashboard/ServerList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -392,7 +402,7 @@ export const getLinuxList = () =>
   axios.get(`${BASE_URL}/dashboard/LinuxList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -400,7 +410,7 @@ export const getMacList = () =>
   axios.get(`${BASE_URL}/dashboard/MacList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -408,7 +418,7 @@ export const getMacList = () =>
 export const getIpWisePatchList = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/IPPatchStatusBarList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -416,7 +426,7 @@ export const getIpWisePatchList = (inputData) =>
 export const getOSWisePatchList = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/OsPatchStatusAllList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -425,7 +435,7 @@ export const getOSWisePatchList = (inputData) =>
 export const getthirdPartySeverityPatchList = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/thirdpartyseverityAllList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -434,7 +444,7 @@ export const getthirdPartySeverityPatchList = (inputData) =>
 export const getPatchHistoryList = (inputData) =>
   axios.get(`${BASE_URL}/dashboard/PatchHistoryList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -443,7 +453,7 @@ export const getDeviceList = () =>
   axios.get(`${BASE_URL}/devices/DevicesList
 `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -451,7 +461,7 @@ export const getDeviceList = () =>
 export const getPatchSeverityCount = (inputData) =>
   axios.get(`${BASE_URL}/devices/PatchSeverityCount`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -459,7 +469,7 @@ export const getPatchSeverityCount = (inputData) =>
 export const getPatchInstalledCount = (inputData) =>
   axios.get(`${BASE_URL}/devices/PatchInstalledCount`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -467,7 +477,7 @@ export const getPatchInstalledCount = (inputData) =>
 export const getBasicInfo = (inputData) =>
   axios.get(`${BASE_URL}/devices/BasicInfo`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -475,7 +485,7 @@ export const getBasicInfo = (inputData) =>
 export const getHardwareInfo = (inputData) =>
   axios.get(`${BASE_URL}/devices/HardwareInfo`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -483,7 +493,7 @@ export const getHardwareInfo = (inputData) =>
 export const getComputerInfo = (inputData) =>
   axios.get(`${BASE_URL}/devices/ComputerInfo`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -492,7 +502,7 @@ export const getComputerInfo = (inputData) =>
 export const getRamGraph = (inputData) =>
   axios.get(`${BASE_URL}/devices/RAMGraphInfo`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -500,7 +510,7 @@ export const getRamGraph = (inputData) =>
 export const getInstalledProgram = (inputData) =>
   axios.get(`${BASE_URL}/devices/InstallProgram`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -509,7 +519,7 @@ export const getInstalledProgram = (inputData) =>
 export const getInstalledPatches = (inputData) =>
   axios.get(`${BASE_URL}/devices/InstallPatch`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -517,7 +527,7 @@ export const getInstalledPatches = (inputData) =>
 export const getLinuxDashboardCount = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxDashboardCount`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -526,7 +536,7 @@ export const getLinuxDashboardCount = () =>
 export const getLinuxPatchStatus = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxPatchStatus`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -534,7 +544,7 @@ export const getLinuxPatchStatus = () =>
 export const getLinuxBranchWiseDevices = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxBranchWiseDevices`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -542,7 +552,7 @@ export const getLinuxBranchWiseDevices = () =>
 export const getLinuxDeviceWiseInstallOrNeededCount = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxDeviceWiseInstallOrNeededCount`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -550,7 +560,7 @@ export const getLinuxDeviceWiseInstallOrNeededCount = () =>
 export const getPatchActivityOvertime = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/PatchActivityOvertime`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -559,7 +569,7 @@ export const getPatchActivityOvertime = () =>
 export const getLinuxInstalledPatchList = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxInstalledPatchList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -567,7 +577,7 @@ export const getLinuxInstalledPatchList = () =>
 export const getLinuxRiskyEndpoint = () =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxRiskyDevicesList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -577,7 +587,7 @@ export const getLinuxRiskyEndpoint = () =>
 export const getLinuxModalEndpointData = (inputData) =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxModalEndpointData`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -587,7 +597,7 @@ export const getLinuxModalEndpointData = (inputData) =>
 export const getLinuxModalPatchData = (inputData) =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxModalPatchData`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -596,7 +606,7 @@ export const getLinuxModalPatchData = (inputData) =>
 export const getLinuxBranchwiseModal = (inputData) =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxBranchwiseModal`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -605,7 +615,7 @@ export const getLinuxBranchwiseModal = (inputData) =>
 export const getLinuxIpwiseModal = (inputData) =>
   axios.get(`${BASE_URL}/LinuxDashbord/LinuxIpwisewiseModal`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -618,7 +628,7 @@ export const getPatchReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -629,7 +639,7 @@ export const getmissingPatchReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -641,7 +651,7 @@ export const getDeviceWiseReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -652,7 +662,7 @@ export const getYearMonthReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -663,7 +673,7 @@ export const getAllStatusReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -674,7 +684,7 @@ export const getUpdateTimelineReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -685,7 +695,7 @@ export const getdeviceAgentReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -696,7 +706,7 @@ export const getFailedUpdateReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -707,7 +717,7 @@ export const getCategoryWiseReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -718,7 +728,7 @@ export const getThirdPartyPatchCount = (inputData) =>
 
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -730,7 +740,7 @@ export const getThirdPartyMonthlyPatchLine = (inputData) =>
 
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -741,7 +751,7 @@ export const getThirdPartyAppPatchStatusBar = (inputData) =>
 
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -752,7 +762,7 @@ export const getThirdPartyIPPatchStatusChart = (inputData) =>
 
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -760,7 +770,7 @@ export const getThirdPartyIPPatchStatusChart = (inputData) =>
 export const getThirdPartyTopRiskyDevices = () =>
   axios.get(`${BASE_URL}/thirdpartyDash/TopRiskyDevices`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -768,7 +778,7 @@ export const getThirdPartyTopRiskyDevices = () =>
 export const getRequiredSeverityBar = () =>
   axios.get(`${BASE_URL}/thirdpartyDash/RequiredSeverityBar`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -781,7 +791,7 @@ export const getThirdPatchCountListing = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -790,7 +800,7 @@ export const getThirdPatchCountListing = (inputData) =>
 export const getThirdTotAppsListing = () =>
   axios.get(`${BASE_URL}/thirdpartyDash/TotalAppsListing`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -798,7 +808,7 @@ export const getThirdTotAppsListing = () =>
 export const getThirdUpToDateAppsListing = () =>
   axios.get(`${BASE_URL}/thirdpartyDash/UptoDateAppsListing`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -807,7 +817,7 @@ export const getThirdUpToDateAppsListing = () =>
 export const getThirdOutDatedAppsListing = () =>
   axios.get(`${BASE_URL}/thirdpartyDash/OutDatedAppsListing`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -819,7 +829,7 @@ export const getThirdMonthltPatchList = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -831,7 +841,7 @@ export const getThirdAppWisePatchList = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -842,7 +852,7 @@ export const requestToServerForRemoteAction = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -854,7 +864,7 @@ export const requestIdForRemoteAction = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -867,7 +877,7 @@ export const AddActivityCmd = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -875,7 +885,7 @@ export const AddActivityCmd = (inputData) =>
 export const getActivityCmdList = () =>
   axios.get(`${BASE_URL}/RunCommand/ActivityCmdlist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -886,7 +896,7 @@ export const getUpdateActivityCmd = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -897,7 +907,7 @@ export const getdeleteActivityCmd = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -908,7 +918,7 @@ export const sendMultiplePatches = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       },
     }
   );
@@ -922,7 +932,7 @@ export const sendMultiplePatches = (inputData) =>
 //   inputData,
 //   {
 //     headers: {
-//       Authorization: `Bearer ${token}`
+//       Authorization: `Bearer ${getToken()}`
 //     }
 //   }
 // );
@@ -934,7 +944,7 @@ export const AddAppUser = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -942,7 +952,7 @@ export const AddAppUser = (inputData) =>
 export const getViewAppUserList = () =>
   axios.get(`${BASE_URL}/master/viewAllAppUser`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -952,7 +962,7 @@ export const getUpdateAppUser = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -963,7 +973,7 @@ export const getdeleteAppUser = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -974,7 +984,7 @@ export const getdeleteAppUser = (inputData) =>
 export const getViewDeviesList = () =>
   axios.get(`${BASE_URL}/master/ViewDevicesList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -986,7 +996,7 @@ export const UpdateViewDevices = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -997,7 +1007,7 @@ export const deleteViewDevices = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1010,7 +1020,7 @@ export const AddCustomer = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1018,7 +1028,7 @@ export const AddCustomer = (inputData) =>
 export const getCustomerList = () =>
   axios.get(`${BASE_URL}/master/viewCustomerMaster `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1028,7 +1038,7 @@ export const getUpdateCustomer = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1039,7 +1049,7 @@ export const deleteCustomer = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1052,7 +1062,7 @@ export const AddBranch = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1060,7 +1070,7 @@ export const AddBranch = (inputData) =>
 export const getBranchList = () =>
   axios.get(`${BASE_URL}/master/viewBranch `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1070,7 +1080,7 @@ export const getUpdateBranch = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1081,7 +1091,7 @@ export const deleteBranch = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1094,7 +1104,7 @@ export const AddGroupMaster = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1102,7 +1112,7 @@ export const AddGroupMaster = (inputData) =>
 export const getGroupMasterList = () =>
   axios.get(`${BASE_URL}/master/viewGroup `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1112,7 +1122,7 @@ export const getUpdateGroupMaster = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1123,7 +1133,7 @@ export const deleteGroupMaster = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1135,7 +1145,7 @@ export const AddServerMaster = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1143,7 +1153,7 @@ export const AddServerMaster = (inputData) =>
 export const getServerMasterList = () =>
   axios.get(`${BASE_URL}/master/viewAllServer `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1153,7 +1163,7 @@ export const getUpdateServerMaster = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1164,7 +1174,7 @@ export const deleteServerMaster = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1177,7 +1187,7 @@ export const AddOEMMaster = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1185,7 +1195,7 @@ export const AddOEMMaster = (inputData) =>
 export const getOEMMasterList = () =>
   axios.get(`${BASE_URL}/master/viewAllVendor `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1195,7 +1205,7 @@ export const getUpdateOEMMaster = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1206,7 +1216,7 @@ export const deleteOEMMaster = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1216,7 +1226,7 @@ export const deleteOEMMaster = (inputData) =>
 export const getDownloadingPatchProgress = () =>
   axios.get(`${BASE_URL}/upload/viewDownloadingPatchProgress`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1227,7 +1237,7 @@ export const addSetServerPolicy = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1236,7 +1246,7 @@ export const addSetServerPolicy = (inputData) =>
 export const viewAllServerPolicy = () =>
   axios.get(`${BASE_URL}/master/viewAllServerPolicy`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1249,7 +1259,7 @@ export const editSetServerPolicy = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1261,7 +1271,7 @@ export const deleteSelectedPolicyServer = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1272,7 +1282,7 @@ export const addMailConfig = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1281,7 +1291,7 @@ export const addMailConfig = (inputData) =>
 export const viewAllMailConfig = () =>
   axios.get(`${BASE_URL}/master/viewMailConfig`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1292,7 +1302,7 @@ export const editMailConfig = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1304,7 +1314,7 @@ export const deleteSelectMailConfig = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1316,7 +1326,7 @@ export const addPeriodicReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1325,7 +1335,7 @@ export const addPeriodicReport = (inputData) =>
 export const viewAllPeriodicReportList = () =>
   axios.get(`${BASE_URL}/master/viewAllPeriodicReport`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1336,7 +1346,7 @@ export const editPeriodicReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1348,7 +1358,7 @@ export const deleteSelectPeriodicReport = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1361,7 +1371,7 @@ export const AddActivityScheduler = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1369,7 +1379,7 @@ export const AddActivityScheduler = (inputData) =>
 export const getActivitySchedulerList = () =>
   axios.get(`${BASE_URL}/RunCommand/listcmdScheduler `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1379,7 +1389,7 @@ export const getUpdateActivityScheduler = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1390,7 +1400,7 @@ export const deleteActivityScheduler = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1401,7 +1411,7 @@ export const getUpdateStatusActivityScheduler = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1431,7 +1441,7 @@ export const enableViewApprovalRule = (inputData) =>
 
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1442,7 +1452,7 @@ export const disableViewApprovalRule = (inputData) =>
 
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1461,7 +1471,7 @@ export const UpdateAutoApprovalRule = (inputData, id) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1472,24 +1482,18 @@ export const deleteAutoApprovalRule = (inputData, id) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
 
-export const RunPolicyRule = async (inputData) => {
-  return await axios.post(
-    `${BASE_URL}/client-sync/run-policy`,
-    inputData
-  );
-};
 
 
 
 export const windowsOverallComplaince = () =>
   axios.get(`${BASE_URL}/dashboard/overallComplainceData`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1497,7 +1501,7 @@ export const windowsOverallComplaince = () =>
 export const windowsComplainceDataDashboard = () =>
   axios.get(`${BASE_URL}/dashboard/complainceDataDashboard`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1507,7 +1511,7 @@ export const windowsComplainceDataDashboard = () =>
 export const getProductsListing = () =>
   axios.get(`${BASE_URL}/products-classification/products`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1515,7 +1519,7 @@ export const getProductsListing = () =>
 export const getClassificationsListing = () =>
   axios.get(`${BASE_URL}/products-classification/classifications`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1526,7 +1530,7 @@ export const updateProductClass = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1534,7 +1538,7 @@ export const updateProductClass = (inputData) =>
 export const getselectedProductsList = () =>
   axios.get(`${BASE_URL}/products-classification/selected-products`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1542,7 +1546,7 @@ export const getselectedProductsList = () =>
 export const getselectedClassificationsList = () =>
   axios.get(`${BASE_URL}/products-classification/selected-classifications`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1550,7 +1554,7 @@ export const getselectedClassificationsList = () =>
 export const PatchTreewsus_dashboard_statistics = () =>
   axios.get(`${BASE_URL}/PatchTree/wsus-dashboard-statistics`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1569,7 +1573,7 @@ export const AddUpdatesSyncSchedule = async (inputData) => {
 export const getUpdatesSyncScheduleList = () =>
   axios.get(`${BASE_URL}/updates-sync-schedule/listUpdatesSyncSchedule`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1581,7 +1585,7 @@ export const getUpdatesSyncScheduleList = () =>
 export const getAllViewSyncPolicy = () =>
   axios.get(`${BASE_URL}/client-sync/listViewSyncPolicy`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1593,10 +1597,18 @@ export const deleteViewSyncPolicy = (inputData, id) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
+
+  export const RunPolicyRule = async (inputData) => {
+  return await axios.post(
+    `${BASE_URL}/client-sync/run-policy`,
+    inputData
+  );
+};
+
 
 
 // ================================= Client Wise Synchronization Policy ================================// 
@@ -1613,7 +1625,7 @@ export const AddClientWiseSyncPolicy = async (inputData) => {
 export const getAllViewClientWiseSyncPolicy = () =>
   axios.get(`${BASE_URL}/client-sync/listViewClientWiseSyncPolicy`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1623,7 +1635,7 @@ export const updateViewClientWiseSyncPolicy = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1635,7 +1647,7 @@ export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1647,7 +1659,7 @@ export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
 export const getSynchronizeStatus = () =>
   axios.get(`${BASE_URL}/PatchTree/getSynchronizeStatus`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1657,7 +1669,7 @@ export const getSynchronizeStatus = () =>
 export const getSyncPercent = () =>
   axios.get(`${BASE_URL}/PatchTree/getSyncPercent`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1666,7 +1678,7 @@ export const getSyncPercent = () =>
 export const stopSynchronisationProcess = () =>
   axios.get(`${BASE_URL}/PatchTree/stopSynchronisationProcess`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1677,7 +1689,7 @@ export const stopSynchronisationProcess = () =>
 export const getServerStatisticData = () =>
   axios.get(`${BASE_URL}/PatchTree/getServerStatisticData`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1686,7 +1698,7 @@ export const getServerStatisticData = () =>
 export const getComputerStatusPie = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/getComputerStatusPie`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -1696,7 +1708,7 @@ export const getComputerStatusPie = (inputData) =>
 export const getupdateStatus = () =>
   axios.get(`${BASE_URL}/PatchTree/getupdateStatus`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1704,7 +1716,7 @@ export const getupdateStatus = () =>
 export const getrecentActivity = () =>
   axios.get(`${BASE_URL}/PatchTree/dashboard-timeline`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1714,14 +1726,14 @@ export const getrecentActivity = () =>
 export const getThirdPartyPatchRepo = () =>
   axios.get(`${BASE_URL}/thirdparty/PatchRepository`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getThirdPartyCompletedApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/completed-apps`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -1729,7 +1741,7 @@ export const getThirdPartyCompletedApps = (inputData) =>
 export const getThirdPartyPendingApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/pending-apps`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -1737,7 +1749,7 @@ export const getThirdPartyPendingApps = (inputData) =>
 export const getThirdPartyFailedApps = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/failed-apps`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -1747,7 +1759,7 @@ export const getThirdPartyFailedApps = (inputData) =>
 export const getThirdPartyMissingApps = () =>
   axios.get(`${BASE_URL}/thirdparty/missing-apps `, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1761,7 +1773,7 @@ export const thirdPartyMissingApprovePatches = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1770,7 +1782,7 @@ export const thirdPartyMissingApprovePatches = (inputData) =>
 export const getThirdPartyInstalledApps = () =>
   axios.get(`${BASE_URL}/thirdparty/installed-apps`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1778,7 +1790,7 @@ export const getThirdPartyInstalledApps = () =>
 export const getThirdPartyPatchStatus = () =>
   axios.get(`${BASE_URL}/thirdparty/patch-status`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1787,7 +1799,7 @@ export const getThirdPartyPatchStatus = () =>
 export const getThirdPartypatchprogress = () =>
   axios.get(`${BASE_URL}/thirdparty/patch-progress`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1795,7 +1807,7 @@ export const getThirdPartypatchprogress = () =>
 export const getThirdPartyHostView = (inputData) =>
   axios.get(`${BASE_URL}/thirdparty/host-summary`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -1803,7 +1815,7 @@ export const getThirdPartyHostView = (inputData) =>
 export const getThirdPartyHostinfo = (ip) =>
   axios.get(`${BASE_URL}/thirdparty/host-info`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: { ip: ip }
   });
@@ -1811,7 +1823,7 @@ export const getThirdPartyHostinfo = (ip) =>
 export const getThirdPartyHostappsdetails = (hostname, ip) =>
   axios.get(`${BASE_URL}/thirdparty/host-apps`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       hostname: hostname,
@@ -1822,7 +1834,7 @@ export const getThirdPartyHostappsdetails = (hostname, ip) =>
 export const getThirdPartylatestSoftware = () =>
   axios.get(`${BASE_URL}/thirdparty/latest-software`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1831,7 +1843,7 @@ export const getThirdPartylatestSoftware = () =>
 export const getLinuxMissingApps = () =>
   axios.get(`${BASE_URL}/linux/linux-missing-apps`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -1843,7 +1855,7 @@ export const LinuxMissingApprovePatches = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1855,7 +1867,7 @@ export const getLinuxCompletedReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1866,7 +1878,7 @@ export const getLinuxFailedReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1877,7 +1889,7 @@ export const getLinuxPendingReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1888,7 +1900,7 @@ export const getLinuxMissingReport = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1896,7 +1908,7 @@ export const getLinuxMissingReport = (inputData) =>
 export const getLinuxPatchRepo = () =>
   axios.get(`${BASE_URL}/linux/LinuxRepolist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1904,7 +1916,7 @@ export const getLinuxPatchRepo = () =>
 export const getPatchTreeMissingAppApprvDec = () =>
   axios.get(`${BASE_URL}/PatchTree/windowMissingPatches`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1912,7 +1924,7 @@ export const getPatchTreeMissingAppApprvDec = () =>
 export const getGroupData = () =>
   axios.get(`${BASE_URL}/PatchTree/allGroup`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1923,7 +1935,7 @@ export const getWindowMissingPatchApprove = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -1932,7 +1944,7 @@ export const getWindowMissingPatchApprove = (inputData) =>
 export const getPatchTreeTotalPatchesData = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/TotalPatchList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1940,7 +1952,7 @@ export const getPatchTreeTotalPatchesData = (inputData) =>
 export const getSidebarServerData = () =>
   axios.get(`${BASE_URL}/PatchTree/getSidebarServer`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1948,7 +1960,7 @@ export const getSidebarServerData = () =>
 export const getPatchTreePatcheStatusData = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/PatchStatusList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: inputData
   });
@@ -1957,21 +1969,21 @@ export const getPatchTreePatcheStatusData = (inputData) =>
 export const getPatchTreeUnapprovedPatchList = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/unapprovedPatchList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getSidebarGroupsData = () =>
   axios.get(`${BASE_URL}/PatchTree/getSidebarGroups`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getAllUpdateData = () =>
   axios.get(`${BASE_URL}/PatchTree/getAllUpdates`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1979,7 +1991,7 @@ export const getClasssifiedUpdatesData = (data) =>
   axios.post(`${BASE_URL}/PatchTree/getClassification`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1987,7 +1999,7 @@ export const getpatchDetailsData = (data) =>
   axios.post(`${BASE_URL}/PatchTree/getPatchDetails`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -1996,7 +2008,7 @@ export const getPatchgraphPieData = (data) =>
   axios.post(`${BASE_URL}/PatchTree/getPatchgraphPie`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -2006,7 +2018,7 @@ export const getPatchgraphClickData = (data) =>
   axios.post(`${BASE_URL}/PatchTree/getPatchgraphClick`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -2014,7 +2026,7 @@ export const getPatchgroupDetailsData = (data) =>
   axios.post(`${BASE_URL}/PatchTree/getPatchgroupDetails`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -2022,14 +2034,14 @@ export const getGroupDataList = (data) =>
   axios.post(`${BASE_URL}/PatchTree/getGroupDataList`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getgrpComputerDetails = (name) =>
   axios.get(`${BASE_URL}/PatchTree/Computerdetails`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       name: name
@@ -2040,7 +2052,7 @@ export const getgrpComputerDetails = (name) =>
 export const getComputerPiechart = (name) =>
   axios.get(`${BASE_URL}/PatchTree/ComputerPiechart`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       computerName: name
@@ -2050,7 +2062,7 @@ export const getComputerPiechart = (name) =>
 export const getComputerPieonclick = (name, status) =>
   axios.get(`${BASE_URL}/PatchTree/ComputerPieonclick`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       computerName: name,
@@ -2061,7 +2073,7 @@ export const getComputerPieonclick = (name, status) =>
 export const getgrpComputerpolicy = (name) =>
   axios.get(`${BASE_URL}/PatchTree/Computerpolicy`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       name: name
@@ -2071,7 +2083,7 @@ export const getgrpComputerpolicy = (name) =>
 export const getsyncHistoryData = () =>
   axios.get(`${BASE_URL}/PatchTree/getSynchronizeList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -2079,15 +2091,15 @@ export const getsyncHistoryData = () =>
 export const getPatchTreeapprovedPatchList = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/approvedPatchList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
-  
+
 export const getDiscoverGroup = (servername) =>
   axios.get(`${BASE_URL}/PatchTreeClick/discoverGroup`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       UDstream: servername
@@ -2097,7 +2109,7 @@ export const getDiscoverGroup = (servername) =>
 export const getDiscoverComputers = (servername) =>
   axios.get(`${BASE_URL}/PatchTreeClick/discoverComputers`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       UDstream: servername
@@ -2107,7 +2119,7 @@ export const getDiscoverComputers = (servername) =>
 export const getaddGroup = (groupname) =>
   axios.get(`${BASE_URL}/PatchTreeClick/addGroup`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       addGroup: groupname
@@ -2118,20 +2130,20 @@ export const editGroupDetails = (data) =>
   axios.post(`${BASE_URL}/PatchTreeClick/editGroup`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getPatchTreeDeclinedPatchList = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/declinedPatchList`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 export const deleteGroupDetails = (groupName) =>
   axios.post(`${BASE_URL}/PatchTreeClick/deleteGroup`, {}, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       groupName: groupName
@@ -2142,7 +2154,7 @@ export const addComputersDetails = (data) =>
   axios.post(`${BASE_URL}/PatchTreeClick/addComputerGroup`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -2153,7 +2165,7 @@ export const getdeleteComputerdetails = (inputData) =>
     {
       data: inputData,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -2165,7 +2177,7 @@ export const getdeleteComputerdetails = (inputData) =>
 export const getAllBranchList = () =>
   axios.get(`${BASE_URL}/dropdown/BranchDropdown`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
 
   });
@@ -2177,7 +2189,7 @@ export const getBranchWiseIpaddressList = (inputData) =>
     inputData,
     {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     }
   );
@@ -2185,7 +2197,7 @@ export const getBranchWiseIpaddressList = (inputData) =>
 export const getOSTypedropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getOSNames`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
@@ -2194,14 +2206,14 @@ export const getOSComputerdropdown = (data) =>
   axios.post(`${BASE_URL}/dropdown/allPCComputer`,
     data, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     }
   });
 
 export const getComputerdropdowm = (servername) =>
   axios.get(`${BASE_URL}/dropdown/allPCComputerServer`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
     params: {
       sernm: servername
@@ -2211,21 +2223,21 @@ export const getComputerdropdowm = (servername) =>
 export const getGrouplistdropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getgrouplist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getIpListdropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getIpAddresslist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getClassifficationdropdown = () =>
   axios.get(`${BASE_URL}/dropdown/classificationDropdown`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
@@ -2233,44 +2245,75 @@ export const getClassifficationdropdown = () =>
 export const getproductdropdown = () =>
   axios.get(`${BASE_URL}/dropdown/productDropdown`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
-  export const getMasterVendorNamedropdown = () =>
+export const getMasterVendorNamedropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getvendorlist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
-  export const getMasterCustomerNamedropdown = () =>
+export const getMasterCustomerNamedropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getcustomerlist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
-  export const getMasterbranchNamedropdown = () =>
+export const getMasterbranchNamedropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getbranchlist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
-  export const getMasterCommanddropdown = () =>
+export const getMasterCommanddropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getcommandlist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
 
-    export const getWindowsPatchdropdown = () =>
+export const getWindowsPatchdropdown = () =>
   axios.get(`${BASE_URL}/dropdown/getpatchlist`, {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${getToken()}`
     },
   });
+
+
+export const getPatchedEndpointList = () =>
+  axios.get(`${BASE_URL}/dashboard/PatchedEndpointList`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+  });
+
+  export const getNonComplaintEndpointList = () =>
+  axios.get(`${BASE_URL}/dashboard/NonComplaintEndpointList`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+  });
+
+    export const getFailedEndpointList = () =>
+  axios.get(`${BASE_URL}/dashboard/FailedEndpointList`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+  });
+
+  
+    export const getOfflineEndpointList = () =>
+  axios.get(`${BASE_URL}/dashboard/OfflineEndpointList`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+  });
+
 
 
 
