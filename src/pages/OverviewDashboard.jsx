@@ -49,7 +49,11 @@ import {
     getPatchHistoryList,
     windowsOverallComplaince,
     windowsComplainceDataDashboard,
-    getCriticalInstalledPatchesList
+    getCriticalInstalledPatchesList,
+    getPatchedEndpointList,
+    getNonComplaintEndpointList,
+    getFailedEndpointList,
+    getOfflineEndpointList
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
@@ -94,6 +98,10 @@ const OverviewDashboard = () => {
             failed: getFailedIpList,
             total: getTotalPatchList,
             missing: getMissingPatchList,
+            "patch endpoint": getPatchedEndpointList,
+            "non_complaint endpoint": getNonComplaintEndpointList,
+            "failed devices": getFailedEndpointList,
+            "offline devices": getOfflineEndpointList
 
         },
         os_status: {
@@ -376,7 +384,7 @@ const OverviewDashboard = () => {
 
     const severity = getSeverity(overallComplainceRate);
 
-    const totalEndpoints = complianceData.find( item => item.label === "totalEndpoint"  )?.value || 0;
+    const totalEndpoints = complianceData.find(item => item.label === "totalEndpoint")?.value || 0;
 
     const totalOsCount = (osCount?.windows || 0) + (osCount?.linux || 0) + (osCount?.mac || 0) + (osCount?.server || 0);
 
@@ -496,7 +504,7 @@ const OverviewDashboard = () => {
 
                                 <span
                                     className={`text-xs ${severity === "High" ? "text-red-500"
-                                        : severity === "Medium" ? "text-yellow-400" : "text-green-500" }`}
+                                        : severity === "Medium" ? "text-yellow-400" : "text-green-500"}`}
                                 >
                                     {severity}
                                 </span>
@@ -507,7 +515,7 @@ const OverviewDashboard = () => {
                         <div className="flex-1 w-full space-y-3">
                             {complianceData.map((item, i) => (
                                 item.label !== "totalEndpoint" && (
-                                    <div key={i}>
+                                    <div key={i} onClick={() => handleClickModal('Patches', item.label.toLowerCase())} >
                                         <div className="flex justify-between text-xs">
                                             <span className="text-gray-700 dark:text-white">
                                                 {item.label}
@@ -745,56 +753,56 @@ const OverviewDashboard = () => {
                     {/* Fake Chart Line */}
                     <div className="h-50  rounded-lg">
                         <div className="w-full h-[280px]">
-                          <ResponsiveContainer width="100%" height="100%">
-  <BarChart data={ipStatus} layout="vertical" barSize={25}>
-    <defs>
-      <linearGradient id="installedGradient" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#22c55e" />
-        <stop offset="100%" stopColor="#4ade80" />
-      </linearGradient>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={ipStatus} layout="vertical" barSize={25}>
+                                    <defs>
+                                        <linearGradient id="installedGradient" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0%" stopColor="#22c55e" />
+                                            <stop offset="100%" stopColor="#4ade80" />
+                                        </linearGradient>
 
-      <linearGradient id="neededGradient" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#ef4444" />
-        <stop offset="100%" stopColor="#f87171" />
-      </linearGradient>
-    </defs>
+                                        <linearGradient id="neededGradient" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0%" stopColor="#ef4444" />
+                                            <stop offset="100%" stopColor="#f87171" />
+                                        </linearGradient>
+                                    </defs>
 
-    <XAxis type="number" stroke="#ccc" fontSize={12} />
-    <YAxis
-      type="category"
-      dataKey="IPAddress"
-      stroke="#ccc"
-      width={100}
-      fontSize={14}
-    />
+                                    <XAxis type="number" stroke="#ccc" fontSize={12} />
+                                    <YAxis
+                                        type="category"
+                                        dataKey="IPAddress"
+                                        stroke="#ccc"
+                                        width={100}
+                                        fontSize={14}
+                                    />
 
-    <Tooltip
-      cursor={false}
-      contentStyle={{
-        backgroundColor: "#1f2937",
-        border: "none",
-      }}
-    />
+                                    <Tooltip
+                                        cursor={false}
+                                        contentStyle={{
+                                            backgroundColor: "#1f2937",
+                                            border: "none",
+                                        }}
+                                    />
 
-    <Legend />
+                                    <Legend />
 
-    <Bar
-  dataKey="InstalledCount"
-  stackId="a"
-  fill="#3b82f6"
-  name="Installed"
-  radius={[0, 4, 4, 0]}
-/>
+                                    <Bar
+                                        dataKey="InstalledCount"
+                                        stackId="a"
+                                        fill="#3b82f6"
+                                        name="Installed"
+                                        radius={[0, 4, 4, 0]}
+                                    />
 
-<Bar
-  dataKey="NeededCount"
-  stackId="a"
-  fill="#64748b"
-  name="Needed"
-  radius={[0, 6, 6, 0]}
-/>
-  </BarChart>
-</ResponsiveContainer>
+                                    <Bar
+                                        dataKey="NeededCount"
+                                        stackId="a"
+                                        fill="#64748b"
+                                        name="Needed"
+                                        radius={[0, 6, 6, 0]}
+                                    />
+                                </BarChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
 
