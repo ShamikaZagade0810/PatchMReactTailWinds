@@ -11,7 +11,7 @@ const getToken = () =>{
 }
 
 
-const BASE_URL = "http://192.168.0.89:8081";
+const BASE_URL = "http://192.168.0.52:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
