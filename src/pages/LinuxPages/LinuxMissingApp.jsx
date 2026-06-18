@@ -43,17 +43,11 @@ const LinuxMissingApp = () => {
     const [ThirdPartyMissingApp, setThirdPartyMissingApp] = useState([]);
     const [loading, setLoading] = useState(false);
 
-
-
     useEffect(() => {
-
         getData();
-
-
     }, []);
 
     const getData = async () => {
-
         setLoading(true);
         const Repodata = await getLinuxMissingApps();
         console.log("Data --> ", Repodata.data.data);
@@ -113,17 +107,25 @@ const LinuxMissingApp = () => {
     //     });
     // };
 
-        const handleRowSelect = (item) => {
-        setSelectedRows((prev) => {
-            const alreadyExists = prev.some(
-                (row) => row.srNo === item.srNo
-            );
+    //     const handleRowSelect = (item) => {
+    //     setSelectedRows((prev) => {
+    //         const alreadyExists = prev.some(
+    //             (row) => row.srNo === item.srNo
+    //         );
 
-            return alreadyExists
-                ? prev.filter((row) => row.srNo !== item.srNo)
-                : [...prev, item];
-        });
-    };
+    //         return alreadyExists
+    //             ? prev.filter((row) => row.srNo !== item.srNo)
+    //             : [...prev, item];
+    //     });
+    // };
+
+    const handleRowSelect = (srNo) => {
+    setSelectedRows((prev) =>
+        prev.includes(srNo)
+            ? prev.filter((id) => id !== srNo)
+            : [...prev, srNo]
+    );
+};
 
 //     const handleRowSelect = (srNo) => {
 //     setSelectedRows(prev =>
@@ -135,10 +137,19 @@ const LinuxMissingApp = () => {
 
     const handleClickApprove = async () => {
         try {
-            const reqData = selectedRows.map(obj => ({
-                ip: obj.hostName,
-                app: obj.appName
-            }));
+            // const reqData = selectedRows.map(obj => ({
+            //     ip: obj.hostName,
+            //     app: obj.appName
+            // }));
+                const reqData = selectedRows.map(srNo => {
+            const item = ThirdPartyMissingApp.find(x => x.srNo === srNo);
+
+            return {
+                ip: item?.hostName,
+                app: item?.appName || item?.application
+            };
+        });
+
             console.log("Hii ", reqData);
 
             const resdata = await LinuxMissingApprovePatches(reqData);
@@ -293,7 +304,8 @@ const LinuxMissingApp = () => {
                                 <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
 
                                     <td className="px-4 py-3">
-                                        <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)}  />
+                                        {/* <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)}  /> */}
+                                    <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item.srNo)} />
                                     </td>
                                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.hostName} </td>
                                     <td className="px-4 py-3"> {item.appName} </td>

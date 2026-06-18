@@ -101,7 +101,7 @@ const MissingApps = () => {
 
     // const handleRowSelect = (item) => {
     //     setSelectedRows((prev) => {
-    //         const alreadyExists = prev.some(
+    //         const alreadyExists = prev.some( 
     //             (row) => row.srNo === item.srNo
     //         );
 

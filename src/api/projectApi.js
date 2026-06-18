@@ -11,7 +11,7 @@ const getToken = () =>{
 }
 
 
-const BASE_URL = "http://192.168.0.52:8081";
+const BASE_URL = "http://192.168.0.89:8081";
 
 export const getProjects = () =>
   axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
@@ -286,6 +286,17 @@ export const getThirdPartyApplisting = () =>
       Authorization: `Bearer ${getToken()}`
     }
   });
+
+  export const getVulnerabilityModalList = () =>
+  axios.get(`${BASE_URL}/dashboard/thirdpartyseverityModalList`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+    
+  });
+
+
+
 export const getHistBarChart = () =>
   axios.get(`${BASE_URL}/dashboard/PatchHistoryBar`, {
     headers: {
@@ -1221,7 +1232,16 @@ export const deleteOEMMaster = (inputData) =>
     }
   );
 
-
+export const uploadContentDistribution = (formData) =>
+  axios.post(
+    `${BASE_URL}/upload/contentDistribution`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      }
+    }
+  );
 
 export const getDownloadingPatchProgress = () =>
   axios.get(`${BASE_URL}/upload/viewDownloadingPatchProgress`, {
@@ -2101,6 +2121,12 @@ export const getsyncHistoryData = () =>
     }
   });
 
+  export const DiscoverSync = () =>
+  axios.get(`${BASE_URL}/PatchTree/discoverSync`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
 
 export const getPatchTreeapprovedPatchList = (inputData) =>
   axios.get(`${BASE_URL}/PatchTree/approvedPatchList`, {

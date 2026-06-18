@@ -72,22 +72,15 @@ const LinuxReportsPage = () => {
 
 
     const branchChange = async (Data) => {
-
         setSelectedBranches(Data);
         const singleBranchlist = Data.map(obj => obj.label);
-
         const reqData = {
             "branch": singleBranchlist
         }
-
         const Iplist = await getBranchWiseIpaddressList(reqData);
         setIpAddressList(Iplist.data.data);
 
     }
-
-
-
-
 
 
     const apiMapping = {
@@ -99,8 +92,6 @@ const LinuxReportsPage = () => {
         }
 
     };
-
-
 
     const modules = [
         { id: "completed", name: "Completed Report", icons: FileText, iconcolor: "#3B82F6" },
@@ -129,9 +120,7 @@ const LinuxReportsPage = () => {
     const selectedModule = modules[activeIndex];
     // const activeFilters = filterConfig[selectedModule?.id] || [];
 
-    const inputClass =
-        "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
-
+    const inputClass = "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
     const labelClass = "text-base text-gray-300 mb-1 block ";
 
 

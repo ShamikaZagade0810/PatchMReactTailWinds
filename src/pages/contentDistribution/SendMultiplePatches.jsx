@@ -8,7 +8,7 @@ import IPWiseReport from "./IPWiseReport";
 import FileWiseReport from "./FileWiseReport";
 
 import { Plus, List, Play, Pencil, Trash2 } from "lucide-react";
-import { getAllBranchList, getBranchWiseIpaddressList, sendMultiplePatches, getDownloadingPatchProgress } from "../../api/projectApi";
+import { getAllBranchList, getBranchWiseIpaddressList, sendMultiplePatches,uploadContentDistribution, getDownloadingPatchProgress } from "../../api/projectApi";
 
 
 
@@ -161,17 +161,19 @@ const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:f
             formData.append("executevalue", watch('executevalue'));
 
 
-            const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE2OTQwNTQsImV4cCI6MTc4MTc4MDQ1NH0.g4C3s4otC7-NOpfzKCyAFviA_w5parAPnSNxFb0-CZA';
-            const response = await axios.post(
-                "http://192.168.0.17:8081/upload/contentDistribution",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "Authorization": `Bearer ${token}`
-                    },
-                }
-            );
+            // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE2OTQwNTQsImV4cCI6MTc4MTc4MDQ1NH0.g4C3s4otC7-NOpfzKCyAFviA_w5parAPnSNxFb0-CZA';
+            // const response = await axios.post(
+            //     "http://192.168.0.17:8081/upload/contentDistribution",
+            //     formData,
+            //     {
+            //         headers: {
+            //             "Content-Type": "multipart/form-data",
+            //             "Authorization": `Bearer ${token}`
+            //         },
+            //     }
+            // );
+            const response = await uploadContentDistribution(formData);
+
             console.log("response ", response);
             if (response.status == 200) {
                 toast.success(response.data);
