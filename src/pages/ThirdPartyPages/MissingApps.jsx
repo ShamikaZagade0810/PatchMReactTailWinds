@@ -99,24 +99,37 @@ const MissingApps = () => {
     //     );
     // };
 
-    const handleRowSelect = (item) => {
-        setSelectedRows((prev) => {
-            const alreadyExists = prev.some(
-                (row) => row.srNo === item.srNo
-            );
+    // const handleRowSelect = (item) => {
+    //     setSelectedRows((prev) => {
+    //         const alreadyExists = prev.some(
+    //             (row) => row.srNo === item.srNo
+    //         );
 
-            return alreadyExists
-                ? prev.filter((row) => row.srNo !== item.srNo)
-                : [...prev, item];
-        });
-    };
+    //         return alreadyExists
+    //             ? prev.filter((row) => row.srNo !== item.srNo)
+    //             : [...prev, item];
+    //     });
+    // };
+    const handleRowSelect = (item) => {
+    setSelectedRows(prev =>
+        prev.includes(item.srNo)
+            ? prev.filter(id => id !== item.srNo)
+            : [...prev, item.srNo]
+    );
+};
 
     const handleClickApprove = async () => {
         try {
-            const reqData = selectedRows.map(obj => ({
-                ip: obj.ip,
-                app: obj.app
-            }));
+            // const reqData = selectedRows.map(obj => ({
+            //     ip: obj.ip,
+            //     app: obj.app
+            // }));
+            const reqData = ThirdPartyMissingApp
+    .filter(item => selectedRows.includes(item.srNo))
+    .map(item => ({
+        ip: item.ip,
+        app: item.app
+    }));
             console.log("Hii ", reqData);
 
             const resdata = await thirdPartyMissingApprovePatches(reqData);

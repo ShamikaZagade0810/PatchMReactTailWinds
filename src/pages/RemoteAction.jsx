@@ -14,7 +14,8 @@ import {
     Radius,
     SquareActivity,
     Activity,
-    TriangleAlert
+    TriangleAlert,
+    Radar
 
 } from "lucide-react";
 
@@ -105,15 +106,19 @@ const RemoteAction = () => {
     const apiMapping = {
         Remote: {
             DetectNow: requestToServerForRemoteAction,
+            ReportNow: requestToServerForRemoteAction,
+            UpdateNow: requestToServerForRemoteAction,
+            RestartNow: requestToServerForRemoteAction,
+            // MissingPatches: requestToServerForRemoteAction,
+            DiscoverInfo: requestToServerForRemoteAction,
+            GET_PATCHES: requestToServerForRemoteAction,
+            GET_APPLICATIONS: requestToServerForRemoteAction
         }
 
     };
 
     useEffect(() => {
-
         initialApiReq();
-
-
     }, []);
 
 
@@ -165,37 +170,43 @@ const RemoteAction = () => {
             iconcolor: "#3B82F6"
         },
         {
-            id: "report",
+            id: "ReportNow",
             name: "Report Now",
             icons: FileText,
             iconcolor: "#F59E0B"
         },
         {
-            id: "update",
+            id: "UpdateNow",
             name: "Update Now",
             icons: RefreshCw,
             iconcolor: "#8B5CF6"
         },
         {
-            id: "restart",
+            id: "RestartNow",
             name: "Restart Now",
             icons: Power,
             iconcolor: "#06B6D4"
         },
-        {
-            id: "missingpatches",
-            name: "Missing Patches",
-            icons: AlertTriangle,
+        // {
+        //     id: "MissingPatches",
+        //     name: "Missing Patches",
+        //     icons: AlertTriangle,
+        //     iconcolor: "#0EA5E9"
+        // },
+         {
+            id: "DiscoverInfo",
+            name: "Discover Info",
+            icons: Radar,
             iconcolor: "#0EA5E9"
         },
         {
-            id: "discoverpatch",
+            id: "GET_PATCHES",
             name: "Discover Patches",
             icons: DownloadCloud,
             iconcolor: "#10B981"
         },
         {
-            id: "discoverapp",
+            id: "GET_APPLICATIONS",
             name: "Discover Application",
             icons: AppWindow,
             iconcolor: "#6366F1"
@@ -216,18 +227,19 @@ const RemoteAction = () => {
 
     const filterConfig = {
         DetectNow: ["branchNames", "ipAddress"],
-        report: ["branchNames", "ipAddress"],
-        update: ["branchNames", "ipAddress"],
-        restart: ["branchNames", "ipAddress"],
-        missingpatches: ["branchNames", "ipAddress"],
-        discoverpatch: ["branchNames", "ipAddress"],
-        discoverapp: ["branchNames", "ipAddress"],
+        ReportNow: ["branchNames", "ipAddress"],
+        UpdateNow: ["branchNames", "ipAddress"],
+        RestartNow: ["branchNames", "ipAddress"],
+        // MissingPatches: ["branchNames", "ipAddress"],
+        DiscoverInfo: ["branchNames", "ipAddress"],
+        GET_PATCHES: ["branchNames", "ipAddress"],
+        GET_APPLICATIONS: ["branchNames", "ipAddress"],
         synchronizepolicy: ["ipAddress", "serverIp", "port", "patchUpdateParameter"]
     };
     const selectedModule = modules[activeIndex];
     const activeFilters = filterConfig[selectedModule?.id] || [];
 
-    const inputClass = "w-full mt-1 bg-[#1E293B] px-3 h-12 text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
+    const inputClass = "w-full mt-1 bg-[#1E293B] px-3 h-9 text-sm rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500";
 
     const labelClass = "text-base text-gray-300 mb-1 block ";
     const filterFields = {
@@ -303,16 +315,11 @@ const RemoteAction = () => {
         ),
         patchUpdateParameter: (
             <div>
-                <label className="text-base text-gray-300 mb-1 block"> Patch Update Parameter </label>
-                <select
-                    className="w-full h-12 px-3 bg-[#1E293B] text-white text-base rounded-lg border border-[#2A3A55] focus:outline-none focus:ring-2 focus:ring-blue-500"  {...register("groupname")}
-                >
+                <label className={labelClass}> Patch Update Parameter </label>
+                <select className={inputClass}  {...register("groupname")} >
                     <option value=""  >-- Please select value --</option>
-
                     {patchUpdateParameter.map((g, i) => (
-                        <option key={i} value={g.value}>
-                            {g.label}
-                        </option>
+                        <option key={i} value={g.value}> {g.label} </option>
                     ))}
                 </select>
             </div>

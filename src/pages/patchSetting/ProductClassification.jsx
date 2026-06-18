@@ -24,7 +24,8 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { getProductsListing, getClassificationsListing, updateProductClass, getselectedProductsList, getselectedClassificationsList } from "../../api/projectApi";
+import { getProductsListing, getClassificationsListing, updateProductClass, DiscoverProducts, DiscoverClasification,
+    getselectedProductsList, getselectedClassificationsList } from "../../api/projectApi";
 
 const ProductClassification = () => {
 
@@ -161,51 +162,76 @@ const fetchSelectedClassifications = async () => {
 
 const handleUpdate = async () => {
 
-    try {
-          // LOADING STATUS
-        setSyncStatus({
-            value: 'Updating',
-            subtitle: 'Saving changes...',
-            color: 'text-blue-400'
-        });
+    try {          // LOADING STATUS
+        setSyncStatus({  value: 'Updating', subtitle: 'Saving changes...', color: 'text-blue-400' });
 
         const inputData = {
             productNames: selectedProducts,
             classificationNames: enabledClassifications
         };
-
         const response = await updateProductClass(inputData);
 
         if (response?.data?.status === 200) {
             toast.success(  response?.data?.message || "Updated successfully" );
              // SUCCESS STATUS
-            setSyncStatus({
-                value: 'Updated',
-                subtitle: 'Configuration synced',
-                color: 'text-emerald-400'
-            });
+            setSyncStatus({ value: 'Updated', subtitle: 'Configuration synced', color: 'text-emerald-400' });
         } else if (response?.data?.status === 409) {
             toast.warning(  response?.data?.message || "Check again" );            
         } 
         
         else { toast.error("Failed to update"); 
             // FAILED STATUS
-            setSyncStatus({
-                value: 'Failed',
-                subtitle: 'Update failed',
-                color: 'text-red-400'
-            });
+            setSyncStatus({ value: 'Failed', subtitle: 'Update failed', color: 'text-red-400' });
         }
 
     } catch (error) {
         console.log("Update error:", error);
         toast.error( error?.response?.data?.message || "Something went wrong" );
         // FAILED STATUS
-            setSyncStatus({
-                value: 'Failed',
-                subtitle: 'Update failed',
-                color: 'text-red-400'
-            });
+            setSyncStatus({ value: 'Failed', subtitle: 'Update failed', color: 'text-red-400' });
+    }
+};
+
+const handleDiscoverProducts = async () => {
+    try {
+        setSyncStatus({ value: "Discovering", subtitle: "Fetching latest products...",  color: "text-blue-400", });
+        const response = await DiscoverProducts();
+        if (response?.data?.status === 200) {
+            toast.success( response?.data?.message || "Products discovered successfully" );
+            // Reload product list
+            await fetchProducts();
+            setSyncStatus({ value: "Updated", subtitle: "Products discovered", color: "text-emerald-400", });
+        } else {
+            toast.warning( response?.data?.message || "Unable to discover products" );
+
+            setSyncStatus({ value: "Failed",  subtitle: "Discovery failed",  color: "text-red-400", });
+        }
+    } catch (error) {
+        console.error(error);
+        toast.error( error?.response?.data?.message || "Failed to discover products" );
+        setSyncStatus({ value: "Failed", subtitle: "Discovery failed",  color: "text-red-400", });
+    }
+};
+
+
+const handleDiscoverClassification = async () => {
+    try {
+        setSyncStatus({ value: "Discovering", subtitle: "Fetching latest classification...",  color: "text-blue-400", });
+        const response = await DiscoverClasification();
+        if (response?.data?.status === 200) {
+            toast.success( response?.data?.message || "Classifications discovered successfully" );
+            // Reload product list
+            await fetchClassifications();
+            setSyncStatus({ value: "Updated", subtitle: "Classifications discovered", color: "text-emerald-400", });
+        } else {
+            toast.warning( response?.data?.message || "Unable to discover classifications" );
+
+            setSyncStatus({ value: "Failed",  subtitle: "Discovery failed",  color: "text-red-400", });
+        }
+    } catch (error) {
+        console.error(error);
+        toast.error( error?.response?.data?.message || "Failed to discover classifications" );
+        setSyncStatus({ value: "Failed", subtitle: "Discovery failed",  color: "text-red-400", });
     }
 };
 
@@ -285,7 +311,8 @@ const handleUpdate = async () => {
                                     <p className="text-xs text-gray-400 mt-1"> Tap a product to add it. Click the × on  a chip to remove. </p>
                                 </div>
                                  {/* Right Section */}
-        <button type="button"  className="ml-auto flex items-center gap-2 px-2 py-2 rounded-xl  hover:bg-cyan-500/30 text-white text-sm font-medium transition-colors" >
+        <button type="button"  onClick={handleDiscoverProducts}
+        className="ml-auto flex items-center gap-2 px-2 py-2 rounded-xl  hover:bg-cyan-500/30 text-white text-sm font-medium transition-colors" >
              <RefreshCw size={16} />
         </button>
                             </div>
@@ -362,7 +389,8 @@ const handleUpdate = async () => {
 
                                     <p className="text-xs text-gray-400 mt-1"> Toggle update categories on or off. </p>
                                 </div>
-                                <button type="button"  className="ml-auto flex items-center gap-2 px-2 py-2 rounded-xl  hover:bg-green-500/20 text-white text-sm font-medium transition-colors" >
+                                <button type="button" onClick={handleDiscoverClassification} 
+                                className="ml-auto flex items-center gap-2 px-2 py-2 rounded-xl  hover:bg-green-500/20 text-white text-sm font-medium transition-colors" >
              <RefreshCw size={16} />
         </button>
                             </div>

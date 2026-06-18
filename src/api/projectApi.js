@@ -1548,8 +1548,22 @@ export const getselectedClassificationsList = () =>
     headers: {
       Authorization: `Bearer ${getToken()}`
     }
-
   });
+
+  export const DiscoverProducts = async () => {
+  return await axios.post(
+    `${BASE_URL}/products-classification/discover-products`,
+    
+  );
+};
+
+  export const DiscoverClasification = async () => {
+  return await axios.post(
+    `${BASE_URL}/products-classification/discover-classifications`,
+    
+  );
+};
+
 
 export const PatchTreewsus_dashboard_statistics = () =>
   axios.get(`${BASE_URL}/PatchTree/wsus-dashboard-statistics`, {

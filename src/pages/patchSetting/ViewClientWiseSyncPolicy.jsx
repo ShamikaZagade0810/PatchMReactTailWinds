@@ -96,7 +96,7 @@ const ViewClientWiseSyncPolicy = () => {
             osType: editData?.osType,
             scheduleDay: editData?.parameter == 4 ? editData?.scheduleDay  || "NA" : "NA",
             scheduleTime: editData?.parameter == 4 ? editData?.time || "00:00" : "00:00",
-            ipAddress: Array.isArray(editData?.ipAddress)? editData.ipAddress.map((ip) => typeof ip === "object" ? ip.value : ip ).join(",") : ""
+             ipAddress: Array.isArray(editData?.ipAddress) ? editData.ipAddress.map(ip => typeof ip === "object" ? ip.value : ip ) : []    
         };
 
         console.log("Update Payload:", inputData);
