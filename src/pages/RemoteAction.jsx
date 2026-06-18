@@ -112,7 +112,8 @@ const RemoteAction = () => {
             // MissingPatches: requestToServerForRemoteAction,
             DiscoverInfo: requestToServerForRemoteAction,
             GET_PATCHES: requestToServerForRemoteAction,
-            GET_APPLICATIONS: requestToServerForRemoteAction
+            GET_APPLICATIONS: requestToServerForRemoteAction,
+            synchronizepolicy: requestToServerForRemoteAction
         }
 
     };
@@ -130,8 +131,6 @@ const RemoteAction = () => {
             ...data.data.data
         ];
         setBranchList(Branches);
-
-
     }
 
     // const modules = [
@@ -234,7 +233,7 @@ const RemoteAction = () => {
         DiscoverInfo: ["branchNames", "ipAddress"],
         GET_PATCHES: ["branchNames", "ipAddress"],
         GET_APPLICATIONS: ["branchNames", "ipAddress"],
-        synchronizepolicy: ["ipAddress", "serverIp", "port", "patchUpdateParameter"]
+        synchronizepolicy: ["branchNames","ipAddress", "serverIp", "port", "patchUpdateParameter"]
     };
     const selectedModule = modules[activeIndex];
     const activeFilters = filterConfig[selectedModule?.id] || [];
@@ -309,14 +308,14 @@ const RemoteAction = () => {
                     type="int"
                     placeholder="Enter port"
                     className={inputClass}
-                    {...register("serverIp")}
+                    {...register("port")}
                 />
             </div>
         ),
         patchUpdateParameter: (
             <div>
                 <label className={labelClass}> Patch Update Parameter </label>
-                <select className={inputClass}  {...register("groupname")} >
+                <select className={inputClass}  {...register("patchUpdateParameter")} >
                     <option value=""  >-- Please select value --</option>
                     {patchUpdateParameter.map((g, i) => (
                         <option key={i} value={g.value}> {g.label} </option>
@@ -326,29 +325,61 @@ const RemoteAction = () => {
         )
     };
 
+    // const gettabledata = async (requestid) => {
+
+    //     let requestdata = {
+    //         "reqId": requestid
+    //     }
+    //     const data = await requestIdForRemoteAction(requestdata);
+
+    //     try {
+    //         console.log("API Response:", data);
+    //         let MainData = data.data.data[0].data;
+    //         let ColumnData = data.data.data[0].column;
+    //         let obj = {};
+    //         obj.maindata = MainData;
+    //         obj.columndata = ColumnData;
+    //         console.log("obj ---> ", obj);
+    //         setdynamicReport(obj)
+
+    //     } catch (error) {
+    //         console.error("API Error:", error);
+    //     }
+
+    //     console.log("New table data", data)
+    // }
     const gettabledata = async (requestid) => {
 
-        let requestdata = {
-            "reqId": requestid
-        }
-        const data = await requestIdForRemoteAction(requestdata);
+    const data = await requestIdForRemoteAction({
+        reqId: requestid
+    });
 
-        try {
-            console.log("API Response:", data);
-            let MainData = data.data.data[0].data;
-            let ColumnData = data.data.data[0].column;
-            let obj = {};
-            obj.maindata = MainData;
-            obj.columndata = ColumnData;
-            console.log("obj ---> ", obj);
-            setdynamicReport(obj)
+    try {
 
-        } catch (error) {
-            console.error("API Error:", error);
-        }
+        const MainData = data.data.data[0].data;
+        const ColumnData = data.data.data[0].column;
 
-        console.log("New table data", data)
+        setdynamicReport(prev => {
+
+            const oldRows = JSON.stringify(prev.maindata);
+            const newRows = JSON.stringify(MainData);
+
+            if (oldRows === newRows) {
+                return prev; // NO RERENDER
+            }
+
+            return {
+                maindata: MainData,
+                columndata: prev.columndata.length
+                    ? prev.columndata
+                    : ColumnData
+            };
+        });
+
+    } catch (err) {
+        console.error(err);
     }
+};
 
     const handleSendRequestToMultipleClients = async () => {
 
