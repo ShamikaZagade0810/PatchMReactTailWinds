@@ -1,101 +1,95 @@
-import axios from "axios";
 
+import apiInceptor from "./apiInceptor";
 
 //const getToken() = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE1MDY4MDQsImV4cCI6MTc4MTU5MzIwNH0.9sTTgcQN78QWSubxZE5krXbssCLKysm_ohjkQsv5mao';
  const Token11 = null;
-const getToken = () =>{
-   const Token = localStorage.getItem("accessToken");
-   if(Token != null){
-         return Token;
-   }
-}
 
 
 const BASE_URL = "http://192.168.0.89:8081";
 
 export const getProjects = () =>
-  axios.get(`${BASE_URL}/projectdetail/viewProjectPayload`);
+  apiInceptor.get(`/projectdetail/viewProjectPayload`);
 
 export const getChanges = () =>
-  axios.get(`${BASE_URL}/projectdetail/currentChangesDetails`);
+  apiInceptor.get(`/projectdetail/currentChangesDetails`);
 
 export const createProject = (payload) =>
-  axios.post(`${BASE_URL}/projectdetail/addProjectPayload`, payload);
+  apiInceptor.post(`/projectdetail/addProjectPayload`, payload);
 
 export const getProjectEnvironments = (projectId) =>
-  axios.get(`${BASE_URL}/environmentDataMaster/project/${projectId}`);
+  apiInceptor.get(`/environmentDataMaster/project/${projectId}`);
 
 export const createEnvironment = (payload) =>
-  axios.post(`${BASE_URL}/environmentDataMaster/newEnvironment`, payload);
+  apiInceptor.post(`/environmentDataMaster/newEnvironment`, payload);
 
 export const createInstance = (payload) =>
-  axios.post(`${BASE_URL}/dbInstance/dbInstanceCreate`, payload);
+  apiInceptor.post(`/dbInstance/dbInstanceCreate`, payload);
 
 export const getInstances = () =>
-  axios.get(`${BASE_URL}/dbInstance/getAllInstance`);
+  apiInceptor.get(`/dbInstance/getAllInstance`);
 
 export const createPackage = (formData) =>
-  axios.post(`${BASE_URL}/api/change-packages/createPackage`, formData);
+  apiInceptor.post(`/api/change-packages/createPackage`, formData);
 
 export const getPackagesByProject = (projectId) =>
-  axios.get(
-    `${BASE_URL}/packageForm/getPackegeByProject?projectId=${projectId}`,
+  apiInceptor.get(
+    `/packageForm/getPackegeByProject?projectId=${projectId}`,
   );
 
 export const getDriftsByProject = (projectId) =>
-  axios.get(`${BASE_URL}/sanpshot/drift-report?projectId=${projectId}`);
+  apiInceptor.get(`/sanpshot/drift-report?projectId=${projectId}`);
 
 export const getDrifts = () =>
-  axios.get(`${BASE_URL}/sanpshot/getdrift-report`);
+  apiInceptor.get(`/sanpshot/getdrift-report`);
 
 export const getAllDbInstances = () =>
-  axios.get(`${BASE_URL}/dbInstance/getAllInstance`);
+  apiInceptor.get(`/dbInstance/getAllInstance`);
 
 export const getPackageCount = () =>
-  axios.get(`${BASE_URL}/packageForm/packageCount`);
+  apiInceptor.get(`/packageForm/packageCount`);
 
 export const approvePackage = (projectId, environmentId, packageId) =>
-  axios.post(`${BASE_URL}/api/change-packages/approvePackege`, {
+  apiInceptor.post(`/api/change-packages/approvePackege`, {
     projectId,
     envId: environmentId,
     packageId,
   });
 
 export const getPackageData = () =>
-  axios.get(`${BASE_URL}/api/change-packages/getPackageData`);
+  apiInceptor.get(`/api/change-packages/getPackageData`);
 
 export const requestPackage = (payload) =>
-  axios.post(`${BASE_URL}/api/change-packages/pendingPackege`, payload);
+  apiInceptor.post(`/api/change-packages/pendingPackege`, payload);
 
 // NEWLY ADDED FUNCTIONS
 
 export const testDbConnection = (payload) =>
-  axios.post(`${BASE_URL}/dbInstance/test-connection`, payload);
+  apiInceptor.post(`/dbInstance/test-connection`, payload);
 
 export const createInstanceWithConnection = (payload) =>
-  axios.post(`${BASE_URL}/dbInstance/createInstanceWithConnection`, payload);
+  apiInceptor.post(`/dbInstance/createInstanceWithConnection`, payload);
 
 export const getPackageDataByProjectId = (projectId) =>
-  axios.get(
-    `${BASE_URL}/api/change-packages/getPackageDataByProjectId?projectId=${projectId}`,
+  apiInceptor.get(
+    `/api/change-packages/getPackageDataByProjectId?projectId=${projectId}`,
   );
 
 export const getPackageExcutionByProjectId = (projectId) =>
-  axios.get(
-    `${BASE_URL}/packageForm/getPackageExcutionByProjectId?projectId=${projectId}`,
+  apiInceptor.get(
+    `/packageForm/getPackageExcutionByProjectId?projectId=${projectId}`,
   );
 
 export const getPackageWithoutAssign = (projectId) =>
-  axios.get(
-    `${BASE_URL}/packageForm/getPackageWithoutAssign?projectId=${projectId}`,
+  apiInceptor.get(
+    `/packageForm/getPackageWithoutAssign?projectId=${projectId}`,
   );
 
 export const createPackageFromDrift = ({ driftIds, projectId, payload }) => {
-  const url = `${BASE_URL}/sanpshot/generate-drift-packages?driftIds=${driftIds.join(
+  const url = `/sanpshot/generate-drift-packages?driftIds=${driftIds.join(
     ",",
   )}&projectId=${projectId}`;
 
-  return axios.post(url, payload);
+  return apiInceptor.post(url, payload);
 };
 
 export const generateDriftPackage = ({
@@ -107,7 +101,7 @@ export const generateDriftPackage = ({
   preExecution,
   postExecution,
 }) =>
-  axios.post(`${BASE_URL}/sanpshot/generate-newDrift-packages`, {
+  apiInceptor.post(`/sanpshot/generate-newDrift-packages`, {
     packageName,
     category: "DRIFT",
     description: description || "Drift package generated",
@@ -122,7 +116,7 @@ export const generateDriftPackage = ({
 export const rejectPackage = async (payload) => {
   console.log("payload in api for reject : ", payload);
 
-  axios.post(`${BASE_URL}/api/change-packages/rejectPackage`, payload);
+  apiInceptor.post(`/api/change-packages/rejectPackage`, payload);
 };
 
 // Add to your existing projectApi.js
@@ -133,7 +127,7 @@ export const previewDriftScripts = async ({
   postQuery,
 }) => {
   const token = localStorage.getItem("accessToken");
-  return axios.post(
+  return apiInceptor.post(
     `${API_BASE_URL}/projects/${projectId}/drifts/preview`,
     {
       driftIds,
@@ -151,10 +145,10 @@ export const previewDriftScripts = async ({
 
 // projectApi.js
 export const previewRollbackScript = (payload) =>
-  axios.post("/drifts/preview/rollback", payload);
+  apiInceptor.post("/drifts/preview/rollback", payload);
 
 export const previewChangeLogScript = (payload) =>
-  axios.post("/drifts/preview/changelog", payload);
+  apiInceptor.post("/drifts/preview/changelog", payload);
 
 export const previewDriftPackage = async (payload) => {
   // const newr = {
@@ -165,8 +159,8 @@ export const previewDriftPackage = async (payload) => {
   console.log("payload in api ", payload);
 
   try {
-    const res = await axios.post(
-      `${BASE_URL}/sanpshot/preview-drift-package`,
+    const res = await apiInceptor.post(
+      `/sanpshot/preview-drift-package`,
       payload,
     );
 
@@ -178,8 +172,8 @@ export const previewDriftPackage = async (payload) => {
   }
 };
 export const getDbInstancesByProjectId = (projectId) =>
-  axios.get(
-    `${BASE_URL}/environmentDataMaster/getInstanceByProjectType?projectId=${projectId}`,
+  apiInceptor.get(
+    `/environmentDataMaster/getInstanceByProjectType?projectId=${projectId}`,
   );
 
 // Fetch versions for a specific schema
@@ -189,7 +183,7 @@ export const fetchVersionsForSchema = async (
   schemaName,
 ) => {
   const response = await fetch(
-    `${BASE_URL}/sanpshot/getVersions?projectId=${projectId}&environmentId=${environmentId}&schemaName=${schemaName}`,
+    `/sanpshot/getVersions?projectId=${projectId}&environmentId=${environmentId}&schemaName=${schemaName}`,
   );
   if (!response.ok) throw new Error("Failed to fetch versions");
   const data = await response.json();
@@ -203,7 +197,7 @@ export const fetchTablesForVersion = async (
   versionName,
 ) => {
   const response = await fetch(
-    `${BASE_URL}/sanpshot/getSchemaTableIdByVersion?projectId=${projectId}&environmentId=${environmentId}&versionName=${versionName}`,
+    `/sanpshot/getSchemaTableIdByVersion?projectId=${projectId}&environmentId=${environmentId}&versionName=${versionName}`,
   );
   if (!response.ok) throw new Error("Failed to fetch tables for version");
   const data = await response.json();
@@ -211,7 +205,7 @@ export const fetchTablesForVersion = async (
 };
 
 export const getAllDrivers = () =>
-  axios.get(`${BASE_URL}/environmentDataMaster/getAllDriver`);
+  apiInceptor.get(`/environmentDataMaster/getAllDriver`);
 
 export const fetchTableCountForVersion = async (
   projectId,
@@ -219,7 +213,7 @@ export const fetchTableCountForVersion = async (
   versionName,
 ) => {
   const response = await fetch(
-    `${BASE_URL}/sanpshot/getSchemaTableIdByVersion?projectId=${projectId}&environmentId=${environmentId}&versionName=${versionName}`,
+    `/sanpshot/getSchemaTableIdByVersion?projectId=${projectId}&environmentId=${environmentId}&versionName=${versionName}`,
   );
   if (!response.ok) throw new Error("Failed to fetch table count for version");
   const data = await response.json();
@@ -235,8 +229,8 @@ export const getRollbackScript = async (data) => {
     //   success : 200,
     //   rollbackScript: "test script from backend"
     // };
-    const response = axios.post(
-      `${BASE_URL}/api/change-packages/fromPacakgePreview`,
+    const response = apiInceptor.post(
+      `/api/change-packages/fromPacakgePreview`,
       data,
     );
     console.log("response at api call in project js ", response);
@@ -251,670 +245,322 @@ export const getRollbackScript = async (data) => {
 
 
 };
-
+ 
 export const getPatches = () =>
-  axios.get(`${BASE_URL}/dashboard/dashboardCount`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get("/dashboard/dashboardCount");
+
 
 export const getOSCount = () =>
-  axios.get(`${BASE_URL}/dashboard/getOScount`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/getOScount`);
 
 
 export const getSecurityPostureData = () =>
-  axios.get(`${BASE_URL}/dashboard/securityPosture`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/securityPosture`);
 
 export const getThirdPartySeverity = () =>
-  axios.get(`${BASE_URL}/dashboard/thirdpartyseverity`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/thirdpartyseverity`);
+
 export const getThirdPartyApplisting = () =>
-  axios.get(`${BASE_URL}/dashboard/thirdpartyseveritylist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
-
-  export const getVulnerabilityModalList = () =>
-  axios.get(`${BASE_URL}/dashboard/thirdpartyseverityModalList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    
-  });
-
-
+  apiInceptor.get(`/dashboard/thirdpartyseveritylist`);
 
 export const getHistBarChart = () =>
-  axios.get(`${BASE_URL}/dashboard/PatchHistoryBar`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/PatchHistoryBar`);
 
 export const getIpWiseStatusData = () =>
-  axios.get(`${BASE_URL}/dashboard/IPPatchStatusBar`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/IPPatchStatusBar`);
 
 export const getOsUpdatesPie = () =>
-  axios.get(`${BASE_URL}/dashboard/OsPatchStatus`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/OsPatchStatus`);
 
 export const getOsUpdatesList = () =>
-  axios.get(`${BASE_URL}/dashboard/OsPatchStatusList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/OsPatchStatusList`);
 
 
 export const getTopRiskyDevices = () =>
-  axios.get(`${BASE_URL}/dashboard/TopRiskDevices`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/TopRiskDevices`);
 
 
 export const getApprovedCriticalList = () =>
-  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/ApprvCriticalList`);
 
 export const getCriticalPatchesList = () =>
-  axios.get(`${BASE_URL}/dashboard/MissingCriticalList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/MissingCriticalList`);
 
 
 export const getCriticalInstalledPatchesList = () =>
-  axios.get(`${BASE_URL}/dashboard/ApprvCriticalList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/ApprvCriticalList`);
 
 
 
 
 
 export const getApprovedPatchesList = () =>
-  axios.get(`${BASE_URL}/dashboard/ApprovedPatchList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/ApprovedPatchList`);
 
 export const getFailedIpList = () =>
-  axios.get(`${BASE_URL}/dashboard/FailedList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/FailedList`);
 
 export const getTotalPatchList = () =>
-  axios.get(`${BASE_URL}/dashboard/TotalPatchList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/TotalPatchList
+`);
 
 
 export const getMissingPatchList = () =>
-  axios.get(`${BASE_URL}/dashboard/MissingPatchList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/MissingPatchList`);
 
 
 
 export const getWindowList = () =>
-  axios.get(`${BASE_URL}/dashboard/WindowsList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/WindowsList
+`);
 
 export const getServerList = () =>
-  axios.get(`${BASE_URL}/dashboard/ServerList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/ServerList`);
 
 export const getLinuxList = () =>
-  axios.get(`${BASE_URL}/dashboard/LinuxList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/LinuxList`);
 
 export const getMacList = () =>
-  axios.get(`${BASE_URL}/dashboard/MacList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dashboard/MacList
+`);
 
 
 export const getIpWisePatchList = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/IPPatchStatusBarList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/dashboard/IPPatchStatusBarList`, inputData
+  );
 
 export const getOSWisePatchList = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/OsPatchStatusAllList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/dashboard/OsPatchStatusAllList`, inputData
+  );
 
 
 export const getthirdPartySeverityPatchList = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/thirdpartyseverityAllList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/dashboard/thirdpartyseverityAllList`, inputData
+  );
 
 
 export const getPatchHistoryList = (inputData) =>
-  axios.get(`${BASE_URL}/dashboard/PatchHistoryList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/dashboard/PatchHistoryList`, inputData
+  );
 
 export const getDeviceList = () =>
-  axios.get(`${BASE_URL}/devices/DevicesList
-`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/devices/DevicesList
+`);
 
 
 export const getPatchSeverityCount = (inputData) =>
-  axios.get(`${BASE_URL}/devices/PatchSeverityCount`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/PatchSeverityCount`, inputData
+  );
 
 export const getPatchInstalledCount = (inputData) =>
-  axios.get(`${BASE_URL}/devices/PatchInstalledCount`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/PatchInstalledCount`, inputData
+  );
 
 export const getBasicInfo = (inputData) =>
-  axios.get(`${BASE_URL}/devices/BasicInfo`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/BasicInfo`, inputData
+  );
 
 export const getHardwareInfo = (inputData) =>
-  axios.get(`${BASE_URL}/devices/HardwareInfo`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/HardwareInfo`, inputData
+  );
 
 export const getComputerInfo = (inputData) =>
-  axios.get(`${BASE_URL}/devices/ComputerInfo`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/ComputerInfo`, inputData
+  );
 
 
 export const getRamGraph = (inputData) =>
-  axios.get(`${BASE_URL}/devices/RAMGraphInfo`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/RAMGraphInfo`, inputData
+  );
 
 export const getInstalledProgram = (inputData) =>
-  axios.get(`${BASE_URL}/devices/InstallProgram`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/InstallProgram`, inputData
+  );
 
 
 export const getInstalledPatches = (inputData) =>
-  axios.get(`${BASE_URL}/devices/InstallPatch`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/devices/InstallPatch`, inputData
+  );
 
 export const getLinuxDashboardCount = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxDashboardCount`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxDashboardCount`);
 
 
 export const getLinuxPatchStatus = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxPatchStatus`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxPatchStatus`);
 
 export const getLinuxBranchWiseDevices = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxBranchWiseDevices`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxBranchWiseDevices`);
 
 export const getLinuxDeviceWiseInstallOrNeededCount = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxDeviceWiseInstallOrNeededCount`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxDeviceWiseInstallOrNeededCount`);
 
 export const getPatchActivityOvertime = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/PatchActivityOvertime`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/PatchActivityOvertime`);
 
 
 export const getLinuxInstalledPatchList = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxInstalledPatchList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxInstalledPatchList`);
 
 export const getLinuxRiskyEndpoint = () =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxRiskyDevicesList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxRiskyDevicesList`);
 
 
 
 export const getLinuxModalEndpointData = (inputData) =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxModalEndpointData`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxModalEndpointData`, inputData
+  );
 
 
 
 export const getLinuxModalPatchData = (inputData) =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxModalPatchData`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxModalPatchData`, inputData
+  );
 
 
 export const getLinuxBranchwiseModal = (inputData) =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxBranchwiseModal`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxBranchwiseModal`, inputData
+  );
 
 
 export const getLinuxIpwiseModal = (inputData) =>
-  axios.get(`${BASE_URL}/LinuxDashbord/LinuxIpwisewiseModal`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/LinuxDashbord/LinuxIpwisewiseModal`, inputData
+  );
 
 
 
 export const getPatchReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GeneratePatchReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GeneratePatchReport`, inputData
   );
 
 export const getmissingPatchReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateMissingReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateMissingReport`, inputData
   );
 
 
 export const getDeviceWiseReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateDevicewiseReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateDevicewiseReport`, inputData
   );
 
 export const getYearMonthReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateYearMonthReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateYearMonthReport`, inputData
   );
 
 export const getAllStatusReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateAllStatusReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateAllStatusReport`, inputData
   );
 
 export const getUpdateTimelineReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GeneratePatchTimelineReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GeneratePatchTimelineReport`, inputData
   );
 
 export const getdeviceAgentReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateDeviceAgentReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateDeviceAgentReport`, inputData
   );
 
 export const getFailedUpdateReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateFailedUpdateReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateFailedUpdateReport`, inputData
   );
 
 export const getCategoryWiseReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/reports/GenerateCategorywiseReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/reports/GenerateCategorywiseReport`, inputData
   );
 
 export const getThirdPartyPatchCount = (inputData) =>
-  axios.get(
-    `${BASE_URL}/thirdpartyDash/PatchCount`,
-
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
-  );
+  apiInceptor.get(
+    `/thirdpartyDash/PatchCount`);
 
 
 export const getThirdPartyMonthlyPatchLine = (inputData) =>
-  axios.get(
-    `${BASE_URL}/thirdpartyDash/MonthlyPatchLine`,
-
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
-  );
+  apiInceptor.get(
+    `/thirdpartyDash/MonthlyPatchLine`);
 
 export const getThirdPartyAppPatchStatusBar = (inputData) =>
-  axios.get(
-    `${BASE_URL}/thirdpartyDash/AppPatchStatusBar`,
+  apiInceptor.get(
+    `/thirdpartyDash/AppPatchStatusBar`,
 
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
   );
 
 export const getThirdPartyIPPatchStatusChart = (inputData) =>
-  axios.get(
-    `${BASE_URL}/thirdpartyDash/IPPatchStatusChart`,
+  apiInceptor.get(
+    `/thirdpartyDash/IPPatchStatusChart`,
 
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
   );
 
 export const getThirdPartyTopRiskyDevices = () =>
-  axios.get(`${BASE_URL}/thirdpartyDash/TopRiskyDevices`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdpartyDash/TopRiskyDevices`);
 
 export const getRequiredSeverityBar = () =>
-  axios.get(`${BASE_URL}/thirdpartyDash/RequiredSeverityBar`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdpartyDash/RequiredSeverityBar`);
 
 
 
 export const getThirdPatchCountListing = (inputData) =>
-  axios.post(
-    `${BASE_URL}/thirdpartyDash/PatchCountListing`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/thirdpartyDash/PatchCountListing`, inputData
   );
 
 
 export const getThirdTotAppsListing = () =>
-  axios.get(`${BASE_URL}/thirdpartyDash/TotalAppsListing`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdpartyDash/TotalAppsListing`);
 
 export const getThirdUpToDateAppsListing = () =>
-  axios.get(`${BASE_URL}/thirdpartyDash/UptoDateAppsListing`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdpartyDash/UptoDateAppsListing`);
 
 
 export const getThirdOutDatedAppsListing = () =>
-  axios.get(`${BASE_URL}/thirdpartyDash/OutDatedAppsListing`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdpartyDash/OutDatedAppsListing`);
 
 
 export const getThirdMonthltPatchList = (inputData) =>
-  axios.post(
-    `${BASE_URL}/thirdpartyDash/MonthltPatchList`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/thirdpartyDash/MonthltPatchList`, inputData
   );
 
 
 export const getThirdAppWisePatchList = (inputData) =>
-  axios.post(
-    `${BASE_URL}/thirdpartyDash/AppWisePatchList`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/thirdpartyDash/AppWisePatchList`, inputData
   );
 
 export const requestToServerForRemoteAction = (inputData) =>
-  axios.post(
-    `${BASE_URL}/RemoteAction/ReqToServer`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/RemoteAction/ReqToServer`, inputData
   );
 
 
 export const requestIdForRemoteAction = (inputData) =>
-  axios.post(
-    `${BASE_URL}/RemoteAction/SelectedRequestIDList`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/RemoteAction/SelectedRequestIDList`, inputData
   );
 
 
 
 export const AddActivityCmd = (inputData) =>
-  axios.post(
-    `${BASE_URL}/RunCommand/addcmdactivity`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/RunCommand/addcmdactivity`, inputData
   );
 
 export const getActivityCmdList = () =>
-  axios.get(`${BASE_URL}/RunCommand/ActivityCmdlist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/RunCommand/ActivityCmdlist`);
 
 export const getUpdateActivityCmd = (inputData) =>
-  axios.put(
-    `${BASE_URL}/RunCommand/updateActivityCmd`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/RunCommand/updateActivityCmd`, inputData
   );
 
 export const getdeleteActivityCmd = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/RunCommand/deleteActivityCmd`,
+  apiInceptor.delete(
+    `/RunCommand/deleteActivityCmd`,
     {
       data: inputData,
       headers: {
@@ -924,8 +570,8 @@ export const getdeleteActivityCmd = (inputData) =>
   );
 
 export const sendMultiplePatches = (inputData) =>
-  axios.post(
-    `${BASE_URL}/patch/start`,
+  apiInceptor.post(
+    `/patch/start`,
     inputData,
     {
       headers: {
@@ -938,8 +584,8 @@ export const sendMultiplePatches = (inputData) =>
 
 //---- VIEW DEVICES
 // export const ViewDeviesList = (inputData) =>
-// axios.post(
-//   `${BASE_URL}/master/ViewDevicesList  `,
+// apiInceptor.post(
+//   `/master/ViewDevicesList  `,
 //   inputData,
 //   {
 //     headers: {
@@ -950,37 +596,21 @@ export const sendMultiplePatches = (inputData) =>
 
 //---- Add User
 export const AddAppUser = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addNewAppUser`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addNewAppUser`, inputData
   );
 
 export const getViewAppUserList = () =>
-  axios.get(`${BASE_URL}/master/viewAllAppUser`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/master/viewAllAppUser`);
 
 export const getUpdateAppUser = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updateAppUser`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updateAppUser`, inputData
   );
 
 export const getdeleteAppUser = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteAppUser`,
+  apiInceptor.delete(
+    `/master/deleteAppUser`,
     {
       data: inputData,
       headers: {
@@ -993,28 +623,17 @@ export const getdeleteAppUser = (inputData) =>
 
 
 export const getViewDeviesList = () =>
-  axios.get(`${BASE_URL}/master/ViewDevicesList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/master/ViewDevicesList`);
 
 
 export const UpdateViewDevices = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updateViewDevices `,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updateViewDevices `, inputData
   );
 
 export const deleteViewDevices = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteViewDevices `,
+  apiInceptor.delete(
+    `/master/deleteViewDevices `,
     {
       data: inputData,
       headers: {
@@ -1026,37 +645,21 @@ export const deleteViewDevices = (inputData) =>
 
 //---- Customer Master
 export const AddCustomer = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addCustomerMaster`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addCustomerMaster`, inputData
   );
 
 export const getCustomerList = () =>
-  axios.get(`${BASE_URL}/master/viewCustomerMaster `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/master/viewCustomerMaster `);
 
 export const getUpdateCustomer = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updateCustomer`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updateCustomer`, inputData
   );
 
 export const deleteCustomer = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteCustomer`,
+  apiInceptor.delete(
+    `/master/deleteCustomer`,
     {
       data: inputData,
       headers: {
@@ -1068,37 +671,21 @@ export const deleteCustomer = (inputData) =>
 
 //---- Branch Master
 export const AddBranch = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addBranch`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addBranch`, inputData
   );
 
 export const getBranchList = () =>
-  axios.get(`${BASE_URL}/master/viewBranch `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/master/viewBranch `);
 
 export const getUpdateBranch = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/editBranch`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/editBranch`, inputData
   );
 
 export const deleteBranch = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteBranch`,
+  apiInceptor.delete(
+    `/master/deleteBranch`,
     {
       data: inputData,
       headers: {
@@ -1110,37 +697,21 @@ export const deleteBranch = (inputData) =>
 
 //---- Group Master
 export const AddGroupMaster = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addGroup`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addGroup`, inputData
   );
 
 export const getGroupMasterList = () =>
-  axios.get(`${BASE_URL}/master/viewGroup `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/master/viewGroup `);
 
 export const getUpdateGroupMaster = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/editGroup`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/editGroup`, inputData
   );
 
 export const deleteGroupMaster = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteGroup`,
+  apiInceptor.delete(
+    `/master/deleteGroup`,
     {
       data: inputData,
       headers: {
@@ -1151,37 +722,21 @@ export const deleteGroupMaster = (inputData) =>
 
 //---- Server Master
 export const AddServerMaster = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addServer`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addServer`, inputData
   );
 
 export const getServerMasterList = () =>
-  axios.get(`${BASE_URL}/master/viewAllServer `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/master/viewAllServer `);
 
 export const getUpdateServerMaster = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/editServer`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/editServer`, inputData
   );
 
 export const deleteServerMaster = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteServer`,
+  apiInceptor.delete(
+    `/master/deleteServer`,
     {
       data: inputData,
       headers: {
@@ -1193,37 +748,21 @@ export const deleteServerMaster = (inputData) =>
 
 //---- OEM Master
 export const AddOEMMaster = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addVendor`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addVendor`, inputData
   );
 
 export const getOEMMasterList = () =>
-  axios.get(`${BASE_URL}/master/viewAllVendor `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/master/viewAllVendor `);
 
 export const getUpdateOEMMaster = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updateVendor`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updateVendor`, inputData
   );
 
 export const deleteOEMMaster = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteVendor`,
+  apiInceptor.delete(
+    `/master/deleteVendor`,
     {
       data: inputData,
       headers: {
@@ -1244,50 +783,28 @@ export const uploadContentDistribution = (formData) =>
   );
 
 export const getDownloadingPatchProgress = () =>
-  axios.get(`${BASE_URL}/upload/viewDownloadingPatchProgress`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/upload/viewDownloadingPatchProgress`);
 
 export const addSetServerPolicy = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addServerPolicy`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addServerPolicy`, inputData
   );
 
 
 export const viewAllServerPolicy = () =>
-  axios.get(`${BASE_URL}/master/viewAllServerPolicy`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/master/viewAllServerPolicy`);
 
 
 
 export const editSetServerPolicy = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updateServerPolicy`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updateServerPolicy`, inputData
   );
 
 
 export const deleteSelectedPolicyServer = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteServerPolicy`,
+  apiInceptor.delete(
+    `/master/deleteServerPolicy`,
     {
       data: inputData,
       headers: {
@@ -1297,40 +814,23 @@ export const deleteSelectedPolicyServer = (inputData) =>
   );
 
 export const addMailConfig = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addMailConfig`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addMailConfig`, inputData
   );
 
 
 export const viewAllMailConfig = () =>
-  axios.get(`${BASE_URL}/master/viewMailConfig`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/master/viewMailConfig`);
 
 export const editMailConfig = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updateMailConfig`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updateMailConfig`, inputData
   );
 
 
 export const deleteSelectMailConfig = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deleteMailConfig`,
+  apiInceptor.delete(
+    `/master/deleteMailConfig`,
     {
       data: inputData,
       headers: {
@@ -1341,40 +841,23 @@ export const deleteSelectMailConfig = (inputData) =>
 
 
 export const addPeriodicReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/master/addPeriodicReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/master/addPeriodicReport`, inputData
   );
 
 
 export const viewAllPeriodicReportList = () =>
-  axios.get(`${BASE_URL}/master/viewAllPeriodicReport`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/master/viewAllPeriodicReport`);
 
 export const editPeriodicReport = (inputData) =>
-  axios.put(
-    `${BASE_URL}/master/updatePeriodicReport`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/master/updatePeriodicReport`, inputData
   );
 
 
 export const deleteSelectPeriodicReport = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/master/deletePeriodicReport`,
+  apiInceptor.delete(
+    `/master/deletePeriodicReport`,
     {
       data: inputData,
       headers: {
@@ -1386,37 +869,21 @@ export const deleteSelectPeriodicReport = (inputData) =>
 // ================= SCHEDULE MULTIPLE RUN COMAND ===========
 
 export const AddActivityScheduler = (inputData) =>
-  axios.post(
-    `${BASE_URL}/RunCommand/AddcmdScheduler`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/RunCommand/AddcmdScheduler`, inputData
   );
 
 export const getActivitySchedulerList = () =>
-  axios.get(`${BASE_URL}/RunCommand/listcmdScheduler `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/RunCommand/listcmdScheduler `);
 
 export const getUpdateActivityScheduler = (inputData) =>
-  axios.put(
-    `${BASE_URL}/RunCommand/updatecmdScheduler`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/RunCommand/updatecmdScheduler`, inputData
   );
 
 export const deleteActivityScheduler = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/RunCommand/deletecmdScheduler`,
+  apiInceptor.delete(
+    `/RunCommand/deletecmdScheduler`,
     {
       data: inputData,
       headers: {
@@ -1426,38 +893,32 @@ export const deleteActivityScheduler = (inputData) =>
   );
 
 export const getUpdateStatusActivityScheduler = (inputData) =>
-  axios.put(
-    `${BASE_URL}/RunCommand/UpdatestatuscmdScheduler`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/RunCommand/UpdatestatuscmdScheduler`, inputData
   );
 
 // sumit changes  
 
 // ================================= AUTO APPROVAL RULE PATCH SETTING ================================// 
 export const AddAutoApprovalRule = async (inputData) => {
-  return await axios.post(
-    `${BASE_URL}/view-approval-rule/addApprovalRule`,
+  return await apiInceptor.post(
+    `/view-approval-rule/addApprovalRule`,
     inputData
   );
 };
 
 
 export const getAutoApprovalRule = async () => {
-  return await axios.get(
-    `${BASE_URL}/view-approval-rule/viewAllApprovalRule`,
+  return await apiInceptor.get(
+    `/view-approval-rule/viewAllApprovalRule`,
 
   );
 };
 
 
 export const enableViewApprovalRule = (inputData) =>
-  axios.put(
-    `${BASE_URL}/view-approval-rule/enableApprovalRule/${inputData}`,
+  apiInceptor.put(
+    `/view-approval-rule/enableApprovalRule/${inputData}`,
 
     {
       headers: {
@@ -1467,8 +928,8 @@ export const enableViewApprovalRule = (inputData) =>
   );
 
 export const disableViewApprovalRule = (inputData) =>
-  axios.put(
-    `${BASE_URL}/view-approval-rule/disableApprovalRule/${inputData}`,
+  apiInceptor.put(
+    `/view-approval-rule/disableApprovalRule/${inputData}`,
 
     {
       headers: {
@@ -1478,27 +939,21 @@ export const disableViewApprovalRule = (inputData) =>
   );
 
 export const getAutoApprovalRuleById = async (InputData) => {
-  return await axios.get(
-    `${BASE_URL}/view-approval-rule/viewSingleApprovalRule/${InputData}`,
+  return await apiInceptor.get(
+    `/view-approval-rule/viewSingleApprovalRule/${InputData}`,
 
   );
 };
 
 
 export const UpdateAutoApprovalRule = (inputData, id) =>
-  axios.put(
-    `${BASE_URL}/view-approval-rule/updateApprovalRule/${id}`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/view-approval-rule/updateApprovalRule/${id}`, inputData
   );
 
 export const deleteAutoApprovalRule = (inputData, id) =>
-  axios.delete(
-    `${BASE_URL}/view-approval-rule/deleteApprovalRule/${id}`,
+  apiInceptor.delete(
+    `/view-approval-rule/deleteApprovalRule/${id}`,
     {
       data: inputData,
       headers: {
@@ -1511,123 +966,73 @@ export const deleteAutoApprovalRule = (inputData, id) =>
 
 
 export const windowsOverallComplaince = () =>
-  axios.get(`${BASE_URL}/dashboard/overallComplainceData`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/dashboard/overallComplainceData`);
 
 export const windowsComplainceDataDashboard = () =>
-  axios.get(`${BASE_URL}/dashboard/complainceDataDashboard`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/dashboard/complainceDataDashboard`);
 
 // ================================= Products And Classification ================================// 
 
 export const getProductsListing = () =>
-  axios.get(`${BASE_URL}/products-classification/products`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/products-classification/products`);
 
 export const getClassificationsListing = () =>
-  axios.get(`${BASE_URL}/products-classification/classifications`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/products-classification/classifications`);
 
 export const updateProductClass = (inputData) =>
-  axios.put(
-    `${BASE_URL}/products-classification/updateProductClass`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/products-classification/updateProductClass`, inputData
   );
 
 export const getselectedProductsList = () =>
-  axios.get(`${BASE_URL}/products-classification/selected-products`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/products-classification/selected-products`);
 
 export const getselectedClassificationsList = () =>
-  axios.get(`${BASE_URL}/products-classification/selected-classifications`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/products-classification/selected-classifications`);
 
   export const DiscoverProducts = async () => {
-  return await axios.post(
-    `${BASE_URL}/products-classification/discover-products`,
+  return await apiInceptor.post(
+    `/products-classification/discover-products`,
     
   );
 };
 
   export const DiscoverClasification = async () => {
-  return await axios.post(
-    `${BASE_URL}/products-classification/discover-classifications`,
+  return await apiInceptor.post(
+    `/products-classification/discover-classifications`,
     
   );
 };
 
 
 export const PatchTreewsus_dashboard_statistics = () =>
-  axios.get(`${BASE_URL}/PatchTree/wsus-dashboard-statistics`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/PatchTree/wsus-dashboard-statistics`);
 
 
 // ================================= UPDATE SYNC SCHEDULE ================================// 
 
 export const AddUpdatesSyncSchedule = async (inputData) => {
-  return await axios.post(
-    `${BASE_URL}/updates-sync-schedule/saveUpdateSyncSchedule`,
+  return await apiInceptor.post(
+    `/updates-sync-schedule/saveUpdateSyncSchedule`,
     inputData
   );
 };
 
 
 export const getUpdatesSyncScheduleList = () =>
-  axios.get(`${BASE_URL}/updates-sync-schedule/listUpdatesSyncSchedule`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/updates-sync-schedule/listUpdatesSyncSchedule`);
 
 
 // ================================= View Synchronization Policy ================================// 
 
 
 export const getAllViewSyncPolicy = () =>
-  axios.get(`${BASE_URL}/client-sync/listViewSyncPolicy`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/client-sync/listViewSyncPolicy`);
 
 
 export const deleteViewSyncPolicy = (inputData, id) =>
-  axios.delete(
-    `${BASE_URL}/client-sync/deleteViewSyncPolicy/${id}`,
+  apiInceptor.delete(
+    `/client-sync/deleteViewSyncPolicy/${id}`,
     {
       data: inputData,
       headers: {
@@ -1637,8 +1042,8 @@ export const deleteViewSyncPolicy = (inputData, id) =>
   );
 
   export const RunPolicyRule = async (inputData) => {
-  return await axios.post(
-    `${BASE_URL}/client-sync/run-policy`,
+  return await apiInceptor.post(
+    `/client-sync/run-policy`,
     inputData
   );
 };
@@ -1648,8 +1053,8 @@ export const deleteViewSyncPolicy = (inputData, id) =>
 // ================================= Client Wise Synchronization Policy ================================// 
 
 export const AddClientWiseSyncPolicy = async (inputData) => {
-  return await axios.post(
-    `${BASE_URL}/client-sync/saveClientWiseSyncPolicy`,
+  return await apiInceptor.post(
+    `/client-sync/saveClientWiseSyncPolicy`,
     inputData
   );
 };
@@ -1657,27 +1062,17 @@ export const AddClientWiseSyncPolicy = async (inputData) => {
 // ================================= View Client Wise Synchronization Policy ================================// 
 
 export const getAllViewClientWiseSyncPolicy = () =>
-  axios.get(`${BASE_URL}/client-sync/listViewClientWiseSyncPolicy`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/client-sync/listViewClientWiseSyncPolicy`);
 
 export const updateViewClientWiseSyncPolicy = (inputData) =>
-  axios.put(
-    `${BASE_URL}/client-sync/updateViewClientWiseSyncPolicy`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.put(
+    `/client-sync/updateViewClientWiseSyncPolicy`, inputData
   );
 
 
 export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
-  axios.delete(
-    `${BASE_URL}/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
+  apiInceptor.delete(
+    `/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
     {
       data: inputData,
       headers: {
@@ -1691,174 +1086,89 @@ export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
 
 
 export const getSynchronizeStatus = () =>
-  axios.get(`${BASE_URL}/PatchTree/getSynchronizeStatus`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/PatchTree/getSynchronizeStatus`);
 
 
 
 export const getSyncPercent = () =>
-  axios.get(`${BASE_URL}/PatchTree/getSyncPercent`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/PatchTree/getSyncPercent`);
 
 
 export const stopSynchronisationProcess = () =>
-  axios.get(`${BASE_URL}/PatchTree/stopSynchronisationProcess`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/PatchTree/stopSynchronisationProcess`);
 
 
 
 
 export const getServerStatisticData = () =>
-  axios.get(`${BASE_URL}/PatchTree/getServerStatisticData`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/PatchTree/getServerStatisticData`);
 
 
 export const getComputerStatusPie = (inputData) =>
-  axios.get(`${BASE_URL}/PatchTree/getComputerStatusPie`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/PatchTree/getComputerStatusPie`, inputData
+  );
 
 
 
 export const getupdateStatus = () =>
-  axios.get(`${BASE_URL}/PatchTree/getupdateStatus`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/PatchTree/getupdateStatus`);
 
 export const getrecentActivity = () =>
-  axios.get(`${BASE_URL}/PatchTree/dashboard-timeline`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/dashboard-timeline`);
 
 
 // ================================= Third Party  ================================// 
 
 export const getThirdPartyPatchRepo = () =>
-  axios.get(`${BASE_URL}/thirdparty/PatchRepository`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/thirdparty/PatchRepository`);
 
 export const getThirdPartyCompletedApps = (inputData) =>
-  axios.get(`${BASE_URL}/thirdparty/completed-apps`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/thirdparty/completed-apps`, inputData
+  );
 
 export const getThirdPartyPendingApps = (inputData) =>
-  axios.get(`${BASE_URL}/thirdparty/pending-apps`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/thirdparty/pending-apps`, inputData
+  );
 
 export const getThirdPartyFailedApps = (inputData) =>
-  axios.get(`${BASE_URL}/thirdparty/failed-apps`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/thirdparty/failed-apps`, inputData
+  );
 
 
 
 export const getThirdPartyMissingApps = () =>
-  axios.get(`${BASE_URL}/thirdparty/missing-apps `, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdparty/missing-apps `);
 
 
 
 
 export const thirdPartyMissingApprovePatches = (inputData) =>
-  axios.post(
-    `${BASE_URL}/thirdparty/approve-missing-apps`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/thirdparty/approve-missing-apps`, inputData
   );
 
 
 export const getThirdPartyInstalledApps = () =>
-  axios.get(`${BASE_URL}/thirdparty/installed-apps`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdparty/installed-apps`);
 
 export const getThirdPartyPatchStatus = () =>
-  axios.get(`${BASE_URL}/thirdparty/patch-status`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdparty/patch-status`);
 
 
 export const getThirdPartypatchprogress = () =>
-  axios.get(`${BASE_URL}/thirdparty/patch-progress`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdparty/patch-progress`);
 
 export const getThirdPartyHostView = (inputData) =>
-  axios.get(`${BASE_URL}/thirdparty/host-summary`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/thirdparty/host-summary`, inputData
+  );
 
 export const getThirdPartyHostinfo = (ip) =>
-  axios.get(`${BASE_URL}/thirdparty/host-info`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/thirdparty/host-info`, {
     params: { ip: ip }
   });
 
 export const getThirdPartyHostappsdetails = (hostname, ip) =>
-  axios.get(`${BASE_URL}/thirdparty/host-apps`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/thirdparty/host-apps`, {
     params: {
       hostname: hostname,
       ip: ip
@@ -1866,217 +1176,108 @@ export const getThirdPartyHostappsdetails = (hostname, ip) =>
   });
 
 export const getThirdPartylatestSoftware = () =>
-  axios.get(`${BASE_URL}/thirdparty/latest-software`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/thirdparty/latest-software`);
 
 // ================================= Linux  ================================// 
 export const getLinuxMissingApps = () =>
-  axios.get(`${BASE_URL}/linux/linux-missing-apps`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/linux/linux-missing-apps`);
 
 
 export const LinuxMissingApprovePatches = (inputData) =>
-  axios.post(
-    `${BASE_URL}/linux/approve-missing-apps`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/linux/approve-missing-apps`, inputData
   );
 
 // -----------------Linux Reports
 export const getLinuxCompletedReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/linux-reports/linux-completed`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/linux-reports/linux-completed`, inputData
   );
 
 export const getLinuxFailedReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/linux-reports/linux-failed`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/linux-reports/linux-failed`, inputData
   );
 
 export const getLinuxPendingReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/linux-reports/linux-pending`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/linux-reports/linux-pending`, inputData
   );
 
 export const getLinuxMissingReport = (inputData) =>
-  axios.post(
-    `${BASE_URL}/linux-reports/linux-missing`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/linux-reports/linux-missing`, inputData
   );
 
 export const getLinuxPatchRepo = () =>
-  axios.get(`${BASE_URL}/linux/LinuxRepolist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/linux/LinuxRepolist`);
 
 
 export const getPatchTreeMissingAppApprvDec = () =>
-  axios.get(`${BASE_URL}/PatchTree/windowMissingPatches`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/windowMissingPatches`);
 
 
 export const getGroupData = () =>
-  axios.get(`${BASE_URL}/PatchTree/allGroup`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/allGroup`);
 
 
 export const getWindowMissingPatchApprove = (inputData) =>
-  axios.post(
-    `${BASE_URL}/PatchTree/approve-decline`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/PatchTree/approve-decline`, inputData
   );
 
 
 export const getPatchTreeTotalPatchesData = (inputData) =>
-  axios.get(`${BASE_URL}/PatchTree/TotalPatchList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/TotalPatchList`);
 
 
 export const getSidebarServerData = () =>
-  axios.get(`${BASE_URL}/PatchTree/getSidebarServer`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/getSidebarServer`);
 
 
 export const getPatchTreePatcheStatusData = (inputData) =>
-  axios.get(`${BASE_URL}/PatchTree/PatchStatusList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-    params: inputData
-  });
+  apiInceptor.get(`/PatchTree/PatchStatusList`, inputData
+  );
 
 
 export const getPatchTreeUnapprovedPatchList = (inputData) =>
-  axios.get(`${BASE_URL}/PatchTree/unapprovedPatchList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/unapprovedPatchList`);
 
 export const getSidebarGroupsData = () =>
-  axios.get(`${BASE_URL}/PatchTree/getSidebarGroups`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/getSidebarGroups`);
 
 export const getAllUpdateData = () =>
-  axios.get(`${BASE_URL}/PatchTree/getAllUpdates`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/getAllUpdates`);
 
 export const getClasssifiedUpdatesData = (data) =>
-  axios.post(`${BASE_URL}/PatchTree/getClassification`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTree/getClassification`,
+    data);
 
 export const getpatchDetailsData = (data) =>
-  axios.post(`${BASE_URL}/PatchTree/getPatchDetails`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTree/getPatchDetails`,
+    data);
 
 
 export const getPatchgraphPieData = (data) =>
-  axios.post(`${BASE_URL}/PatchTree/getPatchgraphPie`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTree/getPatchgraphPie`,
+    data);
 
 
 
 export const getPatchgraphClickData = (data) =>
-  axios.post(`${BASE_URL}/PatchTree/getPatchgraphClick`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTree/getPatchgraphClick`,
+    data);
 
 export const getPatchgroupDetailsData = (data) =>
-  axios.post(`${BASE_URL}/PatchTree/getPatchgroupDetails`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTree/getPatchgroupDetails`,
+    data);
 
 export const getGroupDataList = (data) =>
-  axios.post(`${BASE_URL}/PatchTree/getGroupDataList`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTree/getGroupDataList`,
+    data);
 
 export const getgrpComputerDetails = (name) =>
-  axios.get(`${BASE_URL}/PatchTree/Computerdetails`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTree/Computerdetails`, {
     params: {
       name: name
     }
@@ -2084,20 +1285,14 @@ export const getgrpComputerDetails = (name) =>
 
 
 export const getComputerPiechart = (name) =>
-  axios.get(`${BASE_URL}/PatchTree/ComputerPiechart`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTree/ComputerPiechart`, {
     params: {
       computerName: name
     }
   });
 
 export const getComputerPieonclick = (name, status) =>
-  axios.get(`${BASE_URL}/PatchTree/ComputerPieonclick`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTree/ComputerPieonclick`, {
     params: {
       computerName: name,
       status: status
@@ -2105,21 +1300,14 @@ export const getComputerPieonclick = (name, status) =>
   });
 
 export const getgrpComputerpolicy = (name) =>
-  axios.get(`${BASE_URL}/PatchTree/Computerpolicy`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTree/Computerpolicy`, {
     params: {
       name: name
     }
   });
 
 export const getsyncHistoryData = () =>
-  axios.get(`${BASE_URL}/PatchTree/getSynchronizeList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/getSynchronizeList`);
 
   export const DiscoverSync = () =>
   axios.get(`${BASE_URL}/PatchTree/discoverSync`, {
@@ -2129,79 +1317,51 @@ export const getsyncHistoryData = () =>
   });
 
 export const getPatchTreeapprovedPatchList = (inputData) =>
-  axios.get(`${BASE_URL}/PatchTree/approvedPatchList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/approvedPatchList`);
 
 
 export const getDiscoverGroup = (servername) =>
-  axios.get(`${BASE_URL}/PatchTreeClick/discoverGroup`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTreeClick/discoverGroup`, {
     params: {
       UDstream: servername
     }
   });
 
 export const getDiscoverComputers = (servername) =>
-  axios.get(`${BASE_URL}/PatchTreeClick/discoverComputers`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTreeClick/discoverComputers`, {
     params: {
       UDstream: servername
     }
   });
 
 export const getaddGroup = (groupname) =>
-  axios.get(`${BASE_URL}/PatchTreeClick/addGroup`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/PatchTreeClick/addGroup`, {
     params: {
       addGroup: groupname
     }
   });
 
 export const editGroupDetails = (data) =>
-  axios.post(`${BASE_URL}/PatchTreeClick/editGroup`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTreeClick/editGroup`,
+    data);
 
 export const getPatchTreeDeclinedPatchList = (inputData) =>
-  axios.get(`${BASE_URL}/PatchTree/declinedPatchList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/PatchTree/declinedPatchList`);
 export const deleteGroupDetails = (groupName) =>
-  axios.post(`${BASE_URL}/PatchTreeClick/deleteGroup`, {}, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.post(`/PatchTreeClick/deleteGroup`, {}, {
     params: {
       groupName: groupName
     }
   });
 
 export const addComputersDetails = (data) =>
-  axios.post(`${BASE_URL}/PatchTreeClick/addComputerGroup`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/PatchTreeClick/addComputerGroup`,
+    data);
 
 
 export const getdeleteComputerdetails = (inputData) =>
-  axios.delete(
-    `${BASE_URL}/PatchTreeClick/deleteSelectedComputers`,
+  apiInceptor.delete(
+    `/PatchTreeClick/deleteSelectedComputers`,
     {
       data: inputData,
       headers: {
@@ -2215,67 +1375,45 @@ export const getdeleteComputerdetails = (inputData) =>
 
 
 export const getAllBranchList = () =>
-  axios.get(`${BASE_URL}/dropdown/BranchDropdown`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-
-  });
+  apiInceptor.get(`/dropdown/BranchDropdown`);
 
 
 export const getBranchWiseIpaddressList = (inputData) =>
-  axios.post(
-    `${BASE_URL}/dropdown/IpAddressDropdown`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/dropdown/IpAddressDropdown`, inputData
   );
 
 export const getOSTypedropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getOSNames`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/dropdown/getOSNames`);
 
 
 export const getOSComputerdropdown = (data) =>
-  axios.post(`${BASE_URL}/dropdown/allPCComputer`,
-    data, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.post(`/dropdown/allPCComputer`,
+    data);
 
 export const getComputerdropdowm = (servername) =>
-  axios.get(`${BASE_URL}/dropdown/allPCComputerServer`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
+  apiInceptor.get(`/dropdown/allPCComputerServer`, {
     params: {
       sernm: servername
     }
   });
 
 export const getGrouplistdropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getgrouplist`, {
+  apiInceptor.get(`/dropdown/getgrouplist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getIpListdropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getIpAddresslist`, {
+  apiInceptor.get(`/dropdown/getIpAddresslist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getClassifficationdropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/classificationDropdown`, {
+  apiInceptor.get(`/dropdown/classificationDropdown`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
@@ -2283,42 +1421,42 @@ export const getClassifficationdropdown = () =>
 
 
 export const getproductdropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/productDropdown`, {
+  apiInceptor.get(`/dropdown/productDropdown`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterVendorNamedropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getvendorlist`, {
+  apiInceptor.get(`/dropdown/getvendorlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterCustomerNamedropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getcustomerlist`, {
+  apiInceptor.get(`/dropdown/getcustomerlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterbranchNamedropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getbranchlist`, {
+  apiInceptor.get(`/dropdown/getbranchlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterCommanddropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getcommandlist`, {
+  apiInceptor.get(`/dropdown/getcommandlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getWindowsPatchdropdown = () =>
-  axios.get(`${BASE_URL}/dropdown/getpatchlist`, {
+  apiInceptor.get(`/dropdown/getpatchlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
@@ -2326,21 +1464,21 @@ export const getWindowsPatchdropdown = () =>
 
 
 export const getPatchedEndpointList = () =>
-  axios.get(`${BASE_URL}/dashboard/PatchedEndpointList`, {
+  apiInceptor.get(`/dashboard/PatchedEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
   export const getNonComplaintEndpointList = () =>
-  axios.get(`${BASE_URL}/dashboard/NonComplaintEndpointList`, {
+  apiInceptor.get(`/dashboard/NonComplaintEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
     export const getFailedEndpointList = () =>
-  axios.get(`${BASE_URL}/dashboard/FailedEndpointList`, {
+  apiInceptor.get(`/dashboard/FailedEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
@@ -2348,7 +1486,7 @@ export const getPatchedEndpointList = () =>
 
   
     export const getOfflineEndpointList = () =>
-  axios.get(`${BASE_URL}/dashboard/OfflineEndpointList`, {
+  apiInceptor.get(`/dashboard/OfflineEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
