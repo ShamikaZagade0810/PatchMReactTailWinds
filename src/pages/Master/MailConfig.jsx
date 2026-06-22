@@ -52,7 +52,6 @@ const MailConfig = () => {
 
         console.log("resData ", resData.data.data);
         setViewMailConfigListData(resData.data.data);
-
     }
 
 
@@ -170,7 +169,7 @@ const MailConfig = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                             <label className={labelClass}> Host Name</label>
-                            <input className={inputClass} placeholder="Enter Host Name"  {...register("host", { required: "Host Name is required" })} />
+                            <input className={inputClass} placeholder="Enter Host Name"  {...register("host", { required: "Host Name is required",   })} />
                             {errors.host && <p className="text-red-500 text-xs">{errors.host.message}</p>}
                         </div>
 
@@ -189,8 +188,10 @@ const MailConfig = () => {
                             <label className={labelClass}> Port</label>
                             <input className={inputClass} placeholder="Enter Port"   {...register("port", {
                                 required: "Port is required",
-                                pattern: { value: /^[0-9]+$/, message: "Only numbers allowed" }
-                            })} />
+                                // pattern: { value: /^[0-9]+$/, message: "Only numbers allowed" }
+                                 min: { value: 1, message: "Port number must be between 1 and 65535", },
+                                            max: { value: 65535, message: "Port number must be between 1 and 65535", },
+                                            valueAsNumber: true, })} />
                             {errors.port && <p className="text-red-500 text-xs">{errors.port.message}</p>}
                         </div>
 
@@ -212,14 +213,14 @@ const MailConfig = () => {
                             <label className={labelClass}>Password</label>
                             <input type="password" className={inputClass} placeholder="Enter Password"  {...register("password", {
                                 required: "Password is required",
-                                minLength: { value: 6, message: "Minimum 6 characters required" }
+                                // minLength: { value: 6, message: "Minimum 6 characters required" }
                             })} />
                             {errors.password && (<p className="text-red-500 text-xs mt-1"> {errors.password.message} </p>)}
                         </div>
 
                     </div>
                     <div className="flex justify-end mt-8 gap-3">
-                        <button className={btnClass} >Submit</button>
+                        <button className={btnClass} > {isEditMode ? "Update" : "Submit"} </button>
                         <button type="button" className={resetClass} onClick={handleReset}>Reset</button>
                     </div>
                 </div>

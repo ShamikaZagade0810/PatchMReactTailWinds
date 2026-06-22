@@ -2,13 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-import {
-  FaUserAlt,
-  FaLock,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa";
-
 
 const ROLE_DEFAULT_ROUTE = {
   admin: "/projectspage",
@@ -16,41 +9,41 @@ const ROLE_DEFAULT_ROUTE = {
   tester: "/instances",
 };
 
+import "./Login.css";
+
+
+import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-import backSvg from "../assets/loginbg.svg";
+
+import bgSvg from "../assets/loginbg.svg";
 import footerSvg from "../assets/LoginFooter.svg";
-// import monitorpng from "../assets/monitorFrame.svg";
-// import server2png from "../assets/twoserver.png";
-// import server1png from "../assets/singleser.png";
-// import serverpng from "../assets/server.png";
-// import networkpng from "../assets/networkFrame.png";
-// import basepng from "../assets/base.png";
-// import shieldFramepng from "../assets/shieldFrame.png";
-import computerServerFramepng from "../assets/computerServerFrame.svg";
-// import SecureITLogo from "../assets/SecureITLogo.svg";
-import SecureITLogo from "../assets/UnifiedSecureITLogo.svg";
+import UnifiedSecureITsvg from "../assets/UnifiedSecureITLogo.svg";
+//  import LoginNetwork from "../assets/Login_SVG_new.svg";
+import LoginNetwork from "../assets/Login_SVG_new.svg?react";
+
+import PacketLayer from "./PacketLayer";
+
 
 
 const Login = () => {
-
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
+   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-
-  const auth = useAuth();
+    const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
+
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
 
   const handleChange = (e) => {
     setFormData({
@@ -59,6 +52,12 @@ const Login = () => {
     });
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(formData);
+  // };
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -84,177 +83,204 @@ const Login = () => {
     setIsLoading(false);
   };
 
-  // console.log("backSvg:", backSvg);
+  console.log("backSvg:", bgSvg);
   return (
-    <div
-      className="
-        min-h-screen
-        w-full
-        flex
-        items-center
-        justify-center
-        bg-cover
-        bg-center
-        px-4
-        py-4
-        overflow-hidden
-      " 
-       style={{
-    background:
-      "radial-gradient(circle at center, #0D3C7A 0%, #00061A 85%)",
-  }}
-    >
-      
-      {/* MAIN CARD */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="
-          w-full
-          max-w-[980px]
-          rounded-[22px]
-          overflow-hidden
-          bg-[#000927]/90
-          shadow-[0_0_35px_rgba(0,119,255,0.12)]
-          backdrop-blur-xl
-        "
-      >
-        <div className="flex flex-col lg:flex-row">
+    // <div
+    //   className="
+    //     h-screen w-full flex items-center justify-center
+    //     bg-cover bg-no-repeat bg-center
+    //     px-4 py-4 overflow-hidden
+    //   "
+    //   style={{ backgroundImage: `url(${bgSvg})`,  backgroundSize: "cover",}} >
+        <div className=" min-h-screen w-full flex items-center justify-center bg-cover bg-center  px-4 py-4 overflow-hidden " 
+       style={{ background: "radial-gradient(circle at center, #0D3C7A 0%, #00061A 85%)", }} >
 
-          {/* LEFT PANEL */}
-          <div className="w-full lg:w-[40%] px-6 md:px-8 py-10 flex flex-col justify-center">
+      
+      <div className="relative rounded-[24px] p-[1px] overflow-hidden">
+
+        {/* Animated Border */}
+        {/* <div className="absolute inset-0 rounded-[24px] overflow-hidden">
+          <div
+            className="absolute inset-[-70%] animate-[spin_8s_linear_infinite]"
+            style={{
+              background:
+                "conic-gradient(from 0deg, transparent, #22d3ee, #0e6fa7, #22d3ee, transparent)",
+            }}
+          />
+        </div> */}
+
+        {/* MAIN CARD */}
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{
+            duration: 0.9,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+
+          className="
+         w-[1055px]
+         h-[596px]
+        rounded-[22px]
+        overflow-hidden
+        bg-[#000927]/90
+        shadow-[0_0_35px_rgba(0,119,255,0.12)]
+        backdrop-blur-xl
+        flex flex-col
+      ">
+
+
+        
+        <div className="relative flex flex-col lg:flex-row flex-1">
+
+          {/* ================= LEFT PANEL ================= */}
+          <div className=" w-full lg:w-[35%] flex justify-center items-center px-8">
+            <div className="w-[320px]">
 
             {/* LOGO */}
-            <div className="mb-8 text-center">
-              {/* <h1 className="text-[42px] font-bold text-[#ff3131]">
-                SecureIT <span className="text-white text-sm">®</span>
-              </h1>
-              <p className="text-white text-xs tracking-[2px] mt-2">
-                Patch Management
-              </p> */}
-
-              <img src={SecureITLogo} alt="Logo" className="w-[250px] h-auto  mx-auto object-contain"/>
+            <div className="mb-10 flex justify-start ">
+              <img
+                src={UnifiedSecureITsvg}
+                alt="logo"
+                className="w-[240px]"
+              />
             </div>
 
             {/* TITLE */}
-            <h2 className="text-white text-[30px] font-semibold mb-6"> Login </h2>
+            <div className="mb-4 text-left">
+              <h2 className="text-white text-[29px] font-semibold">
+                Login
+              </h2>
+              {/* <p className="text-white/50 text-xs mt-1">
+                Secure access to your dashboard
+              </p> */}
+            </div>
 
             {/* FORM */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4 w-[320px]" >
 
               {/* EMAIL */}
               <div>
-                <label className="text-white/75 text-sm mb-1 block">
-                  username
+                <label className="text-white/70 text-sm font-medium mb-3 block">
+                  Username
                 </label>
 
-                <div className="h-[46px] rounded-2xl bg-white/[0.02] flex items-center px-4">
-                  <FaUserAlt className="text-cyan-300 text-[13px]" />
+                <div className="h-[44px] rounded-xl bg-[#020d2d] flex items-center px-3 transition-all duration-300
+                  shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]
+                  hover:shadow-[inset_0_0_0_1px_rgba(0,191,255,0.15)]
+                   focus-within:border-cyan-400
+                  focus-within:shadow-[0_0_0_1px_rgba(34,211,238,0.6),0_0_40px_rgba(34,211,238,0.25),0_0_24px_rgba(34,211,238,0.15)]"
+                >
+                  <FaUserAlt className="text-cyan-300 text-[12px]" />
 
-                  <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    placeholder="username"
-                    className="flex-1 bg-transparent outline-none text-white text-sm pl-3"
-                  />
+                  <input type="text" name="username" value={formData.username} onChange={handleChange}
+                    placeholder="username" className="flex-1 bg-transparent outline-none text-white text-sm pl-2" />
                 </div>
               </div>
 
               {/* PASSWORD */}
               <div>
-                <label className="text-white/75 text-sm mb-1 block">
-                  Password
-                </label>
+                <label className="text-white/70 text-sm font-medium mb-3 block"> Password </label>
 
-                <div className="h-[46px] rounded-2xl bg-white/[0.02] flex items-center px-4">
-                  <FaLock className="text-cyan-300 text-[13px]" />
+                <div className="h-[44px] rounded-xl bg-[#020d2d] flex items-center px-3 transition-all duration-300
+                  shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]
+                  hover:shadow-[inset_0_0_0_1px_rgba(0,191,255,0.15)]
+                   focus-within:border-cyan-400
+                  focus-within:shadow-[0_0_0_1px_rgba(34,211,238,0.6),0_0_40px_rgba(34,211,238,0.25),0_0_24px_rgba(34,211,238,0.15)]" >
+                  <FaLock className="text-cyan-300 text-[12px]" />
 
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className="flex-1 bg-transparent outline-none text-white text-sm pl-3"
-                  />
+                  <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} 
+                  placeholder="Password" className="flex-1 bg-transparent outline-none text-white text-sm pl-2" />
 
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="text-cyan-300"
-                  >
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-cyan-300" >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
                 </div>
               </div>
 
-              {/* FORGOT */}
-              <div className="text-white/60 text-sm hover:text-white cursor-pointer">
-                Forgot Password?
+              {/* FORGOT PASSWORD */}
+              <div className="text-right">
+                <span className="text-xs text-cyan-300 hover:text-white cursor-pointer">
+                  Forgot Password?
+                </span>
               </div>
 
-              {/* BUTTON */}
+              {/* SUBMIT BUTTON */}
               <motion.button
-                whileHover={{ scale: 1.01, y: -2 }}
-                whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full h-[44px] rounded-2xl bg-[#003465] text-white font-semibold"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="
+                  relative w-full h-[44px]
+                  rounded-xl bg-[#003465]
+                  text-white font-semibold overflow-hidden
+                "
               >
-                Sign In
+                <motion.span
+                  className="absolute inset-0"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+                    transform: "skewX(-20deg)",
+                  }}
+                />
+
+                  <span className="relative z-10 text-[17px] font-semibold">
+                    Sign In
+                  </span>
               </motion.button>
-
             </form>
-          </div>
-
-          {/* RIGHT PANEL */}
-          <div className="
-            hidden lg:flex
-            w-[60%]
-            items-center
-            justify-center
-            relative
-            overflow-hidden
-            px-10
-          ">
-
-            {/* BASE IMAGE */}
-            <img
-              src={computerServerFramepng}
-              alt="server ecosystem"
-              className="w-[700px] max-w-full object-contain"
-            />
-
-            {/* OVERLAY COMPONENTS */}
-            <div className="absolute inset-0">
-
-
-              {/* <img src={shieldFramepng} className="absolute bottom-[30%] right-[10%] w-[130px]" alt="" />
-              <img src={serverpng} className="absolute top-[45%] left-[42%] w-[110px]" alt="" /> */}
-              {/* <img src={networkpng} className="absolute top-[55%] left-[10%] w-[120px]" alt="" /> */}
-              {/* <img src={serverpng} className="absolute bottom-[12%] right-[18%] w-[110px]" alt="" />
-              <img src={monitorpng} className="absolute bottom-[30%] left-[13%] w-[150px]" alt="" />
-               <img src={shieldFramepng} className="absolute bottom-[35%] left-[28%] w-[120px]" alt="" /> */}
-
             </div>
+          </div>
+
+
+
+              {/* NEON DIVIDER LINE */}
+          <div className="hidden lg:block absolute left-[35%] top-10 bottom-10 w-0.5 bg-white/3">
+  
+            {/* glow core */}
+         <div className="w-full h-full bg-gradient-to-b from-transparent via-cyan-400/40 to-transparent animate-pulse" />
+
+          {/* moving light sweep */}
+          {/* <div className="absolute inset-0 overflow-hidden">
+          <div className="w-full h-[80px] bg-gradient-to-b from-transparent via-cyan-300/80 to-transparent animate-[slide_2s_linear_infinite]" />
+          </div> */}
+        </div>
+
+          {/* ================= RIGHT PANEL ================= */}
+          <div className="hidden lg:flex flex-1 items-center justify-center relative overflow-hidden">
+
+            <LoginNetwork
+              className="absolute inset-0 w-full h-full network-component"
+            />
+            {/* <img src={LoginNetwork} alt="Login Network" /> */}
+
+            <PacketLayer />
 
           </div>
         </div>
 
-        {/* FOOTER */}
-        <div className="h-[58px] w-full flex items-center justify-center bg-[#000927]">
-          <img
-            src={footerSvg}
-            alt="footer"
-            className="w-full h-full object-contain"
-          />
+        {/* ================= FOOTER ================= */}
+        <div className="h-[58px] w-full flex items-center justify-center bg-[#000b1f] border-t border-cyan-500/10">
+        <img
+        src={footerSvg}
+        alt="footer"
+        className="w-full h-full object-cover"
+            />
         </div>
+        
 
       </motion.div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

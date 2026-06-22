@@ -29,7 +29,6 @@ import {
     ArrowLeft
 } from "lucide-react";
 import { AccordionItem } from "../../components/UI/AccordionItem";
-import logo from "../../assets/planet-gurard.png";
 import { useAuth } from "../../context/AuthContext";
 
 const sidebarData = [

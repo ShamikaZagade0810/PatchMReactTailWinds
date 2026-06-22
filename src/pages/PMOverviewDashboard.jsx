@@ -104,18 +104,18 @@ export const PMOverviewDashboard = () => {
                 <DeviceDashboard />
             ),
         },
-        {
-            label: "Settings",
-            icon: <Settings size={18} />,
-            content: (
-                <div className="p-4 bg-white rounded-xl shadow">
-                    <h3 className="text-lg font-semibold mb-2">Preferences</h3>
-                    <p className="text-gray-500 text-sm">
-                        Manage your settings here.
-                    </p>
-                </div>
-            ),
-        },
+        // {
+        //     label: "Settings",
+        //     icon: <Settings size={18} />,
+        //     content: (
+        //         <div className="p-4 bg-white rounded-xl shadow">
+        //             <h3 className="text-lg font-semibold mb-2">Preferences</h3>
+        //             <p className="text-gray-500 text-sm">
+        //                 Manage your settings here.
+        //             </p>
+        //         </div>
+        //     ),
+        // },
         {
             label: "Remote Action",
             icon: <Activity size={18} />,

@@ -163,7 +163,6 @@ import {
   X,
 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
-import logo from "../../assets/planet-gurard.png";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import SecureITLogo from "../../assets/UnifiedSecureITLogo.svg";

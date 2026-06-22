@@ -41,8 +41,8 @@ const GroupMaster = () => {
     }
     const [activeTab, setActiveTab] = useState(0);
     const tabs = [
-        { label: "Add Customer", icon: <Plus size={16} /> },
-        { label: "View Customer List", icon: <List size={16} /> }
+        { label: "Add Group", icon: <Plus size={16} /> },
+        { label: "View Group List", icon: <List size={16} /> }
         // { label: "Multiple Run Command", icon: <Play size={16} /> },
     ];
           const [grouplist, setgrouplist] = useState([]);
@@ -57,6 +57,7 @@ const GroupMaster = () => {
     // ---------------- SUBMIT API ----------------
                         const onSubmit = async (data) => {
                             const inputData = {
+                                srNo: 4,
                                 groupName: data.group,               
                             };
                     
@@ -85,6 +86,25 @@ const GroupMaster = () => {
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
 
+     const [editErrors, setEditErrors] = useState({});
+    
+                     const validateGroupEdit = () => {
+        let errors = {};
+    
+        const name = editData?.groupName?.trim();
+    
+        if (!name) {
+            errors.groupName = "Customer Name is required";
+        } 
+        else if (!/^[A-Za-z\s]+$/.test(name)) {
+            errors.groupName = "Only alphabets and spaces allowed";
+        }
+    
+        setEditErrors(errors);
+    
+        return Object.keys(errors).length === 0;
+    };
+
     const handleEdit = (item, index) => {
         console.log("Edit clicked:", item);
         setEditData(item);     // store selected row
@@ -92,6 +112,7 @@ const GroupMaster = () => {
     };
 
     const handleUpdateGroup = async () => {
+         if (!validateGroupEdit()) return;
                         console.log("Edit Data:", editData);
                             try {
                                 const inputData = {
@@ -176,7 +197,8 @@ const GroupMaster = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className={labelClass}> Group Name</label>
-                            <input className={inputClass} placeholder="Enter Group Name"  {...register("group",  { required: "Group Name is required" })} />
+                            <input className={inputClass} placeholder="Enter Group Name"  {...register("group",  { required: "Group Name is required",
+                                 pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  }  })} />
                             {errors.group && <p className="text-red-500 text-xs">{errors.group.message}</p>}
                         </div>
                     </div>
@@ -230,19 +252,16 @@ const GroupMaster = () => {
                         {/* EDIT MODAL */}
                         {iseditModalOpen && (
                             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-
                                 {/* Modal Box */}
                                 <div className="bg-[#0B1220] rounded-2xl p-6 w-[700px] border border-white/10 shadow-xl">
-
                                     <h2 className="text-lg font-semibold mb-6">Update Group Details</h2>
-
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                                        {/* Customer Name */}
+                                        {/* Group Name */}
                                         <div>
                                             <label className={labelClass}>Group Name</label>
                                             <input className={inputClass} value={editData?.groupName || ""}
                                                 onChange={(e) => setEditData({ ...editData, groupName: e.target.value })} />
+                                                 {editErrors.groupName && (<p className="text-red-500 text-xs mt-1"> {editErrors.groupName}  </p>  )}
                                         </div>
 
                                     </div>
@@ -250,7 +269,7 @@ const GroupMaster = () => {
                                     {/* Buttons */}
                                     <div className="flex justify-end gap-3 mt-6">
                                         <button className={btnClass} onClick={handleUpdateGroup}> Update  </button>
-                                        <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
+                                        <button className={resetClass} onClick={() => { setIseditModalOpen(false); setEditErrors({}); }} >Cancel </button>
 
                                     </div>
                                 </div>

@@ -135,7 +135,36 @@ const [loading, setLoading] = useState(false);
         setIseditModalOpen(true);  // open modal
     };
 
+    const [editErrors, setEditErrors] = useState({});
+
+    const validateEditDevice = () => {
+    let errors = {};
+
+    // OEM required
+    if (!editData?.OEMNames) {
+        errors.OEMNames = "OEM is required";
+    }
+
+    // Customer required
+    if (!editData?.CustNames) {
+        errors.CustNames = "Customer Name is required";
+    }
+
+    // Branch required
+    if (!editData?.branchNames) {
+        errors.branchNames = "Branch Name is required";
+    }
+
+    setEditErrors(errors);
+
+    return Object.keys(errors).length === 0;
+};
+
     const handleUpdateDevices = async () => {
+
+           if (!validateEditDevice()) return;
+           console.log("Valid Data:", editData);
+
         try {
             const inputData = {
     id: editData?.id,
@@ -323,6 +352,8 @@ const [loading, setLoading] = useState(false);
                                         <option value="" disabled>-- Please select value --</option>
                                         {OEMOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
                                     </select>
+                                      {editErrors.OEMNames && ( <p className="text-red-500 text-xs">{editErrors.OEMNames}</p>  )}
+
                                 </div>
 
                                 {/* Customer Name */}
@@ -334,6 +365,8 @@ const [loading, setLoading] = useState(false);
                                         <option value="" disabled>-- Please select value --</option>
                                         {CustNameOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
                                     </select>
+                                      {editErrors.CustNames && (<p className="text-red-500 text-xs">{editErrors.CustNames}</p>  )}
+
                                 </div>
 
                                 {/* Branch Name */}
@@ -345,6 +378,8 @@ const [loading, setLoading] = useState(false);
                                         <option value="" disabled>-- Please select value --</option>
                                         {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
                                     </select>
+                                      {editErrors.branchNames && (<p className="text-red-500 text-xs">{editErrors.branchNames}</p> )}
+
                                 </div>
 
                             </div>

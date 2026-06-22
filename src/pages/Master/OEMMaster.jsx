@@ -182,7 +182,8 @@ const OEMMaster = () => {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div>
                          <label className={labelClass}> OEM Name</label>
-                         <input className={inputClass} placeholder="Enter OEM Name"  {...register("oem" ,  { required: "Branch Name is required" })} />
+                         <input className={inputClass} placeholder="Enter OEM Name"  {...register("oem" ,  { required: "OEM Name is required",  
+                            pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  }    })} />
                             {errors.oem && <p className="text-red-500 text-xs">{errors.oem.message}</p>}
                      </div>                
                  </div>

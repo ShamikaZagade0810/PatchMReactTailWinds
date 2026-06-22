@@ -96,7 +96,7 @@ const SetServerPolicy = () => {
    
     const selectedParam = watch("parameter");
 
-    const handleReset = () => { reset({ policyName: "", ipAddress: "", port: "", branchNames: "", parameter: "", priorityServer: false }); };
+    const handleReset = () => { reset({ policyName: "", serverIpAddress: "", serverPort: "", branchName: "", parameter: "", priorityServer: false }); };
 
     const [iseditModalOpen, setIseditModalOpen] = useState(false);
     const [editData, setEditData] = useState(null);
@@ -147,7 +147,6 @@ const SetServerPolicy = () => {
 
     const handleSetPolicySubmit = async (data) => {
 
-
         const payload = {
             policyName: data.policyName,
             serverIpAddress: data.serverIpAddress,
@@ -178,11 +177,63 @@ const SetServerPolicy = () => {
 
     };
 
+    const [editErrors, setEditErrors] = useState({});
+
+    const validateOEMEdit = () => {
+    let errors = {};
+
+    // IP Address (basic IPv4 validation)
+    if (!editData?.serverIpAddress?.trim()) {
+        errors.serverIpAddress = "IP Address is required";
+    } 
+    else if (
+        !/^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/.test(
+            editData.serverIpAddress
+        )
+    ) {
+        errors.serverIpAddress = "Invalid IP Address";
+    }
+
+    // Server Port
+    if (!editData?.serverPort) {
+        errors.serverPort = "Server Port is required";
+    } 
+    else if (!/^[0-9]{1,5}$/.test(editData.serverPort)) {
+        errors.serverPort = "Invalid Port Number";
+    } 
+    else if (Number(editData.serverPort) < 1 || Number(editData.serverPort) > 65535) {
+        errors.serverPort = "Port must be between 1 and 65535";
+    }
+
+    // Branch
+    if (!editData?.branchName) {
+        errors.branchName = "Branch Name is required";
+    }
+
+    // Parameter
+    if (!editData?.parameter) {
+        errors.parameter = "Parameter is required";
+    }
+
+    // Schedule validation (only if parameter === "4")
+    if (editData?.parameter === "4") {
+        if (!editData?.scheduleDay) {
+            errors.scheduleDay = "Schedule Day is required";
+        }
+
+        if (!editData?.scheduleTime) {
+            errors.scheduleTime = "Schedule Time is required";
+        }
+    }
+
+    setEditErrors(errors);
+
+    return Object.keys(errors).length === 0;
+};
 
       const handleEditSetPolicySubmit = async (data) => {
-
-
-    
+        
+      if (!validateOEMEdit()) return;
 
         console.log("Final Payload :", data);
         try {
@@ -214,18 +265,24 @@ const SetServerPolicy = () => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
                                     <label className={labelClass}> Policy Name</label>
-                                    <input className={inputClass} placeholder="Enter Policy Name"  {...register("policyName", { required: "Policy Name is required" })} />
+                                    <input className={inputClass} placeholder="Enter Policy Name"  {...register("policyName", { required: "Policy Name is required", 
+                                         pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  }     })} />
                                     {errors.policyName && <p className="text-red-500 text-xs">{errors.policyName.message}</p>}
                                 </div>
                                 <div>
                                     <label className={labelClass}>IP Address</label>
-                                    <input className={inputClass} placeholder="Enter IP Address"  {...register("serverIpAddress", { required: "IP Address is required" })} />
-                                    {errors.ipAddress && <p className="text-red-500 text-xs">{errors.ipAddress.message}</p>}
+                                    <input className={inputClass} placeholder="Enter IP Address"  {...register("serverIpAddress", { required: "IP Address is required", 
+                                         pattern: { value: /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/,
+                                            message: "Enter a valid IP address (e.g. 192.168.0.1)", },   })} />
+                                    {errors.serverIpAddress && <p className="text-red-500 text-xs">{errors.serverIpAddress.message}</p>}
                                 </div>
                                 <div>
                                     <label className={labelClass}> Port</label>
-                                    <input type="number" className={inputClass} placeholder="Enter Policy Name"  {...register("serverPort", { required: "Policy Name is required" })} />
-                                    {errors.port && <p className="text-red-500 text-xs">{errors.port.message}</p>}
+                                    <input type="number" className={inputClass} placeholder="Enter Policy Name"  {...register("serverPort", { required: "Policy Name is required", 
+                                          min: { value: 1, message: "Port number must be between 1 and 65535", },
+                                            max: { value: 65535, message: "Port number must be between 1 and 65535", },
+                                            valueAsNumber: true, })} />               
+                                    {errors.serverPort && <p className="text-red-500 text-xs">{errors.serverPort.message}</p>}
                                 </div>
                                 {/* Branch Name */}
                                 <div>
@@ -234,7 +291,7 @@ const SetServerPolicy = () => {
                                         <option value="" disabled>-- Please select value --</option>
                                         {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
                                     </select>
-                                    {errors.branchNames && <p className="text-red-500 text-xs">{errors.branchNames.message}</p>}
+                                    {errors.branchName && <p className="text-red-500 text-xs">{errors.branchName.message}</p>}
                                 </div>
 
                                 {/* Parameter */}
@@ -324,7 +381,13 @@ const SetServerPolicy = () => {
                                         <td className="p-3 text-center">{item.serverIpAddress}</td>
                                         <td className="p-3 text-center">{item.serverPort}</td>
                                         <td className="p-3 text-center">{item.branchName}</td>
-                                        <td className="p-3 text-center">{item.parameter}</td>
+                                        {/* <td className="p-3 text-center">{item.parameter}</td> */}
+                                        <td className="p-3 text-center">
+                                        {item.parameter === "2"  ? "Notify for download and notify for install"
+                                            : item.parameter === "3" ? "Auto download and notify for install"
+                                            : item.parameter === "4" ? "Auto download and schedule the install"
+                                            : "Unknown"}
+                                        </td>
                                         <td className="p-3 text-center">{item.priorityServer}</td>
                                         <td className="p-3 text-center">
                                             <div className="flex justify-center gap-2">
@@ -346,7 +409,7 @@ const SetServerPolicy = () => {
                         {iseditModalOpen && (
                             <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                                 <div className="bg-[#0B1220] rounded-2xl p-6 w-[700px] border border-white/10 shadow-xl">
-                                    <h2 className="text-lg font-semibold mb-6">Update OEM Details</h2>
+                                    <h2 className="text-lg font-semibold mb-6">Update Server Policy Details</h2>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label className={labelClass}>Policy Name</label>
@@ -359,11 +422,14 @@ const SetServerPolicy = () => {
                                             <label className={labelClass}>IP Address</label>
                                             <input className={inputClass} value={editData?.serverIpAddress || ""}
                                                 onChange={(e) => setEditData({ ...editData, serverIpAddress: e.target.value })} />
+                                            {editErrors.serverIpAddress && ( <p className="text-red-500 text-xs mt-1">{editErrors.serverIpAddress} </p> )}
                                         </div>
                                         <div>
                                             <label className={labelClass}>Server Port</label>
                                             <input className={inputClass} value={editData?.serverPort || ""}
                                                 onChange={(e) => setEditData({ ...editData, serverPort: e.target.value })} />
+                                            {editErrors.serverPort && ( <p className="text-red-500 text-xs mt-1"> {editErrors.serverPort} </p> )}
+                                                
                                         </div>
                                         {/* Branch Name */}
                                         <div>
@@ -373,6 +439,7 @@ const SetServerPolicy = () => {
                                                 <option value="" disabled>-- Please select value --</option>
                                                 {branchOptions.map((opt) => (<option key={opt.value} value={opt.value}> {opt.label} </option>))}
                                             </select>
+                                              {editErrors.branchName && ( <p className="text-red-500 text-xs mt-1"> {editErrors.branchName} </p> )}
                                         </div>
 
                                         <div>
@@ -384,6 +451,7 @@ const SetServerPolicy = () => {
                                                 <option value="3">Auto download and notify for install</option>
                                                 <option value="4">Auto download and schedule the install</option>
                                             </select>
+                                             {editErrors.parameter && ( <p className="text-red-500 text-xs mt-1"> {editErrors.parameter} </p> )}
                                         </div>
                                         {editData?.parameter === "4" && (
                                             <>
@@ -401,6 +469,7 @@ const SetServerPolicy = () => {
                                                         <option value="Saturday">Saturday</option>
                                                         <option value="Sunday">Sunday</option>
                                                     </select>
+                                                     {editErrors.scheduleDay && ( <p className="text-red-500 text-xs mt-1"> {editErrors.scheduleDay} </p> )}
                                                 </div>
 
                                                 {/* Schedule Time */}
@@ -408,6 +477,7 @@ const SetServerPolicy = () => {
                                                     <label className={labelClass}>Schedule Time</label>
                                                     <input type="time" className={inputClass} value={editData?.scheduleTime || ""}
                                                         onChange={(e) => setEditData({ ...editData, scheduleTime: e.target.value })} />
+                                                    {editErrors.scheduleTime && ( <p className="text-red-500 text-xs mt-1"> {editErrors.scheduleTime} </p> )}
                                                 </div>
                                             </>
                                         )}
@@ -416,13 +486,8 @@ const SetServerPolicy = () => {
 
                                     {/* Buttons */}
                                     <div className="flex justify-end gap-3 mt-6">
-                                        <button className={btnClass} onClick={() => {
-                                            console.log("Updated OEM Data:", editData);
-                                            handleEditSetPolicySubmit(editData);
-                                            setIseditModalOpen(false);
-
-
-                                        }} > Update  </button>
+                                        <button className={btnClass} onClick={() => { console.log("Updated OEM Data:", editData);
+                                            handleEditSetPolicySubmit(editData); setIseditModalOpen(false);  }} > Update  </button>
                                         <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
                                     </div>
                                 </div>

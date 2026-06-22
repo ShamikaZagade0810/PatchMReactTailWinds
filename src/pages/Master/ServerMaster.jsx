@@ -244,12 +244,17 @@
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label className={labelClass}> Server Name</label>
-                                <input className={inputClass} placeholder="Enter server Name"  {...register("server",  { required: "Server Name is required" })} />
+                                <input className={inputClass} placeholder="Enter server Name"  {...register("server",  { required: "Server Name is required",
+                                     pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  }  })} />
                                 {errors.server && <p className="text-red-500 text-xs">{errors.server.message}</p>}
                             </div>
                             <div>
                                 <label className={labelClass}> IP Address</label>
-                                <input className={inputClass} placeholder="Enter IP Address"  {...register("ipaddress",  { required: "IP Address is required" })} />
+                                <input className={inputClass} placeholder="Enter IP Address"  {...register("ipaddress",  { required: "IP Address is required",
+                                    pattern: {
+                                    value: /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/,
+                                    message: "Enter a valid IP address (e.g. 192.168.0.1)",
+                                    }, })} />
                                 {errors.ipaddress && <p className="text-red-500 text-xs">{errors.ipaddress.message}</p>}
                             </div>
 

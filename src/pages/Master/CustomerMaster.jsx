@@ -71,6 +71,7 @@ const CustomerMaster = () => {
     // ---------------- SUBMIT API ----------------
         const onSubmit = async (data) => {
             const inputData = {
+                srNo : 4,
                 customerName: data.customer,               
             };
     
@@ -99,13 +100,35 @@ const CustomerMaster = () => {
             }
         };
 
+        const [editErrors, setEditErrors] = useState({});
+
+        const validateCustomerEdit = () => {
+    let errors = {};
+
+    const name = editData?.customerName?.trim();
+
+    if (!name) {
+        errors.customerName = "Customer Name is required";
+    } 
+    else if (!/^[A-Za-z\s]+$/.test(name)) {
+        errors.customerName = "Only alphabets and spaces allowed";
+    }
+
+    setEditErrors(errors);
+
+    return Object.keys(errors).length === 0;
+};
+
     const handleEdit = (item) => {
         console.log("Edit clicked:", item);
         setEditData(item);     // store selected row
         setIseditModalOpen(true);  // open modal
     };
 
+
+
      const handleUpdateCustomer = async () => {
+           if (!validateCustomerEdit()) return;
         console.log("Edit Data:", editData);
             try {
                 const inputData = {
@@ -193,7 +216,8 @@ const CustomerMaster = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className={labelClass}> Customer Name</label>
-                            <input className={inputClass} placeholder="Enter Customer Name"  {...register("customer",  { required: "Customer Name is required" })} />
+                            <input className={inputClass} placeholder="Enter Customer Name"  {...register("customer",  { required: "Customer Name is required" ,
+                                 pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  }     })} />
                             {errors.customer && <p className="text-red-500 text-xs">{errors.customer.message}</p>}
                         </div>
                     </div>
@@ -259,12 +283,13 @@ const CustomerMaster = () => {
                                             <label className={labelClass}>Customer Name</label>
                                             <input className={inputClass} key="customername" value={editData?.customerName || ""}
                                                 onChange={(e) => setEditData({ ...editData, customerName : e.target.value })} />
-                                        </div>
+                                                 {editErrors.customerName && (<p className="text-red-500 text-xs mt-1"> {editErrors.customerName}  </p>  )}
+                                        </div>                                       
                                     </div>
                                     {/* Buttons */}
                                     <div className="flex justify-end gap-3 mt-6">
                                         <button className={btnClass} onClick={handleUpdateCustomer}> Update  </button>
-                                        <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
+                                        <button className={resetClass}  onClick={() => { setIseditModalOpen(false); setEditErrors({}); }}>Cancel </button>
 
                                     </div>
                                 </div>

@@ -55,7 +55,9 @@ import {
     getNonComplaintEndpointList,
     getFailedEndpointList,
     getOfflineEndpointList,
-    getVulnerabilityModalList
+    getVulnerabilityModalList,
+    getOsPatchStatusListAllModal,
+    
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
@@ -72,6 +74,7 @@ const OverviewDashboard = () => {
     const [osPie, setOsPie] = useState([]);
     const [osList, setOsList] = useState([]);
     const [topDevices, setTopDevices] = useState([]);
+    const [osModalData, setOsModalData] = useState([]);
     const [show, setShow] = useState(false);
     const [modalData, setModalData] = useState({});
     const [loading, setLoading] = useState(false);
@@ -81,6 +84,12 @@ const OverviewDashboard = () => {
      const [modalList, setModalList] = useState([]);
     const [showExportModal, setShowExportModal] = useState(false);
     const [modalLoading, setModalLoading] = useState(false);
+
+     
+     const [showOsUpdateModal, setshowOsUpdateModal] = useState(false);
+
+     const [showTopRiskModal, setShowTopRiskModal] = useState(false);
+     const [topRiskModalData, setTopRiskModalData] = useState([]);
 
 
     // const columns = [
@@ -173,11 +182,43 @@ const OverviewDashboard = () => {
         obj.maindata = MainData;
         obj.columndata = ColumnData;
         obj.modelHeading = label.toUpperCase();
-
         setModalData(obj);
         setShow(true);
         setLoading(false);
     }
+
+    // os update modal
+    const handleOsModal = async () => {
+    try {
+        setLoading(true);
+
+        const response = await getOsPatchStatusListAllModal();
+        console.log("OS Modal Data:", response.data);
+        setOsModalData(response.data.data);
+        setshowOsUpdateModal(true);
+
+    } catch (error) {
+        console.error("Error fetching OS modal data:", error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+    const handleTopRiskModal = async () => {
+        try {
+            setLoading(true);
+            const response = await getTopRiskyDevices();
+            setTopRiskModalData(response.data.data);
+            setShowTopRiskModal(true);
+        }
+        catch (error) {
+            console.error(error);
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+
 
     const apiCalls = async () => {
         try {
@@ -469,6 +510,96 @@ const handleExportModal = async () => {
                     </div>
                 </div>
             )}
+
+            {/* Operating Systems Update modal */}
+            {showOsUpdateModal && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-[#141D2E] rounded-lg p-5 w-[90%] max-w-6xl border border-[#234779]">
+
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl text-white"> Operating Systems Update  </h2>
+
+                            <button onClick={() => setshowOsUpdateModal(false)}  className="text-white text-xl" > ✕ </button>
+                        </div>
+
+                        {/* Header */}
+                        <div className="table-header bg-slate-600/30 p-2 border-b border-gray-900 ">
+                            <span>Update</span>
+                            <span>Installed</span>
+                            <span>Needed</span>
+                            <span>Severity</span>
+                        </div>
+
+                        {/* Data */}
+                        <div className="max-h-[500px] overflow-y-auto hide-scrollbar">
+                            {modalLoading ? (
+        <div className="flex justify-center items-center h-64">
+            <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-gray-300 text-sm">Loading data...</p>
+            </div>
+        </div>
+    ) : (osModalData?.map((item, i) => (
+                                <div key={i} className="table-row border-b border-gray-600/70">
+                                    <span className="break-words pr-5"> {item.PatchTitle} </span>
+                                    <span>{item.InstalledCount}</span>
+                                    <span>{item.NeededCount}</span>
+                                    <span className="text-yellow-400"> {item.classification} </span>
+                                </div>
+                            ))
+                           ) }
+                        </div>
+
+                    </div>
+                </div>
+            )}
+
+            {/* Top Risky Devices Modal */}
+            {showTopRiskModal && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-[#141D2E] rounded-lg p-5 w-[90%] max-w-6xl border border-[#234779]">
+
+                        {/* Header */}
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl text-white">  Top Risk Devices </h2>
+
+                            <button onClick={() => setShowTopRiskModal(false)}  className="text-white text-xl" > ✕  </button>
+                        </div>
+
+                        {/* Table Header */}
+                        <div className="table-header bg-slate-600/30 p-2 border-b border-gray-900">
+                            <span>Device</span>
+                            <span>Patches</span>
+                            <span>Last Scan</span>
+                            <span>Severity</span>
+                        </div>
+
+                        {/* Table Data */}
+                        <div className="max-h-[500px] overflow-y-auto hide-scrollbar">
+                            {modalLoading ? (
+        <div className="flex justify-center items-center h-64">
+            <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-gray-300 text-sm">Loading data...</p>
+            </div>
+        </div>
+    ) : (topRiskModalData.map((item, i) => (
+                                <div key={i} className="table-row border-b border-gray-600/70">
+                                    <span>{item.IPAddress}</span>
+                                    <span>{item.MissingCount}</span>
+                                    <span>{item.LastScan}</span>
+                                    <span className="text-red-400">
+                                        {item.Severity}
+                                    </span>
+                                </div>
+                            ))
+                            )}
+                        </div>
+
+                    </div>
+                </div>
+            )}
+
 
             {loading && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
@@ -963,16 +1094,23 @@ const handleExportModal = async () => {
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
                     {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Operating Systems Update</h2> */}
-                    <h2 className="card-header">Operating Systems Update</h2>
+                    {/* <h2 className="card-header">Operating Systems Update</h2> */}
+                       <div className="flex justify-between items-center mb-3">
+                        <h2 className="card-header mb-0"> Operating Systems Update</h2>
+
+                        <button    onClick={handleOsModal}
+                        // onClick={() => setShowExportModal(true)}
+                            className="px-4 py-2 text-sm bg-blue-500/20 border border-blue-500/40 text-blue-300 hover:bg-blue-500/30 rounded-md transition-all" >
+                           <SquareArrowOutUpRight size={18} />
+                        </button>
+
+                    </div>
+
                     <div className="flex gap-4">
 
                         {/* Donut */}
                         <div className="w-50 h-50 relative">
-                            <SinglePieCharts
-                                data={osPie}
-                                onSliceClick={handleClickModalParameter}
-                                datakey={"ospie"}
-                            />
+                            <SinglePieCharts data={osPie}  onSliceClick={handleClickModalParameter}  datakey={"ospie"} />
 
                         </div>
 
@@ -1003,7 +1141,16 @@ const handleExportModal = async () => {
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
                     {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Top Risk Devices</h2> */}
-                    <h2 className="card-header">Top Risk Devices</h2>
+                    {/* <h2 className="card-header">Top Risk Devices</h2> */}
+                    <div className="flex justify-between items-center mb-3">
+                        <h2 className="card-header mb-0"> Top Risk Devices</h2>
+
+                        <button onClick={handleTopRiskModal}     // onClick={() => setShowExportModal(true)}
+                            className="px-4 py-2 text-sm bg-blue-500/20 border border-blue-500/40 text-blue-300 hover:bg-blue-500/30 rounded-md transition-all" >
+                           <SquareArrowOutUpRight size={18} />
+                        </button>
+
+                    </div>
                     {/* <div className="text-lg text-gray-400 grid grid-cols-4 mb-2"> */}
                     <div className="table-header">
                         <span>Device</span>
@@ -1028,7 +1175,6 @@ const handleExportModal = async () => {
                     {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">Patch History</h2> */}
 
                     <h2 className="card-header">Patch History</h2>
-
                     <SingleBarcharts data={histData} onSliceClick={handleClickModalParameter} />
 
                 </div>

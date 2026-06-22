@@ -43,8 +43,8 @@ const BranchMaster = () => {
 
         const [activeTab, setActiveTab] = useState(0);
          const tabs = [
-            { label: "Add Customer", icon: <Plus size={16} /> },
-            { label: "View Customer List", icon: <List size={16} /> }
+            { label: "Add Branch", icon: <Plus size={16} /> },
+            { label: "View Branch List", icon: <List size={16} /> }
             // { label: "Multiple Run Command", icon: <Play size={16} /> },
         ];
     
@@ -68,6 +68,7 @@ const BranchMaster = () => {
             // ---------------- SUBMIT API ----------------
                     const onSubmit = async (data) => {
                         const inputData = {
+                            srNo: 4,
                             branchName: data.branch,               
                         };
                 
@@ -88,7 +89,25 @@ const BranchMaster = () => {
                         }
                     };
 
-        
+                const [editErrors, setEditErrors] = useState({});
+
+                 const validateBranchEdit = () => {
+    let errors = {};
+
+    const name = editData?.branchName?.trim();
+
+    if (!name) {
+        errors.branchName = "Customer Name is required";
+    } 
+    else if (!/^[A-Za-z\s]+$/.test(name)) {
+        errors.branchName = "Only alphabets and spaces allowed";
+    }
+
+    setEditErrors(errors);
+
+    return Object.keys(errors).length === 0;
+};
+
             const handleEdit = (item, index) => {
                 console.log("Edit clicked:", item);
                 setEditData(item);     // store selected row
@@ -97,6 +116,7 @@ const BranchMaster = () => {
 
             
             const handleUpdateBranch = async () => {
+                  if (!validateBranchEdit()) return;
                     console.log("Edit Data:", editData);
                         try {
                             const inputData = {
@@ -186,7 +206,8 @@ const BranchMaster = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label className={labelClass}> Branch Name</label>
-                        <input className={inputClass} placeholder="Enter Branch Name"  {...register("branch",  { required: "Branch Name is required" })} />
+                        <input className={inputClass} placeholder="Enter Branch Name"  {...register("branch",  { required: "Branch Name is required",
+                             pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  } })} />
                         {errors.branch && <p className="text-red-500 text-xs">{errors.branch.message}</p>}
                     </div>                
                 </div>
@@ -256,13 +277,14 @@ const BranchMaster = () => {
                                         <label className={labelClass}>Branch Name</label>
                                         <input className={inputClass} key="branchname" value={editData?.branchName || ""}
                                             onChange={(e) => setEditData({ ...editData, branchName: e.target.value }) }/>
-                                    </div>      
+                                            {editErrors.branchName && (<p className="text-red-500 text-xs mt-1"> {editErrors.branchName}  </p>  )}
+                                    </div>                                            
                                 </div>
     
                                 {/* Buttons */}
                                 <div className="flex justify-end gap-3 mt-6">
                                     <button className={btnClass} onClick={handleUpdateBranch} > Update  </button>
-                                    <button className={resetClass} onClick={() => setIseditModalOpen(false)} >Cancel </button>
+                                    <button className={resetClass}  onClick={() => { setIseditModalOpen(false); setEditErrors({}); }} >Cancel </button>
     
                                 </div>
                             </div>

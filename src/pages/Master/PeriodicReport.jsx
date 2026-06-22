@@ -83,7 +83,7 @@ const PeriodicReport = () => {
 
         try {
             if (!isEditMode) {
-
+                 data.id = 4;
                 const res = await addPeriodicReport(data);
                 console.log("Res Data--->  ", res);
                 if (res.data.status == 200) {

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import MultiSelect from '../../layouts/MultiSelect.jsx';
-
+import { Eye, EyeOff } from "lucide-react";
 import { AddAppUser, getMasterVendorNamedropdown, getMasterCustomerNamedropdown, getMasterbranchNamedropdown } from "../../api/projectApi";
 
 const AddUser = () => {
@@ -38,6 +38,7 @@ const AddUser = () => {
     const [OEMOptions, setOEMOptions] = useState([]);
 const [CustNameOptions, setCustNameOptions] = useState([]);
 const [branchOptions, setbranchNameOptions] = useState([]);
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
     // const OEMOptions = [
@@ -182,13 +183,15 @@ const loadDropdowns = async () => {
               {/* ROW 1 */}
                 <div>
                     <label className={labelClass}> First Name </label>
-                    <input className={inputClass} placeholder="Enter First Name" {...register("firstName", { required: "First name required" })} />
+                    <input className={inputClass} placeholder="Enter First Name"  {...register("firstName", { required: "First name required" , 
+                    pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed"  }})} />
                     {errors.firstName && (<p className="text-red-500 text-xs mt-1">{errors.firstName.message} </p>  )}
                 </div>
 
                 <div>
                     <label className={labelClass}> Last name </label>
-                    <input className={inputClass} placeholder="Enter Last Name"   {...register("lastName", { required: "Last name required" })} />
+                    <input className={inputClass} placeholder="Enter Last Name"   {...register("lastName", { required: "Last name required", 
+                    pattern: { value: /^[A-Za-z\s]+$/, message: "Only alphabets are allowed" }})} />
                       {errors.lastName && ( <p className="text-red-500 text-xs mt-1"> {errors.lastName.message} </p> )}
                 </div>
 
@@ -204,7 +207,8 @@ const loadDropdowns = async () => {
                 <div>
                     <label className={labelClass}> Contact Number    </label>
                     <input type="tel" className={inputClass} placeholder="Enter Contact Number" {...register("contact", { required: "Contact is required",
-                    pattern: { value: /^[0-9]{10}$/,  message: "Enter valid 10 digit number" } })} onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, ""); }} />
+                    pattern: { value: /^[0-9]{10}$/,  message: "Enter valid 10 digit number" } })} onInput={(e) => {   e.target.value = e.target.value.replace(/\D/g, "").slice(0, 10); }} 
+                    />
                     {errors.contact && ( <p className="text-red-500 text-xs mt-1"> {errors.contact.message} </p> )}
                 </div>
 
@@ -228,21 +232,35 @@ const loadDropdowns = async () => {
 
                 <div>
                     <label className={labelClass}> User Name </label>
-                    <input className={inputClass} placeholder="Enter User Name" {...register("userName", { required: "User name required" })} />
+                    <input className={inputClass} placeholder="Enter User Name" {...register("userName", { required: "User name required", 
+                    pattern: { value: /^[A-Za-z]+$/, message: "Only alphabets are allowed" }})}
+                    onInput={(e) => { e.target.value = e.target.value.replace(/[^A-Za-z]/g, ""); }} />
                     {errors.userName && ( <p className="text-red-500 text-xs mt-1"> {errors.userName.message} </p> )}
                 </div>
 
                 <div>
                     <label className={labelClass}>Password</label>
                     <input  type="password" className={inputClass} placeholder="Enter Password"  {...register("password", { required: "Password is required",
-                        minLength: { value: 6, message: "Minimum 6 characters required" } })} />
+                        // minLength: { value: 6, message: "Minimum 6 characters required" }
+                        pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{8,}$/,
+                        message: "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character." }
+                         })} />
                     {errors.password && ( <p className="text-red-500 text-xs mt-1"> {errors.password.message} </p> )}
                 </div>
 
                 <div>
                     <label className={labelClass}>Confirm Password </label>
-                    <input  type="password" className={inputClass} placeholder="Confirm Password" {...register("confirmPassword", { required: "Confirm your password",
+                     <div className="relative">
+                    <input type={showConfirmPassword ? "text" : "password"} className={inputClass} placeholder="Confirm Password" {...register("confirmPassword", { required: "Confirm your password",
                         validate: (value) => value === password || "Passwords do not match" })}  />
+                          {/* <div className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
+                            onClick={() => setShowConfirmPassword((prev) => !prev)} >
+                            {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </div> */}
+                            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400" >
+                                                {showConfirmPassword ?<EyeOff size={18} />: <Eye size={18} />}
+                                              </button>
+                        </div>
                     {errors.confirmPassword && ( <p className="text-red-500 text-xs mt-1"> {errors.confirmPassword.message}  </p>  )}
                 </div>
 

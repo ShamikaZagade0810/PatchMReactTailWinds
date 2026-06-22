@@ -372,71 +372,71 @@ export const sidebarData = [
       
   //   ],
   // },
-   {
-    name: "Network Devices",
-    icon: Router,
-    roles: ["admin"],
-    path: "network",
-    children: [     
-       {
-        name: "Network Devices New",
-        path: "/section/DeviceInventory",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-           {
-       name: "Patch Deploymnet Cycle",
-        path: "/section/deplyment-center",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      //  {
-      //   name: "Network Monitoring Alert",
-      //   path: "/section1/NeWNetworkMonitoringAlert",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },        
-      //  {
-      //   name: "Configuration Manager",
-      //   path: "/section/NewConfigurationManagerDashboard",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-      // {
-      //   name: "Network Device Configuration",
-      //   path: "/section/NewNetworkDviceConfiguration",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-      //  {
-      //   name: "Firmware Inventory",
-      //   path: "/section/NewFirmwareInventoryDashboard",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
-      {
-        name: "Config Backup",
-        path: "/section/NewConfigurationBackupHistory",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
-      {
-        name: "Firmware Inventory",
-        path: "/section/FirmwareInvn",
-        icon: AppWindowMac,
-        roles: ["admin"],
-      },
+  //  {
+  //   name: "Network Devices",
+  //   icon: Router,
+  //   roles: ["admin"],
+  //   path: "network",
+  //   children: [     
+  //      {
+  //       name: "Network Devices New",
+  //       path: "/section/DeviceInventory",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //          {
+  //      name: "Patch Deploymnet Cycle",
+  //       path: "/section/deplyment-center",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     //  {
+  //     //   name: "Network Monitoring Alert",
+  //     //   path: "/section1/NeWNetworkMonitoringAlert",
+  //     //   icon: AppWindowMac,
+  //     //   roles: ["admin"],
+  //     // },        
+  //     //  {
+  //     //   name: "Configuration Manager",
+  //     //   path: "/section/NewConfigurationManagerDashboard",
+  //     //   icon: AppWindowMac,
+  //     //   roles: ["admin"],
+  //     // },
+  //     // {
+  //     //   name: "Network Device Configuration",
+  //     //   path: "/section/NewNetworkDviceConfiguration",
+  //     //   icon: AppWindowMac,
+  //     //   roles: ["admin"],
+  //     // },
+  //     //  {
+  //     //   name: "Firmware Inventory",
+  //     //   path: "/section/NewFirmwareInventoryDashboard",
+  //     //   icon: AppWindowMac,
+  //     //   roles: ["admin"],
+  //     // },
+  //     {
+  //       name: "Config Backup",
+  //       path: "/section/NewConfigurationBackupHistory",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
+  //     {
+  //       name: "Firmware Inventory",
+  //       path: "/section/FirmwareInvn",
+  //       icon: AppWindowMac,
+  //       roles: ["admin"],
+  //     },
 
-      // {
-      //   name: "New login Page",
-      //   path: "/section/Login1",
-      //   icon: AppWindowMac,
-      //   roles: ["admin"],
-      // },
+  //     // {
+  //     //   name: "New login Page",
+  //     //   path: "/section/Login1",
+  //     //   icon: AppWindowMac,
+  //     //   roles: ["admin"],
+  //     // },
 
 
-    ],
-  },
+  //   ],
+  // },
 ];
 
 export const LinuxSidebarData = [

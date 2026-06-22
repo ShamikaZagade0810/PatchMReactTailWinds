@@ -136,7 +136,79 @@ const UserList = () => {
     setIsModalOpen(true);
 };
 
+const [editErrors, setEditErrors] = useState({});
+const [resetErrors, setResetErrors] = useState({});
+
+const validateEditForm = () => {
+    let errors = {};
+
+    // First Name
+    if (!editData.firstName?.trim()) {
+        errors.firstName = "First Name is required";
+    } else if (!/^[A-Za-z]+$/.test(editData.firstName)) {
+        errors.firstName = "Only alphabets are allowed";
+    }
+
+    // Last Name
+    if (!editData.lastName?.trim()) {
+        errors.lastName = "Last Name is required";
+    } else if (!/^[A-Za-z]+$/.test(editData.lastName)) {
+        errors.lastName = "Only alphabets are allowed";
+    }
+
+    // Username
+    if (!editData.username?.trim()) {
+        errors.username = "Username is required";
+    } else if (!/^[A-Za-z0-9]+$/.test(editData.username)) {
+        errors.username = "No spaces or special characters allowed";
+    }
+
+    // Contact
+    if (!editData.contactNo?.trim()) {
+        errors.contactNo = "Contact Number is required";
+    } else if (!/^[0-9]{10}$/.test(editData.contactNo)) {
+        errors.contactNo = "Contact Number must be exactly 10 digits";
+    }
+
+    // Email
+    if (!editData.emailId?.trim()) {
+        errors.emailId = "Email is required";
+    } else if (
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(editData.emailId)
+    ) {
+        errors.emailId = "Invalid Email";
+    }
+
+    // Type
+    if (!editData.type) {
+        errors.type = "Please select Type";
+    }
+
+    // OEM
+    if (!editData.OEMNames?.length) {
+        errors.OEMNames = "Select at least one OEM";
+    }
+
+    // Customer
+    if (!editData.CustNames?.length) {
+        errors.CustNames = "Select at least one Customer";
+    }
+
+    // Branch
+    if (!editData.branchNames?.length) {
+        errors.branchNames = "Select at least one Branch";
+    }
+
+    setEditErrors(errors);
+
+    return Object.keys(errors).length === 0;
+};
+
 const handleUpdateUser = async () => {
+ if (!validateEditForm()) {
+        return;
+    }
+
     try {
         const inputData = {
             id: editData?.srNo,
@@ -178,7 +250,40 @@ const handleUpdateUser = async () => {
     }
 };
 
+const validateResetPassword = () => {
+  let errors = {};
+
+  const password = resetData.password;
+  const confirmPassword = resetData.confirmPassword;
+
+  // Password required
+  if (!password) {
+    errors.password = "Password is required";
+  } 
+  // Password rule: alphanumeric + special char + min 8 chars
+  else if (
+    !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^()_+\-=[\]{};':"\\|,.<>\/?]).{8,}$/.test(password)
+  ) {
+    errors.password =
+      "Min 8 chars, must include letter, number & special character";
+  }
+
+  // Confirm password required
+  if (!confirmPassword) {
+    errors.confirmPassword = "Confirm Password is required";
+  } 
+  // Match check
+  else if (password !== confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
+  }
+
+  setResetErrors(errors);
+
+  return Object.keys(errors).length === 0;
+};
+
     const handleRestPass = (item, index) => {
+      
         console.log("Reset clicked:", item);
         // setEditData(item);     // store selected row
          setResetData({
@@ -298,36 +403,27 @@ const handleUpdateUser = async () => {
                 {/* EDIT MODAL */}
                 {isModalOpen && (
   <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-
     {/* Modal Box */}
     <div className="bg-[#0B1220] rounded-2xl p-6 w-[700px] border border-white/10 shadow-xl">
-
       <h2 className="text-lg font-semibold mb-6">Update User Details</h2>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         {/* First Name */}
         <div>
           <label className={labelClass}>First Name</label>
-          <input
-            className={inputClass}
-            value={editData?.firstName || ""}
-            onChange={(e) =>
-              setEditData({ ...editData, firstName: e.target.value })
-            }
-          />
+          <input  className={inputClass} value={editData?.firstName || ""}
+            onChange={(e) =>  setEditData({ ...editData,  firstName: e.target.value.replace(/[^A-Za-z\s]/g, "") }) } />
+            {editErrors.firstName && (    <p className="text-red-500 text-xs mt-1">        {editErrors.firstName}    </p>)}
+         
         </div>
 
         {/* Last Name */}
         <div>
           <label className={labelClass}>Last Name</label>
-          <input
-            className={inputClass}
-            value={editData?.lastName || ""}
-            onChange={(e) =>
-              setEditData({ ...editData, lastName: e.target.value })
-            }
-          />
+          <input className={inputClass} value={editData?.lastName || ""}
+            onChange={(e) => setEditData({ ...editData,  lastName:e.target.value.replace(/[^A-Za-z\s]/g,"") }) }  />
+            {editErrors.lastName && (<p className="text-red-500 text-xs">{editErrors.lastName}</p>)}
+          
         </div>
 
         {/* Email */}
@@ -338,35 +434,36 @@ const handleUpdateUser = async () => {
             className={inputClass}
             value={editData?.emailId || ""}
             onChange={(e) =>
-              setEditData({ ...editData, emailId: e.target.value })
-            }
-          />
+              setEditData({ ...editData, emailId: e.target.value })  }    />
+              {editErrors.emailId && (
+<p className="text-red-500 text-xs">{editErrors.emailId}</p>
+)}
         </div>
 
         {/* Contact */}
         <div>
           <label className={labelClass}>Contact No</label>
-          <input
-            type="tel"
-            className={inputClass}
-            value={editData?.contactNo || ""}
-            onChange={(e) =>
-              setEditData({
-                ...editData,
-                contactNo: e.target.value.replace(/[^0-9]/g, "")
-              })
-            }
-          />
+          <input type="tel"  className={inputClass} value={editData?.contactNo || ""}
+            // onChange={(e) => setEditData({ ...editData,  contactNo:e.target.value.replace(/\D/g,"")  }) }  
+             maxLength={10}
+    onChange={(e) => {
+      const value = e.target.value.replace(/\D/g, ""); // only digits
+
+      setEditData({
+        ...editData,
+        contactNo: value.slice(0, 10) // force max 10 digits
+      });
+    }}
+             />
+            {editErrors.contactNo && (<p className="text-red-500 text-xs">{editErrors.contactNo}</p>)}
         </div>
 
         {/* Username */}
         <div>
           <label className={labelClass}>User Name</label>
-          <input
-            className={inputClass}
-            value={editData?.username || ""}
-            onChange={(e) => setEditData({ ...editData, username: e.target.value }) }
-          />
+          <input className={inputClass} value={editData?.username || ""} 
+          onChange={(e) => setEditData({ ...editData,  username:e.target.value.replace(/[^A-Za-z0-9]/g,"") }) }    />
+          {editErrors.username && (<p className="text-red-500 text-xs">{editErrors.username}</p>)}
         </div>
 
         {/* Type */}
@@ -380,6 +477,7 @@ const handleUpdateUser = async () => {
             <option value="admin">Admin</option>
             <option value="user">User</option>
           </select>
+          {editErrors.type && (<p className="text-red-500 text-xs">{editErrors.type}</p>)}
         </div>
 
         {/* OEM */}
@@ -397,6 +495,7 @@ const handleUpdateUser = async () => {
     id={"OEMNames"}
     setValue={setValue}
   />
+  {editErrors.OEMNames && (<p className="text-red-500 text-xs mt-1">    {editErrors.OEMNames}</p>)}
 </div>
 
        
@@ -414,6 +513,7 @@ const handleUpdateUser = async () => {
     id={"CustNames"}
     setValue={setValue}
   />
+  {editErrors.CustNames && (<p className="text-red-500 text-xs mt-1">    {editErrors.CustNames}</p>)}
 </div>
 
   {/* Branch Name */}
@@ -429,6 +529,7 @@ const handleUpdateUser = async () => {
     placeholder="Select Customer Names"
     id={"branchNames"}
     setValue={setValue} />
+    {editErrors.branchNames && (<p className="text-red-500 text-xs mt-1">    {editErrors.branchNames}</p>)}
   </div>
 
       </div>
@@ -458,6 +559,7 @@ const handleUpdateUser = async () => {
           <label className={labelClass}>New Password</label>
           <input type="password" className={inputClass} value={resetData.password}
             onChange={(e) => setResetData({ ...resetData, password: e.target.value }) } />
+            {resetErrors.password && (<p className="text-red-500 text-xs"> {resetErrors.password} </p>  )}
         </div>
 
         {/* Confirm Password */}
@@ -465,17 +567,19 @@ const handleUpdateUser = async () => {
           <label className={labelClass}>Confirm Password</label>
           <input type="password" className={inputClass} value={resetData.confirmPassword}
             onChange={(e) => setResetData({ ...resetData, confirmPassword: e.target.value }) } />
+              {resetErrors.confirmPassword && (<p className="text-red-500 text-xs"> {resetErrors.confirmPassword} </p> )}
         </div>
       </div>
 
       {/* Buttons */}
       <div className="flex justify-end gap-3 mt-6">
-        <button className="px-4 py-2 text-gray-400 hover:text-white" onClick={() => setIsResetModalOpen(false)} > Cancel </button>
+        <button className="px-4 py-2 text-gray-400 hover:text-white"   onClick={() => { setIsResetModalOpen(false);  setResetErrors({});   }} > Cancel </button>
         <button className={btnClass} onClick={() => {
-            if (resetData.password !== resetData.confirmPassword) {
-              alert("Passwords do not match");
-              return;
-            }
+            // if (resetData.password !== resetData.confirmPassword) {
+            //   alert("Passwords do not match");
+            //   return;
+            // }
+             if (!validateResetPassword()) return;
             console.log("Reset Password Data:", resetData);
             setIsResetModalOpen(false);
           }} >  Update </button>

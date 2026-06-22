@@ -94,7 +94,10 @@ useEffect(() => {
 
   return (
     <>
-    <button onClick={() => navigate("/Thirdparty/host-view")}  className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg border border-transparent bg-transparent text-white transition-all duration-300 hover:text-cyan-500 ">
+    <button onClick={() => {
+    console.log("clicked");
+    navigate("/Thirdparty/host-view");
+  }}  className="relative z-50 flex items-center gap-2 px-3 py-2 text-xs rounded-lg border border-transparent bg-transparent transition-all duration-300 hover:text-cyan-400 hover:bg-cyan-600/5 hover:border-cyan-600/50">
   ← Back To Hosts
 </button>
        <div className="bg-[#050B18] rounded-xl p-3 border border-white/10 min-h-screen text-white text-sm">

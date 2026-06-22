@@ -61,8 +61,8 @@ const handleReset = () => {
     const tabs = [
         { label: "IP's To Send Patches", icon: <Plus size={16} /> },
         { label: "View Sending Patches", icon: <List size={16} /> },
-        { label: "Ip Wise Patch Patches", icon: <List size={16} /> },
-        { label: "File Wise Patch Patches", icon: <List size={16} /> }
+        // { label: "Ip Wise Patch Patches", icon: <List size={16} /> },
+        // { label: "File Wise Patch Patches", icon: <List size={16} /> }
     ];
 
     const rumtable = [
@@ -147,11 +147,9 @@ const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:f
         console.log("timeout", watch('timeout'));
         console.log("intervaltime", watch('intervaltime'));
         console.log("executevalue", watch('executevalue'));
-
+        
         try {
-
             const formData = new FormData();
-
             formData.append("file", file);
             formData.append("ipAddress", ipList);
             formData.append("destPath", watch('DestPath'));
@@ -197,7 +195,7 @@ const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:f
         formData.append("branch", "hello");
         formData.append("file", file);
         console.log(file);
-
+        
         try {
             const res = await axios.post(
                 "http://localhost:8081/upload/contentDistribution",

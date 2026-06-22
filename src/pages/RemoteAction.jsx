@@ -216,12 +216,12 @@ const RemoteAction = () => {
             icons: Settings,
             iconcolor: "#22C55E"
         },
-        {
-            id: "policydetails",
-            name: "Policy Details",
-            icons: ShieldCheck,
-            iconcolor: "#EF4444"
-        },
+        // {
+        //     id: "policydetails",
+        //     name: "Policy Details",
+        //     icons: ShieldCheck,
+        //     iconcolor: "#EF4444"
+        // },
     ];
 
     const filterConfig = {
