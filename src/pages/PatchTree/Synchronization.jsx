@@ -2,7 +2,7 @@ import React, {useState, useEffect  } from 'react'
 
 import { ChevronLeft, ChevronRight, RefreshCw, Download  } from "lucide-react";
 
-import { getsyncHistoryData } from "../../api/projectApi";
+import { getsyncHistoryData, DiscoverSync  } from "../../api/projectApi";
 
 const Synchronization = () => {
 //     const SynchronizationData = [
@@ -65,21 +65,46 @@ const fetchSynchronizationHistory = async () => {
     }
 };
 
+// const handleDiscover = async () => {
+//     try {
+//         setShowDiscoverModal(true);
+//         setDiscoverLoading(true);
+//         setDiscoverMessage("");
+
+//         // const response = await discoverSync(); // your discover API
+//         // Wait 30 seconds
+//         await new Promise((resolve) => setTimeout(resolve, 30000));
+
+//         // setDiscoverMessage( response?.data?.message || "Synchronization completed successfully" );
+//          setDiscoverMessage( "Synchronization completed successfully");
+//     } catch (error) {
+//         // setDiscoverMessage( error?.response?.data?.message || "Synchronization failed" );
+//          setDiscoverMessage("Synchronization failed");
+//     } finally {
+//         setDiscoverLoading(false);
+//     }
+// };
+
 const handleDiscover = async () => {
     try {
         setShowDiscoverModal(true);
         setDiscoverLoading(true);
         setDiscoverMessage("");
 
-        // const response = await discoverSync(); // your discover API
-        // Wait 30 seconds
-        await new Promise((resolve) => setTimeout(resolve, 30000));
+        const response = await DiscoverSync();
 
-        // setDiscoverMessage( response?.data?.message || "Synchronization completed successfully" );
-         setDiscoverMessage( "Synchronization completed successfully");
+        if (response.status === 200) {
+            setDiscoverMessage( response?.data?.message || "Synchronization completed successfully" );
+
+            // Refresh history after discover completes
+            await fetchSynchronizationHistory();
+        } else {
+            setDiscoverMessage("Synchronization failed");
+        }
     } catch (error) {
-        // setDiscoverMessage( error?.response?.data?.message || "Synchronization failed" );
-         setDiscoverMessage("Synchronization failed");
+        setDiscoverMessage(
+            error?.response?.data?.message || "Synchronization failed"
+        );
     } finally {
         setDiscoverLoading(false);
     }
@@ -121,8 +146,7 @@ const handleDiscover = async () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <button  
-            onClick={handleDiscover}
+            <button  onClick={handleDiscover}
             className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] bg-gray-800 hover:bg-cyan-600 hover:border-gray-800 transition-all duration-300">
               <RefreshCw size={14} /> Discover
             </button>

@@ -9,7 +9,8 @@ import {
     Computer,
     X,
     MoveUp,
-    Check
+    Check,
+    SquareArrowOutUpRight
 } from "lucide-react";
 import SinglePieCharts from '../components/Charts/SinglePiecharts';
 import SingleBarcharts from '../components/Charts/SingleBarcharts';
@@ -53,7 +54,8 @@ import {
     getPatchedEndpointList,
     getNonComplaintEndpointList,
     getFailedEndpointList,
-    getOfflineEndpointList
+    getOfflineEndpointList,
+    getVulnerabilityModalList
 } from "../api/projectApi";
 import { OverlayTrigger } from "react-bootstrap";
 import { Modal } from '../components/Layout/Modal';
@@ -75,6 +77,10 @@ const OverviewDashboard = () => {
     const [loading, setLoading] = useState(false);
     const [overallComplainceRate, setOverallComplainceRate] = useState(0);
     const [complianceData, setComplianceData] = useState([]);
+
+     const [modalList, setModalList] = useState([]);
+    const [showExportModal, setShowExportModal] = useState(false);
+    const [modalLoading, setModalLoading] = useState(false);
 
 
     // const columns = [
@@ -169,9 +175,6 @@ const OverviewDashboard = () => {
         obj.modelHeading = label.toUpperCase();
 
         setModalData(obj);
-
-
-
         setShow(true);
         setLoading(false);
     }
@@ -184,6 +187,7 @@ const OverviewDashboard = () => {
                 securityRes,
                 severityRes,
                 severityListRes,
+                severityModalListRes,
                 histRes,
                 ipRes,
                 osPieRes,
@@ -197,6 +201,7 @@ const OverviewDashboard = () => {
                 getSecurityPostureData(),
                 getThirdPartySeverity(),
                 getThirdPartyApplisting(),
+                getVulnerabilityModalList(),
                 getHistBarChart(),
                 getIpWiseStatusData(),
                 getOsUpdatesPie(),
@@ -214,6 +219,7 @@ const OverviewDashboard = () => {
 
             setThirdPartySeverity(severityRes.data.data);
             setThirdPartyList(severityListRes.data.data);
+            // setModalList(severityModalListRes.data.data);
             setHistData(histRes.data.data);
 
 
@@ -231,13 +237,24 @@ const OverviewDashboard = () => {
             console.log("windowsOverallComplainceRes ", windowsOverallComplainceRes.data.data[0].value);
             console.log("windowsComplainceDataDashboardRes ", windowsComplainceDataDashboardRes.data.data);
 
-
         } catch (error) {
             console.error("API Error:", error);
         }
     };
 
+const handleExportModal = async () => {
+    setShowExportModal(true);
+    setModalLoading(true);
 
+    try {
+        const res = await getVulnerabilityModalList();
+        setModalList(res.data.data);
+    } catch (err) {
+        console.error(err);
+    } finally {
+        setModalLoading(false);
+    }
+};
 
     // const CircularProgress = ({ percentage, label, size = 110, color = "#3b82f6", }) => {
     //     const radius = size / 2 - 10;
@@ -397,6 +414,62 @@ const OverviewDashboard = () => {
                 data={modalData}
 
             />
+            {/* modal for export button */}
+            {showExportModal && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-[#141D2E] rounded-lg p-5 w-[90%] max-w-6xl border border-[#234779]">
+
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl text-white"> 3rd Party Patch Management </h2>
+
+                            <button onClick={() => setShowExportModal(false)} className="text-white text-xl" >  ✕  </button>
+                        </div>
+
+                        {/* Header */}
+                        <div className="table-header bg-slate-600/30 p-2 border-b border-gray-900 ">
+                            <span>Software</span>
+                            <span>Version</span>
+                            <span>CVSS</span>
+                            <span>State</span>
+                        </div>
+
+                        {/* Data */}
+                        <div className="max-h-[500px] overflow-y-auto hide-scrollbar">
+                            {/* {modalList.map((item, i) => (
+                                <div key={i} className="table-row border-b border-gray-600/70 ">
+                                    <span>{item.software}</span>
+                                    <span>{item.version}</span>
+                                    <span>{item.cves}</span>
+                                    <span className="text-red-400"> {item.severity} </span>
+                                </div>
+                            ))} */}
+                            <div className="max-h-[500px] overflow-y-auto hide-scrollbar">
+
+    {modalLoading ? (
+        <div className="flex justify-center items-center h-64">
+            <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-gray-300 text-sm">Loading data...</p>
+            </div>
+        </div>
+    ) : (
+        modalList.map((item, i) => (
+            <div key={i} className="table-row border-b border-gray-600/70">
+                <span>{item.software}</span>
+                <span>{item.version}</span>
+                <span>{item.cves}</span>
+                <span className="text-red-400">{item.severity}</span>
+            </div>
+        ))
+    )}
+
+</div>
+                        </div>
+
+                    </div>
+                </div>
+            )}
+
             {loading && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[999]">
                     <div className="flex flex-col items-center gap-3">
@@ -817,13 +890,26 @@ const OverviewDashboard = () => {
                 <div className="col-span-6 bg-[#0F172A] border border-[#1C2541] rounded-xl p-4">
 
                     {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">3rd Party PatchManagement</h2> */}
-                    <h2 className="card-header">3rd Party PatchManagement</h2>
+                    {/* <h2 className="card-header">3rd Party PatchManagement</h2> */}
+                   
+                   {/* <h2 className="text-xl text-white mb-3 border-l-4 border-indigo-500 px-2">3rd Party PatchManagement</h2> */}
+                    
+                    <div className="flex justify-between items-center mb-3">
+                        <h2 className="card-header mb-0"> 3rd Party PatchManagement </h2>
+
+                        <button   onClick={handleExportModal}
+                        // onClick={() => setShowExportModal(true)}
+                            className="px-4 py-2 text-sm bg-blue-500/20 border border-blue-500/40 text-blue-300 hover:bg-blue-500/30 rounded-md transition-all" >
+                           <SquareArrowOutUpRight size={18} />
+                        </button>
+
+                    </div>
+
                     <div className="flex gap-3 ">
 
                         {/* Donut */}
                         <div className="w-50 h-50 relative">
                             <SinglePieCharts data={thirdPartySeverity} onSliceClick={handleClickModalParameter} datakey={"thirdpartypie"} />
-
                         </div>
 
                         {/* Table */}

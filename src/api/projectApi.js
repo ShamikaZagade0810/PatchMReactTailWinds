@@ -5,7 +5,7 @@ import apiInceptor from "./apiInceptor";
  const Token11 = null;
 
 
-const BASE_URL = "http://192.168.0.52:8081";
+const BASE_URL = "http://192.168.0.89:8081";
 
 export const getProjects = () =>
   apiInceptor.get(`/projectdetail/viewProjectPayload`);
@@ -771,7 +771,16 @@ export const deleteOEMMaster = (inputData) =>
     }
   );
 
-
+export const uploadContentDistribution = (formData) =>
+  axios.post(
+    `${BASE_URL}/upload/contentDistribution`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      }
+    }
+  );
 
 export const getDownloadingPatchProgress = () =>
   apiInceptor.get(`/upload/viewDownloadingPatchProgress`);
@@ -1300,6 +1309,12 @@ export const getgrpComputerpolicy = (name) =>
 export const getsyncHistoryData = () =>
   apiInceptor.get(`/PatchTree/getSynchronizeList`);
 
+  export const DiscoverSync = () =>
+  axios.get(`${BASE_URL}/PatchTree/discoverSync`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    }
+  });
 
 export const getPatchTreeapprovedPatchList = (inputData) =>
   apiInceptor.get(`/PatchTree/approvedPatchList`);

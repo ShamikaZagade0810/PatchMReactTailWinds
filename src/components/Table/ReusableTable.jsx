@@ -280,7 +280,7 @@ const ReusableTable = ({
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800 text-left">
             {paginatedData.length > 0 ? (
                 paginatedData.map((row, index) => (
                   <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
