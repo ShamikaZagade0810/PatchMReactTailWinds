@@ -346,7 +346,7 @@ export const projectApi = {
 };
 export const authApi = {
   // Use publicClient for login (no token interception)
-  login: (credentials) => publicClient.post("/login", credentials),
+  login: (credentials) => publicClient.post("/api/auth/login", credentials),
   // These might still need the interceptor for refresh logic?
   refresh: (refreshToken) => publicClient.post("/refresh", { refreshToken }),
   logout: (refreshToken) => apiClient.post("/logout", { refreshToken }),
