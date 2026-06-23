@@ -96,45 +96,45 @@ export default function MainLayout() {
   console.log("activeItem ", activeItem);
   // const [alerts, setAlerts] = useState([]);
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://192.168.0.219:4000");
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://192.168.0.219:4000");
 
-    ws.onopen = () => {
-      // console.log(" WebSocket connected");
-    };
+  //   ws.onopen = () => {
+  //     // console.log(" WebSocket connected");
+  //   };
 
-    ws.onmessage = (event) => {
-      // console.log("WebSocket message:", event.data);
-      const alert = JSON.parse(event.data);
-      // console.log("check error grrr: ", alert);
+  //   ws.onmessage = (event) => {
+  //     // console.log("WebSocket message:", event.data);
+  //     const alert = JSON.parse(event.data);
+  //     // console.log("check error grrr: ", alert);
 
-      if (alert.status == 200) {
-        toast.success(alert?.message, {
-          position: "top-right",
-          autoClose: 7000,
-          theme: "colored",
-        });
-      } else {
-        toast.error(alert?.message, {
-          position: "top-right",
-          autoClose: 7000,
-          theme: "light",
-        });
-      }
+  //     if (alert.status == 200) {
+  //       toast.success(alert?.message, {
+  //         position: "top-right",
+  //         autoClose: 7000,
+  //         theme: "colored",
+  //       });
+  //     } else {
+  //       toast.error(alert?.message, {
+  //         position: "top-right",
+  //         autoClose: 7000,
+  //         theme: "light",
+  //       });
+  //     }
 
-      // setAlerts((prev) => [alert, ...prev]);
-    };
+  //     // setAlerts((prev) => [alert, ...prev]);
+  //   };
 
-    ws.onerror = (err) => {
-      // console.error("❌ WebSocket error", err);
-    };
+  //   ws.onerror = (err) => {
+  //     // console.error("❌ WebSocket error", err);
+  //   };
 
-    ws.onclose = () => {
-      // console.log("🔴 WebSocket closed");
-    };
+  //   ws.onclose = () => {
+  //     // console.log("🔴 WebSocket closed");
+  //   };
 
-    return () => ws.close();
-  }, []);
+  //   return () => ws.close();
+  // }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);

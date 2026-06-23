@@ -149,7 +149,8 @@
 // };
 
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+
+import { useLocation,useNavigate } from "react-router-dom";
 import {
   Bell,
   Search,
@@ -164,10 +165,11 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import SecureITLogo from "../../assets/UnifiedSecureITLogo.svg";
 
 export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled }) => {
+    // const navigate = useNavigate();
   const { logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
@@ -311,7 +313,7 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
 
           {/* Logo */}
           <div className="flex items-center gap-2 ">
-            <img src={SecureITLogo} alt="logo" className="h-40 w-45" />           
+            <img src={SecureITLogo} alt="logo" className="h-40 w-45 transform transition-transform duration-300 ease-in-out hover:scale-103"  onClick={() => navigate("/dashboard/mainDashboard")} />           
           </div>
 
           {/* Tabs */}

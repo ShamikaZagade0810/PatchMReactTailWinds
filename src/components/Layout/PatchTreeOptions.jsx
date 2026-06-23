@@ -805,13 +805,12 @@ const handleRightClick = (e, server) => {
             </div>
 
             <div className="p-3 border-t border-gray-200 dark:border-gray-800">
-                {isOpen ? (
+                {/* {isOpen ? (
                     <div className="text-lg">
                         <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
                             {activeItemData?.name || "Dashboard"}
                         </p>
                         <div className="flex items-center gap-2 text-xs text-gray-500">
-                            {/* <div className="w-2 h-2 rounded-full bg-green-500"></div> */}
                             <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
                             <div className="w-2 h-2 rounded-full bg-green-500 absolute"></div>
                             <span>Connected</span>
@@ -822,7 +821,7 @@ const handleRightClick = (e, server) => {
                     <div className="flex justify-center">
                         <div className="w-8 h-8 rounded-full bg-linear-to-br from-cyan-500 to-blue-600"></div>
                     </div>
-                )}
+                )} */}
             </div>
 
             {contextMenu.visible && (

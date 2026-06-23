@@ -412,7 +412,7 @@ export const Sidebar = ({
     </div>
 
        <div className="p-3 pb-5 border-t border-gray-200 dark:border-gray-800">
-      {isOpen ? (
+      {/* {isOpen ? (
         <div>
           <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
             {activeItemData?.name || "Dashboard"}
@@ -430,7 +430,7 @@ export const Sidebar = ({
         <div className="flex justify-center">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600" />
         </div>
-      )}
+      )} */}
     </div>
     </aside>
   );
