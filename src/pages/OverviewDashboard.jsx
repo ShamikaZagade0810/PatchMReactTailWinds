@@ -191,7 +191,6 @@ const OverviewDashboard = () => {
     const handleOsModal = async () => {
     try {
         setLoading(true);
-
         const response = await getOsPatchStatusListAllModal();
         console.log("OS Modal Data:", response.data);
         setOsModalData(response.data.data);
@@ -228,7 +227,7 @@ const OverviewDashboard = () => {
                 securityRes,
                 severityRes,
                 severityListRes,
-                severityModalListRes,
+                // severityModalListRes,
                 histRes,
                 ipRes,
                 osPieRes,
@@ -242,7 +241,7 @@ const OverviewDashboard = () => {
                 getSecurityPostureData(),
                 getThirdPartySeverity(),
                 getThirdPartyApplisting(),
-                getVulnerabilityModalList(),
+                // getVulnerabilityModalList(),
                 getHistBarChart(),
                 getIpWiseStatusData(),
                 getOsUpdatesPie(),

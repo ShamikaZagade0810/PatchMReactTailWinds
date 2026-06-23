@@ -1,11 +1,11 @@
 
-import apiInceptor from "./apiInceptor";
+import apiInceptor from "./apiInceptor"; 
 
 //const getToken() = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE1MDY4MDQsImV4cCI6MTc4MTU5MzIwNH0.9sTTgcQN78QWSubxZE5krXbssCLKysm_ohjkQsv5mao';
  const Token11 = null;
 
 
-const BASE_URL = "http://192.168.0.89:8081";
+const BASE_URL = "/";
 
 export const getProjects = () =>
   apiInceptor.get(`/projectdetail/viewProjectPayload`);
@@ -855,6 +855,7 @@ export const editPeriodicReport = (inputData) =>
   );
 
 
+
 export const deleteSelectPeriodicReport = (inputData) =>
   apiInceptor.delete(
     `/master/deletePeriodicReport`,
@@ -1486,11 +1487,18 @@ export const getPatchedEndpointList = () =>
 
   
     export const getOfflineEndpointList = () =>
-  apiInceptor.get(`/dashboard/OfflineEndpointList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/dashboard/OfflineEndpointList`);
+
+
+  export const getOsPatchStatusListAllModal = () =>
+apiInceptor.get(`${BASE_URL}/dashboard/OsPatchStatusListAllModal`);
+
+
+export const getTopRiskDevicesList = () => 
+apiInceptor.get(`${BASE_URL}/dashboard/TopRiskDevicesList`);
+
+export const getVulnerabilityModalList = () => 
+apiInceptor.get(`${BASE_URL}/dashboard/thirdpartyseverityModalList`);
 
 
 

@@ -65,7 +65,7 @@ const MailConfig = () => {
 
         try {
             if (!isEditMode) {
-
+                 data.srNo = 4;
                 const res = await addMailConfig(data);
                 console.log("Res Data--->  ", res);
                 if (res.data.status == 200) {
