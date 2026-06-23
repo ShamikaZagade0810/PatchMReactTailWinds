@@ -247,320 +247,320 @@ export const getRollbackScript = async (data) => {
 };
  
 export const getPatches = () =>
-  apiInceptor.get("/dashboard/dashboardCount");
+  apiInceptor.get("/api/dashboard/dashboardCount");
 
 
 export const getOSCount = () =>
-  apiInceptor.get(`/dashboard/getOScount`);
+  apiInceptor.get(`/api/dashboard/getOScount`);
 
 
 export const getSecurityPostureData = () =>
-  apiInceptor.get(`/dashboard/securityPosture`);
+  apiInceptor.get(`/api/dashboard/securityPosture`);
 
 export const getThirdPartySeverity = () =>
-  apiInceptor.get(`/dashboard/thirdpartyseverity`);
+  apiInceptor.get(`/api/dashboard/thirdpartyseverity`);
 
 export const getThirdPartyApplisting = () =>
-  apiInceptor.get(`/dashboard/thirdpartyseveritylist`);
+  apiInceptor.get(`/api/dashboard/thirdpartyseveritylist`);
 
 export const getHistBarChart = () =>
-  apiInceptor.get(`/dashboard/PatchHistoryBar`);
+  apiInceptor.get(`/api/dashboard/PatchHistoryBar`);
 
 export const getIpWiseStatusData = () =>
-  apiInceptor.get(`/dashboard/IPPatchStatusBar`);
+  apiInceptor.get(`/api/dashboard/IPPatchStatusBar`);
 
 export const getOsUpdatesPie = () =>
-  apiInceptor.get(`/dashboard/OsPatchStatus`);
+  apiInceptor.get(`/api/dashboard/OsPatchStatus`);
 
 export const getOsUpdatesList = () =>
-  apiInceptor.get(`/dashboard/OsPatchStatusList`);
+  apiInceptor.get(`/api/dashboard/OsPatchStatusList`);
 
 
 export const getTopRiskyDevices = () =>
-  apiInceptor.get(`/dashboard/TopRiskDevices`);
+  apiInceptor.get(`/api/dashboard/TopRiskDevices`);
 
 
 export const getApprovedCriticalList = () =>
-  apiInceptor.get(`/dashboard/ApprvCriticalList`);
+  apiInceptor.get(`/api/dashboard/ApprvCriticalList`);
 
 export const getCriticalPatchesList = () =>
-  apiInceptor.get(`/dashboard/MissingCriticalList`);
+  apiInceptor.get(`/api/dashboard/MissingCriticalList`);
 
 
 export const getCriticalInstalledPatchesList = () =>
-  apiInceptor.get(`/dashboard/ApprvCriticalList`);
+  apiInceptor.get(`/api/dashboard/ApprvCriticalList`);
 
 
 
 
 
 export const getApprovedPatchesList = () =>
-  apiInceptor.get(`/dashboard/ApprovedPatchList`);
+  apiInceptor.get(`/api/dashboard/ApprovedPatchList`);
 
 export const getFailedIpList = () =>
-  apiInceptor.get(`/dashboard/FailedList`);
+  apiInceptor.get(`/api/dashboard/FailedList`);
 
 export const getTotalPatchList = () =>
-  apiInceptor.get(`/dashboard/TotalPatchList
+  apiInceptor.get(`/api/dashboard/TotalPatchList
 `);
 
 
 export const getMissingPatchList = () =>
-  apiInceptor.get(`/dashboard/MissingPatchList`);
+  apiInceptor.get(`/api/dashboard/MissingPatchList`);
 
 
 
 export const getWindowList = () =>
-  apiInceptor.get(`/dashboard/WindowsList
+  apiInceptor.get(`/api/dashboard/WindowsList
 `);
 
 export const getServerList = () =>
-  apiInceptor.get(`/dashboard/ServerList`);
+  apiInceptor.get(`/api/dashboard/ServerList`);
 
 export const getLinuxList = () =>
-  apiInceptor.get(`/dashboard/LinuxList`);
+  apiInceptor.get(`/api/dashboard/LinuxList`);
 
 export const getMacList = () =>
-  apiInceptor.get(`/dashboard/MacList
+  apiInceptor.get(`/api/dashboard/MacList
 `);
 
 
 export const getIpWisePatchList = (inputData) =>
-  apiInceptor.get(`/dashboard/IPPatchStatusBarList`, inputData
+  apiInceptor.get(`/api/dashboard/IPPatchStatusBarList`, inputData
   );
 
 export const getOSWisePatchList = (inputData) =>
-  apiInceptor.get(`/dashboard/OsPatchStatusAllList`, inputData
+  apiInceptor.get(`/api/dashboard/OsPatchStatusAllList`, inputData
   );
 
 
 export const getthirdPartySeverityPatchList = (inputData) =>
-  apiInceptor.get(`/dashboard/thirdpartyseverityAllList`, inputData
+  apiInceptor.get(`/api/dashboard/thirdpartyseverityAllList`, inputData
   );
 
 
 export const getPatchHistoryList = (inputData) =>
-  apiInceptor.get(`/dashboard/PatchHistoryList`, inputData
+  apiInceptor.get(`/api/dashboard/PatchHistoryList`, inputData
   );
 
 export const getDeviceList = () =>
-  apiInceptor.get(`/devices/DevicesList
+  apiInceptor.get(`/api/devices/DevicesList
 `);
 
 
 export const getPatchSeverityCount = (inputData) =>
-  apiInceptor.get(`/devices/PatchSeverityCount`, inputData
+  apiInceptor.get(`/api/devices/PatchSeverityCount`, inputData
   );
 
 export const getPatchInstalledCount = (inputData) =>
-  apiInceptor.get(`/devices/PatchInstalledCount`, inputData
+  apiInceptor.get(`/api/devices/PatchInstalledCount`, inputData
   );
 
 export const getBasicInfo = (inputData) =>
-  apiInceptor.get(`/devices/BasicInfo`, inputData
+  apiInceptor.get(`/api/devices/BasicInfo`, inputData
   );
 
 export const getHardwareInfo = (inputData) =>
-  apiInceptor.get(`/devices/HardwareInfo`, inputData
+  apiInceptor.get(`/api/devices/HardwareInfo`, inputData
   );
 
 export const getComputerInfo = (inputData) =>
-  apiInceptor.get(`/devices/ComputerInfo`, inputData
+  apiInceptor.get(`/api/devices/ComputerInfo`, inputData
   );
 
 
 export const getRamGraph = (inputData) =>
-  apiInceptor.get(`/devices/RAMGraphInfo`, inputData
+  apiInceptor.get(`/api/devices/RAMGraphInfo`, inputData
   );
 
 export const getInstalledProgram = (inputData) =>
-  apiInceptor.get(`/devices/InstallProgram`, inputData
+  apiInceptor.get(`/api/devices/InstallProgram`, inputData
   );
 
 
 export const getInstalledPatches = (inputData) =>
-  apiInceptor.get(`/devices/InstallPatch`, inputData
+  apiInceptor.get(`/api/devices/InstallPatch`, inputData
   );
 
 export const getLinuxDashboardCount = () =>
-  apiInceptor.get(`/LinuxDashbord/LinuxDashboardCount`);
+  apiInceptor.get(`/api/LinuxDashbord/LinuxDashboardCount`);
 
 
 export const getLinuxPatchStatus = () =>
-  apiInceptor.get(`/LinuxDashbord/LinuxPatchStatus`);
+  apiInceptor.get(`/api/LinuxDashbord/LinuxPatchStatus`);
 
 export const getLinuxBranchWiseDevices = () =>
-  apiInceptor.get(`/LinuxDashbord/LinuxBranchWiseDevices`);
+  apiInceptor.get(`/api/LinuxDashbord/LinuxBranchWiseDevices`);
 
 export const getLinuxDeviceWiseInstallOrNeededCount = () =>
-  apiInceptor.get(`/LinuxDashbord/LinuxDeviceWiseInstallOrNeededCount`);
+  apiInceptor.get(`/api/LinuxDashbord/LinuxDeviceWiseInstallOrNeededCount`);
 
 export const getPatchActivityOvertime = () =>
-  apiInceptor.get(`/LinuxDashbord/PatchActivityOvertime`);
+  apiInceptor.get(`/api/LinuxDashbord/PatchActivityOvertime`);
 
 
 export const getLinuxInstalledPatchList = () =>
-  apiInceptor.get(`/LinuxDashbord/LinuxInstalledPatchList`);
+  apiInceptor.get(`/api/LinuxDashbord/LinuxInstalledPatchList`);
 
 export const getLinuxRiskyEndpoint = () =>
-  apiInceptor.get(`/LinuxDashbord/LinuxRiskyDevicesList`);
+  apiInceptor.get(`/api/LinuxDashbord/LinuxRiskyDevicesList`);
 
 
 
 export const getLinuxModalEndpointData = (inputData) =>
-  apiInceptor.get(`/LinuxDashbord/LinuxModalEndpointData`, inputData
+  apiInceptor.get(`/api/LinuxDashbord/LinuxModalEndpointData`, inputData
   );
 
 
 
 export const getLinuxModalPatchData = (inputData) =>
-  apiInceptor.get(`/LinuxDashbord/LinuxModalPatchData`, inputData
+  apiInceptor.get(`/api/LinuxDashbord/LinuxModalPatchData`, inputData
   );
 
 
 export const getLinuxBranchwiseModal = (inputData) =>
-  apiInceptor.get(`/LinuxDashbord/LinuxBranchwiseModal`, inputData
+  apiInceptor.get(`/api/LinuxDashbord/LinuxBranchwiseModal`, inputData
   );
 
 
 export const getLinuxIpwiseModal = (inputData) =>
-  apiInceptor.get(`/LinuxDashbord/LinuxIpwisewiseModal`, inputData
+  apiInceptor.get(`/api/LinuxDashbord/LinuxIpwisewiseModal`, inputData
   );
 
 
 
 export const getPatchReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GeneratePatchReport`, inputData
+    `/api/reports/GeneratePatchReport`, inputData
   );
 
 export const getmissingPatchReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateMissingReport`, inputData
+    `/api/reports/GenerateMissingReport`, inputData
   );
 
 
 export const getDeviceWiseReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateDevicewiseReport`, inputData
+    `/api/reports/GenerateDevicewiseReport`, inputData
   );
 
 export const getYearMonthReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateYearMonthReport`, inputData
+    `/api/reports/GenerateYearMonthReport`, inputData
   );
 
 export const getAllStatusReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateAllStatusReport`, inputData
+    `/api/reports/GenerateAllStatusReport`, inputData
   );
 
 export const getUpdateTimelineReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GeneratePatchTimelineReport`, inputData
+    `/api/reports/GeneratePatchTimelineReport`, inputData
   );
 
 export const getdeviceAgentReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateDeviceAgentReport`, inputData
+    `/api/reports/GenerateDeviceAgentReport`, inputData
   );
 
 export const getFailedUpdateReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateFailedUpdateReport`, inputData
+    `/api/reports/GenerateFailedUpdateReport`, inputData
   );
 
 export const getCategoryWiseReport = (inputData) =>
   apiInceptor.post(
-    `/reports/GenerateCategorywiseReport`, inputData
+    `/api/reports/GenerateCategorywiseReport`, inputData
   );
 
 export const getThirdPartyPatchCount = (inputData) =>
   apiInceptor.get(
-    `/thirdpartyDash/PatchCount`);
+    `/api/thirdpartyDash/PatchCount`);
 
 
 export const getThirdPartyMonthlyPatchLine = (inputData) =>
   apiInceptor.get(
-    `/thirdpartyDash/MonthlyPatchLine`);
+    `/api/thirdpartyDash/MonthlyPatchLine`);
 
 export const getThirdPartyAppPatchStatusBar = (inputData) =>
   apiInceptor.get(
-    `/thirdpartyDash/AppPatchStatusBar`,
+    `/api/thirdpartyDash/AppPatchStatusBar`,
 
   );
 
 export const getThirdPartyIPPatchStatusChart = (inputData) =>
   apiInceptor.get(
-    `/thirdpartyDash/IPPatchStatusChart`,
+    `/api/thirdpartyDash/IPPatchStatusChart`,
 
   );
 
 export const getThirdPartyTopRiskyDevices = () =>
-  apiInceptor.get(`/thirdpartyDash/TopRiskyDevices`);
+  apiInceptor.get(`/api/thirdpartyDash/TopRiskyDevices`);
 
 export const getRequiredSeverityBar = () =>
-  apiInceptor.get(`/thirdpartyDash/RequiredSeverityBar`);
+  apiInceptor.get(`/api/thirdpartyDash/RequiredSeverityBar`);
 
 
 
 export const getThirdPatchCountListing = (inputData) =>
   apiInceptor.post(
-    `/thirdpartyDash/PatchCountListing`, inputData
+    `/api/thirdpartyDash/PatchCountListing`, inputData
   );
 
 
 export const getThirdTotAppsListing = () =>
-  apiInceptor.get(`/thirdpartyDash/TotalAppsListing`);
+  apiInceptor.get(`/api/thirdpartyDash/TotalAppsListing`);
 
 export const getThirdUpToDateAppsListing = () =>
-  apiInceptor.get(`/thirdpartyDash/UptoDateAppsListing`);
+  apiInceptor.get(`/api/thirdpartyDash/UptoDateAppsListing`);
 
 
 export const getThirdOutDatedAppsListing = () =>
-  apiInceptor.get(`/thirdpartyDash/OutDatedAppsListing`);
+  apiInceptor.get(`/api/thirdpartyDash/OutDatedAppsListing`);
 
 
 export const getThirdMonthltPatchList = (inputData) =>
   apiInceptor.post(
-    `/thirdpartyDash/MonthltPatchList`, inputData
+    `/api/thirdpartyDash/MonthltPatchList`, inputData
   );
 
 
 export const getThirdAppWisePatchList = (inputData) =>
   apiInceptor.post(
-    `/thirdpartyDash/AppWisePatchList`, inputData
+    `/api/thirdpartyDash/AppWisePatchList`, inputData
   );
 
 export const requestToServerForRemoteAction = (inputData) =>
   apiInceptor.post(
-    `/RemoteAction/ReqToServer`, inputData
+    `/api/RemoteAction/ReqToServer`, inputData
   );
 
 
 export const requestIdForRemoteAction = (inputData) =>
   apiInceptor.post(
-    `/RemoteAction/SelectedRequestIDList`, inputData
+    `/api/RemoteAction/SelectedRequestIDList`, inputData
   );
 
 
 
 export const AddActivityCmd = (inputData) =>
   apiInceptor.post(
-    `/RunCommand/addcmdactivity`, inputData
+    `/api/RunCommand/addcmdactivity`, inputData
   );
 
 export const getActivityCmdList = () =>
-  apiInceptor.get(`/RunCommand/ActivityCmdlist`);
+  apiInceptor.get(`/api/RunCommand/ActivityCmdlist`);
 
 export const getUpdateActivityCmd = (inputData) =>
   apiInceptor.put(
-    `/RunCommand/updateActivityCmd`, inputData
+    `/api/RunCommand/updateActivityCmd`, inputData
   );
 
 export const getdeleteActivityCmd = (inputData) =>
   apiInceptor.delete(
-    `/RunCommand/deleteActivityCmd`,
+    `/api/RunCommand/deleteActivityCmd`,
     {
       data: inputData,
       headers: {
@@ -571,7 +571,7 @@ export const getdeleteActivityCmd = (inputData) =>
 
 export const sendMultiplePatches = (inputData) =>
   apiInceptor.post(
-    `/patch/start`,
+    `/api/patch/start`,
     inputData,
     {
       headers: {
@@ -585,7 +585,7 @@ export const sendMultiplePatches = (inputData) =>
 //---- VIEW DEVICES
 // export const ViewDeviesList = (inputData) =>
 // apiInceptor.post(
-//   `/master/ViewDevicesList  `,
+//   `/api/master/ViewDevicesList  `,
 //   inputData,
 //   {
 //     headers: {
@@ -597,20 +597,20 @@ export const sendMultiplePatches = (inputData) =>
 //---- Add User
 export const AddAppUser = (inputData) =>
   apiInceptor.post(
-    `/master/addNewAppUser`, inputData
+    `/api/master/addNewAppUser`, inputData
   );
 
 export const getViewAppUserList = () =>
-  apiInceptor.get(`/master/viewAllAppUser`);
+  apiInceptor.get(`/api/master/viewAllAppUser`);
 
 export const getUpdateAppUser = (inputData) =>
   apiInceptor.put(
-    `/master/updateAppUser`, inputData
+    `/api/master/updateAppUser`, inputData
   );
 
 export const getdeleteAppUser = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteAppUser`,
+    `/api/master/deleteAppUser`,
     {
       data: inputData,
       headers: {
@@ -623,17 +623,17 @@ export const getdeleteAppUser = (inputData) =>
 
 
 export const getViewDeviesList = () =>
-  apiInceptor.get(`/master/ViewDevicesList`);
+  apiInceptor.get(`/api/master/ViewDevicesList`);
 
 
 export const UpdateViewDevices = (inputData) =>
   apiInceptor.put(
-    `/master/updateViewDevices `, inputData
+    `/api/master/updateViewDevices `, inputData
   );
 
 export const deleteViewDevices = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteViewDevices `,
+    `/api/master/deleteViewDevices `,
     {
       data: inputData,
       headers: {
@@ -646,20 +646,20 @@ export const deleteViewDevices = (inputData) =>
 //---- Customer Master
 export const AddCustomer = (inputData) =>
   apiInceptor.post(
-    `/master/addCustomerMaster`, inputData
+    `/api/master/addCustomerMaster`, inputData
   );
 
 export const getCustomerList = () =>
-  apiInceptor.get(`/master/viewCustomerMaster `);
+  apiInceptor.get(`/api/master/viewCustomerMaster `);
 
 export const getUpdateCustomer = (inputData) =>
   apiInceptor.put(
-    `/master/updateCustomer`, inputData
+    `/api/master/updateCustomer`, inputData
   );
 
 export const deleteCustomer = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteCustomer`,
+    `/api/master/deleteCustomer`,
     {
       data: inputData,
       headers: {
@@ -672,20 +672,20 @@ export const deleteCustomer = (inputData) =>
 //---- Branch Master
 export const AddBranch = (inputData) =>
   apiInceptor.post(
-    `/master/addBranch`, inputData
+    `/api/master/addBranch`, inputData
   );
 
 export const getBranchList = () =>
-  apiInceptor.get(`/master/viewBranch `);
+  apiInceptor.get(`/api/master/viewBranch `);
 
 export const getUpdateBranch = (inputData) =>
   apiInceptor.put(
-    `/master/editBranch`, inputData
+    `/api/master/editBranch`, inputData
   );
 
 export const deleteBranch = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteBranch`,
+    `/api/master/deleteBranch`,
     {
       data: inputData,
       headers: {
@@ -698,20 +698,20 @@ export const deleteBranch = (inputData) =>
 //---- Group Master
 export const AddGroupMaster = (inputData) =>
   apiInceptor.post(
-    `/master/addGroup`, inputData
+    `/api/master/addGroup`, inputData
   );
 
 export const getGroupMasterList = () =>
-  apiInceptor.get(`/master/viewGroup `);
+  apiInceptor.get(`/api/master/viewGroup `);
 
 export const getUpdateGroupMaster = (inputData) =>
   apiInceptor.put(
-    `/master/editGroup`, inputData
+    `/api/master/editGroup`, inputData
   );
 
 export const deleteGroupMaster = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteGroup`,
+    `/api/master/deleteGroup`,
     {
       data: inputData,
       headers: {
@@ -723,20 +723,20 @@ export const deleteGroupMaster = (inputData) =>
 //---- Server Master
 export const AddServerMaster = (inputData) =>
   apiInceptor.post(
-    `/master/addServer`, inputData
+    `/api/master/addServer`, inputData
   );
 
 export const getServerMasterList = () =>
-  apiInceptor.get(`/master/viewAllServer `);
+  apiInceptor.get(`/api/master/viewAllServer `);
 
 export const getUpdateServerMaster = (inputData) =>
   apiInceptor.put(
-    `/master/editServer`, inputData
+    `/api/master/editServer`, inputData
   );
 
 export const deleteServerMaster = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteServer`,
+    `/api/master/deleteServer`,
     {
       data: inputData,
       headers: {
@@ -749,20 +749,20 @@ export const deleteServerMaster = (inputData) =>
 //---- OEM Master
 export const AddOEMMaster = (inputData) =>
   apiInceptor.post(
-    `/master/addVendor`, inputData
+    `/api/master/addVendor`, inputData
   );
 
 export const getOEMMasterList = () =>
-  apiInceptor.get(`/master/viewAllVendor `);
+  apiInceptor.get(`/api/master/viewAllVendor `);
 
 export const getUpdateOEMMaster = (inputData) =>
   apiInceptor.put(
-    `/master/updateVendor`, inputData
+    `/api/master/updateVendor`, inputData
   );
 
 export const deleteOEMMaster = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteVendor`,
+    `/api/master/deleteVendor`,
     {
       data: inputData,
       headers: {
@@ -772,14 +772,9 @@ export const deleteOEMMaster = (inputData) =>
   );
 
 export const uploadContentDistribution = (formData) =>
-  axios.post(
-    `${BASE_URL}/upload/contentDistribution`,
-    formData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+  apiInceptor.post(
+    `/upload/contentDistribution`,
+    formData
   );
 
 export const getDownloadingPatchProgress = () =>
@@ -787,24 +782,24 @@ export const getDownloadingPatchProgress = () =>
 
 export const addSetServerPolicy = (inputData) =>
   apiInceptor.post(
-    `/master/addServerPolicy`, inputData
+    `/api/master/addServerPolicy`, inputData
   );
 
 
 export const viewAllServerPolicy = () =>
-  apiInceptor.get(`/master/viewAllServerPolicy`);
+  apiInceptor.get(`/api/master/viewAllServerPolicy`);
 
 
 
 export const editSetServerPolicy = (inputData) =>
   apiInceptor.put(
-    `/master/updateServerPolicy`, inputData
+    `/api/master/updateServerPolicy`, inputData
   );
 
 
 export const deleteSelectedPolicyServer = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteServerPolicy`,
+    `/api/master/deleteServerPolicy`,
     {
       data: inputData,
       headers: {
@@ -815,22 +810,22 @@ export const deleteSelectedPolicyServer = (inputData) =>
 
 export const addMailConfig = (inputData) =>
   apiInceptor.post(
-    `/master/addMailConfig`, inputData
+    `/api/master/addMailConfig`, inputData
   );
 
 
 export const viewAllMailConfig = () =>
-  apiInceptor.get(`/master/viewMailConfig`);
+  apiInceptor.get(`/api/master/viewMailConfig`);
 
 export const editMailConfig = (inputData) =>
   apiInceptor.put(
-    `/master/updateMailConfig`, inputData
+    `/api/master/updateMailConfig`, inputData
   );
 
 
 export const deleteSelectMailConfig = (inputData) =>
   apiInceptor.delete(
-    `/master/deleteMailConfig`,
+    `/api/master/deleteMailConfig`,
     {
       data: inputData,
       headers: {
@@ -842,23 +837,23 @@ export const deleteSelectMailConfig = (inputData) =>
 
 export const addPeriodicReport = (inputData) =>
   apiInceptor.post(
-    `/master/addPeriodicReport`, inputData
+    `/api/master/addPeriodicReport`, inputData
   );
 
 
 export const viewAllPeriodicReportList = () =>
-  apiInceptor.get(`/master/viewAllPeriodicReport`);
+  apiInceptor.get(`/api/master/viewAllPeriodicReport`);
 
 export const editPeriodicReport = (inputData) =>
   apiInceptor.put(
-    `/master/updatePeriodicReport`, inputData
+    `/api/master/updatePeriodicReport`, inputData
   );
 
 
 
 export const deleteSelectPeriodicReport = (inputData) =>
   apiInceptor.delete(
-    `/master/deletePeriodicReport`,
+    `/api/master/deletePeriodicReport`,
     {
       data: inputData,
       headers: {
@@ -871,20 +866,20 @@ export const deleteSelectPeriodicReport = (inputData) =>
 
 export const AddActivityScheduler = (inputData) =>
   apiInceptor.post(
-    `/RunCommand/AddcmdScheduler`, inputData
+    `/api/RunCommand/AddcmdScheduler`, inputData
   );
 
 export const getActivitySchedulerList = () =>
-  apiInceptor.get(`/RunCommand/listcmdScheduler `);
+  apiInceptor.get(`/api/RunCommand/listcmdScheduler `);
 
 export const getUpdateActivityScheduler = (inputData) =>
   apiInceptor.put(
-    `/RunCommand/updatecmdScheduler`, inputData
+    `/api/RunCommand/updatecmdScheduler`, inputData
   );
 
 export const deleteActivityScheduler = (inputData) =>
   apiInceptor.delete(
-    `/RunCommand/deletecmdScheduler`,
+    `/api/RunCommand/deletecmdScheduler`,
     {
       data: inputData,
       headers: {
@@ -895,7 +890,7 @@ export const deleteActivityScheduler = (inputData) =>
 
 export const getUpdateStatusActivityScheduler = (inputData) =>
   apiInceptor.put(
-    `/RunCommand/UpdatestatuscmdScheduler`, inputData
+    `/api/RunCommand/UpdatestatuscmdScheduler`, inputData
   );
 
 // sumit changes  
@@ -903,7 +898,7 @@ export const getUpdateStatusActivityScheduler = (inputData) =>
 // ================================= AUTO APPROVAL RULE PATCH SETTING ================================// 
 export const AddAutoApprovalRule = async (inputData) => {
   return await apiInceptor.post(
-    `/view-approval-rule/addApprovalRule`,
+    `/api/view-approval-rule/addApprovalRule`,
     inputData
   );
 };
@@ -911,7 +906,7 @@ export const AddAutoApprovalRule = async (inputData) => {
 
 export const getAutoApprovalRule = async () => {
   return await apiInceptor.get(
-    `/view-approval-rule/viewAllApprovalRule`,
+    `/api/view-approval-rule/viewAllApprovalRule`,
 
   );
 };
@@ -919,7 +914,7 @@ export const getAutoApprovalRule = async () => {
 
 export const enableViewApprovalRule = (inputData) =>
   apiInceptor.put(
-    `/view-approval-rule/enableApprovalRule/${inputData}`,
+    `/api/view-approval-rule/enableApprovalRule/${inputData}`,
 
     {
       headers: {
@@ -930,7 +925,7 @@ export const enableViewApprovalRule = (inputData) =>
 
 export const disableViewApprovalRule = (inputData) =>
   apiInceptor.put(
-    `/view-approval-rule/disableApprovalRule/${inputData}`,
+    `/api/view-approval-rule/disableApprovalRule/${inputData}`,
 
     {
       headers: {
@@ -941,7 +936,7 @@ export const disableViewApprovalRule = (inputData) =>
 
 export const getAutoApprovalRuleById = async (InputData) => {
   return await apiInceptor.get(
-    `/view-approval-rule/viewSingleApprovalRule/${InputData}`,
+    `/api/view-approval-rule/viewSingleApprovalRule/${InputData}`,
 
   );
 };
@@ -949,12 +944,12 @@ export const getAutoApprovalRuleById = async (InputData) => {
 
 export const UpdateAutoApprovalRule = (inputData, id) =>
   apiInceptor.put(
-    `/view-approval-rule/updateApprovalRule/${id}`, inputData
+    `/api/view-approval-rule/updateApprovalRule/${id}`, inputData
   );
 
 export const deleteAutoApprovalRule = (inputData, id) =>
   apiInceptor.delete(
-    `/view-approval-rule/deleteApprovalRule/${id}`,
+    `/api/view-approval-rule/deleteApprovalRule/${id}`,
     {
       data: inputData,
       headers: {
@@ -967,47 +962,47 @@ export const deleteAutoApprovalRule = (inputData, id) =>
 
 
 export const windowsOverallComplaince = () =>
-  apiInceptor.get(`/dashboard/overallComplainceData`);
+  apiInceptor.get(`/api/dashboard/overallComplainceData`);
 
 export const windowsComplainceDataDashboard = () =>
-  apiInceptor.get(`/dashboard/complainceDataDashboard`);
+  apiInceptor.get(`/api/dashboard/complainceDataDashboard`);
 
 // ================================= Products And Classification ================================// 
 
 export const getProductsListing = () =>
-  apiInceptor.get(`/products-classification/products`);
+  apiInceptor.get(`/api/products-classification/products`);
 
 export const getClassificationsListing = () =>
-  apiInceptor.get(`/products-classification/classifications`);
+  apiInceptor.get(`/api/products-classification/classifications`);
 
 export const updateProductClass = (inputData) =>
   apiInceptor.put(
-    `/products-classification/updateProductClass`, inputData
+    `/api/products-classification/updateProductClass`, inputData
   );
 
 export const getselectedProductsList = () =>
-  apiInceptor.get(`/products-classification/selected-products`);
+  apiInceptor.get(`/api/products-classification/selected-products`);
 
 export const getselectedClassificationsList = () =>
-  apiInceptor.get(`/products-classification/selected-classifications`);
+  apiInceptor.get(`/api/products-classification/selected-classifications`);
 
   export const DiscoverProducts = async () => {
   return await apiInceptor.post(
-    `/products-classification/discover-products`,
+    `/api/products-classification/discover-products`,
     
   );
 };
 
   export const DiscoverClasification = async () => {
   return await apiInceptor.post(
-    `/products-classification/discover-classifications`,
+    `/api/products-classification/discover-classifications`,
     
   );
 };
 
 
 export const PatchTreewsus_dashboard_statistics = () =>
-  apiInceptor.get(`/PatchTree/wsus-dashboard-statistics`);
+  apiInceptor.get(`/api/PatchTree/wsus-dashboard-statistics`);
 
 
 // ================================= UPDATE SYNC SCHEDULE ================================// 
@@ -1087,89 +1082,89 @@ export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
 
 
 export const getSynchronizeStatus = () =>
-  apiInceptor.get(`/PatchTree/getSynchronizeStatus`);
+  apiInceptor.get(`/api/PatchTree/getSynchronizeStatus`);
 
 
 
 export const getSyncPercent = () =>
-  apiInceptor.get(`/PatchTree/getSyncPercent`);
+  apiInceptor.get(`/api/PatchTree/getSyncPercent`);
 
 
 export const stopSynchronisationProcess = () =>
-  apiInceptor.get(`/PatchTree/stopSynchronisationProcess`);
+  apiInceptor.get(`/api/PatchTree/stopSynchronisationProcess`);
 
 
 
 
 export const getServerStatisticData = () =>
-  apiInceptor.get(`/PatchTree/getServerStatisticData`);
+  apiInceptor.get(`/api/PatchTree/getServerStatisticData`);
 
 
 export const getComputerStatusPie = (inputData) =>
-  apiInceptor.get(`/PatchTree/getComputerStatusPie`, inputData
+  apiInceptor.get(`/api/PatchTree/getComputerStatusPie`, inputData
   );
 
 
 
 export const getupdateStatus = () =>
-  apiInceptor.get(`/PatchTree/getupdateStatus`);
+  apiInceptor.get(`/api/PatchTree/getupdateStatus`);
 
 export const getrecentActivity = () =>
-  apiInceptor.get(`/PatchTree/dashboard-timeline`);
+  apiInceptor.get(`/api/PatchTree/api/dashboard-timeline`);
 
 
 // ================================= Third Party  ================================// 
 
 export const getThirdPartyPatchRepo = () =>
-  apiInceptor.get(`/thirdparty/PatchRepository`);
+  apiInceptor.get(`/api/thirdparty/PatchRepository`);
 
 export const getThirdPartyCompletedApps = (inputData) =>
-  apiInceptor.get(`/thirdparty/completed-apps`, inputData
+  apiInceptor.get(`/api/thirdparty/completed-apps`, inputData
   );
 
 export const getThirdPartyPendingApps = (inputData) =>
-  apiInceptor.get(`/thirdparty/pending-apps`, inputData
+  apiInceptor.get(`/api/thirdparty/pending-apps`, inputData
   );
 
 export const getThirdPartyFailedApps = (inputData) =>
-  apiInceptor.get(`/thirdparty/failed-apps`, inputData
+  apiInceptor.get(`/api/thirdparty/failed-apps`, inputData
   );
 
 
 
 export const getThirdPartyMissingApps = () =>
-  apiInceptor.get(`/thirdparty/missing-apps `);
+  apiInceptor.get(`/api/thirdparty/missing-apps `);
 
 
 
 
 export const thirdPartyMissingApprovePatches = (inputData) =>
   apiInceptor.post(
-    `/thirdparty/approve-missing-apps`, inputData
+    `/api/thirdparty/approve-missing-apps`, inputData
   );
 
 
 export const getThirdPartyInstalledApps = () =>
-  apiInceptor.get(`/thirdparty/installed-apps`);
+  apiInceptor.get(`/api/thirdparty/installed-apps`);
 
 export const getThirdPartyPatchStatus = () =>
-  apiInceptor.get(`/thirdparty/patch-status`);
+  apiInceptor.get(`/api/thirdparty/patch-status`);
 
 
 export const getThirdPartypatchprogress = () =>
-  apiInceptor.get(`/thirdparty/patch-progress`);
+  apiInceptor.get(`/api/thirdparty/patch-progress`);
 
 export const getThirdPartyHostView = (inputData) =>
-  apiInceptor.get(`/thirdparty/host-summary`, inputData
+  apiInceptor.get(`/api/thirdparty/host-summary`, inputData
   );
 
 export const getThirdPartyHostinfo = (ip) =>
-  apiInceptor.get(`/thirdparty/host-info`, {
+  apiInceptor.get(`/api/thirdparty/host-info`, {
     params: { ip: ip }
   });
 
 export const getThirdPartyHostappsdetails = (hostname, ip) =>
-  apiInceptor.get(`/thirdparty/host-apps`, {
+  apiInceptor.get(`/api/thirdparty/host-apps`, {
     params: {
       hostname: hostname,
       ip: ip
@@ -1177,7 +1172,7 @@ export const getThirdPartyHostappsdetails = (hostname, ip) =>
   });
 
 export const getThirdPartylatestSoftware = () =>
-  apiInceptor.get(`/thirdparty/latest-software`);
+  apiInceptor.get(`/api/thirdparty/latest-software`);
 
 // ================================= Linux  ================================// 
 export const getLinuxMissingApps = () =>
@@ -1186,99 +1181,99 @@ export const getLinuxMissingApps = () =>
 
 export const LinuxMissingApprovePatches = (inputData) =>
   apiInceptor.post(
-    `/linux/approve-missing-apps`, inputData
+    `/api/linux/approve-missing-apps`, inputData
   );
 
 // -----------------Linux Reports
 export const getLinuxCompletedReport = (inputData) =>
   apiInceptor.post(
-    `/linux-reports/linux-completed`, inputData
+    `/api/linux-reports/linux-completed`, inputData
   );
 
 export const getLinuxFailedReport = (inputData) =>
   apiInceptor.post(
-    `/linux-reports/linux-failed`, inputData
+    `/api/linux-reports/linux-failed`, inputData
   );
 
 export const getLinuxPendingReport = (inputData) =>
   apiInceptor.post(
-    `/linux-reports/linux-pending`, inputData
+    `/api/linux-reports/linux-pending`, inputData
   );
 
 export const getLinuxMissingReport = (inputData) =>
   apiInceptor.post(
-    `/linux-reports/linux-missing`, inputData
+    `/api/linux-reports/linux-missing`, inputData
   );
 
 export const getLinuxPatchRepo = () =>
-  apiInceptor.get(`/linux/LinuxRepolist`);
+  apiInceptor.get(`/api/linux/LinuxRepolist`);
 
 
 export const getPatchTreeMissingAppApprvDec = () =>
-  apiInceptor.get(`/PatchTree/windowMissingPatches`);
+  apiInceptor.get(`/api/PatchTree/windowMissingPatches`);
 
 
 export const getGroupData = () =>
-  apiInceptor.get(`/PatchTree/allGroup`);
+  apiInceptor.get(`/api/PatchTree/allGroup`);
 
 
 export const getWindowMissingPatchApprove = (inputData) =>
   apiInceptor.post(
-    `/PatchTree/approve-decline`, inputData
+    `/api/PatchTree/approve-decline`, inputData
   );
 
 
 export const getPatchTreeTotalPatchesData = (inputData) =>
-  apiInceptor.get(`/PatchTree/TotalPatchList`);
+  apiInceptor.get(`/api/PatchTree/TotalPatchList`);
 
 
 export const getSidebarServerData = () =>
-  apiInceptor.get(`/PatchTree/getSidebarServer`);
+  apiInceptor.get(`/api/PatchTree/getSidebarServer`);
 
 
 export const getPatchTreePatcheStatusData = (inputData) =>
-  apiInceptor.get(`/PatchTree/PatchStatusList`, inputData
+  apiInceptor.get(`/api/PatchTree/PatchStatusList`, inputData
   );
 
 
 export const getPatchTreeUnapprovedPatchList = (inputData) =>
-  apiInceptor.get(`/PatchTree/unapprovedPatchList`);
+  apiInceptor.get(`/api/PatchTree/unapprovedPatchList`);
 
 export const getSidebarGroupsData = () =>
-  apiInceptor.get(`/PatchTree/getSidebarGroups`);
+  apiInceptor.get(`/api/PatchTree/getSidebarGroups`);
 
 export const getAllUpdateData = () =>
-  apiInceptor.get(`/PatchTree/getAllUpdates`);
+  apiInceptor.get(`/api/PatchTree/getAllUpdates`);
 
 export const getClasssifiedUpdatesData = (data) =>
-  apiInceptor.post(`/PatchTree/getClassification`,
+  apiInceptor.post(`/api/PatchTree/getClassification`,
     data);
 
 export const getpatchDetailsData = (data) =>
-  apiInceptor.post(`/PatchTree/getPatchDetails`,
+  apiInceptor.post(`/api/PatchTree/getPatchDetails`,
     data);
 
 
 export const getPatchgraphPieData = (data) =>
-  apiInceptor.post(`/PatchTree/getPatchgraphPie`,
+  apiInceptor.post(`/api/PatchTree/getPatchgraphPie`,
     data);
 
 
 
 export const getPatchgraphClickData = (data) =>
-  apiInceptor.post(`/PatchTree/getPatchgraphClick`,
+  apiInceptor.post(`/api/PatchTree/getPatchgraphClick`,
     data);
 
 export const getPatchgroupDetailsData = (data) =>
-  apiInceptor.post(`/PatchTree/getPatchgroupDetails`,
+  apiInceptor.post(`/api/PatchTree/getPatchgroupDetails`,
     data);
 
 export const getGroupDataList = (data) =>
-  apiInceptor.post(`/PatchTree/getGroupDataList`,
+  apiInceptor.post(`/api/PatchTree/getGroupDataList`,
     data);
 
 export const getgrpComputerDetails = (name) =>
-  apiInceptor.get(`/PatchTree/Computerdetails`, {
+  apiInceptor.get(`/api/PatchTree/Computerdetails`, {
     params: {
       name: name
     }
@@ -1286,14 +1281,14 @@ export const getgrpComputerDetails = (name) =>
 
 
 export const getComputerPiechart = (name) =>
-  apiInceptor.get(`/PatchTree/ComputerPiechart`, {
+  apiInceptor.get(`/api/PatchTree/ComputerPiechart`, {
     params: {
       computerName: name
     }
   });
 
 export const getComputerPieonclick = (name, status) =>
-  apiInceptor.get(`/PatchTree/ComputerPieonclick`, {
+  apiInceptor.get(`/api/PatchTree/ComputerPieonclick`, {
     params: {
       computerName: name,
       status: status
@@ -1301,68 +1296,64 @@ export const getComputerPieonclick = (name, status) =>
   });
 
 export const getgrpComputerpolicy = (name) =>
-  apiInceptor.get(`/PatchTree/Computerpolicy`, {
+  apiInceptor.get(`/api/PatchTree/Computerpolicy`, {
     params: {
       name: name
     }
   });
 
 export const getsyncHistoryData = () =>
-  apiInceptor.get(`/PatchTree/getSynchronizeList`);
+  apiInceptor.get(`/api/PatchTree/getSynchronizeList`);
 
   export const DiscoverSync = () =>
-  axios.get(`${BASE_URL}/PatchTree/discoverSync`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    }
-  });
+  apiInceptor.get(`/api/PatchTree/discoverSync`, );
 
 export const getPatchTreeapprovedPatchList = (inputData) =>
-  apiInceptor.get(`/PatchTree/approvedPatchList`);
+  apiInceptor.get(`/api/PatchTree/approvedPatchList`);
 
 
 export const getDiscoverGroup = (servername) =>
-  apiInceptor.get(`/PatchTreeClick/discoverGroup`, {
+  apiInceptor.get(`/api/PatchTreeClick/discoverGroup`, {
     params: {
       UDstream: servername
     }
   });
 
 export const getDiscoverComputers = (servername) =>
-  apiInceptor.get(`/PatchTreeClick/discoverComputers`, {
+  apiInceptor.get(`/api/PatchTreeClick/discoverComputers`, {
     params: {
       UDstream: servername
     }
   });
 
 export const getaddGroup = (groupname) =>
-  apiInceptor.get(`/PatchTreeClick/addGroup`, {
+  apiInceptor.get(`/api/PatchTreeClick/addGroup`, {
     params: {
       addGroup: groupname
     }
   });
 
 export const editGroupDetails = (data) =>
-  apiInceptor.post(`/PatchTreeClick/editGroup`,
+  apiInceptor.post(`/api/PatchTreeClick/editGroup`,
     data);
 
 export const getPatchTreeDeclinedPatchList = (inputData) =>
-  apiInceptor.get(`/PatchTree/declinedPatchList`);
+  apiInceptor.get(`/api/PatchTree/declinedPatchList`);
 export const deleteGroupDetails = (groupName) =>
-  apiInceptor.post(`/PatchTreeClick/deleteGroup`, {}, {
+  apiInceptor.post(`/api/PatchTreeClick/deleteGroup`, {}, {
     params: {
       groupName: groupName
     }
   });
 
 export const addComputersDetails = (data) =>
-  apiInceptor.post(`/PatchTreeClick/addComputerGroup`,
+  apiInceptor.post(`/api/PatchTreeClick/addComputerGroup`,
     data);
 
 
 export const getdeleteComputerdetails = (inputData) =>
   apiInceptor.delete(
-    `/PatchTreeClick/deleteSelectedComputers`,
+    `/api/PatchTreeClick/deleteSelectedComputers`,
     {
       data: inputData,
       headers: {
@@ -1376,45 +1367,45 @@ export const getdeleteComputerdetails = (inputData) =>
 
 
 export const getAllBranchList = () =>
-  apiInceptor.get(`/dropdown/BranchDropdown`);
+  apiInceptor.get(`/api/dropdown/BranchDropdown`);
 
 
 export const getBranchWiseIpaddressList = (inputData) =>
   apiInceptor.post(
-    `/dropdown/IpAddressDropdown`, inputData
+    `/api/dropdown/IpAddressDropdown`, inputData
   );
 
 export const getOSTypedropdown = () =>
-  apiInceptor.get(`/dropdown/getOSNames`);
+  apiInceptor.get(`/api/dropdown/getOSNames`);
 
 
 export const getOSComputerdropdown = (data) =>
-  apiInceptor.post(`/dropdown/allPCComputer`,
+  apiInceptor.post(`/api/dropdown/allPCComputer`,
     data);
 
 export const getComputerdropdowm = (servername) =>
-  apiInceptor.get(`/dropdown/allPCComputerServer`, {
+  apiInceptor.get(`/api/dropdown/allPCComputerServer`, {
     params: {
       sernm: servername
     }
   });
 
 export const getGrouplistdropdown = () =>
-  apiInceptor.get(`/dropdown/getgrouplist`, {
+  apiInceptor.get(`/api/dropdown/getgrouplist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getIpListdropdown = () =>
-  apiInceptor.get(`/dropdown/getIpAddresslist`, {
+  apiInceptor.get(`/api/dropdown/getIpAddresslist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getClassifficationdropdown = () =>
-  apiInceptor.get(`/dropdown/classificationDropdown`, {
+  apiInceptor.get(`/api/dropdown/classificationDropdown`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
@@ -1422,42 +1413,42 @@ export const getClassifficationdropdown = () =>
 
 
 export const getproductdropdown = () =>
-  apiInceptor.get(`/dropdown/productDropdown`, {
+  apiInceptor.get(`/api/dropdown/productDropdown`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterVendorNamedropdown = () =>
-  apiInceptor.get(`/dropdown/getvendorlist`, {
+  apiInceptor.get(`/api/dropdown/getvendorlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterCustomerNamedropdown = () =>
-  apiInceptor.get(`/dropdown/getcustomerlist`, {
+  apiInceptor.get(`/api/dropdown/getcustomerlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterbranchNamedropdown = () =>
-  apiInceptor.get(`/dropdown/getbranchlist`, {
+  apiInceptor.get(`/api/dropdown/getbranchlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getMasterCommanddropdown = () =>
-  apiInceptor.get(`/dropdown/getcommandlist`, {
+  apiInceptor.get(`/api/dropdown/getcommandlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
 export const getWindowsPatchdropdown = () =>
-  apiInceptor.get(`/dropdown/getpatchlist`, {
+  apiInceptor.get(`/api/dropdown/getpatchlist`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
@@ -1465,21 +1456,21 @@ export const getWindowsPatchdropdown = () =>
 
 
 export const getPatchedEndpointList = () =>
-  apiInceptor.get(`/dashboard/PatchedEndpointList`, {
+  apiInceptor.get(`/api/dashboard/PatchedEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
   export const getNonComplaintEndpointList = () =>
-  apiInceptor.get(`/dashboard/NonComplaintEndpointList`, {
+  apiInceptor.get(`/api/dashboard/NonComplaintEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
   });
 
     export const getFailedEndpointList = () =>
-  apiInceptor.get(`/dashboard/FailedEndpointList`, {
+  apiInceptor.get(`/api/dashboard/FailedEndpointList`, {
     headers: {
       Authorization: `Bearer ${getToken()}`
     },
@@ -1487,18 +1478,18 @@ export const getPatchedEndpointList = () =>
 
   
     export const getOfflineEndpointList = () =>
-  apiInceptor.get(`/dashboard/OfflineEndpointList`);
+  apiInceptor.get(`/api/dashboard/OfflineEndpointList`);
 
 
   export const getOsPatchStatusListAllModal = () =>
-apiInceptor.get(`${BASE_URL}/dashboard/OsPatchStatusListAllModal`);
+apiInceptor.get(`/api/dashboard/OsPatchStatusListAllModal`);
 
 
 export const getTopRiskDevicesList = () => 
-apiInceptor.get(`${BASE_URL}/dashboard/TopRiskDevicesList`);
+apiInceptor.get(`/api/dashboard/TopRiskDevicesList`);
 
 export const getVulnerabilityModalList = () => 
-apiInceptor.get(`${BASE_URL}/dashboard/thirdpartyseverityModalList`);
+apiInceptor.get(`/api/dashboard/thirdpartyseverityModalList`);
 
 
 
@@ -1510,19 +1501,19 @@ apiInceptor.get(`${BASE_URL}/dashboard/thirdpartyseverityModalList`);
 // }
 
 
-// http://localhost:8081/PatchTree/getClassification
+// http://localhost:8081/api/PatchTree/getClassification
 
-// http://localhost:8081/PatchTree/getPatchDetails
+// http://localhost:8081/api/PatchTree/getPatchDetails
 
-// http://localhost:8081/PatchTree/getPatchgroupDetails
+// http://localhost:8081/api/PatchTree/getPatchgroupDetails
 
-// http://localhost:8081/PatchTree/getPatchgraphPie  & getPatchgraphClick
+// http://localhost:8081/api/PatchTree/getPatchgraphPie  & getPatchgraphClick
 
 
 
 
 // // Side bar
-// http://localhost:8081/PatchTree/getSidebarServer
+// http://localhost:8081/api/PatchTree/getSidebarServer
 
 
-// http://localhost:8081/PatchTree/getSidebarGroups
+// http://localhost:8081/api/PatchTree/getSidebarGroups
