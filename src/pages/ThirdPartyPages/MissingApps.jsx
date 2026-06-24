@@ -8,33 +8,33 @@ import {  getThirdPartyMissingApps, thirdPartyMissingApprovePatches } from "../.
 import { ToastContainer, toast } from 'react-toastify';
 
 const MissingApps = () => {
-    const thirdmissingapps = [
-        { srNo: 1, ipAddress: "192.168.0.15", hostName: "Shamika-Zagade", application: "HeidiSQL", installedVersion: "12.7", latestVersion: "12.13", status: "DECLINED" },
-        { srNo: 2, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Beats filebeat", installedVersion: "9.0.1", latestVersion: "9.2.2", status: "DECLINED" },
-        { srNo: 3, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Git", installedVersion: "2.48.1", latestVersion: "2.52.0", status: "DECLINED" },
-        { srNo: 4, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "HeidiSQL", installedVersion: "12.10", latestVersion: "12.13", status: "DECLINED" },
-        { srNo: 5, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Microsoft Visual Studio Code", installedVersion: "1.103.2", latestVersion: "1.106.3", status: "DECLINED" },
-        { srNo: 6, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Notepad++", installedVersion: "8.7.7", latestVersion: "8.8.8", status: "DECLINED" },
-        { srNo: 7, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Oracle VM VirtualBox", installedVersion: "7.0.16", latestVersion: "7.2.4", status: "DECLINED" },
-        { srNo: 8, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "WinRAR", installedVersion: "6.00.0", latestVersion: "7.13.0", status: "DECLINED" },
-        { srNo: 9, ipAddress: "192.168.0.39", hostName: "Neeraj-Sharma", application: "Everything", installedVersion: "1.4.1.1026", latestVersion: "1.4.1.1030", status: "DECLINED" },
-        { srNo: 10, ipAddress: "192.168.0.39", hostName: "Neeraj-Sharma", application: "HeidiSQL", installedVersion: "12.1", latestVersion: "12.13", status: "DECLINED" },
-        { srNo: 11, ipAddress: "192.168.0.236", hostName: "DESKTOP-F7V9A7C", application: "Git", installedVersion: "2.49.0", latestVersion: "2.52.0", status: "DECLINED" },
-        { srNo: 12, ipAddress: "192.168.0.236", hostName: "DESKTOP-F7V9A7C", application: "HeidiSQL", installedVersion: "12.2", latestVersion: "12.13", status: "DECLINED" },
-        { srNo: 13, ipAddress: "192.168.0.236", hostName: "DESKTOP-F7V9A7C", application: "Notepad++", installedVersion: "8.8.1", latestVersion: "8.8.8", status: "DECLINED" },
-        { srNo: 14, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Google Chrome", installedVersion: "143.0.7499.193", latestVersion: "145.0.7632.76", status: "DECLINED" },
-        { srNo: 15, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Microsoft Edge", installedVersion: "143.0.3650.139", latestVersion: "145.0.3800.58", status: "DECLINED" },
-        { srNo: 16, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Microsoft OneDrive", installedVersion: "25.224.1116.0003", latestVersion: "26.012.0119.0002", status: "DECLINED" },
-        { srNo: 17, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Node.js", installedVersion: "20.18.0", latestVersion: "25.6.1", status: "DECLINED" },
-        { srNo: 18, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "WinRAR", installedVersion: "7.13.0", latestVersion: "7.20.0", status: "DECLINED" },
-        { srNo: 19, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Windows PC Health Check", installedVersion: "3.6.2204.08001", latestVersion: "4.0.2410.23001", status: "DECLINED" },
-        { srNo: 20, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Windows Subsystem for Linux", installedVersion: "2.3.24.0", latestVersion: "2.6.3", status: "DECLINED" },
-        { srNo: 21, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "draw.io", installedVersion: "1.0", latestVersion: "29.3.6", status: "DECLINED" },
-        { srNo: 22, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Google Chrome", installedVersion: "143.0.7499.41", latestVersion: "145.0.7632.76", status: "DECLINED" },
-        { srNo: 23, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Microsoft Edge", installedVersion: "144.0.3719.82", latestVersion: "145.0.3800.58", status: "DECLINED" },
-        { srNo: 24, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Microsoft OneDrive", installedVersion: "25.224.1116.0003", latestVersion: "26.012.0119.0002", status: "DECLINED" },
-        { srNo: 25, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Node.js", installedVersion: "22.17.0", latestVersion: "25.6.1", status: "DECLINED" }
-    ];
+    // const thirdmissingapps = [
+    //     { srNo: 1, ipAddress: "192.168.0.15", hostName: "Shamika-Zagade", application: "HeidiSQL", installedVersion: "12.7", latestVersion: "12.13", status: "DECLINED" },
+    //     { srNo: 2, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Beats filebeat", installedVersion: "9.0.1", latestVersion: "9.2.2", status: "DECLINED" },
+    //     { srNo: 3, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Git", installedVersion: "2.48.1", latestVersion: "2.52.0", status: "DECLINED" },
+    //     { srNo: 4, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "HeidiSQL", installedVersion: "12.10", latestVersion: "12.13", status: "DECLINED" },
+    //     { srNo: 5, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Microsoft Visual Studio Code", installedVersion: "1.103.2", latestVersion: "1.106.3", status: "DECLINED" },
+    //     { srNo: 6, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Notepad++", installedVersion: "8.7.7", latestVersion: "8.8.8", status: "DECLINED" },
+    //     { srNo: 7, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Oracle VM VirtualBox", installedVersion: "7.0.16", latestVersion: "7.2.4", status: "DECLINED" },
+    //     { srNo: 8, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "WinRAR", installedVersion: "6.00.0", latestVersion: "7.13.0", status: "DECLINED" },
+    //     { srNo: 9, ipAddress: "192.168.0.39", hostName: "Neeraj-Sharma", application: "Everything", installedVersion: "1.4.1.1026", latestVersion: "1.4.1.1030", status: "DECLINED" },
+    //     { srNo: 10, ipAddress: "192.168.0.39", hostName: "Neeraj-Sharma", application: "HeidiSQL", installedVersion: "12.1", latestVersion: "12.13", status: "DECLINED" },
+    //     { srNo: 11, ipAddress: "192.168.0.236", hostName: "DESKTOP-F7V9A7C", application: "Git", installedVersion: "2.49.0", latestVersion: "2.52.0", status: "DECLINED" },
+    //     { srNo: 12, ipAddress: "192.168.0.236", hostName: "DESKTOP-F7V9A7C", application: "HeidiSQL", installedVersion: "12.2", latestVersion: "12.13", status: "DECLINED" },
+    //     { srNo: 13, ipAddress: "192.168.0.236", hostName: "DESKTOP-F7V9A7C", application: "Notepad++", installedVersion: "8.8.1", latestVersion: "8.8.8", status: "DECLINED" },
+    //     { srNo: 14, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Google Chrome", installedVersion: "143.0.7499.193", latestVersion: "145.0.7632.76", status: "DECLINED" },
+    //     { srNo: 15, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Microsoft Edge", installedVersion: "143.0.3650.139", latestVersion: "145.0.3800.58", status: "DECLINED" },
+    //     { srNo: 16, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Microsoft OneDrive", installedVersion: "25.224.1116.0003", latestVersion: "26.012.0119.0002", status: "DECLINED" },
+    //     { srNo: 17, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Node.js", installedVersion: "20.18.0", latestVersion: "25.6.1", status: "DECLINED" },
+    //     { srNo: 18, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "WinRAR", installedVersion: "7.13.0", latestVersion: "7.20.0", status: "DECLINED" },
+    //     { srNo: 19, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Windows PC Health Check", installedVersion: "3.6.2204.08001", latestVersion: "4.0.2410.23001", status: "DECLINED" },
+    //     { srNo: 20, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "Windows Subsystem for Linux", installedVersion: "2.3.24.0", latestVersion: "2.6.3", status: "DECLINED" },
+    //     { srNo: 21, ipAddress: "192.168.0.37", hostName: "Shridhar-Varadkar", application: "draw.io", installedVersion: "1.0", latestVersion: "29.3.6", status: "DECLINED" },
+    //     { srNo: 22, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Google Chrome", installedVersion: "143.0.7499.41", latestVersion: "145.0.7632.76", status: "DECLINED" },
+    //     { srNo: 23, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Microsoft Edge", installedVersion: "144.0.3719.82", latestVersion: "145.0.3800.58", status: "DECLINED" },
+    //     { srNo: 24, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Microsoft OneDrive", installedVersion: "25.224.1116.0003", latestVersion: "26.012.0119.0002", status: "DECLINED" },
+    //     { srNo: 25, ipAddress: "192.168.0.105", hostName: "Sumit-Shedge", application: "Node.js", installedVersion: "22.17.0", latestVersion: "25.6.1", status: "DECLINED" }
+    // ];
 
     const [search, setSearch] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -181,7 +181,7 @@ const MissingApps = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-[10px] text-cyan-500 uppercase tracking-wide"> Total Missing Apps </p>
-                            <h2 className="text-2xl font-bold mt-1"> {thirdmissingapps.length} </h2>
+                            <h2 className="text-2xl font-bold mt-1"> {paginatedData.length} </h2>
                         </div>
 
                         <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
@@ -195,7 +195,7 @@ const MissingApps = () => {
                         <div>
                             <p className="text-[10px] text-red-500 uppercase tracking-wide"> Declined </p>
                             <h2 className="text-2xl font-bold mt-1">
-                                {thirdmissingapps.filter(item => item.status === "DECLINED").length}
+                                {paginatedData.filter(item => item.status === "DECLINED").length}
                             </h2>
                         </div>
 
