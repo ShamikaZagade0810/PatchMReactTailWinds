@@ -5,7 +5,7 @@ import apiInceptor from "./apiInceptor";
  const Token11 = null;
 
 
-const BASE_URL = "/";
+const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
   apiInceptor.get(`/projectdetail/viewProjectPayload`);
@@ -773,7 +773,7 @@ export const deleteOEMMaster = (inputData) =>
 
 export const uploadContentDistribution = (formData) =>
   apiInceptor.post(
-    `/upload/contentDistribution`,
+    `/api/upload/contentDistribution`,
     formData
   );
 
@@ -1009,26 +1009,26 @@ export const PatchTreewsus_dashboard_statistics = () =>
 
 export const AddUpdatesSyncSchedule = async (inputData) => {
   return await apiInceptor.post(
-    `/updates-sync-schedule/saveUpdateSyncSchedule`,
+    `/api/updates-sync-schedule/saveUpdateSyncSchedule`,
     inputData
   );
 };
 
 
 export const getUpdatesSyncScheduleList = () =>
-  apiInceptor.get(`/updates-sync-schedule/listUpdatesSyncSchedule`);
+  apiInceptor.get(`/api/updates-sync-schedule/listUpdatesSyncSchedule`);
 
 
 // ================================= View Synchronization Policy ================================// 
 
 
 export const getAllViewSyncPolicy = () =>
-  apiInceptor.get(`/client-sync/listViewSyncPolicy`);
+  apiInceptor.get(`/api/client-sync/listViewSyncPolicy`);
 
 
 export const deleteViewSyncPolicy = (inputData, id) =>
   apiInceptor.delete(
-    `/client-sync/deleteViewSyncPolicy/${id}`,
+    `/api/client-sync/deleteViewSyncPolicy/${id}`,
     {
       data: inputData,
       headers: {
@@ -1039,7 +1039,7 @@ export const deleteViewSyncPolicy = (inputData, id) =>
 
   export const RunPolicyRule = async (inputData) => {
   return await apiInceptor.post(
-    `/client-sync/run-policy`,
+    `/api/client-sync/run-policy`,
     inputData
   );
 };
@@ -1050,7 +1050,7 @@ export const deleteViewSyncPolicy = (inputData, id) =>
 
 export const AddClientWiseSyncPolicy = async (inputData) => {
   return await apiInceptor.post(
-    `/client-sync/saveClientWiseSyncPolicy`,
+    `/api/client-sync/saveClientWiseSyncPolicy`,
     inputData
   );
 };
@@ -1058,17 +1058,17 @@ export const AddClientWiseSyncPolicy = async (inputData) => {
 // ================================= View Client Wise Synchronization Policy ================================// 
 
 export const getAllViewClientWiseSyncPolicy = () =>
-  apiInceptor.get(`/client-sync/listViewClientWiseSyncPolicy`);
+  apiInceptor.get(`/api/client-sync/listViewClientWiseSyncPolicy`);
 
 export const updateViewClientWiseSyncPolicy = (inputData) =>
   apiInceptor.put(
-    `/client-sync/updateViewClientWiseSyncPolicy`, inputData
+    `/api/client-sync/updateViewClientWiseSyncPolicy`, inputData
   );
 
 
 export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
   apiInceptor.delete(
-    `/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
+    `/api/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
     {
       data: inputData,
       headers: {
@@ -1176,7 +1176,7 @@ export const getThirdPartylatestSoftware = () =>
 
 // ================================= Linux  ================================// 
 export const getLinuxMissingApps = () =>
-  apiInceptor.get(`/linux/linux-missing-apps`);
+  apiInceptor.get(`/api/linux/linux-missing-apps`);
 
 
 export const LinuxMissingApprovePatches = (inputData) =>

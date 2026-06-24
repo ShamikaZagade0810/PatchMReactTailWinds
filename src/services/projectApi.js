@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL = "http://182.48.194.218:8081";
- const BASE_URL = "/";
+const BASE_URL = "http://192.168.0.17:8081";
+//  const BASE_URL = "/";
 
 
 const apiClient = axios.create({

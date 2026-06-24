@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "/";
+
+const BASE_URL = "http://192.168.0.17:8081";
 const apiInterceptor = axios.create({
     baseURL: BASE_URL
 });
