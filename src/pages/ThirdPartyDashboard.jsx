@@ -40,7 +40,9 @@ import {
     Loader,
     Package,
     ShieldCheck,
-    AlertCircle
+    AlertCircle,
+    ChevronRight,
+    ChevronLeft
 } from "lucide-react";
 
 
@@ -334,7 +336,14 @@ const ThirdPartyDashboard = () => {
         UNKNOWN: { label: "Low", value: 8, color: "blue" }
     };
 
+const ITEMS_PER_PAGE = 5;
 
+const [currentPage, setCurrentPage] = useState(1);
+const totalPages = Math.ceil(thirdPartyTopRiskyDevices.length / ITEMS_PER_PAGE);
+const paginatedData = thirdPartyTopRiskyDevices.slice(
+  (currentPage - 1) * ITEMS_PER_PAGE,
+  currentPage * ITEMS_PER_PAGE
+);
 
 
     return (
@@ -387,8 +396,7 @@ const ThirdPartyDashboard = () => {
 
                 {/* MIDDLE CARD */}
                 <div className="col-span-4 bg-[#0b1220] rounded-lg p-4 border border-gray-800">
-
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex justify-between items-center mb-10">
                         <div>
                             {/* <div className="text-sm text-gray-400">Required Patch</div> */}
                             <h2 className="card-header"> Required Patch</h2>
@@ -403,26 +411,17 @@ const ThirdPartyDashboard = () => {
                         <div key={i} className="mb-5">
 
                             <div className="flex items-center gap-2 text-xs" >
-
                                 {/* Label */}
                                 <span className="text-gray-300 w-20">{item.label}</span>
-
-
                                 <div className="flex-1 h-[10px] bg-gray-700 rounded">
-                                    <div
-                                        className={`h-full ${colorMap[SeverityCount[item.label]['color']]} rounded transition-all duration-500`}
-                                        style={{ width: `${item.count}%` }}
-                                    ></div>
+                                    <div className={`h-full ${colorMap[SeverityCount[item.label]['color']]} rounded transition-all duration-500`}
+                                        style={{ width: `${item.count}%` }} > </div>
                                 </div>
-
                                 {/* Value */}
                                 <span className="w-10 text-right text-gray-300">{item.value}</span>
-
                             </div>
-
                         </div>
                     ))}
-
                 </div>
 
                 {/* RIGHT CHART CARD */}
@@ -431,7 +430,7 @@ const ThirdPartyDashboard = () => {
                     <div className="flex items-center gap-2 mb-4">
                         {/* <div className="w-[3px] h-4 bg-blue-500"></div> */}
                         {/* <span className="text-sm text-gray-300">Date Wise Patching Status</span> */}
-                        <h2 className="card-header"> Date Wise Patching Status </h2>
+                        <h2 className="card-header"> Month Wise Patching Status </h2>
                     </div>
 
                     {/* Chart */}
@@ -539,30 +538,22 @@ const ThirdPartyDashboard = () => {
             </div>
 
             <div className="grid grid-cols-12 gap-3 p-2 bg-[#020617]  text-white">
-
                 <div className="col-span-4 bg-[#0b1220] rounded-lg p-4">
-
-                    <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center mb-10">
                         <div>
                             {/* <div className="text-xs text-gray-400"> Application Patch Wise Status</div> */}
                             <h2 className="card-header"> Application Patch Wise Status </h2>
-                            <div className="text-2xl font-semibold">
-                                670 <span className="text-green-400 text-sm">↑</span>
-                            </div>
+                            <div className="text-2xl font-semibold">  670 <span className="text-green-400 text-sm">↑</span> </div>
                         </div>
 
-                        <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
-                            %
-                        </div>
+                        <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400"> % </div>
                     </div>
 
                     {/* Chart */}
                     <div className="h-[220px] mt-2">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={thirdPartyAppPatchStatus} barGap={2}>
-
                                 <XAxis hide dataKey="name" />
-
                                 <Tooltip
                                     contentStyle={{
                                         backgroundColor: "#020617",
@@ -748,34 +739,40 @@ const ThirdPartyDashboard = () => {
                         </div>
 
                         {/* Rows */}
-                        {thirdPartyTopRiskyDevices.map((item, i) => (
-                            <div
-                                key={i}
-                                className="grid grid-cols-4 items-center px-3 py-2 text-xs border-t border-gray-800 hover:bg-[#0f172a]/50 transition"
-                            >
+                        {paginatedData.map((item, i) => (
+                            <div key={i} className="grid grid-cols-4 items-center px-3 py-2 text-xs border-t border-gray-800 hover:bg-[#0f172a]/50 transition"  >
                                 <span className="text-gray-300">{item.ip}</span>
-
                                 <span className="text-gray-300">{item.pending}</span>
-
                                 <span className="text-gray-400">{item.successRate}</span>
-
-
-
                                 <span>
-                                    <span
-                                        className={`px-2 py-[2px] rounded text-[10px] ${severityMap[item.severity]}`}
-                                    >
-                                        ● {item.severity}
-                                    </span>
+                                    <span className={`px-2 py-[2px] rounded text-[10px] ${severityMap[item.severity]}`} > ● {item.severity} </span>
                                 </span>
                             </div>
                         ))}
                     </div>
+                   <div className="flex items-center justify-center gap-2 mt-4">
+    <button
+        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        disabled={currentPage === 1}
+        className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
+    >
+        <ChevronLeft className="w-4 h-4" />
+    </button>
 
+    <span className="px-4 py-2 text-sm text-gray-700 dark:text-gray-400">
+        Page {currentPage} of {totalPages}
+    </span>
 
-
-
-
+    <button
+        onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+        }
+        disabled={currentPage === totalPages}
+        className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700"
+    >
+        <ChevronRight className="w-4 h-4" />
+    </button>
+</div>
                 </div>
 
             </div>

@@ -452,7 +452,6 @@ const handleExportModal = async () => {
                 show={show}
                 setShow={setShow}
                 data={modalData}
-
             />
             {/* modal for export button */}
             {showExportModal && (

@@ -27,7 +27,7 @@ const SendMultiplePatches = () => {
     const [branchList, setBranchList] = useState([]);
     const [selectedHostName, setSelectedHostName] = useState([]);
     const [hostNameList, setHostNameList] = useState([]);
-    const [viewDownloadingProgressData, setViewDownloadingProgressData] = useState([]);
+    
     const [file, setFile] = useState(null);
 
 
@@ -338,6 +338,7 @@ const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:f
 
     // 🔹 TAB 2 → Activity List
     const ViewMultiplePatch = () => {
+        const [viewDownloadingProgressData, setViewDownloadingProgressData] = useState([]);
         const data = [
             {
                 ip: "192.168.1.10", speed: "2 MB/s", interval: "5 sec", fileName: "patch_v1.zip, patch_v2.zip", percentage: 65,
@@ -348,6 +349,8 @@ const resetClass = "px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-800 hover:f
                 totalFileSent: "1 GB", totalFileSize: "1 GB", elapsedTime: "00:03:10", status: "Completed"
             }
         ];
+    
+        console.log("Hello Hii");
         useEffect(() => {
 
             getViewListingData();

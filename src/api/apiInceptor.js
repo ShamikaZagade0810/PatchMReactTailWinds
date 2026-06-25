@@ -1,11 +1,10 @@
 import axios from "axios";
 
-
+// const BASE_URL = "/";
 const BASE_URL = "http://192.168.0.17:8081";
 const apiInterceptor = axios.create({
     baseURL: BASE_URL
 });
-
 // Add access token to every request
 apiInterceptor.interceptors.request.use(
     (config) => {
@@ -30,7 +29,7 @@ apiInterceptor.interceptors.response.use(
     async (error) => {
 
         const originalRequest = error.config;
-
+        console.log("apiInceptor ----->  ", error.response?.status);
         // Prevent infinite loop
         if (
             (error.response?.status === 401 ||
@@ -48,17 +47,19 @@ apiInterceptor.interceptors.response.use(
                 if (!refreshToken) {
                     throw new Error("Refresh token missing");
                 }
+                console.log("BASE_URL =", BASE_URL);
+            console.log("Refresh URL =", `${BASE_URL}/api/auth/refresh`);
 
                 const refreshResponse =
                     await axios.post(
-                        `${BASE_URL}/api/auth/refresh`,
+                        // `/api/auth/refresh`,                               // for server
+                         `${BASE_URL}/api/auth/refresh`,                // for local
                         {
                             refreshToken
                         }
                     );
 
-                const newAccessToken =
-                    refreshResponse.data.data.accessToken;
+                const newAccessToken = refreshResponse.data.data.accessToken;
 
                 // Save new access token
                 localStorage.setItem(

@@ -4,8 +4,8 @@ import apiInceptor from "./apiInceptor";
 //const getToken() = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb2MiLCJpYXQiOjE3ODE1MDY4MDQsImV4cCI6MTc4MTU5MzIwNH0.9sTTgcQN78QWSubxZE5krXbssCLKysm_ohjkQsv5mao';
  const Token11 = null;
 
-
-const BASE_URL = "http://192.168.0.17:8081";
+// const BASE_URL = "/";
+ const BASE_URL = "http://192.168.0.17:8081";
 
 export const getProjects = () =>
   apiInceptor.get(`/projectdetail/viewProjectPayload`);
@@ -778,7 +778,7 @@ export const uploadContentDistribution = (formData) =>
   );
 
 export const getDownloadingPatchProgress = () =>
-  apiInceptor.get(`/upload/viewDownloadingPatchProgress`);
+  apiInceptor.get(`/api/upload/viewDownloadingPatchProgress`);
 
 export const addSetServerPolicy = (inputData) =>
   apiInceptor.post(
@@ -1110,7 +1110,7 @@ export const getupdateStatus = () =>
   apiInceptor.get(`/api/PatchTree/getupdateStatus`);
 
 export const getrecentActivity = () =>
-  apiInceptor.get(`/api/PatchTree/api/dashboard-timeline`);
+  apiInceptor.get(`/api/PatchTree/dashboard-timeline`);
 
 
 // ================================= Third Party  ================================// 
@@ -1356,9 +1356,7 @@ export const getdeleteComputerdetails = (inputData) =>
     `/api/PatchTreeClick/deleteSelectedComputers`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+     
     }
   );
 
@@ -1391,90 +1389,42 @@ export const getComputerdropdowm = (servername) =>
   });
 
 export const getGrouplistdropdown = () =>
-  apiInceptor.get(`/api/dropdown/getgrouplist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getgrouplist`, );
 
 export const getIpListdropdown = () =>
-  apiInceptor.get(`/api/dropdown/getIpAddresslist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getIpAddresslist`, );
 
 export const getClassifficationdropdown = () =>
-  apiInceptor.get(`/api/dropdown/classificationDropdown`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/classificationDropdown`, );
 
 
 export const getproductdropdown = () =>
-  apiInceptor.get(`/api/dropdown/productDropdown`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/productDropdown`, );
 
 export const getMasterVendorNamedropdown = () =>
-  apiInceptor.get(`/api/dropdown/getvendorlist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getvendorlist`, );
 
 export const getMasterCustomerNamedropdown = () =>
-  apiInceptor.get(`/api/dropdown/getcustomerlist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getcustomerlist`,);
 
 export const getMasterbranchNamedropdown = () =>
-  apiInceptor.get(`/api/dropdown/getbranchlist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getbranchlist`, );
 
 export const getMasterCommanddropdown = () =>
-  apiInceptor.get(`/api/dropdown/getcommandlist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getcommandlist`, );
 
 export const getWindowsPatchdropdown = () =>
-  apiInceptor.get(`/api/dropdown/getpatchlist`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dropdown/getpatchlist`, );
 
 
 export const getPatchedEndpointList = () =>
-  apiInceptor.get(`/api/dashboard/PatchedEndpointList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dashboard/PatchedEndpointList`, );
 
   export const getNonComplaintEndpointList = () =>
-  apiInceptor.get(`/api/dashboard/NonComplaintEndpointList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dashboard/NonComplaintEndpointList`, );
 
     export const getFailedEndpointList = () =>
-  apiInceptor.get(`/api/dashboard/FailedEndpointList`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`
-    },
-  });
+  apiInceptor.get(`/api/dashboard/FailedEndpointList`, );
 
   
     export const getOfflineEndpointList = () =>

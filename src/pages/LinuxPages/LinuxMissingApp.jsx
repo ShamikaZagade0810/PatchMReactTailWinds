@@ -205,7 +205,7 @@ const LinuxMissingApp = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-[10px] text-cyan-500 uppercase tracking-wide"> Total Missing Apps </p>
-                            <h2 className="text-2xl font-bold mt-1"> {thirdmissingapps.length} </h2>
+                            <h2 className="text-2xl font-bold mt-1"> {paginatedData.length} </h2>
                         </div>
 
                         <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center">
@@ -219,7 +219,7 @@ const LinuxMissingApp = () => {
                         <div>
                             <p className="text-[10px] text-red-500 uppercase tracking-wide"> Declined </p>
                             <h2 className="text-2xl font-bold mt-1">
-                                {thirdmissingapps.filter(item => item.status === "DECLINED").length}
+                                {paginatedData.filter(item => item.status === "DECLINED").length}
                             </h2>
                         </div>
 

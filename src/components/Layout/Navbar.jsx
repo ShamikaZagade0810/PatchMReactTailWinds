@@ -338,6 +338,8 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
 
         {/* ================= RIGHT SIDE ================= */}
         <div className="flex items-center gap-3">
+           <button onClick={() => { window.location.href = "http://192.168.0.236:8085/Helpdesk/"; }} 
+           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" > EDR  </button>
 
           {/* Theme toggle */}
           <button
@@ -353,10 +355,8 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
 
           {/* User */}
           <div ref={dropdownRef} className="relative">
-            <button
-              onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
+            <button onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" >
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
   <User className="w-4 h-4 text-white" />
 </div>
@@ -373,8 +373,7 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
 
             {/* Dropdown */}
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border rounded-lg shadow-lg z-50">
-                
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border rounded-lg shadow-lg z-50">                
                 <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                   <p className="text-sm font-medium">{user1?.username}</p>
                   <p className="text-xs text-gray-500">{user1?.role}</p>
