@@ -158,13 +158,11 @@ const Login = () => {
             </div>
 
             {/* FORM */}
-            <form onSubmit={handleSubmit} className="space-y-4 w-[320px]" >
+            <form onSubmit={handleSubmit} className="space-y-4 w-[320px]" autoComplete="off" >
 
               {/* EMAIL */}
               <div>
-                <label className="text-white/70 text-sm font-medium mb-3 block">
-                  Username
-                </label>
+                <label className="text-white/70 text-sm font-medium mb-3 block" autoComplete="off">  Username </label>
 
                 <div className="h-[44px] rounded-xl bg-[#020d2d] flex items-center px-3 transition-all duration-300
                   shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]
@@ -175,7 +173,7 @@ const Login = () => {
                   <FaUserAlt className="text-cyan-300 text-[12px]" />
 
                   <input type="text" name="username" value={formData.username} onChange={handleChange}
-                    placeholder="username" className="flex-1 bg-transparent outline-none text-white text-sm pl-2" />
+                    placeholder="username" className="flex-1 bg-transparent outline-none text-white text-sm pl-2" autoComplete="off" />
                 </div>
               </div>
 
