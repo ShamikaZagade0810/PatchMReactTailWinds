@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -52,6 +52,35 @@ const Login = () => {
     });
   };
 
+  //   useEffect(() => {
+  //   const autoLogin = async () => {
+  //     setIsLoading(true);
+  //     setError("");
+
+  //     // Hardcoded credentials
+  //     const username = "poc";
+  //     const password = "P0c@1234";
+
+  //     // Optional: show credentials in the input boxes
+  //     setFormData({
+  //       username,
+  //       password,
+  //     });
+
+  //     const user = await auth.login(username, password);
+
+  //     if (user) {
+  //       navigate("/dashboard/mainDashboard", { replace: true });
+  //     } else {
+  //       setError("Auto login failed");
+  //     }
+
+  //     setIsLoading(false);
+  //   };
+
+  //   autoLogin();
+  // }, []);
+
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   console.log(formData);
@@ -65,9 +94,6 @@ const Login = () => {
     console.log("user before passing to login: ", formData.username, formData.password);
     const user = await auth.login(formData.username, formData.password);
     console.log("user here :", user);
-
-
-
     if (user) {
       navigate("/dashboard/mainDashboard", { replace: true });
     } else {
@@ -81,7 +107,7 @@ const Login = () => {
     setIsLoading(false);
     setIsLoading(false);
   };
-  
+
 
   console.log("backSvg:", bgSvg);
   return (

@@ -338,7 +338,7 @@ export const Navbar = ({ toggleSidebar, isSidebarOpen, isPatchTreeSidebarEnabled
 
         {/* ================= RIGHT SIDE ================= */}
         <div className="flex items-center gap-3">
-           <button onClick={() => { window.location.href = "http://192.168.0.236:8085/Helpdesk/"; }} 
+           <button onClick={() => { window.location.href = "http://localhost:8080/SecureIT-EDR/EDRDashboard"; }} 
            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" > EDR  </button>
 
           {/* Theme toggle */}
