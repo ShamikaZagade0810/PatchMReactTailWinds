@@ -5,6 +5,7 @@ import {
     ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { getThirdPartyInstalledApps } from "../../api/projectApi";
+import { exportTable } from '../../components/utils/exportUtils';
 
 const InstalledApps = () => {
 
@@ -48,9 +49,9 @@ const InstalledApps = () => {
             item.appname.toLowerCase().includes(search.toLowerCase()) ||
             item.hostname.toLowerCase().includes(search.toLowerCase()) ||
             item.ipAddress.toLowerCase().includes(search.toLowerCase()) ||
-             item.patchStatus.toLowerCase().includes(search.toLowerCase())
+            item.patchStatus.toLowerCase().includes(search.toLowerCase())
         );
-    }, [search,ThirdPartyInstalledApp]);
+    }, [search, ThirdPartyInstalledApp]);
 
     // Pagination
     const totalPages = Math.ceil(filteredData.length / rowsPerPage);
@@ -61,23 +62,64 @@ const InstalledApps = () => {
 
 
     useEffect(() => {
-
         getData();
-
-
     }, []);
 
     const getData = async () => {
-
         setLoading(true);
         const Repodata = await getThirdPartyInstalledApps();
         console.log("Data --> ", Repodata.data.data);
         setThirdPartyInstalledApp(Repodata.data.data[0].data);
         setLoading(false);
-
     }
 
+    const handleRefresh = async () => {
+        try {
+            await getData();
+        } catch (error) {
+            console.error("Refresh failed:", error);
+        }
+    };
 
+    const exportColumns = [
+  { header: "IP Address", key: "ipAddress" },
+  { header: "Host Name", key: "hostname" },
+  { header: "Application", key: "appname" },
+  { header: "Installed Version", key: "version" },
+  { header: "Latest Version", key: "latestVersion" },
+  { header: "Update", key: "patchStatus" },
+  { header: "Publisher", key: "publisher" },
+  {
+    header: "First Seen",
+    render: (row) =>
+      new Date(row.firstSeen)
+        .toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })
+        .replace(/\//g, "-")
+        .replace(",", ""),
+  },
+  {
+    header: "Last Updated",
+    render: (row) =>
+      new Date(row.lastUpdated)
+        .toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })
+        .replace(/\//g, "-")
+        .replace(",", ""),
+  },
+];
 
 
     return (
@@ -92,11 +134,18 @@ const InstalledApps = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+                    <button onClick={handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
                         <RefreshCw size={14} /> Refresh
                     </button>
 
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+                    {/* <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+                        <Download size={14} /> Export
+                    </button> */}
+                    <button onClick={() => {
+                        console.log("Export Data ", filteredData),
+                        exportTable({ type: "pdf", title: "Third Party Installed Apps Report", fileName: "ThirdParty_Installed_Apps", columns: exportColumns, data: filteredData, })
+                    }}
+                        className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
                         <Download size={14} /> Export
                     </button>
                 </div>
@@ -209,7 +258,7 @@ const InstalledApps = () => {
                                     <td className="px-4 py-3"> {item.hostname} </td>
                                     <td className="px-4 py-3 font-medium text-white"> {item.appname} </td>
                                     <td className="px-4 py-3 text-gray-300"> {item.version} </td>
-                                    <td className={`px-4 py-3 font-medium ${item.updateAvailable  ? "text-emerald-400" : "text-red-400"}`}> {item.latestVersion} </td>
+                                    <td className={`px-4 py-3 font-medium ${item.updateAvailable ? "text-emerald-400" : "text-red-400"}`}> {item.latestVersion} </td>
                                     <td className="px-4 py-3">
                                         <span className="px-2.5 py-1 rounded-full text-[10px] bg-red-500/10 border border-red-500/20 text-red-400 ">
                                             {item.patchStatus}

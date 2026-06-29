@@ -52,8 +52,8 @@ apiInterceptor.interceptors.response.use(
 
                 const refreshResponse =
                     await axios.post(
-                        `/api/auth/refresh`,                               // for server
-                        //  `${BASE_URL}/api/auth/refresh`,                // for local
+                        // `/api/auth/refresh`,                               // for server
+                         `${BASE_URL}/api/auth/refresh`,                // for local
                         {
                             refreshToken
                         }

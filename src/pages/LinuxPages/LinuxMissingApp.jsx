@@ -120,20 +120,20 @@ const LinuxMissingApp = () => {
     // };
 
     const handleRowSelect = (srNo) => {
-    setSelectedRows((prev) =>
-        prev.includes(srNo)
-            ? prev.filter((id) => id !== srNo)
-            : [...prev, srNo]
-    );
-};
+        setSelectedRows((prev) =>
+            prev.includes(srNo)
+                ? prev.filter((id) => id !== srNo)
+                : [...prev, srNo]
+        );
+    };
 
-//     const handleRowSelect = (srNo) => {
-//     setSelectedRows(prev =>
-//         prev.includes(srNo)
-//             ? prev.filter(id => id !== srNo)
-//             : [...prev, srNo]
-//     );
-// };
+    //     const handleRowSelect = (srNo) => {
+    //     setSelectedRows(prev =>
+    //         prev.includes(srNo)
+    //             ? prev.filter(id => id !== srNo)
+    //             : [...prev, srNo]
+    //     );
+    // };
 
     const handleClickApprove = async () => {
         try {
@@ -141,14 +141,14 @@ const LinuxMissingApp = () => {
             //     ip: obj.hostName,
             //     app: obj.appName
             // }));
-                const reqData = selectedRows.map(srNo => {
-            const item = ThirdPartyMissingApp.find(x => x.srNo === srNo);
+            const reqData = selectedRows.map(srNo => {
+                const item = ThirdPartyMissingApp.find(x => x.srNo === srNo);
 
-            return {
-                ip: item?.hostName,
-                app: item?.appName || item?.application
-            };
-        });
+                return {
+                    ip: item?.hostName,
+                    app: item?.appName || item?.application
+                };
+            });
 
             console.log("Hii ", reqData);
 
@@ -164,14 +164,31 @@ const LinuxMissingApp = () => {
                 toast.error("Something went Wrong !! ")
             }
         } catch (error) {
-
             console.error(error);
             toast.error("API Error");
-
         }
-
-
     }
+
+    const handleRefresh = async () => {
+        try {
+                        // re-fetch API data
+            await getData();
+
+        } catch (error) {
+            console.error("Refresh failed:", error);
+        }
+    };
+
+    const exportColumns = [
+  { header: "IP Address", key: "hostName" },
+  { header: "Application", key: "appName" },
+  { header: "Installed Version", key: "currentVersion" },
+  { header: "Latest Version", key: "availableVersion" },
+  {
+    header: "Status",
+    render: (row) => row.status,
+  },
+];
 
     return (
 
@@ -186,11 +203,15 @@ const LinuxMissingApp = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+                    <button onClick={handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
                         <RefreshCw size={14} /> Refresh
                     </button>
 
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+                    <button onClick={() => {
+                        console.log("Export Data ", filteredData),
+                            exportTable({ type: "pdf", title: "Linux Missing Report", fileName: "Linux_Missing_Report", columns: exportColumns, data: filteredData, })
+                    }}
+                        className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
                         <Download size={14} /> Export
                     </button>
                     <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300" onClick={() => handleClickApprove()}>
@@ -290,7 +311,7 @@ const LinuxMissingApp = () => {
                                     onChange={handleSelectAll} className="w-4 h-4 rounded border border-[#334155] bg-[#111827] accent-cyan-500 cursor-pointer" />
                             </th>
                             <th className="px-4 py-3 font-medium">IP Address</th>
-                          
+
                             <th className="px-4 py-3 font-medium">Application</th>
                             <th className="px-4 py-3 font-medium">Installed Version</th>
                             <th className="px-4 py-3 font-medium">Latest Version</th>
@@ -305,13 +326,13 @@ const LinuxMissingApp = () => {
 
                                     <td className="px-4 py-3">
                                         {/* <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item)}  /> */}
-                                    <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item.srNo)} />
+                                        <input type="checkbox" checked={selectedRows.includes(item.srNo)} onChange={() => handleRowSelect(item.srNo)} />
                                     </td>
                                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.hostName} </td>
                                     <td className="px-4 py-3"> {item.appName} </td>
                                     <td className="px-4 py-3 font-medium text-white"> {item.currentVersion} </td>
                                     <td className="px-4 py-3 text-gray-300"> {item.availableVersion} </td>
-                                   
+
                                     <td className="px-4 py-3">
                                         <span className="px-2.5 py-1 rounded-full text-[10px] border bg-red-500/10 text-red-400 border-red-500/20">
                                             {item.status}

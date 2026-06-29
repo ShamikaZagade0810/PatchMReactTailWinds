@@ -133,10 +133,10 @@ export const AuthProvider = ({ children }) => {
     setIsAuthLoading(false);
   }, []);
 
-  const login = async (username, password) => {
+  const login = async (username, password, captchaInput) => {
     try {
-      console.log("user before passing to login in function: ", username, password);
-      const response = await authApi.login({ username, password });
+      console.log("user before passing to login in function: ", username, password, captchaInput);
+      const response = await authApi.login({ username, password, captchaInput });
 
       if (response.data.status !== 200) return null;
 
@@ -176,10 +176,21 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
+    // const user= localStorage.getItem("username");
+    const userData = JSON.parse(localStorage.getItem("user")); 
+const username = userData?.username;
+console.log(username);
+    console.log("Inside Logout ", refreshToken)
+
+  const payload = {
+    refreshToken,
+    username,
+  };
 
     try {
-      if (refreshToken) {
-        await authApi.logout(refreshToken);
+      if (refreshToken) {         
+        const res =  await authApi.logout(payload);
+        console.log("logout Response: ", res)
       }
     } catch (error) {
       console.error("Logout API failed");

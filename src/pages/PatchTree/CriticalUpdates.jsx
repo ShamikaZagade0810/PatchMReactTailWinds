@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useEffect  } from 'react';
-import { useParams, useNavigate  } from "react-router-dom"
+import React, { useMemo, useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom"
 import {
   Search,
   RefreshCw,
@@ -7,21 +7,22 @@ import {
   CheckCircle2,
   ShieldAlert,
   AlertTriangle,
-    ChevronLeft,
+  ChevronLeft,
   ChevronRight
 } from 'lucide-react';
 
 import { getClasssifiedUpdatesData } from "../../api/projectApi";
+import { exportTable } from '../../components/utils/exportUtils';
 
 const CriticalUpdates = () => {
   const navigate = useNavigate();
-const handleOpen = (title) => {
-  navigate(`/patchTree/patchDetails/${title}`, {
-    state: {
-      from: "/patchTree/CriticalUpdate"
-    }
+  const handleOpen = (title) => {
+    navigate(`/patchTree/patchDetails/${title}`, {
+      state: {
+        from: "/patchTree/CriticalUpdate"
+      }
     });
-};
+  };
 
   // const criticalupdateslist = [
   //   {srNo:1,title:"Remote Assistance Connection",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-18 20:49:52.6",arrivalDate:"2025-12-30 06:27:55.633",approved:false,declined:false,state:"Published"},
@@ -34,49 +35,49 @@ const handleOpen = (title) => {
   //   {srNo:8,title:"810565: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-10-15 05:15:58.963",arrivalDate:"2025-12-30 06:28:46.98",approved:false,declined:false,state:"Published"},
   //   {srNo:9,title:"810649: Critical Update",legacyName:"NA",classification:"Critical Updates",installedOrNotApplicable:"NA",creationDate:"2003-02-25 18:41:10.857",arrivalDate:"2025-12-30 06:28:47.19",approved:false,declined:false,state:"Published"}
   // ];
-const [loading, setLoading] = useState(true);
-const [criticalupdateslist, setCriticalupdateslist] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [criticalupdateslist, setCriticalupdateslist] = useState([]);
 
-useEffect(() => {
-  fetchCriticalUpdates();
-}, []);
+  useEffect(() => {
+    fetchCriticalUpdates();
+  }, []);
 
-const fetchCriticalUpdates = async () => {
-  try {
-    setLoading(true);
+  const fetchCriticalUpdates = async () => {
+    try {
+      setLoading(true);
 
-    const data = {
-      classification: "Critical Updates",
+      const data = {
+        classification: "Critical Updates",
+      }
+      const response = await getClasssifiedUpdatesData(data);
+
+      console.log("Crirtical Updates response: ", response)
+      if (response?.data?.status === 200) {
+        setCriticalupdateslist(response.data.data || []);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    const response = await getClasssifiedUpdatesData(data);
-
-    console.log("Crirtical Updates response: ", response)
-    if (response?.data?.status === 200) {
-      setCriticalupdateslist(response.data.data || []);
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const [search, setSearch] = useState('');
   const [severityFilter, setSeverityFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-    
-    const [currentPage, setCurrentPage] = useState(1);
-const rowsPerPage = 10;
 
-useEffect(() => {
-  setCurrentPage(1);
-}, [search, severityFilter, statusFilter]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, severityFilter, statusFilter]);
 
 
 
   const severityOptions = [
-    ...new Set( criticalupdateslist.map(item => item.classification) )
+    ...new Set(criticalupdateslist.map(item => item.classification))
   ];
 
 
@@ -106,22 +107,48 @@ useEffect(() => {
 
   const totalCritical = criticalupdateslist.length;
 
-  const approvedCritical = criticalupdateslist.filter( item => item.approved === true ).length;
+  const approvedCritical = criticalupdateslist.filter(item => item.approved === true).length;
 
-  const severityCritical = criticalupdateslist.filter( item => item.classification === 'Critical Updates' ).length;
+  const severityCritical = criticalupdateslist.filter(item => item.classification === 'Critical Updates').length;
 
-  
+
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const paginatedData = useMemo(() => {
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  return filteredData.slice(startIndex, startIndex + rowsPerPage);
-}, [filteredData, currentPage]);
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    return filteredData.slice(startIndex, startIndex + rowsPerPage);
+  }, [filteredData, currentPage]);
+
+  const exportColumns = [
+    { header: "Title", key: "title", },
+    { header: "Classification", key: "classification", },
+    { header: "Creation Date", key: "creationDate", },
+    { header: "Arrival Date", key: "arrivalDate", },
+    { header: "Approved", render: row => row.approved ? "Yes" : "No", },
+    { header: "Declined", render: row => row.declined ? "Yes" : "No", },
+    { header: "State", key: "state", },
+  ];
+
+  const handleRefresh = async () => {
+  try {
+    // reset filters
+    setSearch('');
+    setSeverityFilter('');
+    setStatusFilter('');
+    setCurrentPage(1);
+
+    // re-fetch API data
+    await fetchCriticalUpdates();
+
+  } catch (error) {
+    console.error("Refresh failed:", error);
+  }
+};
 
   return (
     <>
-        <div className="bg-[#050B18] rounded-xl p-2 border border-white/10 min-h-screen text-white text-sm">
+      <div className="bg-[#050B18] rounded-xl p-2 border border-white/10 min-h-screen text-white text-sm">
 
-      {/* <div className="bg-[#0F172A] rounded-xl border border-white/10 p-4"> */}
+        {/* <div className="bg-[#0F172A] rounded-xl border border-white/10 p-4"> */}
 
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
@@ -134,16 +161,23 @@ useEffect(() => {
 
           <div className="flex items-center gap-2">
 
-            <button  onClick={fetchCriticalUpdates}  className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+            <button onClick={ handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
               <RefreshCw size={14} /> Refresh
             </button>
 
-            <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+            {/* <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+              <Download size={14} /> Export
+            </button> */}
+
+            <button onClick={() => {
+              console.log("Export Data ", filteredData),
+              exportTable({ type: "pdf", title: "Critial Updates Report", fileName: "Critial_Updates", columns: exportColumns, data: filteredData, })
+            }}
+              className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
               <Download size={14} /> Export
             </button>
 
-          </div>
-
+          </div>   
         </div>
 
         {/* Cards */}
@@ -192,31 +226,31 @@ useEffect(() => {
 
         {/* Search + Filters */}
         <div className="bg-[#0B1220] rounded-xl p-3 border border-[#1e293b] mb-3">
-  <div className="flex flex-col lg:flex-row gap-3 items-center">
+          <div className="flex flex-col lg:flex-row gap-3 items-center">
 
-    {/* Search */}
-    <div className="relative flex-1">
-      <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-      <input type="text" placeholder="Search by title..." value={search} onChange={(e) => setSearch(e.target.value)}
-        className="w-full bg-[#111827] border border-[#1e293b] focus:border-cyan-500 outline-none rounded-lg pl-9 pr-4 py-2.5 text-xs" />
-    </div>
+            {/* Search */}
+            <div className="relative flex-1">
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="text" placeholder="Search by title..." value={search} onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-[#111827] border border-[#1e293b] focus:border-cyan-500 outline-none rounded-lg pl-9 pr-4 py-2.5 text-xs" />
+            </div>
 
-    {/* Status Dropdown */}
-    <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-      className="bg-[#111827] border border-[#1e293b] focus:border-cyan-500 outline-none rounded-lg px-3 py-2.5 text-xs min-w-[200px]" >
-      <option value="" disabled>-- Please Select Status --</option>
-      <option value="approved">Approved</option>
-      <option value="declined">Declined</option>
-      <option value="unapproved">UnApproved</option>
-    </select>
+            {/* Status Dropdown */}
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
+              className="bg-[#111827] border border-[#1e293b] focus:border-cyan-500 outline-none rounded-lg px-3 py-2.5 text-xs min-w-[200px]" >
+              <option value="" disabled>-- Please Select Status --</option>
+              <option value="approved">Approved</option>
+              <option value="declined">Declined</option>
+              <option value="unapproved">UnApproved</option>
+            </select>
 
-    {/* Showing Count */}
-    <div className="text-[11px] text-gray-400 whitespace-nowrap ml-auto">
-      Showing {paginatedData.length} of {filteredData.length}
-    </div>
+            {/* Showing Count */}
+            <div className="text-[11px] text-gray-400 whitespace-nowrap ml-auto">
+              Showing {paginatedData.length} of {filteredData.length}
+            </div>
 
-  </div>
-</div>
+          </div>
+        </div>
 
         {/* Table */}
         <div className="overflow-x-auto rounded-xl border b-1 border-[#1e293b] mt-4">
@@ -238,12 +272,12 @@ useEffect(() => {
 
             <tbody>
               {loading ? (
-    <tr>
-      <td colSpan="9" className="text-center py-8">
-        Loading...
-      </td>
-    </tr>
-  ) : filteredData.length > 0 ? (
+                <tr>
+                  <td colSpan="9" className="text-center py-8">
+                    Loading...
+                  </td>
+                </tr>
+              ) : filteredData.length > 0 ? (
                 paginatedData.map((item) => (
                   <tr key={item.srNo} className="border-b border-[#1e293b] hover:bg-[#111827] transition-all duration-300" >
                     {/* <td className="px-4 py-3"> {item.srNo} </td> */}
@@ -270,18 +304,16 @@ useEffect(() => {
                     <td className="px-4 py-3 text-gray-300 whitespace-nowrap"> {item.arrivalDate} </td>
 
                     <td className="px-4 py-3">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] border ${
-                          item.approved ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] border ${item.approved ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                          : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
                         }`} >
                         {item.approved ? 'Approved' : 'No'}
                       </span>
                     </td>
 
                     <td className="px-4 py-3">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] border ${
-                          item.declined ? 'bg-red-500/10 text-red-400 border-red-500/20'
-                            : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] border ${item.declined ? 'bg-red-500/10 text-red-400 border-red-500/20'
+                          : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
                         }`} >
                         {item.declined ? 'Declined' : 'No'}
                       </span>
@@ -305,34 +337,34 @@ useEffect(() => {
 
           </table>
           <div className="flex items-center justify-between mt-4">
-  <div className="text-xs text-gray-400">
-    Page {currentPage} of {totalPages || 1}
-  </div>
+            <div className="text-xs text-gray-400">
+              Page {currentPage} of {totalPages || 1}
+            </div>
 
-  <div className="flex items-center gap-2">
-    <button
-      disabled={currentPage === 1}
-      onClick={() => setCurrentPage(prev => prev - 1)}
-      className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
-    >
-      <ChevronLeft size={15} />
-    </button>
+            <div className="flex items-center gap-2">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(prev => prev - 1)}
+                className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
+              >
+                <ChevronLeft size={15} />
+              </button>
 
-    <button
-      disabled={currentPage >= totalPages}
-      onClick={() => setCurrentPage(prev => prev + 1)}
-      className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
-    >
-      <ChevronRight size={15} />
-    </button>
-  </div>
-</div>
+              <button
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage(prev => prev + 1)}
+                className="w-8 h-8 rounded-lg border border-[#1e293b] bg-[#111827] flex items-center justify-center disabled:opacity-40"
+              >
+                <ChevronRight size={15} />
+              </button>
+            </div>
+          </div>
 
         </div>
 
-     
 
-    </div>
+
+      </div>
     </>
   )
 }

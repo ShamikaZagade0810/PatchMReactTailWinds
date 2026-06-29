@@ -6,9 +6,12 @@ import { Search, RefreshCw, Download, CheckCircle2, ShieldAlert, AlertTriangle, 
 } from 'lucide-react';
 
 import { getThirdPartyHostinfo, getThirdPartyHostappsdetails } from "../../api/projectApi";
+import { exportTable } from '../../components/utils/exportUtils';
 
 const HostDetails = () => {
      const { ipAddress } = useParams();
+
+     
 
      const navigate = useNavigate();
 
@@ -18,48 +21,46 @@ const HostDetails = () => {
 const [hostdetailsinfo, sethostdetailsinfo] = useState({});
 const [loading, setLoading] = useState(true);
 useEffect(() => {
-  const fetchHost = async () => {
-    try {
-      setLoading(true);
-      const res = await getThirdPartyHostinfo(ipAddress);
-        console.log("API Response:" ,res)
-      const data = res?.data?.data?.[0] || {};
-      sethostdetailsinfo(data);
-    } catch (error) {
-      console.error("Error fetching host info:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   if (ipAddress) {
     fetchHost();
   }
 }, [ipAddress]);
+
+const fetchHost = async () => {
+  try {
+    setLoading(true);
+    const res = await getThirdPartyHostinfo(ipAddress);
+    const data = res?.data?.data?.[0] || {};
+    sethostdetailsinfo(data);
+    console.log("Table Fetch....")
+  } catch (error) {
+    console.error("Error fetching host info:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const fetchHostApps = async (hostname = hostdetailsinfo?.hostname) => {
+  if (!hostname || !ipAddress) return;
+
+  try {
+    const res = await getThirdPartyHostappsdetails(hostname, ipAddress);
+    const data = res?.data?.data || [];
+    setHostdetailapps(data);
+  } catch (error) {
+    console.error("Error fetching host apps:", error);
+    setHostdetailapps([]);
+  }
+};
 
      const host = hostdetailsinfo || {};
 
 
 const [hostdetailapps, setHostdetailapps] = useState([]);
 useEffect(() => {
-  if (!hostdetailsinfo?.hostname || !ipAddress) return;
-
-  const fetchHostApps = async () => {
-    try {
-      const res = await getThirdPartyHostappsdetails(
-        hostdetailsinfo.hostname,
-        ipAddress
-      );
-
-      const data = res?.data?.data || [];
-      setHostdetailapps(data);
-    } catch (error) {
-      console.error("Error fetching host apps:", error);
-      setHostdetailapps([]);
-    }
-  };
-
-  fetchHostApps();
+  if (hostdetailsinfo?.hostname) {
+    fetchHostApps(hostdetailsinfo.hostname);
+  }
 }, [hostdetailsinfo?.hostname, ipAddress]);
 
 
@@ -92,6 +93,38 @@ useEffect(() => {
   setCurrentPage(1);
 }, [search, statusFilter, rowsPerPage]);
 
+
+const handleRefresh = async () => {
+  try {
+    // Refresh host information
+    const res = await getThirdPartyHostinfo(ipAddress);
+    const hostData = res?.data?.data?.[0] || {};
+    sethostdetailsinfo(hostData);
+
+    // Refresh applications
+    if (hostData?.hostname) {
+      const appsRes = await getThirdPartyHostappsdetails(
+        hostData.hostname,
+        ipAddress
+      );
+
+      setHostdetailapps(appsRes?.data?.data || []);
+    }
+
+    setCurrentPage(1); // optional
+  } catch (error) {
+    console.error("Refresh failed:", error);
+  }
+};
+
+const exportColumns = [
+  { header: "Application", key: "appName" },
+  { header: "Publisher", key: "publisher" },
+  { header: "Installed Version", key: "version" },
+  { header: "Latest Version", render: (row) => row.latestVersion },
+  { header: "Status", render: (row) => row.status },
+];
+
   return (
     <>
     <button onClick={() => {
@@ -113,13 +146,19 @@ useEffect(() => {
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+          <button onClick={handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
             <RefreshCw size={14} /> Refresh
           </button>
 
-          <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+          {/* <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
             <Download size={14} /> Export
-          </button>
+          </button> */}
+            <button onClick={() => { console.log("Export Data ", filteredData),
+                        exportTable({ type: "pdf", title:  `Application Report - ${host.hostname || host.ipAddress || ipAddress}`, fileName: `Application Report - ${host.hostname || host.ipAddress || ipAddress}`, columns: exportColumns, data: filteredData, })  }}
+                        className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+                        <Download size={14} /> Export
+                      </button>
+          
         </div>
       </div>
 

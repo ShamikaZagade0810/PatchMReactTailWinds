@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 
 import { getAllUpdateData } from "../../api/projectApi";
+import { exportTable } from '../../components/utils/exportUtils';
+
 
 const AllUpdatesListing = () => {
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const AllUpdatesListing = () => {
       console.log("All updates Response: ", response);
 
       setAllUpdatesList(response.data.data || []);
+      console.log("API Data:", response.data.data);
     } catch (error) {
       console.error("Error fetching updates:", error);
       setAllUpdatesList([]);
@@ -84,7 +87,7 @@ const AllUpdatesListing = () => {
     ...new Set(allupdateslist.map(item => item.classification))
   ];
 
-
+  console.log("All Updates:", allupdateslist);
   const filteredData = useMemo(() => {
     return allupdateslist.filter(item => {
       const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase());
@@ -120,6 +123,32 @@ const AllUpdatesListing = () => {
   }, [filteredData, currentPage]);
 
 
+  const exportColumns = [
+    { header: "Title", key: "title", },
+    { header: "Classification", key: "classification", },
+    { header: "Creation Date", key: "creationDate", },
+    { header: "Arrival Date", key: "arrivalDate", },
+    { header: "Approved", render: row => row.approved ? "Yes" : "No", },
+    { header: "Declined", render: row => row.declined ? "Yes" : "No", },
+    { header: "State", key: "state",    },
+  ];
+
+    const handleRefresh = async () => {
+  try {
+    // reset filters
+    setSearch('');
+    setSeverityFilter('');
+    setStatusFilter('');
+    setCurrentPage(1);
+
+    // re-fetch API data
+    await fetchAllUpdates();
+
+  } catch (error) {
+    console.error("Refresh failed:", error);
+  }
+};
+
   return (
     <>
       <div className="bg-[#050B18] rounded-xl p-2 border border-white/10 min-h-screen text-white text-sm">
@@ -141,11 +170,16 @@ const AllUpdatesListing = () => {
 
           <div className="flex items-center gap-2">
 
-            <button onClick={fetchAllUpdates} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+            <button onClick={handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
               <RefreshCw size={14} /> Refresh
             </button>
-
-            <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+ 
+            {/* <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+              <Download size={14} /> Export
+            </button> */}
+            <button onClick={() => { console.log("Export Data ", filteredData),
+              exportTable({ type: "pdf", title: "All Updates Report", fileName: "All_Updates", columns: exportColumns, data: filteredData, })  }}
+              className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
               <Download size={14} /> Export
             </button>
 
@@ -243,6 +277,7 @@ const AllUpdatesListing = () => {
               </tr>
             </thead>
 
+
             <tbody>
               {loading ? (
                 <tr>
@@ -284,7 +319,7 @@ const AllUpdatesListing = () => {
 
                       <td className="px-4 py-3">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] border ${item.approved ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                            : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                          : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
                           }`} >
                           {item.approved ? 'Approved' : 'No'}
                         </span>
@@ -292,7 +327,7 @@ const AllUpdatesListing = () => {
 
                       <td className="px-4 py-3">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] border ${item.declined ? 'bg-red-500/10 text-red-400 border-red-500/20'
-                            : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                          : 'bg-gray-500/10 text-gray-400 border-gray-500/20'
                           }`} >
                           {item.declined ? 'Declined' : 'No'}
                         </span>

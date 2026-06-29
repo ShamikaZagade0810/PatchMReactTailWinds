@@ -4,6 +4,7 @@ import { useParams, useLocation, useNavigate, useSearchParams   } from "react-ro
 import { ChevronLeft, ChevronRight, RefreshCw, Download, Search } from "lucide-react";
 
 import {  getGroupDataList } from "../../api/projectApi";
+import { exportTable } from '../../components/utils/exportUtils';
 
 
 const ComputerListing = () => {
@@ -63,7 +64,32 @@ console.log("Group ID:", groupId);
 }, [groupName, serverName]);
 
     
+ const handleRefresh = async () => {
+  try {
+       
+    // re-fetch API data
+    await fetchData();
 
+  } catch (error) {
+    console.error("Refresh failed:", error);
+  }
+};
+
+const exportColumns = [
+  { header: "Computer Name", key: "name" },
+  { header: "IP Address", key: "ipAddress" },
+  { header: "Model", key: "model" },
+  { header: "Manufacturer", key: "make" },
+  { header: "Architecture", key: "architecture" },
+  { header: "OS", key: "osDescription" },
+  { header: "Client Version", key: "clientVersion" },
+  { header: "Last Sync Time", key: "lastSyncTime" },
+  { header: "Last Reported", key: "lastReportedTime" },
+  {
+    header: "Sync Result",
+    render: (row) => row.lastsyncResult,
+  },
+];
 
     const PAGE_SIZE = 10;
     const [currentPage, setCurrentPage] = useState(1);
@@ -100,14 +126,34 @@ console.log("Group ID:", groupId);
             {/* <h2 className="text-lg font-semibold mb-4">
                     Synchronization History
                 </h2> */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+            {/* <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
                 <div>
                     <h1 className="text-xl font-bold"> {groupName} </h1>
                 </div>
+            </div> */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+  
+  {/* Left side */}
+  <div>
+    <h1 className="text-xl font-bold">{groupName}</h1>
+  </div>
 
+  {/* Right side */}
+  <div className="flex items-center gap-3 ml-auto">    
+     <button onClick={ handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+                  <RefreshCw size={14} /> Refresh
+                </button>
+    
 
-
-            </div>
+     <button onClick={() => {
+                  console.log("Export Data ", filteredData),
+                  exportTable({ type: "pdf", title: `${groupName} - Computer Report`, fileName: `${groupName.replace(/\s+/g, "_")}_Computer_Report`, columns: exportColumns, data: filteredData, })
+                }}
+                  className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+                  <Download size={14} /> Export
+                </button>
+  </div>
+</div>
 
             <div className="m-4 border-b border-white/10" />
 
@@ -136,7 +182,7 @@ console.log("Group ID:", groupId);
 
             <div className="overflow-x-auto">
                 <div className="rounded-xl border border-white/10 overflow-hidden">
-                    <table className="w-full text-sm">
+                     <table className="w-full text-sm">
                         <thead className="text-gray-300 bg-[#1E293B]">
                             <tr>
                                 {/* <th className="p-3 text-left">Sr No</th> */}

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import {  getThirdPartyMissingApps, thirdPartyMissingApprovePatches } from "../../api/projectApi";
 import { ToastContainer, toast } from 'react-toastify';
+import { exportTable } from '../../components/utils/exportUtils';
 
 const MissingApps = () => {
     // const thirdmissingapps = [
@@ -46,8 +47,6 @@ const MissingApps = () => {
 
     useEffect(() => {
         getData();
-
-
     }, []);
 
     const getData = async () => {
@@ -149,6 +148,25 @@ const MissingApps = () => {
         }
     }
 
+       const handleRefresh = async () => {
+        try {
+            await getData();
+        } catch (error) {
+            console.error("Refresh failed:", error);
+        }
+    };
+
+    const exportColumns = [
+  { header: "IP Address", key: "hostName" },
+  { header: "Application", key: "appName" },
+  { header: "Installed Version", key: "currentVersion" },
+  { header: "Latest Version", key: "availableVersion" },
+  {
+    header: "Status",
+    render: (row) => row.status,
+  },
+];
+
     return (
         
         <div className="bg-[#050B18] rounded-xl p-4 border border-white/10 min-h-screen text-white text-sm">
@@ -162,13 +180,20 @@ const MissingApps = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
+                    <button onClick={handleRefresh} className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-[#111827] border border-[#1e293b] hover:border-cyan-500 transition-all duration-300">
                         <RefreshCw size={14} /> Refresh
                     </button>
-
+{/* 
                     <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
                         <Download size={14} /> Export
-                    </button>
+                    </button> */}
+                      <button onClick={() => {
+                                            console.log("Export Data ", filteredData),
+                                                exportTable({ type: "pdf", title: "Third Party Missing Report", fileName: "ThirdParty_Missing_Report", columns: exportColumns, data: filteredData, })
+                                        }}
+                                            className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300">
+                                            <Download size={14} /> Export
+                                        </button>
                     <button className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition-all duration-300" onClick={() => handleClickApprove()}>
                         <Download size={14} /> Approve
                     </button>

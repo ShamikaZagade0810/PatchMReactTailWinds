@@ -6,12 +6,14 @@ const BASE_URL = "http://192.168.0.17:8081";
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
+    withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 const publicClient = axios.create({
   baseURL: BASE_URL,
+    withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -345,11 +347,13 @@ export const projectApi = {
   },
 };
 export const authApi = {
+  // Get CAPTCHA
+  captcha: () => publicClient.get("/api/auth/captcha"),
   // Use publicClient for login (no token interception)
   login: (credentials) => publicClient.post("/api/auth/login", credentials),
   // These might still need the interceptor for refresh logic?
   refresh: (refreshToken) => publicClient.post("/refresh", { refreshToken }),
-  logout: (refreshToken) => apiClient.post("/logout", { refreshToken }),
+  logout: (payload) => apiClient.post("/api/auth/logout",  payload ),
 };
 // ─── API ────────────────────────────────────────────────────────────────────
 export const incidentApi = {

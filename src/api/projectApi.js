@@ -560,25 +560,10 @@ export const getUpdateActivityCmd = (inputData) =>
 
 export const getdeleteActivityCmd = (inputData) =>
   apiInceptor.delete(
-    `/api/RunCommand/deleteActivityCmd`,
-    {
-      data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
-  );
+    `/api/RunCommand/deleteActivityCmd`, );
 
 export const sendMultiplePatches = (inputData) =>
-  apiInceptor.post(
-    `/api/patch/start`,
-    inputData,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      },
-    }
-  );
+  apiInceptor.post( `/api/patch/start`, inputData, );
 
 // MASTER API's
 
@@ -613,9 +598,7 @@ export const getdeleteAppUser = (inputData) =>
     `/api/master/deleteAppUser`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -635,10 +618,7 @@ export const deleteViewDevices = (inputData) =>
   apiInceptor.delete(
     `/api/master/deleteViewDevices `,
     {
-      data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      data: inputData,      
     }
   );
 
@@ -662,9 +642,7 @@ export const deleteCustomer = (inputData) =>
     `/api/master/deleteCustomer`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+     
     }
   );
 
@@ -688,9 +666,7 @@ export const deleteBranch = (inputData) =>
     `/api/master/deleteBranch`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -714,9 +690,7 @@ export const deleteGroupMaster = (inputData) =>
     `/api/master/deleteGroup`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -737,12 +711,7 @@ export const getUpdateServerMaster = (inputData) =>
 export const deleteServerMaster = (inputData) =>
   apiInceptor.delete(
     `/api/master/deleteServer`,
-    {
-      data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+    { data: inputData,    }
   );
 
 
@@ -765,9 +734,7 @@ export const deleteOEMMaster = (inputData) =>
     `/api/master/deleteVendor`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -801,10 +768,7 @@ export const deleteSelectedPolicyServer = (inputData) =>
   apiInceptor.delete(
     `/api/master/deleteServerPolicy`,
     {
-      data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      data: inputData,     
     }
   );
 
@@ -828,9 +792,7 @@ export const deleteSelectMailConfig = (inputData) =>
     `/api/master/deleteMailConfig`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -856,9 +818,7 @@ export const deleteSelectPeriodicReport = (inputData) =>
     `/api/master/deletePeriodicReport`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -882,9 +842,7 @@ export const deleteActivityScheduler = (inputData) =>
     `/api/RunCommand/deletecmdScheduler`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+      
     }
   );
 
@@ -915,23 +873,12 @@ export const getAutoApprovalRule = async () => {
 export const enableViewApprovalRule = (inputData) =>
   apiInceptor.put(
     `/api/view-approval-rule/enableApprovalRule/${inputData}`,
-
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+   
   );
 
 export const disableViewApprovalRule = (inputData) =>
   apiInceptor.put(
-    `/api/view-approval-rule/disableApprovalRule/${inputData}`,
-
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+    `/api/view-approval-rule/disableApprovalRule/${inputData}`,   
   );
 
 export const getAutoApprovalRuleById = async (InputData) => {
@@ -949,13 +896,7 @@ export const UpdateAutoApprovalRule = (inputData, id) =>
 
 export const deleteAutoApprovalRule = (inputData, id) =>
   apiInceptor.delete(
-    `/api/view-approval-rule/deleteApprovalRule/${id}`,
-    {
-      data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
-    }
+    `/api/view-approval-rule/deleteApprovalRule/${id}`,    
   );
 
 
@@ -1031,9 +972,7 @@ export const deleteViewSyncPolicy = (inputData, id) =>
     `/api/client-sync/deleteViewSyncPolicy/${id}`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+     
     }
   );
 
@@ -1071,9 +1010,7 @@ export const deleteViewClientWiseSyncPolicy = (inputData, id) =>
     `/api/client-sync/deleteViewClientWiseSyncPolicy/${id}`,
     {
       data: inputData,
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      }
+     
     }
   );
 
